@@ -192,7 +192,7 @@ class GenerationRecoveryTests(WorkflowFixture):
         perform_run(run.pk, lambda *_: self.bad_payload())
         run.refresh_from_db()
         data = export_backup(self.lecture)
-        for version in (3, 2, 1):
+        for version in (4, 3, 2, 1):
             with self.subTest(version=version):
                 output = io.BytesIO()
                 with (
@@ -205,6 +205,9 @@ class GenerationRecoveryTests(WorkflowFixture):
                             manifest = json.loads(contents)
                             manifest["version"] = version
                             self.assertNotIn("worker_token", manifest["runs"][0])
+                            if version < 4:
+                                for record in manifest["runs"]:
+                                    record.pop("reasoning_effort")
                             if version < 3:
                                 for record in manifest["runs"]:
                                     for key in ("card_limit", "filtered_count", "over_limit_count"):
@@ -222,6 +225,7 @@ class GenerationRecoveryTests(WorkflowFixture):
                     restored = restore_backup(SimpleUploadedFile("backup.zip", output.getvalue()))
                 restored_run = restored.runs.get(pk=run.pk)
                 self.assertEqual(restored_run.issues, run.issues if version >= 2 else [])
+                self.assertEqual(restored_run.reasoning_effort, "")
                 self.assertEqual(restored_run.completed_pages, [1, 2, 3])
                 self.assertEqual(Card.objects.count(), 0)
 

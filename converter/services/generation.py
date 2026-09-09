@@ -112,7 +112,18 @@ class Cancelled(Exception):
     pass
 
 
-def codex_generate(pages, cancelled=lambda: False, *, card_limit=None, existing_questions=()):
+def checked_reasoning_effort(value):
+    if not isinstance(value, str) or value not in dict(GenerationRun.REASONING_LEVELS):
+        raise WorkflowError(
+            "Choose a supported reasoning level: Codex default, Low, Medium, High, Extra high, or Max."
+        )
+    return value
+
+
+def codex_generate(
+    pages, cancelled=lambda: False, *, card_limit=None, existing_questions=(), reasoning_effort=""
+):
+    reasoning_effort = checked_reasoning_effort(reasoning_effort)
     if sum(len(page.text) for page in pages) > 200000:
         raise WorkflowError(
             "This compact batch contains too much text. Select fewer pages or increase the card limit."
@@ -157,6 +168,11 @@ def codex_generate(pages, cancelled=lambda: False, *, card_limit=None, existing_
                 "--model",
                 model,
             ]
+        if reasoning_effort:
+            command[command.index("--output-schema") : command.index("--output-schema")] = [
+                "-c",
+                f'model_reasoning_effort="{reasoning_effort}"',
+            ]
         # Source text travels through stdin rather than shell interpolation or command-line arguments.
         with (directory / "prompt.txt").open("wb+") as prompt:
             prompt.write(prompt_for(pages, card_limit, existing_questions).encode("utf-8"))
@@ -193,6 +209,11 @@ def codex_generate(pages, cancelled=lambda: False, *, card_limit=None, existing_
                             process.kill()
                             process.wait()
         if process.returncode != 0 or not output.exists():
+            if reasoning_effort:
+                label = dict(GenerationRun.REASONING_LEVELS)[reasoning_effort]
+                raise WorkflowError(
+                    f"Codex could not finish with {label} reasoning. Check your sign-in and allowance, and that the selected model supports this level. You can retry with Codex default. Completed drafts are preserved."
+                )
             raise WorkflowError(
                 "Codex could not finish. Check `codex login status` and your usage limit in a terminal, then retry. Completed drafts are preserved."
             )
@@ -206,7 +227,8 @@ def codex_generate(pages, cancelled=lambda: False, *, card_limit=None, existing_
             ) from exc
 
 
-def start_generation(lecture, page_numbers, card_limit=None):
+def start_generation(lecture, page_numbers, card_limit=None, reasoning_effort="low"):
+    reasoning_effort = checked_reasoning_effort(reasoning_effort)
     pages = list(lecture.pages.filter(number__in=page_numbers, warning=""))
     if not pages:
         raise WorkflowError("Select at least one page with usable text.")
@@ -214,7 +236,10 @@ def start_generation(lecture, page_numbers, card_limit=None):
     codex_executable()
     try:
         run = GenerationRun.objects.create(
-            lecture=lecture, page_numbers=[page.number for page in pages], card_limit=card_limit
+            lecture=lecture,
+            page_numbers=[page.number for page in pages],
+            card_limit=card_limit,
+            reasoning_effort=reasoning_effort,
         )
     except IntegrityError as exc:
         raise WorkflowError(
@@ -328,7 +353,11 @@ def perform_run(run_id, generator=None, *, worker_token=None):
                     else []
                 )
                 payload = codex_generate(
-                    batch, cancelled, card_limit=batch_limit, existing_questions=questions
+                    batch,
+                    cancelled,
+                    card_limit=batch_limit,
+                    existing_questions=questions,
+                    reasoning_effort=run.reasoning_effort,
                 )
             payload, prefiltered = filter_generated_logistics(payload)
             validated, issues = validate_generated_batch(

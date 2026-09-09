@@ -17,7 +17,13 @@ from .services.cards import add_drafts, update_card, validate_content, validate_
 from .services.documents import import_pdf
 from .services.exporting import export_deck
 from .services.files import WorkflowError, media_path
-from .services.generation import prompt_for, remaining_pages, resume_generation, start_generation
+from .services.generation import (
+    checked_reasoning_effort,
+    prompt_for,
+    remaining_pages,
+    resume_generation,
+    start_generation,
+)
 from .services.selection import (
     checked_card_limit,
     default_card_limit,
@@ -93,6 +99,7 @@ def lecture_context(item, request, selected=None, form=None):
     )
     # Keep earlier warnings visible when a later run or JSON import is created.
     issue_runs = [run for run in item.runs.all() if run.issues]
+    last_codex_run = item.runs.filter(provider="codex").order_by("-updated_at").first()
     return {
         "lecture": item,
         "cards": cards,
@@ -110,6 +117,8 @@ def lecture_context(item, request, selected=None, form=None):
         "warning_pages": [p for p in pages if p.warning],
         "default_card_limit": default_card_limit(sum(not p.warning for p in pages)),
         "logistics_count": len(logistics_drafts(item)),
+        "reasoning_levels": GenerationRun.REASONING_LEVELS,
+        "selected_reasoning": last_codex_run.reasoning_effort if last_codex_run else "low",
     }
 
 
@@ -177,7 +186,8 @@ def generate(request, pk):
     try:
         pages = selected_pages(request, item)
         limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
-        start_generation(item, [p.number for p in pages], card_limit=limit)
+        effort = checked_reasoning_effort(request.POST.get("reasoning_effort", "low"))
+        start_generation(item, [p.number for p in pages], card_limit=limit, reasoning_effort=effort)
         return redirect(item)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
@@ -321,6 +331,7 @@ def run_status(request, pk):
             "error": run.error,
             "issues": len(run.issues),
             "card_limit": run.card_limit,
+            "reasoning_effort": run.get_reasoning_effort_display(),
             "filtered_count": run.filtered_count,
             "over_limit_count": run.over_limit_count,
         }

@@ -39,7 +39,7 @@ Equivalent direct commands:
 
 Anki export adds or updates notes using stable identities. Setting a card aside does not delete an earlier copy in Anki. This is one-way content export, not synchronization or an import of reviews from Anki. Local backups do not contain reviews performed in Anki.
 
-Anki backend 26.8.1 has been tested for repeated imports, question edits, bundled media, and preservation of an existing review schedule. Manual checks in the desktop/mobile client interfaces and testing with real course lectures remain necessary before beta use.
+Anki backend 26.8.1 has been tested for repeated imports, question edits, bundled media, and preservation of an existing review schedule. The user also reported that the real lecture worked correctly in their Anki client; its version/platform and repeat-import behavior were not specified. Broader desktop/mobile checks remain necessary before beta use.
 
 ## Codex generation
 
@@ -54,6 +54,10 @@ $env:SLIDES_CODEX_BINARY = 'C:\path\to\codex.exe'
 
 Sign in with that CLI first (`codex login`), and check `codex login status` if generation fails. The tested CLI version is 0.153.0; older versions may not support the required flags. The app ignores the Codex user configuration, excludes repository instruction text, and disables connected apps, shell execution, web search, and multi-agent tools. It uses saved authentication and the CLI's default model; `SLIDES_CODEX_MODEL` can explicitly select a model available to the account.
 
+**Reasoning level** offers **Codex default**, **Low**, **Medium**, **High**, **Extra high** (`xhigh`), and **Max**. Low is the initial choice for a lecture with no earlier Codex run; otherwise the form reuses its last run's selection. Explicit levels are passed through `-c model_reasoning_effort="..."`. Codex default omits that override. The requested setting is saved in the run, displayed in progress/history, and retained on resume and backup. Higher levels can increase time and allowance use; support depends on the selected model and CLI. The selector applies to **Generate drafts**. A downloaded prompt cannot configure another chat's reasoning setting; select it in that chat instead.
+
+The previously run live checks used Codex's default, without an explicit effort setting; their effective level was not recorded. The earlier and current regression tests use synthetic output without live inference. Local CLI 0.153.4 and its cached model capabilities were inspected without generation when adding this control; its current models advertise Max, with availability varying by model. Ultra can include agent delegation in some Codex surfaces; the converter keeps its single-worker, tools-disabled generation route. See [official reasoning guidance](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning) and the [configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference).
+
 Before a new generation, the app asks for consent to send selected slide text and up to 200 recent existing questions through that account. The questions help avoid repeating concepts across batches. It consumes the account's normal allowance. PDF files and rendered images remain local in this initial text-only route. A source excerpt must match its cited page before a draft is saved; that check does **not** establish answer correctness. Older runs without a saved card limit do not send existing questions when resumed.
 
 New runs default to a compact ceiling of one card per two selected readable pages, rounded up: 85 pages gives a maximum of 43 new cards. **Maximum new cards** accepts a custom limit from 1 to 500; leaving it blank calculates the ceiling from the actual selection. The limit also appears in downloaded prompts. The application enforces it on live generation even if the model returns too many candidates; manual JSON imports are not capped. This limits additions in one run, not the size of an existing deck. Generating again does not compact or replace existing notes.
@@ -66,11 +70,13 @@ Course logistics such as exam duration, permitted materials, dates, grading, and
 
 An invalid generated draft, including “The source excerpt is not present on page…”, appears under **skipped drafts · review details**. Other valid drafts are saved and later pages continue. Inspect the flagged question, answer, and unverified excerpt with **View source page**, then write a corrected card or generate just those pages again. Skipped drafts are excluded from cards and Anki exports; their history remains visible after later runs and is included in backups. A page being processed does not mean every learning objective is covered. Malformed JSON or a provider failure still stops the run and leaves its remaining pages available to resume. Manually imported JSON files remain all-or-nothing so you can correct the file before importing.
 
-Backups now use format version 3 to retain the card limit, filtering counts, and skipped-draft details. Versions 1 and 2 still restore; older application versions cannot read version 3 backups.
+Backups now use format version 4 to retain the reasoning selection, card limit, filtering counts, and skipped-draft details. Versions 1–3 still restore; older application versions cannot read version 4 backups. Old generation runs restore with Codex default because their effective reasoning level is unknown.
 
 Technical reference: [official OpenAI documentation for non-interactive Codex](https://developers.openai.com/codex/noninteractive).
 
 ## Resume development
+
+[Distribution direction](docs/DISTRIBUTION.md) describes packaging the local browser app first, a possible desktop window, and an optional hosted static UI with a local companion. PDF/storage/export processing should remain on the user's computer; Codex inference remains on OpenAI's infrastructure. These additional distribution modes are proposals, not implemented deployments.
 
 1. Read [the current status](docs/STATUS.md).
 2. Follow [the MVP build plan](MVP_BUILD_PLAN.md).

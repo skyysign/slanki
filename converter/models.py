@@ -41,6 +41,14 @@ class Page(models.Model):
 
 
 class GenerationRun(models.Model):
+    REASONING_LEVELS = [
+        ("", "Codex default"),
+        ("low", "Low"),
+        ("medium", "Medium"),
+        ("high", "High"),
+        ("xhigh", "Extra high"),
+        ("max", "Max"),
+    ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, related_name="runs")
     status = models.CharField(max_length=16, default="queued")
@@ -51,6 +59,9 @@ class GenerationRun(models.Model):
     worker_token = models.UUIDField(default=uuid.uuid4, editable=False)
     cards_added = models.PositiveIntegerField(default=0)
     card_limit = models.PositiveIntegerField(null=True, blank=True)
+    reasoning_effort = models.CharField(
+        max_length=12, choices=REASONING_LEVELS, default="", blank=True
+    )
     filtered_count = models.PositiveIntegerField(default=0)
     over_limit_count = models.PositiveIntegerField(default=0)
     error = models.TextField(blank=True)

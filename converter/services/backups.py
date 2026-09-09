@@ -31,7 +31,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 3,
+        "version": 4,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -87,6 +87,7 @@ def export_backup(lecture):
                 "issues": r.issues,
                 "cards_added": r.cards_added,
                 "card_limit": r.card_limit,
+                "reasoning_effort": r.reasoning_effort,
                 "filtered_count": r.filtered_count,
                 "over_limit_count": r.over_limit_count,
                 "error": r.error,
@@ -179,7 +180,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3)
+                or manifest["version"] not in (1, 2, 3, 4)
             ):
                 raise WorkflowError("This is not a supported Slides to Anki backup.")
             info = manifest["lecture"]
@@ -254,7 +255,8 @@ def restore_backup(upload):
                             " card_limit filtered_count over_limit_count"
                             if manifest["version"] >= 3
                             else ""
-                        ),
+                        )
+                        + (" reasoning_effort" if manifest["version"] >= 4 else ""),
                     )
                     r = dict(r)
                     r.setdefault("issues", [])

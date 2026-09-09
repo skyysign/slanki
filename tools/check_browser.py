@@ -78,6 +78,21 @@ def main():
                     page.get_by_role("button", name="Open lecture").click()
                     page.get_by_role("heading", name="Memory & learning · sample").wait_for()
                     page.get_by_label("Maximum new cards").fill("2")
+                    reasoning = page.get_by_label("Reasoning level", exact=True)
+                    assert reasoning.input_value() == "low"
+                    assert reasoning.locator("option").all_text_contents() == [
+                        "Codex default",
+                        "Low",
+                        "Medium",
+                        "High",
+                        "Extra high",
+                        "Max",
+                    ]
+                    reasoning.select_option("xhigh")
+                    assert reasoning.input_value() == "xhigh"
+                    page.screenshot(
+                        path=str(OUTPUT / "generation-settings-desktop.png"), full_page=True
+                    )
                     with page.expect_download() as downloaded_prompt:
                         page.get_by_role("button", name="Download prompt").click()
                     assert "LECTURE PAGE DATA" in Path(downloaded_prompt.value.path()).read_text(

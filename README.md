@@ -56,7 +56,11 @@ Sign in with that CLI first (`codex login`), and check `codex login status` if g
 
 Before generation, the app asks for consent to send selected slide text through that account. It consumes the account's normal allowance. PDF files and rendered images remain local in this initial text-only route. A source excerpt must match its cited page before a draft is saved; that check does **not** establish answer correctness.
 
-Runs process three pages at a time, saving each completed batch. A batch has a five-minute timeout. **Stop generation** preserves completed drafts. On failure, select the remaining pages and generate again. Exact repeated questions are skipped, and existing notes are not overwritten. Paraphrased duplicates still need manual review.
+Runs process three pages at a time, saving each processed batch. A batch has a five-minute timeout. **Stop generation** preserves completed drafts. After an interruption, **Resume remaining pages** continues the original selection without repeating saved batches. Resuming uses the same Codex account and allowance. Exact repeated questions are skipped, and existing notes are not overwritten. Paraphrased duplicates still need manual review.
+
+An invalid generated draft, including “The source excerpt is not present on page…”, appears under **skipped drafts · review details**. Other valid drafts are saved and later pages continue. Inspect the flagged question, answer, and unverified excerpt with **View source page**, then write a corrected card or generate just those pages again. Skipped drafts are excluded from cards and Anki exports; their history remains visible after later runs and is included in backups. A page being processed does not mean every learning objective is covered. Malformed JSON or a provider failure still stops the run and leaves its remaining pages available to resume. Manually imported JSON files remain all-or-nothing so you can correct the file before importing.
+
+Backups now use format version 2 to retain skipped-draft details. Version 1 backups still restore; older application versions cannot read version 2 backups.
 
 Technical reference: [official OpenAI documentation for non-interactive Codex](https://developers.openai.com/codex/noninteractive).
 

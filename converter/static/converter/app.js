@@ -41,6 +41,18 @@ document.querySelector("[data-page-select]")?.addEventListener("change", (event)
 });
 
 const progress = document.querySelector("[data-run-url]");
+document.querySelectorAll("[data-view-source]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const select = document.querySelector("[data-page-select]");
+    const option = [...select.options].find((item) => item.dataset.page === button.dataset.viewSource);
+    if (!option) return;
+    select.value = option.value;
+    select.dispatchEvent(new Event("change"));
+    document.querySelector(".source-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+    select.focus({ preventScroll: true });
+  });
+});
+
 if (progress) {
   const message = progress.querySelector("[data-run-message]");
   let failures = 0;
@@ -51,12 +63,13 @@ if (progress) {
       const run = await response.json();
       failures = 0;
       progress.querySelector("progress").value = run.completed;
-      message.textContent = `${run.completed} of ${run.total} pages complete · ${run.cards_added} new drafts saved.`;
+      const skipped = run.issues ? ` ${run.issues} drafts skipped; refresh to review the details.` : "";
+      message.textContent = `${run.completed} of ${run.total} pages processed · ${run.cards_added} new drafts saved.${skipped}`;
       if (!["queued", "running"].includes(run.status)) {
-        message.textContent = run.error || `Generation ${run.status}. Your drafts are saved.`;
+        message.textContent = (run.error || `Generation ${run.status}. Your drafts are saved.`) + skipped;
         const link = document.createElement("a");
         link.href = window.location.href;
-        link.textContent = " Refresh to see saved drafts →";
+        link.textContent = " Refresh to see drafts and recovery options →";
         message.append(link);
         // Never reload an editor automatically: there may be unsaved work.
         return;

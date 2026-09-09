@@ -123,13 +123,56 @@ def main():
                         .count()
                         == 1
                     )
+                    # Seed a failed synthetic run; checking recovery must not call a provider.
+                    subprocess.run(
+                        [
+                            sys.executable,
+                            "manage.py",
+                            "shell",
+                            "-c",
+                            """
+from converter.models import GenerationRun, Lecture
+from converter.services.cards import validate_generated_batch
+lecture = Lecture.objects.first()
+_, issues = validate_generated_batch({'cards': [{
+    'front': '<script>Unverified question</script>', 'back': 'Unverified answer',
+    'page': 1, 'source_quote': 'An invented excerpt'
+}]}, {p.number: p for p in lecture.pages.filter(number=1)})
+GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 2, 3],
+    completed_pages=[1], issues=issues, cards_added=5, error='Synthetic interruption')
+""",
+                        ],
+                        cwd=ROOT,
+                        env=environment,
+                        check=True,
+                        capture_output=True,
+                    )
+                    page.reload()
+                    assert page.get_by_role("button", name="Resume 2 remaining pages").is_enabled()
+                    page.get_by_text("1 skipped draft · review details", exact=True).click()
+                    page.get_by_role("button", name="View source page 1").click()
+                    page.locator("[data-source-image]").evaluate("image => image.decode()")
+                    assert page.locator("[data-page-select]").input_value().endswith("/image/")
+                    assert (
+                        page.locator("[data-source-image]").get_attribute("alt")
+                        == "Source slide, page 1"
+                    )
+                    assert page.locator(".generation-issues script").count() == 0
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.screenshot(
+                        path=str(OUTPUT / "generation-recovery-mobile.png"), full_page=True
+                    )
+                    page.set_viewport_size({"width": 1512, "height": 1100})
+                    page.screenshot(
+                        path=str(OUTPUT / "generation-recovery-desktop.png"), full_page=True
+                    )
                     assert not errors, errors
                     browser.close()
             finally:
                 process.terminate()
                 process.wait(timeout=10)
     print(
-        "Browser checks passed: sample import, source image, edit/accept, export, backup, page switch, desktop/mobile layouts, no JavaScript errors."
+        "Browser checks passed: sample import, source image, edit/accept, export, backup, page switch, generation recovery controls and skipped-draft details, desktop/mobile layouts, no JavaScript errors."
     )
     print(f"Screenshots: {OUTPUT}")
 

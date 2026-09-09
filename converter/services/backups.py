@@ -31,7 +31,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 1,
+        "version": 2,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -84,6 +84,7 @@ def export_backup(lecture):
                 "provider": r.provider,
                 "page_numbers": r.page_numbers,
                 "completed_pages": r.completed_pages,
+                "issues": r.issues,
                 "cards_added": r.cards_added,
                 "error": r.error,
                 "created_at": r.created_at.isoformat(),
@@ -128,6 +129,33 @@ def require_keys(value, names):
         raise WorkflowError("Backup contains an invalid record structure.")
 
 
+def validate_run_pages(numbers, allowed):
+    if (
+        not isinstance(numbers, list)
+        or any(type(number) is not int or number not in allowed for number in numbers)
+        or len(numbers) != len(set(numbers))
+    ):
+        raise WorkflowError("Backup contains invalid generation page references.")
+
+
+def validate_run_issues(issues, page_numbers):
+    if not isinstance(issues, list) or len(issues) > 500 * settings.MAX_PDF_PAGES:
+        raise WorkflowError("Backup contains invalid generation issues.")
+    for issue in issues:
+        require_keys(issue, "page batch_pages reason front back source_quote")
+        validate_run_pages(issue["batch_pages"], page_numbers)
+        if issue["page"] is not None:
+            validate_run_pages([issue["page"]], issue["batch_pages"])
+        for key, limit in [
+            ("reason", 1000),
+            ("front", 1000),
+            ("back", 5000),
+            ("source_quote", 2500),
+        ]:
+            if not isinstance(issue[key], str) or len(issue[key]) > limit or "\x00" in issue[key]:
+                raise WorkflowError("Backup contains an invalid generation issue.")
+
+
 def restore_backup(upload):
     """Restore a new lecture only; never replace a current lecture or extract arbitrary paths."""
     if upload.size > MAX_BACKUP_BYTES:
@@ -145,7 +173,11 @@ def restore_backup(upload):
                 raise WorkflowError("Backup manifest is too large.")
             manifest = json.loads(archive.read("manifest.json"))
             require_keys(manifest, "format version lecture pages cards runs assets")
-            if manifest["format"] != "slides-to-anki" or manifest["version"] != 1:
+            if (
+                manifest["format"] != "slides-to-anki"
+                or type(manifest["version"]) is not int
+                or manifest["version"] not in (1, 2)
+            ):
                 raise WorkflowError("This is not a supported Slides to Anki backup.")
             info = manifest["lecture"]
             require_keys(info, "id title sha256 original_name created_at")
@@ -213,9 +245,14 @@ def restore_backup(upload):
                 for r in manifest["runs"]:
                     require_keys(
                         r,
-                        "id status provider page_numbers completed_pages cards_added error created_at updated_at",
+                        "id status provider page_numbers completed_pages cards_added error created_at updated_at"
+                        + (" issues" if manifest["version"] >= 2 else ""),
                     )
                     r = dict(r)
+                    r.setdefault("issues", [])
+                    validate_run_pages(r["page_numbers"], page_map)
+                    validate_run_pages(r["completed_pages"], r["page_numbers"])
+                    validate_run_issues(r["issues"], r["completed_pages"])
                     created, updated = (
                         timestamp(r.pop("created_at")),
                         timestamp(r.pop("updated_at")),

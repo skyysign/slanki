@@ -17,5 +17,6 @@ urlpatterns = [
     path("cards/<uuid:pk>/save/", views.save_card, name="save_card"),
     path("pages/<int:pk>/image/", views.page_image, name="page_image"),
     path("runs/<uuid:pk>/cancel/", views.cancel_run, name="cancel_run"),
+    path("runs/<uuid:pk>/resume/", views.resume_run, name="resume_run"),
     path("runs/<uuid:pk>/status/", views.run_status, name="run_status"),
 ]

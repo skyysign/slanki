@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import sys
 import time
+import uuid
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -13,7 +14,7 @@ from django.utils import timezone
 
 from converter.models import GenerationRun
 
-from .cards import add_drafts, validate_payload
+from .cards import add_drafts, validate_generated_batch
 from .files import WorkflowError
 
 SCHEMA = {
@@ -186,9 +187,52 @@ def start_generation(lecture, page_numbers):
         raise WorkflowError(
             "This lecture already has a generation in progress. Wait or cancel it first."
         ) from exc
+    launch_worker(run)
+    return run
+
+
+def remaining_pages(run):
+    return [number for number in run.page_numbers if number not in run.completed_pages]
+
+
+def resume_generation(run):
+    run.refresh_from_db()
+    if run.status in ("queued", "running"):
+        return run
+    if (
+        run.provider != "codex"
+        or run.status not in ("failed", "cancelled")
+        or not remaining_pages(run)
+    ):
+        raise WorkflowError("This run has no remaining pages to resume.")
+    codex_executable()
+    token = uuid.uuid4()
+    try:
+        with transaction.atomic():
+            changed = GenerationRun.objects.filter(
+                pk=run.pk, worker_token=run.worker_token, status__in=["failed", "cancelled"]
+            ).update(status="queued", error="", worker_token=token, updated_at=timezone.now())
+    except IntegrityError as exc:
+        raise WorkflowError(
+            "This lecture already has a generation in progress. Wait or cancel it first."
+        ) from exc
+    run.refresh_from_db()
+    if changed:
+        launch_worker(run)
+    return run
+
+
+def launch_worker(run):
     try:
         subprocess.Popen(
-            [sys.executable, str(settings.BASE_DIR / "manage.py"), "generate_run", str(run.id)],
+            [
+                sys.executable,
+                str(settings.BASE_DIR / "manage.py"),
+                "generate_run",
+                str(run.id),
+                "--worker-token",
+                str(run.worker_token),
+            ],
             cwd=settings.BASE_DIR,
             stdin=subprocess.DEVNULL,
             stdout=subprocess.DEVNULL,
@@ -196,23 +240,24 @@ def start_generation(lecture, page_numbers):
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
     except OSError as exc:
-        GenerationRun.objects.filter(pk=run.pk).update(
-            status="failed", error="Could not start the generation worker."
-        )
+        GenerationRun.objects.filter(
+            pk=run.pk, worker_token=run.worker_token, status="queued"
+        ).update(status="failed", error="Could not start the generation worker.")
         raise WorkflowError("Could not start generation. Your existing cards are saved.") from exc
-    return run
 
 
-def perform_run(run_id, generator=codex_generate):
-    if not GenerationRun.objects.filter(pk=run_id, status="queued").update(
-        status="running", updated_at=timezone.now()
-    ):
+def perform_run(run_id, generator=codex_generate, *, worker_token=None):
+    if worker_token is None:
+        worker_token = GenerationRun.objects.get(pk=run_id).worker_token
+    # A cancelled worker must never save late output into a resumed attempt.
+    attempt = GenerationRun.objects.filter(pk=run_id, worker_token=worker_token)
+    if not attempt.filter(status="queued").update(status="running", updated_at=timezone.now()):
         return
     run = GenerationRun.objects.select_related("lecture").get(pk=run_id)
-    pages = list(run.lecture.pages.filter(number__in=run.page_numbers))
+    pages = list(run.lecture.pages.filter(number__in=remaining_pages(run)))
 
     def cancelled():
-        return not GenerationRun.objects.filter(pk=run_id, status="running").exists()
+        return not attempt.filter(status="running").exists()
 
     try:
         for start in range(0, len(pages), 3):
@@ -220,33 +265,32 @@ def perform_run(run_id, generator=codex_generate):
                 raise Cancelled()
             batch = pages[start : start + 3]
             payload = generator(batch, cancelled)
-            validated = validate_payload(payload, {page.number: page for page in batch})
+            validated, issues = validate_generated_batch(
+                payload, {page.number: page for page in batch}
+            )
             with transaction.atomic():
                 if cancelled():
                     raise Cancelled()
                 # Take a database write lock before storing this batch so cancellation is ordered.
-                if not GenerationRun.objects.filter(pk=run_id, status="running").update(
-                    updated_at=timezone.now()
-                ):
+                if not attempt.filter(status="running").update(updated_at=timezone.now()):
                     raise Cancelled()
                 run.cards_added += add_drafts(run.lecture, validated, run)
                 run.completed_pages.extend(page.number for page in batch)
-                GenerationRun.objects.filter(pk=run_id).update(
-                    cards_added=run.cards_added, completed_pages=run.completed_pages
+                run.issues.extend(issues)
+                attempt.update(
+                    cards_added=run.cards_added,
+                    completed_pages=run.completed_pages,
+                    issues=run.issues,
                 )
-        GenerationRun.objects.filter(pk=run_id, status="running").update(
-            status="completed", updated_at=timezone.now()
-        )
+        attempt.filter(status="running").update(status="completed", updated_at=timezone.now())
     except Cancelled:
-        GenerationRun.objects.filter(pk=run_id, status="running").update(
-            status="cancelled", updated_at=timezone.now()
-        )
+        attempt.filter(status="running").update(status="cancelled", updated_at=timezone.now())
     except Exception as exc:
         error = (
             str(exc)
             if isinstance(exc, WorkflowError)
             else "Generation stopped unexpectedly. Completed drafts are saved. Retry the remaining pages."
         )
-        GenerationRun.objects.filter(pk=run_id, status="running").update(
+        attempt.filter(status="running").update(
             status="failed", error=error, updated_at=timezone.now()
         )

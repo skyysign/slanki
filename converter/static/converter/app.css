@@ -959,6 +959,25 @@ summary {
   color:var(--muted);
 }
 
+.resume-form {
+  margin-top: 12px;
+}
+.issue-list {
+  padding: 0 24px 20px;
+  overflow-wrap: anywhere;
+}
+.generation-issue {
+  padding: 16px 0;
+  border-top: 1px solid var(--line, #deded8);
+}
+.generation-issue dt {
+  font-weight: 600;
+  margin-top: 10px;
+}
+.generation-issue dd {
+  margin: 4px 0 12px;
+  white-space: pre-wrap;
+}
 .error-panel {
   max-width:650px;
   margin:70px auto;

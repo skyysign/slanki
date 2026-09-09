@@ -47,6 +47,8 @@ class GenerationRun(models.Model):
     provider = models.CharField(max_length=30, default="codex")
     page_numbers = models.JSONField(default=list, blank=True)
     completed_pages = models.JSONField(default=list, blank=True)
+    issues = models.JSONField(default=list, blank=True)
+    worker_token = models.UUIDField(default=uuid.uuid4, editable=False)
     cards_added = models.PositiveIntegerField(default=0)
     error = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

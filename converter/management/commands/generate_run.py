@@ -8,6 +8,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("run_id")
+        parser.add_argument("--worker-token")
 
     def handle(self, *args, **options):
-        perform_run(options["run_id"])
+        perform_run(options["run_id"], worker_token=options["worker_token"])

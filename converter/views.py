@@ -17,7 +17,7 @@ from .services.cards import add_drafts, update_card, validate_content, validate_
 from .services.documents import import_pdf
 from .services.exporting import export_deck
 from .services.files import WorkflowError, media_path
-from .services.generation import prompt_for, start_generation
+from .services.generation import prompt_for, remaining_pages, resume_generation, start_generation
 
 
 def error_page(request, message, lecture=None, status=400):
@@ -78,6 +78,14 @@ def lecture_context(item, request, selected=None, form=None):
     pages = list(item.pages.all())
     page = selected.page if selected else (pages[0] if pages else None)
     counts = {status: item.cards.filter(status=status).count() for status, _ in Card.STATUS}
+    last_run = item.runs.order_by("-updated_at").first()
+    resume_count = (
+        len(remaining_pages(last_run))
+        if last_run and last_run.provider == "codex" and last_run.status in ("failed", "cancelled")
+        else 0
+    )
+    # Keep earlier warnings visible when a later run or JSON import is created.
+    issue_runs = [run for run in item.runs.all() if run.issues]
     return {
         "lecture": item,
         "cards": cards,
@@ -88,7 +96,10 @@ def lecture_context(item, request, selected=None, form=None):
         "filter": state,
         "counts": counts,
         "active_run": item.runs.filter(status__in=["queued", "running"]).first(),
-        "last_run": item.runs.first(),
+        "last_run": last_run,
+        "resume_count": resume_count,
+        "issue_runs": issue_runs,
+        "issue_count": sum(len(run.issues) for run in issue_runs),
         "warning_pages": [p for p in pages if p.warning],
     }
 
@@ -285,8 +296,19 @@ def run_status(request, pk):
             "total": len(run.page_numbers),
             "cards_added": run.cards_added,
             "error": run.error,
+            "issues": len(run.issues),
         }
     )
+
+
+@require_POST
+def resume_run(request, pk):
+    run = get_object_or_404(GenerationRun.objects.select_related("lecture"), pk=pk)
+    try:
+        resume_generation(run)
+        return redirect(run.lecture)
+    except WorkflowError as exc:
+        return error_page(request, str(exc), run.lecture)
 
 
 @require_POST

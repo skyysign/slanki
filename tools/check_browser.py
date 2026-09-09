@@ -22,7 +22,12 @@ OUTPUT.mkdir(parents=True, exist_ok=True)
 
 def main():
     with TemporaryDirectory(dir=ROOT / "data" / "work") as directory:
-        environment = {**os.environ, "SLIDES_DATA_DIR": directory}
+        environment = {
+            **os.environ,
+            "SLIDES_DATA_DIR": directory,
+            # Connection UI checks must not inspect or change a real Codex sign-in.
+            "SLIDES_CODEX_BINARY": str(Path(directory) / "missing-codex.exe"),
+        }
         subprocess.run(
             [sys.executable, "manage.py", "migrate", "--noinput"],
             cwd=ROOT,
@@ -71,6 +76,21 @@ def main():
                     page.goto(url)
                     page.get_by_role("heading", name="Add a lecture").wait_for()
                     page.screenshot(path=str(OUTPUT / "home-desktop.png"), full_page=True)
+                    assert page.title() == "Recalloom"
+                    page.get_by_role("link", name="Codex connection", exact=True).click()
+                    page.get_by_role("link", name="Open the Codex setup guide").wait_for()
+                    assert (
+                        page.locator("[data-connection-state]").get_attribute(
+                            "data-connection-state"
+                        )
+                        == "missing"
+                    )
+                    page.screenshot(path=str(OUTPUT / "connection-desktop.png"), full_page=True)
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    page.screenshot(path=str(OUTPUT / "connection-mobile.png"), full_page=True)
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.get_by_role("link", name="Your lectures", exact=False).click()
+                    page.set_viewport_size({"width": 1512, "height": 1100})
                     page.get_by_label("Title", exact=True).fill("Memory & learning · sample")
                     page.locator("#id_pdf").set_input_files(
                         str(ROOT / "tests/fixtures/synthetic/lecture.pdf")

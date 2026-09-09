@@ -182,7 +182,7 @@ def restore_backup(upload):
                 or type(manifest["version"]) is not int
                 or manifest["version"] not in (1, 2, 3, 4)
             ):
-                raise WorkflowError("This is not a supported Slides to Anki backup.")
+                raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]
             require_keys(info, "id title sha256 original_name created_at")
             lecture_id = uuid.UUID(info["id"])

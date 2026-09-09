@@ -14,6 +14,7 @@ from .forms import CardForm, UploadForm
 from .models import Card, GenerationRun, Lecture, Page
 from .services.backups import export_backup, restore_backup
 from .services.cards import add_drafts, update_card, validate_content, validate_payload
+from .services.connection import connection
 from .services.documents import import_pdf
 from .services.exporting import export_deck
 from .services.files import WorkflowError, media_path
@@ -45,6 +46,28 @@ def home(request):
         card_count=Count("cards"), accepted_count=Count("cards", filter=Q(cards__status="accepted"))
     )
     return render(request, "converter/home.html", {"lectures": lectures, "form": UploadForm()})
+
+
+@require_GET
+def codex_connection(request):
+    return render(request, "converter/connection.html", {"connection": connection.status()})
+
+
+@require_GET
+def codex_connection_status(request):
+    return JsonResponse(connection.status())
+
+
+@require_POST
+def connect_codex(request):
+    connection.start()
+    return redirect("codex_connection")
+
+
+@require_POST
+def cancel_codex_login(request):
+    connection.cancel()
+    return redirect("codex_connection")
 
 
 @require_POST
@@ -303,7 +326,7 @@ def backup(request, pk):
 def restore(request):
     upload = request.FILES.get("backup")
     if not upload:
-        return error_page(request, "Choose a Slides to Anki backup ZIP.")
+        return error_page(request, "Choose a Recalloom backup ZIP.")
     try:
         return redirect(restore_backup(upload))
     except WorkflowError as exc:

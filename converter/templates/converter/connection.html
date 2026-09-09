@@ -1,0 +1,29 @@
+{% extends 'converter/base.html' %}
+{% block title %}Connect Codex · Recalloom{% endblock %}
+{% block content %}
+<div class="home-wrap connection-wrap">
+  <a class="back-link" href="{% url 'home' %}">← Your lectures</a>
+  <section class="panel connection-panel" data-connection-state="{{ connection.state }}" data-connection-url="{% url 'codex_connection_status' %}">
+    <p class="eyebrow">ONE CONNECTION. YOUR OWN ACCOUNT.</p>
+    <h1>{% if connection.state == 'connected' %}Codex is connected.{% else %}Connect Codex.{% endif %}</h1>
+    <p class="lead">Use your ChatGPT account to turn lecture text into card drafts.</p>
+    <div class="notice {% if connection.state == 'connected' %}success{% elif connection.state == 'failed' or connection.state == 'api_key' %}warning{% endif %}" role="status" data-connection-message>{{ connection.message }}</div>
+    {% if connection.state == 'connected' %}
+      <a class="button primary" href="{% url 'home' %}">Continue to your lectures →</a>
+      <p class="form-note">Recalloom reuses your saved Codex sign-in. Generation uses your account's available Codex allowance; connecting does not generate cards.</p>
+    {% elif connection.state == 'waiting' %}
+      <ol class="steps"><li><span>01</span><div><strong>Sign in with ChatGPT</strong><p>Complete the official sign-in window opened by Codex.</p></div></li><li><span>02</span><div><strong>Return here</strong><p>This page updates when sign-in finishes.</p></div></li></ol>
+      <form action="{% url 'cancel_codex_login' %}" method="post">{% csrf_token %}<button class="button secondary" type="submit">Stop sign-in</button></form>
+      <p class="form-note">No browser window appeared? Stop sign-in, check that your default browser can open, then try again.</p>
+    {% elif connection.state == 'missing' %}
+      <p>This development version needs Codex installed on your computer. An existing Codex CLI or VS Code Codex extension can be detected automatically.</p>
+      <div class="button-row"><a class="button primary" href="https://developers.openai.com/codex/cli" target="_blank" rel="noopener">Open the Codex setup guide ↗</a><a class="button secondary" href="{% url 'codex_connection' %}">Check again</a></div>
+      <p class="form-note">You can still import a PDF, try the sample, or import prepared card drafts without connecting Codex.</p>
+    {% else %}
+      <form action="{% url 'connect_codex' %}" method="post" data-busy="Opening sign-in…">{% csrf_token %}<button class="button primary" type="submit">Connect Codex</button></form>
+      <p class="form-note">Opens the official ChatGPT sign-in in your browser. No API key or terminal command is needed when Codex is installed.</p>
+    {% endif %}
+    <div class="connection-details"><h2>Your sign-in stays with Codex.</h2><p>Recalloom does not ask for your password or copy your login credentials. This sign-in is shared with your other local Codex tools.</p><p>PDFs and saved cards stay on this computer. Generation sends selected text and existing questions to OpenAI after you choose to generate. A ChatGPT account with Codex access and available allowance is required.</p><a class="text-button" href="{% url 'codex_connection' %}">Refresh connection status</a></div>
+  </section>
+</div>
+{% endblock %}

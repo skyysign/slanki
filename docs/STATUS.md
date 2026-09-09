@@ -1,11 +1,13 @@
 # Development handoff
 
-Updated: 2026-09-09. Reasoning controls and distribution direction.
+Updated: 2026-09-09. Recalloom branding and local Codex sign-in.
 
 ## What exists
 
 A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server-rendered pages, and local media. Run start.cmd and open http://127.0.0.1:8000. Setup and checks are in README.md.
 
+- The app is now called Recalloom, a name chosen with the user's delegated approval. Public UI and setup documentation use the new name. Historical research filenames, backup format markers, Anki note type names/IDs, media names, and SLIDES_* settings remain compatible with existing work.
+- Codex connection screen: safe status detection, reuse of an existing ChatGPT sign-in, and a CSRF-protected Connect Codex button that starts the native CLI's official browser login. The page polls until sign-in finishes. Pending attempts are deduplicated, cancellable, and limited to ten minutes; stopping an attempt never invokes logout. Missing installation, API-key mode, and failures have distinct messages. Passwords and authentication files are not read or copied; raw CLI status output is neither displayed nor persisted. This manager assumes the supported single-process local server.
 - PDF upload: signature check, 25 MB/100-page limits, native text extraction and source rendering in a subprocess with a timeout. Identical uploads reuse the existing lecture. No-text pages are flagged.
 - Lecture library and responsive editor with source viewer, manual cards, accept/set-aside, quick Accept & next, persistent edits, optimistic version checks, and revision history.
 - Local Codex CLI integration: existing authentication, explicit text-sharing consent, normally three-page batches, five-minute per-batch timeout, progress, cancellation, and preservation of completed batches. CLI discovery includes the VS Code extension.
@@ -24,7 +26,10 @@ A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server
 
 ## Verification completed
 
-- 41 Django tests passed, including the existing Anki backend check. Coverage includes compact ceilings, duplicate/logistics filtering, quotas and resume, late worker results, cleanup preserving edits, and source/media identity. Reasoning checks inspect all six CLI argument variants with a fake process, reject invalid effort before execution, verify browser POST forwarding and retained settings on resume, and restore backups across all four versions.
+- 54 Django tests passed, including the existing Anki backend check. Coverage includes compact ceilings, duplicate/logistics filtering, quotas and resume, late worker results, cleanup preserving edits, and source/media identity. Reasoning checks inspect all six CLI argument variants with a fake process, reject invalid effort before execution, verify browser POST forwarding and retained settings on resume, and restore backups across all four versions.
+- Thirteen connection tests use mocked CLI status, login processes, and timers. They cover saved sign-in reuse, missing CLI, repeat clicks, completion, failures/retry, timeout, cancellation, stale callbacks, bounded termination, credential-output redaction, rendered states, and local/CSRF/POST restrictions. No real login or logout was initiated. Full fresh-account browser authentication remains untested.
+- After restart, the live home and connection pages returned HTTP 200, displayed Recalloom, and reported the existing ChatGPT connection ready. No migrations or lecture edits were required for this change.
+- Headless Chrome verified Recalloom branding and the missing-Codex connection screen at desktop/mobile sizes using an explicitly nonexistent CLI path. The rest of the existing browser workflow passed, with no JavaScript errors or horizontal overflow. connection-desktop.png and connection-mobile.png were visually inspected. Actual CLI 0.153.4 login-status classification separately returned connected for the user's existing ChatGPT sign-in, without generation. Read-only counts were 128 cards and zero active runs before restarting the verified local preview.
 - Anki 26.8.1 Python/Rust backend imported an exported deck into an isolated collection. Re-import and an edited question preserved card ID, interval, due date, review count, and lapse count. Source media had no missing references. This is backend verification, not manual desktop/mobile UI testing.
 - Headless Chrome exercised PDF upload, prompt download, JSON draft import, sample reuse, source rendering, edit/accept, Anki and backup downloads, page switching, and desktop/mobile widths. Recovery controls, escaped skipped-draft details, and the source-page button were checked with synthetic data. No JavaScript errors or horizontal overflow. The recovery mobile screenshot in data/screenshots/ was visually inspected.
 - The browser check additionally filled a custom card limit and verified it in the downloaded prompt, then filtered a synthetic logistics draft and found it recoverable under Set aside. No JavaScript errors or horizontal overflow were reported.
@@ -41,7 +46,7 @@ A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server
 
 When the user has allowance and explicitly wants another live check, evaluate the compact prompt on a representative selection or a new lecture. Compare coverage of learning objectives and correction effort, not just card count. Do not regenerate this existing lecture expecting its 98 stored notes to shrink: the ceiling governs new additions. Semantic consolidation of an existing deck is not implemented. The existing notes can still be reviewed and set aside locally, and accepted cards exported without model usage.
 
-The user is deferring UI/UX work. Record and follow the local-compute preference in docs/DISTRIBUTION.md: package the existing local browser app first, with an optional desktop window or hosted static UI/local companion later. None of those packaging/hosting additions are implemented. Cloud model inference is distinct from local PDF, database, and export processing.
+The user is deferring broader UI/UX work, but requested easy Codex connection and a new product name; those changes are now implemented. Follow the local-compute preference in docs/DISTRIBUTION.md: package the existing local browser app first, with an optional desktop window or hosted static UI/local companion later. The next distribution task is an installer that handles the runtime and Codex setup, followed by testing browser sign-in on a clean machine. None of those packaging/hosting additions are implemented. Cloud model inference is distinct from local PDF, database, and export processing.
 
 Funding direction clarified: free-to-use software with optional Patreon/donation support. Vercel's current fair-use rules explicitly exclude donation requests from commercial usage. The user is comfortable with roughly $20/month for hosting if needed; no hosting purchase or deployment is requested yet.
 
@@ -50,6 +55,7 @@ Fix observed failures before expanding scope. If diagrams dominate, the next nar
 ## Limits to preserve in communication
 
 - Personal alpha, not beta/public-release ready. Full gates remain in MVP_BUILD_PLAN.md.
+- Codex must still be installed separately; the connection screen is not an installer. Saved-sign-in detection does not verify remaining allowance or token validity through live inference. The fresh-login flow has only mocked process coverage so far. Closing the app interrupts status tracking; after a restart, recheck the saved connection.
 - Native-text PDFs and basic Q/A only. No OCR, diagram interpretation, crops/occlusion, cloze, PPTX, Anki import, scheduler, accounts, payments, native apps, or mobile sync.
 - An excerpt matching a page does not establish correctness. No real lecture quality/time-saving benchmark exists.
 - The new compact prompt has only offline provider-boundary tests so far; card quality and allowance savings are unmeasured. Selection is prioritized within batches, not globally across the lecture. Logistics rules are deliberately narrow and can miss paraphrases. The stored note count includes Set aside cards.

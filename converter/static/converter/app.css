@@ -133,6 +133,44 @@ h3 {
   padding:58px 28px 30px;
 }
 
+.connection-wrap {
+  max-width: 800px;
+}
+.connection-panel {
+  padding: 32px;
+}
+.connection-panel h1 {
+  font-size: clamp(30px, 5vw, 42px);
+}
+.connection-panel .notice {
+  margin-top: 24px;
+}
+.connection-panel .button-row {
+  margin-top: 20px;
+}
+.connection-details {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.connection-details h2 {
+  font-size: 20px;
+}
+.connection-details p {
+  margin: 12px 0;
+  color: var(--muted);
+}
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+@media (max-width: 650px) {
+  .topbar-actions .local-label { display: none; }
+  .topbar-actions { font-size: 12px; }
+  .connection-panel { padding: 22px; }
+}
+
 .hero {
   display:flex;
   align-items:center;

@@ -1,5 +1,30 @@
 "use strict";
 
+const connectionPanel = document.querySelector('[data-connection-state="waiting"]');
+if (connectionPanel) {
+  let failures = 0;
+  const checkConnection = async () => {
+    try {
+      const response = await fetch(connectionPanel.dataset.connectionUrl);
+      if (!response.ok) throw new Error("Connection check failed");
+      const state = await response.json();
+      if (state.state !== "waiting") {
+        window.location.reload();
+        return;
+      }
+      failures = 0;
+    } catch {
+      failures += 1;
+      if (failures >= 5) {
+        connectionPanel.querySelector("[data-connection-message]").textContent = "Could not reach the local app. Refresh this page to check your connection.";
+        return;
+      }
+    }
+    window.setTimeout(checkConnection, 1500);
+  };
+  window.setTimeout(checkConnection, 1500);
+}
+
 let dirty = false;
 const cardForm = document.querySelector("[data-card-form]");
 if (cardForm) {

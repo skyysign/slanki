@@ -1,4 +1,4 @@
-# Slides to Anki
+# Recalloom
 
 A local tool for turning lecture PDFs into editable Anki cards with source-slide evidence.
 
@@ -45,6 +45,12 @@ Anki backend 26.8.1 has been tested for repeated imports, question edits, bundle
 
 Generation uses the installed native Codex CLI and its existing sign-in. The application finds `codex` on PATH or the native CLI bundled with the VS Code Codex extension. It does not request, copy, or store account credentials.
 
+Open **Codex connection** in the header. If Codex already has a ChatGPT sign-in, it is ready to use. Otherwise choose **Connect Codex**, complete the official ChatGPT sign-in in the browser opened by Codex, and return to Recalloom. The page updates when sign-in finishes. This uses Codex's supported `codex login` flow; there is no password or API-key field in Recalloom. Connecting does not run generation. Your account needs Codex access and available allowance. See [OpenAI's authentication guide](https://developers.openai.com/codex/auth).
+
+The page distinguishes an existing API-key sign-in, which is billed separately from a ChatGPT subscription. Sign-in is shared with other local Codex tools. **Stop sign-in** cancels only the pending login started here; it does not log out that shared account. Login attempts time out after ten minutes, and repeated clicks reuse the pending attempt. Status output is reduced to a safe message rather than displayed or stored, since some CLI versions include part of an API key in their output.
+
+This development build still requires Codex to be installed separately. If it is missing, the connection page links to the official setup guide and offers **Check again**. An installer that includes the needed runtime and Codex setup is planned, not implemented. PDF import, sample cards, manual editing, JSON import, and export remain available without a Codex sign-in.
+
 If automatic detection fails, set the native executable path before starting the app:
 
 ```powershell
@@ -52,7 +58,7 @@ $env:SLIDES_CODEX_BINARY = 'C:\path\to\codex.exe'
 .\start.cmd
 ```
 
-Sign in with that CLI first (`codex login`), and check `codex login status` if generation fails. The tested CLI version is 0.153.0; older versions may not support the required flags. The app ignores the Codex user configuration, excludes repository instruction text, and disables connected apps, shell execution, web search, and multi-agent tools. It uses saved authentication and the CLI's default model; `SLIDES_CODEX_MODEL` can explicitly select a model available to the account.
+The connection page replaces the need to run `codex login` manually; that command and `codex login status` remain useful for troubleshooting. Live generation was tested with CLI 0.153.0; the current local CLI is 0.153.4. Older versions may not support the required flags. During generation, the app ignores the Codex user configuration, excludes repository instruction text, and disables connected apps, shell execution, web search, and multi-agent tools. It uses saved authentication and the CLI's default model; `SLIDES_CODEX_MODEL` can explicitly select a model available to the account.
 
 **Reasoning level** offers **Codex default**, **Low**, **Medium**, **High**, **Extra high** (`xhigh`), and **Max**. Low is the initial choice for a lecture with no earlier Codex run; otherwise the form reuses its last run's selection. Explicit levels are passed through `-c model_reasoning_effort="..."`. Codex default omits that override. The requested setting is saved in the run, displayed in progress/history, and retained on resume and backup. Higher levels can increase time and allowance use; support depends on the selected model and CLI. The selector applies to **Generate drafts**. A downloaded prompt cannot configure another chat's reasoning setting; select it in that chat instead.
 
@@ -71,6 +77,8 @@ Course logistics such as exam duration, permitted materials, dates, grading, and
 An invalid generated draft, including “The source excerpt is not present on page…”, appears under **skipped drafts · review details**. Other valid drafts are saved and later pages continue. Inspect the flagged question, answer, and unverified excerpt with **View source page**, then write a corrected card or generate just those pages again. Skipped drafts are excluded from cards and Anki exports; their history remains visible after later runs and is included in backups. A page being processed does not mean every learning objective is covered. Malformed JSON or a provider failure still stops the run and leaves its remaining pages available to resume. Manually imported JSON files remain all-or-nothing so you can correct the file before importing.
 
 Backups now use format version 4 to retain the reasoning selection, card limit, filtering counts, and skipped-draft details. Versions 1–3 still restore; older application versions cannot read version 4 backups. Old generation runs restore with Codex default because their effective reasoning level is unknown.
+
+Recalloom was previously named Slides to Anki. The rename preserves the backup format marker, Anki note type name/IDs, media names, and `SLIDES_*` environment variables so existing data and re-imports continue to match. Historical research filenames remain unchanged.
 
 Technical reference: [official OpenAI documentation for non-interactive Codex](https://developers.openai.com/codex/noninteractive).
 

@@ -41,6 +41,7 @@ def export_deck(lecture):
     if not cards:
         raise WorkflowError("Accept at least one card before exporting.")
     deck_id = int.from_bytes(hashlib.sha256(str(lecture.pk).encode()).digest()[:6], "big")
+    # Keep the original note type name and ID so existing Anki imports still match.
     model = genanki.Model(
         MODEL_ID,
         "Slides to Anki — Basic v1",

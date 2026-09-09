@@ -2,6 +2,8 @@
 
 Recorded 2026-09-09 following the user's request to keep processing off a hosted server.
 
+The product name is **Recalloom**, combining recall and loom. The user delegated the choice and asked for a name between study-focused and abstract. An exact-name web search found no results on 2026-09-09; domain availability and trademark clearance have not been checked. Historical research and compatibility identifiers retain their original names.
+
 The current product is installed locally and used in a browser at 127.0.0.1. Django, PDF parsing/rendering, SQLite, media, backups, and Anki export all run on the user's computer. The local Codex CLI sends generation input to OpenAI; model inference is cloud compute, not on-device inference.
 
 ## Proposed order
@@ -13,6 +15,12 @@ The current product is installed locally and used in a browser at 127.0.0.1. Dja
 An ordinary webpage cannot directly start the installed Codex executable. It needs an installed bridge, such as a local companion or an extension with a registered native host. Chrome documents [native messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) and [local-network access permissions](https://developer.chrome.com/blog/local-network-access). Any future companion should require explicit pairing and approved origins; do not expose the existing loopback app or remove its CSRF/CSP checks to make a remote frontend connect.
 
 A completely installation-free browser version would require porting the Python processing/storage/export path to browser technology and changing how generation connects. It is a separate build, not a deployment switch for this Django app. A fully offline AI mode would also require a local model integration, which is outside the current scope.
+
+## Codex onboarding
+
+The local app now has a **Codex connection** screen. It detects a saved ChatGPT sign-in, or starts the official CLI's browser login after a CSRF-protected button press. Users sign in with OpenAI, then return to a page that updates automatically. Recalloom never reads or copies the authentication store and does not receive passwords. This follows the [supported Codex authentication flow](https://developers.openai.com/codex/auth); generation uses each user's own Codex access and allowance.
+
+For the first packaged release, aim for **install Recalloom → Connect Codex → sign in → add a lecture**. The installer should include or set up the required native runtime/CLI and check that installation succeeded. That installer is still pending; this development build detects an existing CLI or VS Code extension and links to setup if neither is found. The connection manager assumes a single local server process. A hosted website would still need the installed local companion to perform this flow; there is no central subscription login or generation service.
 
 ## Hosting scope
 

@@ -4,6 +4,10 @@ from . import views
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("codex/", views.codex_connection, name="codex_connection"),
+    path("codex/status/", views.codex_connection_status, name="codex_connection_status"),
+    path("codex/connect/", views.connect_codex, name="connect_codex"),
+    path("codex/cancel/", views.cancel_codex_login, name="cancel_codex_login"),
     path("upload/", views.upload, name="upload"),
     path("demo/", views.demo, name="demo"),
     path("restore/", views.restore, name="restore"),

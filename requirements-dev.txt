@@ -1,0 +1,18 @@
+-r requirements.txt
+# Fixture generation, Python checks, browser checks, and Anki import verification.
+reportlab==5.0.1
+ruff==0.16.6
+playwright==1.62.0
+pyee==13.0.1
+greenlet==3.5.5
+anki==26.8.1
+decorator==5.3.1
+Markdown==3.10.3
+orjson==3.12.0
+protobuf==7.36.1
+requests==2.34.2
+typing_extensions==4.16.0
+idna==3.19
+urllib3==2.7.0
+certifi==2026.7.22
+PySocks==1.7.1

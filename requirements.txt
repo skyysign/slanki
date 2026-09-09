@@ -1,0 +1,18 @@
+# Runtime dependencies and their transitive dependencies, pinned for Python 3.12.
+Django==5.2.17
+asgiref==3.12.1
+sqlparse==0.6.0
+tzdata==2026.3
+pdfplumber==0.11.10
+pdfminer.six==20260107
+pypdfium2==5.13.0
+pillow==12.3.0
+charset-normalizer==3.5.1
+cryptography==50.0.1
+cffi==2.1.1
+pycparser==3.0
+genanki==0.13.1
+cached-property==2.0.1
+chevron==0.14.0
+frozendict==2.4.7
+PyYAML==6.0.3

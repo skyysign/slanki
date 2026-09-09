@@ -1,0 +1,28 @@
+{% extends 'converter/base.html' %}
+{% block content %}
+<div class="home-wrap">
+  <section class="hero">
+    <div><p class="eyebrow">LESS PREPARING. MORE LEARNING.</p><h1>A lecture in.<br>A little more understood.</h1><p class="lead">Turn your slides into cards you can trust.<br>Check the source, make them yours, take them to Anki.</p></div>
+    <div class="hero-note" aria-hidden="true"><span class="tiny-label">ONE GOOD QUESTION</span><p>What makes a memory<br>easier to retrieve?</p><div class="note-divider"></div><span>Come back to it. Try to recall it.</span><small>Connected to the source ↗</small></div>
+  </section>
+  <div class="home-grid">
+    <section class="panel upload-panel"><p class="eyebrow">START WITH YOUR MATERIAL</p><h2>Add a lecture</h2>
+      <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data" data-busy="Reading your slides…">
+        {% csrf_token %}{{ form.non_field_errors }}
+        <label for="id_title">{{ form.title.label }}</label>{{ form.title }}{{ form.title.errors }}
+        <div class="file-area"><span class="upload-symbol" aria-hidden="true">↥</span><label for="id_pdf">Choose your lecture PDF</label><p>Selectable text · up to 100 pages · 25 MB</p>{{ form.pdf }}{{ form.pdf.errors }}</div>
+        <button class="button primary wide" type="submit">Open lecture <span aria-hidden="true">→</span></button><p class="form-note" role="status" data-busy-status>Importing stays on this computer. Generation is a separate step.</p>
+      </form>
+    </section>
+    <section class="panel getting-started"><p class="eyebrow">A SMALLER STUDY WORKFLOW</p><h2>From slides to a study session.</h2>
+      <ol class="steps"><li><span>01</span><div><strong>Bring your lecture</strong><p>Pages and their source images stay together.</p></div></li><li><span>02</span><div><strong>Make the cards yours</strong><p>Generate drafts, check the slide, edit and accept.</p></div></li><li><span>03</span><div><strong>Take them to Anki</strong><p>Export accepted cards with their source images.</p></div></li></ol>
+      <form action="{% url 'demo' %}" method="post" data-busy="Opening sample…">{% csrf_token %}<button class="button secondary" type="submit">Try a sample lecture <span aria-hidden="true">↗</span></button><p class="form-note">Synthetic slides and prepared draft cards. No AI usage.</p></form>
+    </section>
+  </div>
+  <section class="library"><div class="section-heading"><div><p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p><h2>Your lectures <span class="count">{{ lectures|length }}</span></h2></div></div>
+    {% if lectures %}<div class="lecture-grid">{% for lecture in lectures %}<a class="lecture-tile" href="{{ lecture.get_absolute_url }}"><span class="document-icon" aria-hidden="true">▤</span><span class="tile-date">{{ lecture.created_at|date:"M j" }}</span><h3>{{ lecture.title }}</h3><p>{{ lecture.card_count|default:0 }} cards <span>·</span> {{ lecture.accepted_count|default:0 }} accepted</p><span class="tile-action">Continue reviewing →</span></a>{% endfor %}</div>
+    {% else %}<div class="empty-library"><span aria-hidden="true">▤</span><div><strong>A fresh page.</strong><p>Your lectures will appear here. Start with your own PDF or try the sample.</p></div></div>{% endif %}
+  </section>
+  <details class="restore-panel"><summary>Restore a lecture from a backup</summary><form action="{% url 'restore' %}" method="post" enctype="multipart/form-data" data-busy="Restoring lecture…">{% csrf_token %}<p>Restore a backup made by this app. Existing lectures are never overwritten.</p><label for="backup">Backup ZIP</label><input id="backup" type="file" name="backup" accept=".zip" required><button class="button secondary" type="submit">Restore lecture</button></form></details>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+  "cards": [
+    {"front": "What is retrieval practice?", "back": "Trying to recall information from memory.", "page": 1, "source_quote": "Retrieval practice means trying to recall information from memory."},
+    {"front": "When should you look at an answer during retrieval practice?", "back": "After trying to recall it.", "page": 1, "source_quote": "A retrieval attempt happens before looking at the answer."},
+    {"front": "How does spaced practice organize study sessions?", "back": "It distributes study sessions over time.", "page": 2, "source_quote": "Spaced practice distributes study sessions over time."},
+    {"front": "What does a review schedule decide?", "back": "When a card should be studied again.", "page": 2, "source_quote": "A review schedule decides when a card should be studied again."},
+    {"front": "What does an atomic card test?", "back": "One clear idea.", "page": 3, "source_quote": "An atomic card tests one clear idea."}
+  ]
+}

@@ -46,7 +46,7 @@ Defer an internal SRS, native mobile apps, accounts, billing, course discovery, 
 ## Validation and handoff
 
 - Before editing, inspect relevant files and Git changes. Preserve the user's work and avoid unrelated refactors.
-- Use existing checks appropriate to the change. Current research checks are documented in `README.md`; application checks do not exist yet.
+- Use existing checks appropriate to the change. Application, browser, Anki backend, and research checks are documented in `README.md`. Live provider checks are separate and consume allowance.
 - Prioritize meaningful checks for source mapping, malformed generation output, edits surviving retries, stable export IDs/media, and backup restoration. Do not add tests that merely repeat trivial implementation details.
 - Routine tests should run without provider credentials or paid inference. Run live generation only when needed for the authorized task; report it separately from offline tests.
 - Verify exported decks in actual Anki clients before claiming compatibility. A successfully constructed archive is not sufficient evidence.

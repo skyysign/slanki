@@ -43,6 +43,8 @@ When the user has allowance and explicitly wants another live check, evaluate th
 
 The user is deferring UI/UX work. Record and follow the local-compute preference in docs/DISTRIBUTION.md: package the existing local browser app first, with an optional desktop window or hosted static UI/local companion later. None of those packaging/hosting additions are implemented. Cloud model inference is distinct from local PDF, database, and export processing.
 
+Funding direction clarified: free-to-use software with optional Patreon/donation support. Vercel's current fair-use rules explicitly exclude donation requests from commercial usage. The user is comfortable with roughly $20/month for hosting if needed; no hosting purchase or deployment is requested yet.
+
 Fix observed failures before expanding scope. If diagrams dominate, the next narrow feature should be manual rectangular source crops attached to basic cards. Simple cloze is another planned follow-up; neither is implemented.
 
 ## Limits to preserve in communication

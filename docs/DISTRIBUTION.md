@@ -16,7 +16,9 @@ A completely installation-free browser version would require porting the Python 
 
 ## Hosting scope
 
-For a static frontend and local companion, hosting traffic is mainly interface assets rather than lecture processing. This could fit a small non-commercial site's free hosting allowance, but it is not a measured deployment estimate. Vercel's [Hobby plan](https://vercel.com/docs/plans/hobby) and [fair-use rules](https://vercel.com/docs/limits/fair-use-guidelines) currently restrict that plan to personal, non-commercial use. A paid product must use an eligible plan or host even if compute usage is low. No deployment has been created.
+For a static frontend and local companion, hosting traffic is mainly interface assets rather than lecture processing. This could fit a small non-commercial site's free hosting allowance, but it is not a measured deployment estimate. Vercel's [Hobby plan](https://vercel.com/docs/plans/hobby) restricts that plan to personal, non-commercial use. Its [fair-use rules](https://vercel.com/docs/limits/fair-use-guidelines) explicitly say that asking for donations does not count as commercial usage.
+
+The user's clarified direction is a free-to-use app funded by optional support, such as Patreon. Voluntary donations fit the stated exception; paid app access/features would need a separate eligibility assessment. The user is also comfortable budgeting approximately $20/month for hosting if needed. This is a planning preference, not authorization to purchase a plan now. No deployment or paid subscription has been created.
 
 ## Next product work
 

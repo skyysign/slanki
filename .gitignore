@@ -1,0 +1,52 @@
+# Private working material and generated study data
+/data/
+/uploads/
+/exports/
+/backups/
+*.pdf
+*.pptx
+*.apkg
+*.colpkg
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+
+# Only deliberately synthetic study fixtures belong in version control
+!tests/fixtures/synthetic/*.pdf
+!tests/fixtures/synthetic/*.pptx
+!tests/fixtures/synthetic/*.apkg
+
+# Credentials and local assistant configuration
+.env
+.env.*
+!.env.example
+/.codex/
+
+# Python environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+
+# Frontend dependencies and generated assets
+node_modules/
+/staticfiles/
+
+# Local tools and editor artifacts
+/.artifact-browser/
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.swo

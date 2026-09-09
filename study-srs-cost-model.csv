@@ -1,0 +1,13 @@
+﻿Scenario,Slides,Retry multiplier,Inference USD,Assumption,Rate source
+Naive flagship,50,1.2,2.4,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Naive flagship,100,1.2,4.8,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Naive flagship,2000,1.2,96.0,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Selective flagship,50,1.2,0.44688,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Selective flagship,100,1.2,0.89376,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Selective flagship,2000,1.2,17.8752,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Selective mid-cost,50,1.2,0.12048,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Selective mid-cost,100,1.2,0.24096,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+Selective mid-cost,2000,1.2,4.8192,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+All-cheap reference,50,1.2,0.0528,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+All-cheap reference,100,1.2,0.1056,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing
+All-cheap reference,2000,1.2,2.112,"Modeled, not benchmarked; excludes infrastructure, support, payments and tax",https://developers.openai.com/api/docs/pricing

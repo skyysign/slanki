@@ -31,7 +31,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 2,
+        "version": 3,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -86,6 +86,9 @@ def export_backup(lecture):
                 "completed_pages": r.completed_pages,
                 "issues": r.issues,
                 "cards_added": r.cards_added,
+                "card_limit": r.card_limit,
+                "filtered_count": r.filtered_count,
+                "over_limit_count": r.over_limit_count,
                 "error": r.error,
                 "created_at": r.created_at.isoformat(),
                 "updated_at": r.updated_at.isoformat(),
@@ -176,7 +179,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2)
+                or manifest["version"] not in (1, 2, 3)
             ):
                 raise WorkflowError("This is not a supported Slides to Anki backup.")
             info = manifest["lecture"]
@@ -246,10 +249,19 @@ def restore_backup(upload):
                     require_keys(
                         r,
                         "id status provider page_numbers completed_pages cards_added error created_at updated_at"
-                        + (" issues" if manifest["version"] >= 2 else ""),
+                        + (" issues" if manifest["version"] >= 2 else "")
+                        + (
+                            " card_limit filtered_count over_limit_count"
+                            if manifest["version"] >= 3
+                            else ""
+                        ),
                     )
                     r = dict(r)
                     r.setdefault("issues", [])
+                    if r.get("card_limit") is not None and (
+                        type(r["card_limit"]) is not int or not 1 <= r["card_limit"] <= 500
+                    ):
+                        raise WorkflowError("Backup contains an invalid card limit.")
                     validate_run_pages(r["page_numbers"], page_map)
                     validate_run_pages(r["completed_pages"], r["page_numbers"])
                     validate_run_issues(r["issues"], r["completed_pages"])

@@ -77,11 +77,15 @@ def main():
                     )
                     page.get_by_role("button", name="Open lecture").click()
                     page.get_by_role("heading", name="Memory & learning · sample").wait_for()
+                    page.get_by_label("Maximum new cards").fill("2")
                     with page.expect_download() as downloaded_prompt:
                         page.get_by_role("button", name="Download prompt").click()
                     assert "LECTURE PAGE DATA" in Path(downloaded_prompt.value.path()).read_text(
                         encoding="utf-8"
                     )
+                    assert "at most 2 cards TOTAL" in Path(
+                        downloaded_prompt.value.path()
+                    ).read_text(encoding="utf-8")
                     page.locator("#cards-file").set_input_files(
                         str(ROOT / "tests/fixtures/synthetic/cards.json")
                     )
@@ -133,7 +137,9 @@ def main():
                             """
 from converter.models import GenerationRun, Lecture
 from converter.services.cards import validate_generated_batch
+from converter.services.cards import add_drafts
 lecture = Lecture.objects.first()
+add_drafts(lecture, [(lecture.pages.first(), 'How long is the exam?', '90 minutes.', '')])
 _, issues = validate_generated_batch({'cards': [{
     'front': '<script>Unverified question</script>', 'back': 'Unverified answer',
     'page': 1, 'source_quote': 'An invented excerpt'
@@ -148,6 +154,21 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                         capture_output=True,
                     )
                     page.reload()
+                    page.get_by_role(
+                        "button", name="Set aside 1 logistics draft", exact=True
+                    ).click()
+                    page.get_by_text("1 course logistics draft set aside.", exact=False).wait_for()
+                    assert (
+                        page.locator(".card-list")
+                        .get_by_text("How long is the exam?", exact=True)
+                        .count()
+                        == 0
+                    )
+                    page.get_by_role("link", name="Set aside", exact=True).click()
+                    page.locator(".card-list").get_by_text(
+                        "How long is the exam?", exact=True
+                    ).wait_for()
+                    page.get_by_role("link", name="Drafts", exact=True).click()
                     assert page.get_by_role("button", name="Resume 2 remaining pages").is_enabled()
                     page.get_by_text("1 skipped draft · review details", exact=True).click()
                     page.get_by_role("button", name="View source page 1").click()

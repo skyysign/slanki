@@ -9,6 +9,7 @@ urlpatterns = [
     path("restore/", views.restore, name="restore"),
     path("lectures/<uuid:pk>/", views.lecture, name="lecture"),
     path("lectures/<uuid:pk>/generate/", views.generate, name="generate"),
+    path("lectures/<uuid:pk>/filter-logistics/", views.filter_logistics, name="filter_logistics"),
     path("lectures/<uuid:pk>/import/", views.import_cards, name="import_cards"),
     path("lectures/<uuid:pk>/prompt/", views.prompt, name="prompt"),
     path("lectures/<uuid:pk>/export/", views.export, name="export"),

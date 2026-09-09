@@ -18,6 +18,13 @@ from .services.documents import import_pdf
 from .services.exporting import export_deck
 from .services.files import WorkflowError, media_path
 from .services.generation import prompt_for, remaining_pages, resume_generation, start_generation
+from .services.selection import (
+    checked_card_limit,
+    default_card_limit,
+    logistics_drafts,
+    select_drafts,
+    set_aside_logistics,
+)
 
 
 def error_page(request, message, lecture=None, status=400):
@@ -101,6 +108,8 @@ def lecture_context(item, request, selected=None, form=None):
         "issue_runs": issue_runs,
         "issue_count": sum(len(run.issues) for run in issue_runs),
         "warning_pages": [p for p in pages if p.warning],
+        "default_card_limit": default_card_limit(sum(not p.warning for p in pages)),
+        "logistics_count": len(logistics_drafts(item)),
     }
 
 
@@ -167,7 +176,8 @@ def generate(request, pk):
         )
     try:
         pages = selected_pages(request, item)
-        start_generation(item, [p.number for p in pages])
+        limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
+        start_generation(item, [p.number for p in pages], card_limit=limit)
         return redirect(item)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
@@ -178,9 +188,13 @@ def prompt(request, pk):
     item = get_object_or_404(Lecture, pk=pk)
     try:
         pages = selected_pages(request, item)
+        limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
-    response = HttpResponse(prompt_for(pages), content_type="text/plain; charset=utf-8")
+    questions = item.cards.order_by("-created_at").values_list("front", flat=True)[:200]
+    response = HttpResponse(
+        prompt_for(pages, limit, questions), content_type="text/plain; charset=utf-8"
+    )
     response["Content-Disposition"] = 'attachment; filename="card-generation-prompt.txt"'
     return response
 
@@ -195,11 +209,13 @@ def import_cards(request, pk):
         payload = json.loads(upload.read().decode("utf-8-sig"))
         validated = validate_payload(payload, {p.number: p for p in item.pages.all()})
         with transaction.atomic():
+            validated, filtered, _ = select_drafts(item, validated)
             run = GenerationRun.objects.create(
                 lecture=item,
                 status="completed",
                 provider="json-import",
                 page_numbers=sorted({p.number for p, *_ in validated}),
+                filtered_count=filtered,
             )
             run.cards_added = add_drafts(item, validated, run)
             run.completed_pages = run.page_numbers
@@ -227,6 +243,13 @@ def add_card(request, pk):
         return redirect(item)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
+
+
+@require_POST
+def filter_logistics(request, pk):
+    item = get_object_or_404(Lecture, pk=pk)
+    count = set_aside_logistics(item)
+    return redirect(f"{item.get_absolute_url()}?filtered={count}&filter=draft")
 
 
 @require_GET
@@ -297,6 +320,9 @@ def run_status(request, pk):
             "cards_added": run.cards_added,
             "error": run.error,
             "issues": len(run.issues),
+            "card_limit": run.card_limit,
+            "filtered_count": run.filtered_count,
+            "over_limit_count": run.over_limit_count,
         }
     )
 

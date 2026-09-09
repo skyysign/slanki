@@ -41,7 +41,7 @@ def main():
             "synthetic.pdf", (ROOT / "tests/fixtures/synthetic/lecture.pdf").read_bytes()
         )
     )
-    run = GenerationRun.objects.create(lecture=lecture, page_numbers=[1, 2, 3])
+    run = GenerationRun.objects.create(lecture=lecture, page_numbers=[1, 2, 3], card_limit=2)
     print("Generating from three synthetic pages with the local Codex CLI…", flush=True)
     perform_run(run.pk)
     run.refresh_from_db()

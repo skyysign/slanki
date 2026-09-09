@@ -64,9 +64,11 @@ if (progress) {
       failures = 0;
       progress.querySelector("progress").value = run.completed;
       const skipped = run.issues ? ` ${run.issues} drafts skipped; refresh to review the details.` : "";
-      message.textContent = `${run.completed} of ${run.total} pages processed · ${run.cards_added} new drafts saved.${skipped}`;
+      const selection = ` ${run.filtered_count || 0} logistics candidates filtered; ${run.over_limit_count || 0} excluded by the card limit.`;
+      const limit = run.card_limit ? ` (maximum ${run.card_limit})` : "";
+      message.textContent = `${run.completed} of ${run.total} pages processed · ${run.cards_added} new drafts saved${limit}.${skipped}${selection}`;
       if (!["queued", "running"].includes(run.status)) {
-        message.textContent = (run.error || `Generation ${run.status}. Your drafts are saved.`) + skipped;
+        message.textContent = (run.error || `Generation ${run.status}. Your drafts are saved.`) + skipped + selection;
         const link = document.createElement("a");
         link.href = window.location.href;
         link.textContent = " Refresh to see drafts and recovery options →";

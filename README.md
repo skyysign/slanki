@@ -2,6 +2,8 @@
 
 A local tool for turning lecture PDFs into editable Anki cards with source-slide evidence.
 
+**Project direction:** free software supported by optional donations. There are no plans for app subscriptions, paid features, sold generation credits, or a hosted generation service. Users supply their own supported AI access; further expansion will follow demonstrated demand.
+
 **Current state:** a working personal-use alpha. Import a PDF, generate or import basic Q/A drafts, edit and accept cards beside their source slide, and export an Anki deck with bundled source images. Per-lecture backup and restore are included. Use “Try a sample lecture” to exercise the workflow without spending AI allowance.
 
 This first version supports selectable-text PDFs up to 25 MB and 100 pages. Scans and diagram-only pages are flagged. Generation uses text, not visual interpretation. Cloze, image crops/occlusion, PPTX, an internal reviewer, and mobile sync are not implemented yet.

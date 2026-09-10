@@ -1,6 +1,6 @@
 # Development handoff
 
-Updated: 2026-09-09. Recalloom branding and local Codex sign-in.
+Updated: 2026-09-10. Free donation-supported direction and card-feature planning; application behavior unchanged since the connection-screen update.
 
 ## What exists
 
@@ -44,11 +44,13 @@ A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server
 
 ## Next concrete task
 
+The latest discussion is planning only. The user supports learning focuses (Balanced, Core knowledge, Understanding, Application) and multiple Anki-compatible card formats. Basic Q/A is the only implemented format. Simple cloze is the proposed first addition; optional reverse cards and manual image occlusion are later candidates. Keep focus, format, deck size, and reasoning separate. A proposed budget rule counts actual exported study cards, including additional cards created by reverse/cloze notes. Details are in MVP_BUILD_PLAN.md. No implementation or live generation was requested in this discussion.
+
 When the user has allowance and explicitly wants another live check, evaluate the compact prompt on a representative selection or a new lecture. Compare coverage of learning objectives and correction effort, not just card count. Do not regenerate this existing lecture expecting its 98 stored notes to shrink: the ceiling governs new additions. Semantic consolidation of an existing deck is not implemented. The existing notes can still be reviewed and set aside locally, and accepted cards exported without model usage.
 
 The user is deferring broader UI/UX work, but requested easy Codex connection and a new product name; those changes are now implemented. Follow the local-compute preference in docs/DISTRIBUTION.md: package the existing local browser app first, with an optional desktop window or hosted static UI/local companion later. The next distribution task is an installer that handles the runtime and Codex setup, followed by testing browser sign-in on a clean machine. None of those packaging/hosting additions are implemented. Cloud model inference is distinct from local PDF, database, and export processing.
 
-Funding direction clarified: free-to-use software with optional Patreon/donation support. Vercel's current fair-use rules explicitly exclude donation requests from commercial usage. The user is comfortable with roughly $20/month for hosting if needed; no hosting purchase or deployment is requested yet.
+Funding direction clarified on 2026-09-10: entirely free software with optional Patreon/donations, no app subscription, paid features, sold credits, or hosted generation service. Expansion depends on demonstrated demand. The earlier integrated paid-beta phase has been removed from the current build plan; historical research remains preserved. A static website for distribution/support is still an option. The user previously allowed for roughly $20/month in hosting costs if needed; no purchase or deployment is requested.
 
 Fix observed failures before expanding scope. If diagrams dominate, the next narrow feature should be manual rectangular source crops attached to basic cards. Simple cloze is another planned follow-up; neither is implemented.
 
@@ -67,6 +69,7 @@ Fix observed failures before expanding scope. If diagrams dominate, the next nar
 
 ## Working notes
 
+- The 2026-09-10 update changes planning documentation only. Anki's official manual was checked for basic/reverse/cloze/image-occlusion support and card-count behavior. No application tests were rerun, no new format compatibility is claimed, and no provider calls or account changes were made.
 - Source lives in config/, converter/, tests/, and tools/. Services remain callable without web views.
 - requirements.txt pins runtime dependencies; requirements-dev.txt adds Ruff, fixture generation, Playwright, and the Anki backend. Browser checks use installed Chrome.
 - The Codex Windows sandbox cannot use Python TemporaryDirectory paths with their restrictive ACL. Tests and browser/live checks succeeded with normal unsandboxed permissions. Do not weaken application permissions to accommodate this harness.

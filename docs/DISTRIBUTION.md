@@ -1,6 +1,6 @@
 # Distribution direction
 
-Recorded 2026-09-09 following the user's request to keep processing off a hosted server.
+Updated 2026-09-10 following the user's clarification: entirely free software, optional donations, no service or app subscription, and expansion only if demand warrants it.
 
 The product name is **Recalloom**, combining recall and loom. The user delegated the choice and asked for a name between study-focused and abstract. An exact-name web search found no results on 2026-09-09; domain availability and trademark clearance have not been checked. Historical research and compatibility identifiers retain their original names.
 
@@ -26,7 +26,7 @@ For the first packaged release, aim for **install Recalloom â†’ Connect Codex â†
 
 For a static frontend and local companion, hosting traffic is mainly interface assets rather than lecture processing. This could fit a small non-commercial site's free hosting allowance, but it is not a measured deployment estimate. Vercel's [Hobby plan](https://vercel.com/docs/plans/hobby) restricts that plan to personal, non-commercial use. Its [fair-use rules](https://vercel.com/docs/limits/fair-use-guidelines) explicitly say that asking for donations does not count as commercial usage.
 
-The user's clarified direction is a free-to-use app funded by optional support, such as Patreon. Voluntary donations fit the stated exception; paid app access/features would need a separate eligibility assessment. The user is also comfortable budgeting approximately $20/month for hosting if needed. This is a planning preference, not authorization to purchase a plan now. No deployment or paid subscription has been created.
+The product is entirely free and supported by optional donations, such as Patreon. Paid app access, supporter-only features, subscription tiers, sold generation credits, and a hosted generation service are outside the current direction. Users bring their own supported AI access. A free distribution/support website remains compatible with this scope. The user previously allowed for a hosting budget of approximately $20/month if needed; that remains a planning preference, not authorization to purchase a plan. No deployment or paid subscription has been created.
 
 ## Next product work
 

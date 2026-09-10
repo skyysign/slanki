@@ -1,6 +1,6 @@
 # First build and release checkpoints
 
-This narrows the earlier founder analysis around the immediate need: use the tool for real lectures before building the integrated study service. These are proposed scope and acceptance criteria, not completed features or measured results.
+This narrows the earlier founder analysis around the immediate need: use a local PDF-to-Anki tool for real lectures. As clarified on 2026-09-10, the product is entirely free, supported by optional donations, with no app subscription, sold generation credits, or hosted generation service. Further expansion depends on demonstrated demand. These are scope and acceptance criteria, not a record of completed features or measured results; see docs/STATUS.md for implementation status.
 
 ## First deliverable
 
@@ -8,7 +8,7 @@ A local desktop tool with a browser interface:
 
 PDF lecture -> source-linked draft cards -> human correction -> Anki deck with media.
 
-Use Anki for scheduling and mobile study initially. The local tool is the first open-source product; hosted generation and the integrated reviewer are later milestones.
+Use Anki for scheduling and mobile study. The local tool is the open-source product; users supply their own supported generation access. Hosted generation and an integrated reviewer are outside the current roadmap.
 
 ## Implementation order
 
@@ -18,7 +18,18 @@ Use Anki for scheduling and mobile study initially. The local tool is the first 
 4. **Local generation integration.** Automate one supported route, initially the user's installed Codex CLI. Keep credentials with the CLI. Codex non-interactive execution supports saved CLI authentication and schema-constrained output; enforce separate application-side validation. Process lecture content with restricted permissions, as source data rather than instructions to execute.
 5. **Independent installation and pilot.** Package the supported desktop environment, document the actual AI/data path and limits, and invite five classmates after the beta checkpoints pass.
 
-Do not turn a personal Codex integration into a shared hosted subscription backend. The hosted product will use a separately authorized and metered generation service.
+Keep the Codex integration local to each user and their own authentication. A donation page or static distribution website does not require a shared generation backend.
+
+## Agreed direction for the next card features
+
+The user supports separate learning focuses and Anki-compatible formats. This records planning only; no new modes or formats have been implemented.
+
+- Learning focus: Balanced (default), Core knowledge, Understanding, and Application. Keep this separate from reasoning effort and deck size.
+- Formats: existing basic Q/A, followed by simple cloze; optional reversed cards and manual image occlusion are candidates for later work. A source-image crop is useful evidence attached to a card, and is distinct from an occlusion exercise.
+- Proposed deck-size rule: count the actual study cards Anki will generate, including reverse cards and distinct cloze deletions, when enforcing a user's budget. Show that count before export.
+- Add meaningful export/re-import and backup checks for each implemented format, including preservation of existing basic notes and review scheduling. Verify rendering in the Anki clients used before claiming compatibility.
+
+Anki documents its [standard note types](https://docs.ankiweb.net/getting-started.html#note-types), [cloze behavior](https://docs.ankiweb.net/editing.html#cloze-deletion), and [native image occlusion](https://docs.ankiweb.net/editing.html#image-occlusion). This establishes Anki support, not support in this converter.
 
 ## Storage and implementation decisions
 
@@ -66,23 +77,15 @@ If most of the user's actual lectures are scans or diagram-only material, revise
 - Include a license, dependency notices, setup/troubleshooting instructions, realistic input limitations, a synthetic example lecture, and a way to report defects.
 - Clearly explain that local storage does not mean local model inference, what gets sent for generation, and which separate AI access is required.
 
-## Additional gates for an integrated paid beta
+## Expansion after demonstrated demand
 
-Only start this phase after the converter demonstrates repeated usefulness. Add hosted generation and a minimal mobile-friendly reviewer before native apps.
-
-- Review grading, due dates, undo, suspension, and daily limits behave consistently; review records survive duplicate requests, reconnects, and day/timezone boundaries.
-- Authentication, private document access, account isolation, and deletion work.
-- Generation usage is measured, bounded, and shown before spending. Failed jobs and repeated callbacks cannot double-charge users.
-- Subscription cancellation and credit balances behave predictably. Existing data remains exportable after cancellation under the published retention policy.
-- Backups are actually restorable. Anki content export and transfer of learning progress have separately stated, tested support; do not claim complete progress portability prematurely.
-- Measure processing and operating cost on actual light and heavy users before promising included allowances.
-- Native mobile/offline sync is a later release with its own conflict-resolution and cross-device review-state checks.
+The earlier integrated paid-beta phase is superseded by the free, donation-supported direction. There is no scheduled service/subscription phase. Revisit additional capabilities after repeated use and concrete requests; define their scope and release gates then. Preserve the historical founder research as background, rather than treating it as an active implementation plan.
 
 ## Next development task
 
-Take one lecture PDF that the user needs to study now. Produce an Anki deck with editable basic cards and bundled source-page evidence. That is the first useful deliverable; all other work follows its observed failures.
+Continue from docs/STATUS.md. The basic end-to-end workflow exists. Evaluate compact card quality when live usage is authorized; the proposed next feature batch is simple cloze and learning focuses, followed by improvements justified by actual lectures. The user has requested planning only in the current discussion.
 
 ## Technical references
 
-- [Official OpenAI documentation: Codex non-interactive mode](https://developers.openai.com/codex/noninteractive): scripted execution, output schemas, and reuse of saved CLI authentication. This supports the proposed local integration; the application has not been implemented or tested here.
-- [Anki exporting](https://docs.ankiweb.net/exporting.html): deck packages, media, scheduling options, and repeated imports. Compatibility of this proposed converter still needs implementation and real-client tests.
+- [Official OpenAI documentation: Codex non-interactive mode](https://developers.openai.com/codex/noninteractive): scripted execution, output schemas, and reuse of saved CLI authentication. See docs/STATUS.md for implemented integration and actual verification.
+- [Anki exporting](https://docs.ankiweb.net/exporting.html): deck packages, media, scheduling options, and repeated imports. See docs/STATUS.md for tested basic-note export behavior; additional formats need their own verification.

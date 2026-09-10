@@ -1,0 +1,8 @@
+<div class="study-preview" data-preview-output>
+  <p class="form-note" role="status">{{ study_previews|length }} Anki review card{{ study_previews|length|pluralize }} from this note.</p>
+  {% for preview in study_previews %}<article class="preview-card">
+    <p class="eyebrow">Card {{ forloop.counter }} of {{ study_previews|length }}</p>
+    <div class="preview-question">{{ preview.question|safe }}</div>
+    <details><summary>Show answer</summary><div class="preview-answer">{{ preview.answer|safe }}</div></details>
+  </article>{% endfor %}
+</div>

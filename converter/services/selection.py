@@ -2,8 +2,9 @@
 
 import re
 
-from .cards import fingerprint, normalized, payload_items, update_card
+from .cards import Draft, fingerprint, normalized, payload_items, update_card
 from .files import WorkflowError
+from .note_types import plain_front, study_card_count
 
 
 def default_card_limit(page_count):
@@ -31,6 +32,8 @@ def is_course_logistics(front, source_quote=""):
     ):
         return False
     patterns = (
+        r"\b(?:exam|examination|midterm)\s+(?:duration|date|location|format)\b",
+        r"\b(?:prüfungs|pruefungs|klausur)(?:dauer|termin|ort|format)\b",
         r"^(?:how long|when|where|what (?:date|time|duration|format))\b.{0,55}\b(?:the|this|our|final|midterm|written|oral)\s+(?:exam|examination)\b",
         r"\b(?:exam|examination|midterm)\b.{0,35}\b(?:take place|scheduled|lasts?|start|end)\b",
         r"\b(?:materials|tools|aids|calculators|books|notes)\b.{0,55}\b(?:allowed|permitted)\b.{0,35}\bexam\b",
@@ -56,21 +59,26 @@ def select_drafts(lecture, validated, limit=None):
     """Filter clear logistics, then keep unique drafts in the model's priority order."""
     seen = set(lecture.cards.values_list("fingerprint", flat=True))
     # An edited question may differ from its immutable generation fingerprint.
-    seen.update(fingerprint(front) for front in lecture.cards.values_list("front", flat=True))
+    seen.update(
+        fingerprint(front, kind) for front, kind in lecture.cards.values_list("front", "note_type")
+    )
     selected, filtered, over_limit = [], 0, 0
+    selected_cards = 0
     for item in validated:
-        page, front, back, quote = item
-        if is_course_logistics(front, quote):
+        page, front, back, quote, note_type = Draft(*item)
+        if is_course_logistics(plain_front(front, note_type), quote):
             filtered += 1
             continue
-        key = fingerprint(front)
+        key = fingerprint(front, note_type)
         if key in seen:
             continue
         seen.add(key)
-        if limit is not None and len(selected) >= limit:
+        count = study_card_count(front, note_type)
+        if limit is not None and selected_cards + count > limit:
             over_limit += 1
         else:
             selected.append(item)
+            selected_cards += count
     return selected, filtered, over_limit
 
 
@@ -78,7 +86,7 @@ def logistics_drafts(lecture):
     return [
         card
         for card in lecture.cards.filter(status="draft", version=1)
-        if is_course_logistics(card.front, card.source_quote)
+        if is_course_logistics(plain_front(card.front, card.note_type), card.source_quote)
     ]
 
 
@@ -101,7 +109,9 @@ def filter_generated_logistics(payload):
             isinstance(item, dict)
             and isinstance(item.get("front"), str)
             and isinstance(item.get("source_quote"), str)
-            and is_course_logistics(item["front"], item["source_quote"])
+            and is_course_logistics(
+                plain_front(item["front"], item.get("note_type", "basic")), item["source_quote"]
+            )
         ):
             filtered += 1
         else:

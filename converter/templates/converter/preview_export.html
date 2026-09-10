@@ -1,0 +1,11 @@
+{% extends 'converter/base.html' %}
+{% block title %}Export preview · Recalloom{% endblock %}
+{% block content %}
+<div class="home-wrap">
+  <a class="back-link" href="{{ lecture.get_absolute_url }}">← Back to lecture</a>
+  <div class="lecture-heading"><div><p class="eyebrow">READY FOR ANKI</p><h1>Export preview</h1><p>{{ lecture.title }} · {{ study_count }} review card{{ study_count|pluralize }} from {{ pagination.paginator.count }} accepted note{{ pagination.paginator.count|pluralize }}</p></div>{% if study_count %}<a class="button primary" href="{% url 'export' lecture.pk %}">Export {{ study_count }} to Anki ↗</a>{% endif %}</div>
+  <p class="form-note">Preview the saved content you will review. Source excerpts and slide images are included on the answer in Anki. Drafts and set-aside notes are excluded.</p>
+  {% for entry in entries %}<section class="panel export-preview-note"><h2>{{ entry.note.get_note_type_display }} · Page {{ entry.note.page.number }}</h2><a class="text-button" href="{{ lecture.get_absolute_url }}?card={{ entry.note.pk }}">Edit this note →</a>{% include 'converter/note_preview.html' with study_previews=entry.previews %}<a class="text-button" href="{% url 'page_image' entry.note.page.pk %}" target="_blank" rel="noopener">View bundled source slide ↗</a></section>{% empty %}<p>Accept a note in the lecture editor to preview its export.</p>{% endfor %}
+  {% if pagination.has_other_pages %}<nav class="button-row" aria-label="Preview pages">{% if pagination.has_previous %}<a class="button secondary" href="?page={{ pagination.previous_page_number }}">Previous</a>{% endif %}<span>Page {{ pagination.number }} of {{ pagination.paginator.num_pages }}</span>{% if pagination.has_next %}<a class="button secondary" href="?page={{ pagination.next_page_number }}">Next</a>{% endif %}</nav>{% endif %}
+</div>
+{% endblock %}

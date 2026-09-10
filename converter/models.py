@@ -4,6 +4,8 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
+from .services.note_types import CARD_FORMATS, LEARNING_FOCUSES, NOTE_TYPES, study_card_count
+
 
 def unix_seconds():
     return int(time.time())
@@ -58,6 +60,9 @@ class GenerationRun(models.Model):
     issues = models.JSONField(default=list, blank=True)
     worker_token = models.UUIDField(default=uuid.uuid4, editable=False)
     cards_added = models.PositiveIntegerField(default=0)
+    study_cards_added = models.PositiveIntegerField(default=0)
+    learning_focus = models.CharField(max_length=20, choices=LEARNING_FOCUSES, default="balanced")
+    card_format = models.CharField(max_length=12, choices=CARD_FORMATS, default="basic")
     card_limit = models.PositiveIntegerField(null=True, blank=True)
     reasoning_effort = models.CharField(
         max_length=12, choices=REASONING_LEVELS, default="", blank=True
@@ -86,7 +91,8 @@ class Card(models.Model):
     page = models.ForeignKey(Page, on_delete=models.PROTECT, related_name="cards")
     run = models.ForeignKey(GenerationRun, null=True, blank=True, on_delete=models.SET_NULL)
     front = models.TextField()
-    back = models.TextField()
+    back = models.TextField(blank=True)
+    note_type = models.CharField(max_length=12, choices=NOTE_TYPES, default="basic")
     source_quote = models.TextField(blank=True)
     status = models.CharField(max_length=12, choices=STATUS, default="draft")
     fingerprint = models.CharField(max_length=64)
@@ -94,6 +100,10 @@ class Card(models.Model):
     anki_modified = models.PositiveBigIntegerField(default=unix_seconds)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def study_card_count(self):
+        return study_card_count(self.front, self.note_type)
 
     class Meta:
         ordering = ["page__number", "created_at"]
@@ -108,7 +118,8 @@ class CardRevision(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name="revisions")
     version = models.PositiveIntegerField()
     front = models.TextField()
-    back = models.TextField()
+    back = models.TextField(blank=True)
+    note_type = models.CharField(max_length=12, choices=NOTE_TYPES, default="basic")
     source_quote = models.TextField(blank=True)
     status = models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True)

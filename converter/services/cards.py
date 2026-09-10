@@ -1,23 +1,34 @@
 import hashlib
 import unicodedata
+from typing import NamedTuple
 
 from django.db import transaction
 from django.utils import timezone
 
-from converter.models import Card, CardRevision
+from converter.models import Card, CardRevision, Page
 
 from .files import WorkflowError
+from .note_types import plain_front, study_card_count
+
+
+class Draft(NamedTuple):
+    page: Page
+    front: str
+    back: str
+    source_quote: str
+    note_type: str = "basic"
 
 
 def normalized(text):
     return " ".join(unicodedata.normalize("NFKC", text).split())
 
 
-def fingerprint(front):
+def fingerprint(front, note_type="basic"):
+    front = plain_front(front, note_type)
     return hashlib.sha256(normalized(front).casefold().encode()).hexdigest()
 
 
-def validate_content(front, back, quote, page, require_quote=False):
+def validate_content(front, back, quote, page, require_quote=False, note_type="basic"):
     for label, value, limit in [
         ("Question", front, 1000),
         ("Answer", back, 5000),
@@ -25,7 +36,8 @@ def validate_content(front, back, quote, page, require_quote=False):
     ]:
         if not isinstance(value, str) or len(value) > limit or "\x00" in value:
             raise WorkflowError(f"{label} is invalid or too long.")
-    if not front.strip() or not back.strip():
+    study_card_count(front, note_type)
+    if not front.strip() or (note_type == "basic" and not back.strip()):
         raise WorkflowError("Both a question and an answer are required.")
     if require_quote and not quote.strip():
         raise WorkflowError("Each generated card needs an exact supporting source excerpt.")
@@ -48,16 +60,25 @@ def payload_items(payload):
     return payload["cards"]
 
 
-def validate_item(item, pages, index):
-    if not isinstance(item, dict) or set(item) != {"front", "back", "page", "source_quote"}:
+def validate_item(item, pages, index, card_format="mixed"):
+    required = {"front", "back", "page", "source_quote"}
+    if not isinstance(item, dict) or set(item) not in (required, required | {"note_type"}):
         raise WorkflowError(f"Card {index} must contain front, back, page and source_quote.")
     if type(item["page"]) is not int or item["page"] not in pages:
         raise WorkflowError(f"Card {index} refers to a page outside the selected lecture pages.")
     page = pages[item["page"]]
+    note_type = item.get("note_type", "basic")
+    if card_format != "mixed" and note_type != card_format:
+        raise WorkflowError(f"Card {index} does not use the requested {card_format} format.")
     front, back, quote = validate_content(
-        item["front"], item["back"], item["source_quote"], page, require_quote=True
+        item["front"],
+        item["back"],
+        item["source_quote"],
+        page,
+        require_quote=True,
+        note_type=note_type,
     )
-    return page, front, back, quote
+    return Draft(page, front, back, quote, note_type)
 
 
 def validate_payload(payload, pages):
@@ -65,12 +86,12 @@ def validate_payload(payload, pages):
     return [validate_item(item, pages, i) for i, item in enumerate(payload_items(payload), 1)]
 
 
-def validate_generated_batch(payload, pages):
+def validate_generated_batch(payload, pages, card_format="mixed"):
     """Keep good drafts and report individual failures without trusting bad source links."""
     validated, issues = [], []
     for index, item in enumerate(payload_items(payload), 1):
         try:
-            validated.append(validate_item(item, pages, index))
+            validated.append(validate_item(item, pages, index, card_format))
         except WorkflowError as exc:
             data = item if isinstance(item, dict) else {}
             number = data.get("page")
@@ -90,15 +111,18 @@ def validate_generated_batch(payload, pages):
 def add_drafts(lecture, validated, run=None):
     count = 0
     with transaction.atomic():
-        for page, front, back, quote in validated:
+        for item in validated:
+            page, front, back, quote, note_type = Draft(*item)
+            validate_content(front, back, quote, page, note_type=note_type)
             _, created = Card.objects.get_or_create(
                 lecture=lecture,
-                fingerprint=fingerprint(front),
+                fingerprint=fingerprint(front, note_type),
                 defaults={
                     "page": page,
                     "front": front,
                     "back": back,
                     "source_quote": quote,
+                    "note_type": note_type,
                     "run": run,
                 },
             )
@@ -111,7 +135,19 @@ def update_card(card_id, version, front, back, source_quote, status):
         raise WorkflowError("Choose a valid card status.")
     with transaction.atomic():
         card = Card.objects.select_related("page").get(pk=card_id)
-        front, back, quote = validate_content(front, back, source_quote, card.page)
+        front, back, quote = validate_content(
+            front, back, source_quote, card.page, note_type=card.note_type
+        )
+        # Keep cloze ordinals stable: they identify separately scheduled Anki cards.
+        # Changing a note's type or adding/removing cloze numbers needs a separate
+        # explicit migration workflow; ordinary text edits must not reset reviews.
+        if card.note_type == "cloze":
+            from .note_types import cloze_matches
+
+            if {m[1] for m in cloze_matches(front)} != {m[1] for m in cloze_matches(card.front)}:
+                raise WorkflowError(
+                    "Keep this note's existing cloze numbers when editing. Create a new note for a different set of blanks."
+                )
         if card.version != version:
             raise WorkflowError(
                 "This card changed in another tab. Reload before saving to avoid losing edits."
@@ -134,5 +170,6 @@ def update_card(card_id, version, front, back, source_quote, status):
             back=card.back,
             source_quote=card.source_quote,
             status=card.status,
+            note_type=card.note_type,
         )
     return Card.objects.get(pk=card_id)

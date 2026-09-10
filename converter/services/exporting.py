@@ -1,5 +1,4 @@
 import hashlib
-import html
 import itertools
 import json
 import sqlite3
@@ -13,18 +12,18 @@ import genanki
 from django.conf import settings
 
 from .files import WorkflowError, media_path
+from .note_types import study_card_count, text_html
 
 MODEL_ID = 1890487183
+CLOZE_MODEL_ID = 1890487184
 CSS = """.card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;
 color: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }
 .nightMode.card { color: #e7eee8; background: #202825; }
 .source { font-size: 14px; opacity: .85; margin-top: 24px; }
 .source img { max-width: 100%; height: auto; margin-top: 12px; }
-hr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }"""
-
-
-def text_html(text):
-    return html.escape(text).replace("\n", "<br>")
+hr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }
+.cloze { font-weight: bold; color: #235945; }
+.nightMode .cloze { color: #9bcfb5; }"""
 
 
 class StableNote(genanki.Note):
@@ -56,8 +55,23 @@ def export_deck(lecture):
         css=CSS,
     )
     deck = genanki.Deck(deck_id, lecture.title.replace("::", " — "))
+    cloze_model = genanki.Model(
+        CLOZE_MODEL_ID,
+        "Recalloom — Cloze v1",
+        fields=[{"name": name} for name in ["Text", "Extra", "Source"]],
+        templates=[
+            {
+                "name": "Cloze",
+                "qfmt": "{{cloze:Text}}",
+                "afmt": '{{cloze:Text}}<hr id="answer">{{Extra}}<div class="source">{{Source}}</div>',
+            }
+        ],
+        model_type=genanki.Model.CLOZE,
+        css=CSS,
+    )
     media = {}
     for card in cards:
+        study_card_count(card.front, card.note_type)
         image_path = media_path(card.page.image)
         if not image_path.is_file():
             raise WorkflowError(
@@ -71,7 +85,7 @@ def export_deck(lecture):
         source += f'<br><img src="{filename}">'
         deck.add_note(
             StableNote(
-                model=model,
+                model=cloze_model if card.note_type == "cloze" else model,
                 fields=[text_html(card.front), text_html(card.back), source],
                 guid=genanki.guid_for(str(card.pk)),
                 modified=card.anki_modified,

@@ -1,6 +1,6 @@
 # Development handoff
 
-Updated: 2026-09-10. Free donation-supported direction and card-feature planning; application behavior unchanged since the connection-screen update.
+Updated: 2026-09-10. Simple cloze, learning focuses, and Anki card-count previews.
 
 ## What exists
 
@@ -8,6 +8,10 @@ A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server
 
 - The app is now called Recalloom, a name chosen with the user's delegated approval. Public UI and setup documentation use the new name. Historical research filenames, backup format markers, Anki note type names/IDs, media names, and SLIDES_* settings remain compatible with existing work.
 - Codex connection screen: safe status detection, reuse of an existing ChatGPT sign-in, and a CSRF-protected Connect Codex button that starts the native CLI's official browser login. The page polls until sign-in finishes. Pending attempts are deduplicated, cancellable, and limited to ten minutes; stopping an attempt never invokes logout. Missing installation, API-key mode, and failures have distinct messages. Passwords and authentication files are not read or copied; raw CLI status output is neither displayed nor persisted. This manager assumes the supported single-process local server.
+- Learning focus: Balanced, Core knowledge, Understanding, Application. Format: Basic Q/A, Cloze, or Mixed. Defaults remain Balanced and Basic Q/A; each lecture reuses its last Codex choices. Both choices reach generation/downloaded prompts and are retained on resume and backup. Application requests only source-supported methods/examples. No live quality comparison was run.
+- Simple cloze: flat blanks numbered 1–20, optional hints, repeated numbers grouped on one card, optional extra explanation, manual text-selection helper, typed generation/JSON validation, and escaped previews. Existing note types and the set of cloze numbers stay fixed during edits to preserve Anki identities. The Card model remains the stored note; study_card_count derives its actual review-card count.
+- Review-card budgets: generation counts distinct cloze numbers plus basic notes against one shared ceiling. Whole candidates that exceed the remaining allowance are skipped. Runs retain both notes added and review cards added; library/export counts reflect actual review cards. The new migration copies legacy run counts and preserves all existing basic note IDs.
+- Previews: manual/editor POST previews check unsaved text without saving or inference. Each question can reveal its answer. A paginated Preview export shows only accepted saved notes, their cards, edit links, and source-slide links. These are content previews, not an Anki scheduler.
 - PDF upload: signature check, 25 MB/100-page limits, native text extraction and source rendering in a subprocess with a timeout. Identical uploads reuse the existing lecture. No-text pages are flagged.
 - Lecture library and responsive editor with source viewer, manual cards, accept/set-aside, quick Accept & next, persistent edits, optimistic version checks, and revision history.
 - Local Codex CLI integration: existing authentication, explicit text-sharing consent, normally three-page batches, five-minute per-batch timeout, progress, cancellation, and preservation of completed batches. CLI discovery includes the VS Code extension.
@@ -18,15 +22,21 @@ A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server
 - Generation recovery: invalid individual drafts are retained as visible skipped-draft details while valid drafts and later batches continue. Strict source validation remains in place. Resume continues unprocessed pages of a failed/cancelled run; attempt tokens prevent a cancelled worker from writing late results into a resumed run. Repeated resume submissions do not start duplicate workers.
 - Alternative generation: download a source-text prompt and import JSON drafts from an existing chat. Validation checks page membership and an exact supporting excerpt. Cards remain drafts for human checking.
 - Normalized exact-question deduplication preserves existing edits. Paraphrased duplicates still need manual review.
-- Anki export: accepted basic Q/A notes, stable GUIDs/model/deck identity, escaped text, bundled source PNGs, and monotonic modification values for same-second edits.
+- Anki export: accepted basic Q/A and cloze notes, stable GUIDs/model/deck identity, escaped text, bundled source PNGs, and monotonic modification values for same-second edits.
 - Per-lecture ZIP backup/restore: PDF, source text/images, all card states and IDs, edit revisions/timestamps, and generation metadata. Restores refuse existing lectures, reject arbitrary/duplicate paths and corrupt assets, validate record structure, and roll back on failure.
-- Backup format 4 includes reasoning selection, card ceilings, selection counts, and skipped-draft details. Formats 1–3 remain readable. Worker tokens are transient process ownership and are recreated on restore.
+- Backup format 5 includes note types/revisions, learning focus, generation format, review-card counters, reasoning selection, card ceilings, selection counts, and skipped-draft details. Formats 1–4 remain readable as basic notes. Worker tokens are transient process ownership and are recreated on restore.
 - Synthetic sample: three text slides and one image-only page, plus five hand-written drafts. The sample button does not call a model.
 - Loopback-only middleware, CSRF protection, restrictive content security policy, local frontend assets, ignored private data, and pinned runtime/development requirements.
 
 ## Verification completed
 
-- 54 Django tests passed, including the existing Anki backend check. Coverage includes compact ceilings, duplicate/logistics filtering, quotas and resume, late worker results, cleanup preserving edits, and source/media identity. Reasoning checks inspect all six CLI argument variants with a fake process, reject invalid effort before execution, verify browser POST forwarding and retained settings on resume, and restore backups across all four versions.
+- New cloze/focus checks cover malformed/nested/empty blanks, hints/grouping/nonconsecutive numbers, escaped HTML, type/source mismatches, atomic legacy/mixed JSON import, weighted budgets across resume, deduplication preserving edits, immutable cloze ordinals, safe previews, version-5 backup restoration, and invalid-backup rollback. Provider calls are mocked; no inference or account changes occurred.
+- Actual Anki 26.8.1 backend imported a mixed deck with grouped c1 blanks and c7. Questions hid the expected visible text, answers/media rendered, and repeat import plus edits preserved all three card IDs and review schedules. This extends backend verification; manual cloze checks in desktop/mobile clients are pending.
+- The updated local preview is running. Both existing lectures and their accepted-deck previews returned HTTP 200 with the new focus/format controls. The final 70-test suite, Ruff checks, Django checks, and migration-drift check passed. No live inference was run.
+- Headless Chrome exercised selecting Understanding/Mixed, matching downloaded prompts, manually hiding selected text, one/two-card unsaved previews, optional cloze explanation, accept/edit, and a mixed export preview showing 3 cards from 2 notes. Desktop/mobile widths passed with no JavaScript errors or overflow. cloze-export-desktop.png and cloze-editor-mobile.png were visually inspected.
+- Before migration 0006, the SQLite database and all source media were copied into ignored data/backups/before-cloze-20260910-141729/. The old local preview was stopped, so the backup uses a raw database snapshot plus media instead of newly downloaded lecture ZIPs. Migration 0006 was applied. Comparing every pre-existing field in all five application tables against the snapshot confirmed all 128 notes and all other stored data unchanged. Old note types and generation review-card counts migrated correctly.
+
+- 70 Django tests passed, including the existing Anki backend check. Coverage includes compact ceilings, duplicate/logistics filtering, quotas and resume, late worker results, cleanup preserving edits, and source/media identity. Reasoning checks inspect all six CLI argument variants with a fake process, reject invalid effort before execution, verify browser POST forwarding and retained settings on resume, and restore backups across all five versions.
 - Thirteen connection tests use mocked CLI status, login processes, and timers. They cover saved sign-in reuse, missing CLI, repeat clicks, completion, failures/retry, timeout, cancellation, stale callbacks, bounded termination, credential-output redaction, rendered states, and local/CSRF/POST restrictions. No real login or logout was initiated. Full fresh-account browser authentication remains untested.
 - After restart, the live home and connection pages returned HTTP 200, displayed Recalloom, and reported the existing ChatGPT connection ready. No migrations or lecture edits were required for this change.
 - Headless Chrome verified Recalloom branding and the missing-Codex connection screen at desktop/mobile sizes using an explicitly nonexistent CLI path. The rest of the existing browser workflow passed, with no JavaScript errors or horizontal overflow. connection-desktop.png and connection-mobile.png were visually inspected. Actual CLI 0.153.4 login-status classification separately returned connected for the user's existing ChatGPT sign-in, without generation. Read-only counts were 128 cards and zero active runs before restarting the verified local preview.
@@ -44,7 +54,7 @@ A working local personal-use alpha using Python 3.12, Django 5.2, SQLite, server
 
 ## Next concrete task
 
-The latest discussion is planning only. The user supports learning focuses (Balanced, Core knowledge, Understanding, Application) and multiple Anki-compatible card formats. Basic Q/A is the only implemented format. Simple cloze is the proposed first addition; optional reverse cards and manual image occlusion are later candidates. Keep focus, format, deck size, and reasoning separate. A proposed budget rule counts actual exported study cards, including additional cards created by reverse/cloze notes. Details are in MVP_BUILD_PLAN.md. No implementation or live generation was requested in this discussion.
+The user authorized and received the simple-cloze, learning-focus, and card-count-aware preview batch. Before further format expansion, evaluate generated quality on representative lecture pages when live use is authorized and manually check cloze rendering/re-import in the Anki clients actually used. Optional reverse cards and manual image occlusion remain later candidates.
 
 When the user has allowance and explicitly wants another live check, evaluate the compact prompt on a representative selection or a new lecture. Compare coverage of learning objectives and correction effort, not just card count. Do not regenerate this existing lecture expecting its 98 stored notes to shrink: the ceiling governs new additions. Semantic consolidation of an existing deck is not implemented. The existing notes can still be reviewed and set aside locally, and accepted cards exported without model usage.
 
@@ -52,13 +62,13 @@ The user is deferring broader UI/UX work, but requested easy Codex connection an
 
 Funding direction clarified on 2026-09-10: entirely free software with optional Patreon/donations, no app subscription, paid features, sold credits, or hosted generation service. Expansion depends on demonstrated demand. The earlier integrated paid-beta phase has been removed from the current build plan; historical research remains preserved. A static website for distribution/support is still an option. The user previously allowed for roughly $20/month in hosting costs if needed; no purchase or deployment is requested.
 
-Fix observed failures before expanding scope. If diagrams dominate, the next narrow feature should be manual rectangular source crops attached to basic cards. Simple cloze is another planned follow-up; neither is implemented.
+Fix observed failures before expanding scope. If diagrams dominate, the next narrow feature should be manual rectangular source crops attached to basic cards. Simple cloze is now implemented; crops and occlusion remain pending.
 
 ## Limits to preserve in communication
 
 - Personal alpha, not beta/public-release ready. Full gates remain in MVP_BUILD_PLAN.md.
 - Codex must still be installed separately; the connection screen is not an installer. Saved-sign-in detection does not verify remaining allowance or token validity through live inference. The fresh-login flow has only mocked process coverage so far. Closing the app interrupts status tracking; after a restart, recheck the saved connection.
-- Native-text PDFs and basic Q/A only. No OCR, diagram interpretation, crops/occlusion, cloze, PPTX, Anki import, scheduler, accounts, payments, native apps, or mobile sync.
+- Native-text PDFs, basic Q/A, and simple cloze only. No OCR, diagram interpretation, crops/occlusion, reverse cards, PPTX, Anki import, scheduler, accounts, payments, native apps, or mobile sync.
 - An excerpt matching a page does not establish correctness. No real lecture quality/time-saving benchmark exists.
 - The new compact prompt has only offline provider-boundary tests so far; card quality and allowance savings are unmeasured. Selection is prioritized within batches, not globally across the lecture. Logistics rules are deliberately narrow and can miss paraphrases. The stored note count includes Set aside cards.
 - The responsive UI remains local to the desktop; another device cannot connect.
@@ -69,7 +79,7 @@ Fix observed failures before expanding scope. If diagrams dominate, the next nar
 
 ## Working notes
 
-- The 2026-09-10 update changes planning documentation only. Anki's official manual was checked for basic/reverse/cloze/image-occlusion support and card-count behavior. No application tests were rerun, no new format compatibility is claimed, and no provider calls or account changes were made.
+- The earlier 2026-09-10 planning update was followed by the authorized implementation above. The free donation-supported direction remains unchanged. No live provider calls or account changes were made.
 - Source lives in config/, converter/, tests/, and tools/. Services remain callable without web views.
 - requirements.txt pins runtime dependencies; requirements-dev.txt adds Ruff, fixture generation, Playwright, and the Anki backend. Browser checks use installed Chrome.
 - The Codex Windows sandbox cannot use Python TemporaryDirectory paths with their restrictive ACL. Tests and browser/live checks succeeded with normal unsandboxed permissions. Do not weaken application permissions to accommodate this harness.

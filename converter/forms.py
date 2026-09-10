@@ -14,6 +14,13 @@ class UploadForm(forms.Form):
 
 
 class CardForm(forms.Form):
+    def __init__(self, *args, note_type="basic", **kwargs):
+        super().__init__(*args, **kwargs)
+        if note_type == "cloze":
+            self.fields["front"].label = "Cloze text"
+            self.fields["back"].label = "Extra explanation (optional)"
+            self.fields["back"].required = False
+
     version = forms.IntegerField(min_value=1, widget=forms.HiddenInput)
     front = forms.CharField(
         max_length=1000, label="Question", widget=forms.Textarea(attrs={"rows": 3})

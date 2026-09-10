@@ -1,5 +1,74 @@
 "use strict";
 
+document.querySelectorAll("[data-note-form]").forEach((form) => {
+  const type = form.elements.note_type;
+  const front = form.elements.front;
+  const output = form.querySelector("[data-preview-output]");
+  const updateLabels = () => {
+    const cloze = type.value === "cloze";
+    form.querySelector("[data-cloze-controls]").hidden = !cloze;
+    form.querySelector("[data-front-label]").textContent = cloze ? "Cloze text" : "Question";
+    form.querySelector("[data-back-label]").textContent = cloze ? "Extra explanation (optional)" : "Answer";
+    form.elements.back.required = !cloze;
+  };
+  updateLabels();
+  type.addEventListener("change", updateLabels);
+  form.querySelector("[data-add-cloze]").addEventListener("click", () => {
+    const number = form.querySelector("[data-cloze-number]");
+    const start = front.selectionStart, end = front.selectionEnd;
+    if (!number.checkValidity() || start === end) {
+      output.textContent = "Select the words to hide and choose a blank number from 1 to 20.";
+      return;
+    }
+    const selection = front.value.slice(start, end);
+    front.setRangeText(`{{c${Number(number.value)}::${selection}}}`, start, end, "select");
+    front.dispatchEvent(new Event("input", { bubbles: true }));
+    front.focus();
+  });
+  form.querySelector("[data-preview-note]").addEventListener("click", async (event) => {
+    const button = event.currentTarget;
+    button.disabled = true;
+    try {
+      const response = await fetch(form.dataset.previewUrl, { method: "POST", body: new FormData(form) });
+      const data = await response.json();
+      output.replaceChildren();
+      if (!response.ok) {
+        output.textContent = data.error || "Could not preview this note.";
+        return;
+      }
+      const count = document.createElement("p");
+      count.className = "form-note";
+      count.setAttribute("role", "status");
+      count.textContent = `${data.study_cards} Anki review card${data.study_cards === 1 ? "" : "s"} from this note. Preview only; edits have not been saved.`;
+      output.append(count);
+      data.previews.forEach((preview, index) => {
+        const card = document.createElement("article");
+        card.className = "preview-card";
+        const title = document.createElement("p");
+        title.className = "eyebrow";
+        title.textContent = `Card ${index + 1} of ${data.study_cards}`;
+        const question = document.createElement("div");
+        question.className = "preview-question";
+        // This endpoint only returns escaped text plus fixed cloze markup.
+        question.innerHTML = preview.question;
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.textContent = "Show answer";
+        const answer = document.createElement("div");
+        answer.className = "preview-answer";
+        answer.innerHTML = preview.answer;
+        details.append(summary, answer);
+        card.append(title, question, details);
+        output.append(card);
+      });
+    } catch {
+      output.textContent = "Could not reach the local app. Try the preview again.";
+    } finally {
+      button.disabled = false;
+    }
+  });
+});
+
 const connectionPanel = document.querySelector('[data-connection-state="waiting"]');
 if (connectionPanel) {
   let failures = 0;
@@ -92,7 +161,8 @@ if (progress) {
       const selection = ` ${run.filtered_count || 0} logistics candidates filtered; ${run.over_limit_count || 0} excluded by the card limit.`;
       const limit = run.card_limit ? ` (maximum ${run.card_limit})` : "";
       const reasoning = run.reasoning_effort ? `${run.reasoning_effort} reasoning · ` : "";
-      message.textContent = `${reasoning}${run.completed} of ${run.total} pages processed · ${run.cards_added} new drafts saved${limit}.${skipped}${selection}`;
+      const focus = `${run.learning_focus} · ${run.card_format} · `;
+      message.textContent = `${reasoning}${focus}${run.completed} of ${run.total} pages processed · ${run.cards_added} draft notes / ${run.study_cards_added} Anki review cards saved${limit}.${skipped}${selection}`;
       if (!["queued", "running"].includes(run.status)) {
         message.textContent = (run.error || `Generation ${run.status}. Your drafts are saved.`) + skipped + selection;
         const link = document.createElement("a");

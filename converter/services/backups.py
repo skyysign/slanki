@@ -31,7 +31,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 4,
+        "version": 5,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -54,6 +54,7 @@ def export_backup(lecture):
                 "id": str(c.id),
                 "page": c.page.number,
                 "front": c.front,
+                "note_type": c.note_type,
                 "back": c.back,
                 "source_quote": c.source_quote,
                 "status": c.status,
@@ -67,6 +68,7 @@ def export_backup(lecture):
                     {
                         "version": r.version,
                         "front": r.front,
+                        "note_type": r.note_type,
                         "back": r.back,
                         "source_quote": r.source_quote,
                         "status": r.status,
@@ -86,6 +88,9 @@ def export_backup(lecture):
                 "completed_pages": r.completed_pages,
                 "issues": r.issues,
                 "cards_added": r.cards_added,
+                "study_cards_added": r.study_cards_added,
+                "learning_focus": r.learning_focus,
+                "card_format": r.card_format,
                 "card_limit": r.card_limit,
                 "reasoning_effort": r.reasoning_effort,
                 "filtered_count": r.filtered_count,
@@ -180,7 +185,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3, 4)
+                or manifest["version"] not in (1, 2, 3, 4, 5)
             ):
                 raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]
@@ -256,10 +261,17 @@ def restore_backup(upload):
                             if manifest["version"] >= 3
                             else ""
                         )
-                        + (" reasoning_effort" if manifest["version"] >= 4 else ""),
+                        + (" reasoning_effort" if manifest["version"] >= 4 else "")
+                        + (
+                            " study_cards_added learning_focus card_format"
+                            if manifest["version"] >= 5
+                            else ""
+                        ),
                     )
                     r = dict(r)
                     r.setdefault("issues", [])
+                    if manifest["version"] < 5:
+                        r["study_cards_added"] = r["cards_added"]
                     if r.get("card_limit") is not None and (
                         type(r["card_limit"]) is not int or not 1 <= r["card_limit"] <= 500
                     ):
@@ -286,9 +298,11 @@ def restore_backup(upload):
                 for c in manifest["cards"]:
                     require_keys(
                         c,
-                        "id page front back source_quote status fingerprint version anki_modified run created_at updated_at revisions",
+                        "id page front back source_quote status fingerprint version anki_modified run created_at updated_at revisions"
+                        + (" note_type" if manifest["version"] >= 5 else ""),
                     )
                     c = dict(c)
+                    c.setdefault("note_type", "basic")
                     page = page_map[c.pop("page")]
                     revisions = c.pop("revisions")
                     created, updated = (
@@ -298,7 +312,9 @@ def restore_backup(upload):
                     run_id = c.pop("run")
                     if run_id and run_id not in run_ids:
                         raise WorkflowError("Backup has an invalid generation reference.")
-                    validate_content(c["front"], c["back"], c["source_quote"], page)
+                    validate_content(
+                        c["front"], c["back"], c["source_quote"], page, note_type=c["note_type"]
+                    )
                     card = Card(lecture=lecture, page=page, run_id=run_id, **c)
                     card.full_clean()
                     card.save(force_insert=True)
@@ -306,7 +322,20 @@ def restore_backup(upload):
                     if len(revisions) > 1000:
                         raise WorkflowError("Backup contains too many card revisions.")
                     for revision in revisions:
-                        require_keys(revision, "version front back source_quote status created_at")
+                        require_keys(
+                            revision,
+                            "version front back source_quote status created_at"
+                            + (" note_type" if manifest["version"] >= 5 else ""),
+                        )
+                        revision = dict(revision)
+                        revision.setdefault("note_type", "basic")
+                        validate_content(
+                            revision["front"],
+                            revision["back"],
+                            revision["source_quote"],
+                            page,
+                            note_type=revision["note_type"],
+                        )
                         revision_time = timestamp(revision.pop("created_at"))
                         record = CardRevision(card=card, **revision)
                         record.full_clean()

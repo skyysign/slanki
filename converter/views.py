@@ -2,8 +2,8 @@ import json
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Count, Q
 from django.http import FileResponse, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -13,7 +13,7 @@ from django.views.decorators.http import require_GET, require_POST
 from .forms import CardForm, UploadForm
 from .models import Card, GenerationRun, Lecture, Page
 from .services.backups import export_backup, restore_backup
-from .services.cards import add_drafts, update_card, validate_content, validate_payload
+from .services.cards import Draft, add_drafts, update_card, validate_content, validate_payload
 from .services.connection import connection
 from .services.documents import import_pdf
 from .services.exporting import export_deck
@@ -24,6 +24,13 @@ from .services.generation import (
     remaining_pages,
     resume_generation,
     start_generation,
+)
+from .services.note_types import (
+    CARD_FORMATS,
+    LEARNING_FOCUSES,
+    NOTE_TYPES,
+    checked_choice,
+    study_previews,
 )
 from .services.selection import (
     checked_card_limit,
@@ -42,9 +49,12 @@ def error_page(request, message, lecture=None, status=400):
 
 @require_GET
 def home(request):
-    lectures = Lecture.objects.annotate(
-        card_count=Count("cards"), accepted_count=Count("cards", filter=Q(cards__status="accepted"))
-    )
+    lectures = list(Lecture.objects.prefetch_related("cards"))
+    for item in lectures:
+        item.card_count = sum(card.study_card_count for card in item.cards.all())
+        item.accepted_count = sum(
+            card.study_card_count for card in item.cards.all() if card.status == "accepted"
+        )
     return render(request, "converter/home.html", {"lectures": lectures, "form": UploadForm()})
 
 
@@ -106,14 +116,18 @@ def lecture_context(item, request, selected=None, form=None):
     selected = selected or (cards[0] if cards else None)
     if form is None and selected:
         form = CardForm(
+            note_type=selected.note_type,
             initial={
                 key: getattr(selected, key)
                 for key in ("version", "front", "back", "source_quote", "status")
-            }
+            },
         )
     pages = list(item.pages.all())
     page = selected.page if selected else (pages[0] if pages else None)
     counts = {status: item.cards.filter(status=status).count() for status, _ in Card.STATUS}
+    study_counts = {status: 0 for status, _ in Card.STATUS}
+    for card in item.cards.all():
+        study_counts[card.status] += card.study_card_count
     last_run = item.runs.order_by("-updated_at").first()
     resume_count = (
         len(remaining_pages(last_run))
@@ -132,6 +146,15 @@ def lecture_context(item, request, selected=None, form=None):
         "page": page,
         "filter": state,
         "counts": counts,
+        "study_counts": study_counts,
+        "study_previews": study_previews(selected.front, selected.back, selected.note_type)
+        if selected
+        else [],
+        "note_types": NOTE_TYPES,
+        "card_formats": CARD_FORMATS,
+        "learning_focuses": LEARNING_FOCUSES,
+        "selected_focus": last_codex_run.learning_focus if last_codex_run else "balanced",
+        "selected_format": last_codex_run.card_format if last_codex_run else "basic",
         "active_run": item.runs.filter(status__in=["queued", "running"]).first(),
         "last_run": last_run,
         "resume_count": resume_count,
@@ -160,7 +183,7 @@ def save_card(request, pk):
     values = request.POST.copy()
     if values.get("action") == "accept_next":
         values["status"] = "accepted"
-    form = CardForm(values)
+    form = CardForm(values, note_type=card.note_type)
     if form.is_valid():
         try:
             update_card(card.pk, **form.cleaned_data)
@@ -210,7 +233,20 @@ def generate(request, pk):
         pages = selected_pages(request, item)
         limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
         effort = checked_reasoning_effort(request.POST.get("reasoning_effort", "low"))
-        start_generation(item, [p.number for p in pages], card_limit=limit, reasoning_effort=effort)
+        focus = checked_choice(
+            request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
+        )
+        card_format = checked_choice(
+            request.POST.get("card_format", "basic"), CARD_FORMATS, "card format"
+        )
+        start_generation(
+            item,
+            [p.number for p in pages],
+            card_limit=limit,
+            reasoning_effort=effort,
+            learning_focus=focus,
+            card_format=card_format,
+        )
         return redirect(item)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
@@ -222,11 +258,18 @@ def prompt(request, pk):
     try:
         pages = selected_pages(request, item)
         limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
+        focus = checked_choice(
+            request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
+        )
+        card_format = checked_choice(
+            request.POST.get("card_format", "basic"), CARD_FORMATS, "card format"
+        )
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
     questions = item.cards.order_by("-created_at").values_list("front", flat=True)[:200]
     response = HttpResponse(
-        prompt_for(pages, limit, questions), content_type="text/plain; charset=utf-8"
+        prompt_for(pages, limit, questions, learning_focus=focus, card_format=card_format),
+        content_type="text/plain; charset=utf-8",
     )
     response["Content-Disposition"] = 'attachment; filename="card-generation-prompt.txt"'
     return response
@@ -251,6 +294,8 @@ def import_cards(request, pk):
                 filtered_count=filtered,
             )
             run.cards_added = add_drafts(item, validated, run)
+            run.study_cards_added = sum(card.study_card_count for card in run.card_set.all())
+            run.card_format = "mixed"
             run.completed_pages = run.page_numbers
             run.save()
         return redirect(item)
@@ -269,13 +314,58 @@ def add_card(request, pk):
     item = get_object_or_404(Lecture, pk=pk)
     page = get_object_or_404(item.pages, number=request.POST.get("page"))
     try:
-        front, back, quote = validate_content(
-            request.POST.get("front", ""), request.POST.get("back", ""), "", page
+        note_type = checked_choice(
+            request.POST.get("note_type", "basic"), NOTE_TYPES, "note format"
         )
-        add_drafts(item, [(page, front, back, quote)])
+        front, back, quote = validate_content(
+            request.POST.get("front", ""),
+            request.POST.get("back", ""),
+            "",
+            page,
+            note_type=note_type,
+        )
+        add_drafts(item, [Draft(page, front, back, quote, note_type)])
         return redirect(item)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
+
+
+@require_POST
+def preview_note(request, pk):
+    item = get_object_or_404(Lecture, pk=pk)
+    try:
+        note_type = checked_choice(
+            request.POST.get("note_type", "basic"), NOTE_TYPES, "note format"
+        )
+        # Preview is content-only and never saves edits or calls a provider.
+        front, back, _ = validate_content(
+            request.POST.get("front", ""),
+            request.POST.get("back", ""),
+            "",
+            item.pages.first(),
+            note_type=note_type,
+        )
+        previews = study_previews(front, back, note_type)
+        return JsonResponse({"previews": previews, "study_cards": len(previews)})
+    except WorkflowError as exc:
+        return JsonResponse({"error": str(exc)}, status=400)
+
+
+@require_GET
+def preview_export(request, pk):
+    item = get_object_or_404(Lecture, pk=pk)
+    accepted = item.cards.filter(status="accepted").select_related("page")
+    total = sum(card.study_card_count for card in accepted)
+    page = Paginator(accepted, 20).get_page(request.GET.get("page"))
+    entries = [
+        {"note": card, "previews": study_previews(card.front, card.back, card.note_type)}
+        for card in page
+    ]
+    return render(
+        request,
+        "converter/preview_export.html",
+        {"lecture": item, "entries": entries, "pagination": page, "study_count": total},
+    )
 
 
 @require_POST
@@ -351,6 +441,9 @@ def run_status(request, pk):
             "completed": len(run.completed_pages),
             "total": len(run.page_numbers),
             "cards_added": run.cards_added,
+            "study_cards_added": run.study_cards_added,
+            "learning_focus": run.get_learning_focus_display(),
+            "card_format": run.get_card_format_display(),
             "error": run.error,
             "issues": len(run.issues),
             "card_limit": run.card_limit,

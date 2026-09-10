@@ -1,5 +1,56 @@
 "use strict";
 
+document.querySelectorAll("[data-crop-stage]").forEach((stage) => {
+  const form = stage.closest("form");
+  const image = stage.querySelector("img");
+  const overlay = stage.querySelector("[data-crop-selection]");
+  const enabled = form.elements.crop_enabled;
+  const width = Number(stage.dataset.width), height = Number(stage.dataset.height);
+  const fields = Object.fromEntries(["left", "top", "right", "bottom"].map(key => [key, form.elements[`crop_${key}`]]));
+  let start = null;
+  const draw = () => {
+    stage.classList.toggle("crop-active", enabled.checked);
+    Object.values(fields).forEach(field => { field.disabled = !enabled.checked; });
+    form.elements.crop_on_question.disabled = !enabled.checked;
+    const values = Object.fromEntries(Object.entries(fields).map(([key, field]) => [key, Number(field.value)]));
+    const valid = values.left >= 0 && values.top >= 0 && values.right <= width && values.bottom <= height && values.right > values.left && values.bottom > values.top;
+    overlay.hidden = !enabled.checked || !valid;
+    if (valid) {
+      overlay.style.left = `${100 * values.left / width}%`;
+      overlay.style.top = `${100 * values.top / height}%`;
+      overlay.style.width = `${100 * (values.right - values.left) / width}%`;
+      overlay.style.height = `${100 * (values.bottom - values.top) / height}%`;
+    }
+  };
+  const position = (event) => {
+    const box = image.getBoundingClientRect();
+    return [
+      Math.round(Math.max(0, Math.min(width, (event.clientX - box.left) * width / box.width))),
+      Math.round(Math.max(0, Math.min(height, (event.clientY - box.top) * height / box.height))),
+    ];
+  };
+  const move = (event) => {
+    if (!start) return;
+    const end = position(event);
+    [fields.left.value, fields.top.value, fields.right.value, fields.bottom.value] = [Math.min(start[0], end[0]), Math.min(start[1], end[1]), Math.max(start[0], end[0]), Math.max(start[1], end[1])];
+    fields.left.dispatchEvent(new Event("input", { bubbles: true }));
+    draw();
+  };
+  stage.addEventListener("pointerdown", (event) => {
+    if (!enabled.checked || !image.complete || event.button !== 0) return;
+    event.preventDefault();
+    stage.setPointerCapture(event.pointerId);
+    start = position(event);
+    move(event);
+  });
+  stage.addEventListener("pointermove", move);
+  stage.addEventListener("pointerup", (event) => { move(event); start = null; });
+  stage.addEventListener("pointercancel", () => { start = null; });
+  enabled.addEventListener("change", draw);
+  Object.values(fields).forEach(field => field.addEventListener("input", draw));
+  draw();
+});
+
 document.querySelectorAll("[data-note-form]").forEach((form) => {
   const type = form.elements.note_type;
   const front = form.elements.front;
@@ -12,7 +63,7 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
     form.elements.back.required = !cloze;
   };
   updateLabels();
-  type.addEventListener("change", updateLabels);
+  form.querySelectorAll('[name="note_type"]').forEach(input => input.addEventListener("change", updateLabels));
   form.querySelector("[data-add-cloze]").addEventListener("click", () => {
     const number = form.querySelector("[data-cloze-number]");
     const start = front.selectionStart, end = front.selectionEnd;
@@ -57,6 +108,13 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
         const answer = document.createElement("div");
         answer.className = "preview-answer";
         answer.innerHTML = preview.answer;
+        if (data.crop_image) {
+          const crop = document.createElement("img");
+          crop.src = data.crop_image;
+          crop.className = "source-crop";
+          crop.alt = "Selected source crop";
+          (data.crop_on_question ? question : answer).append(crop);
+        }
         details.append(summary, answer);
         card.append(title, question, details);
         output.append(card);

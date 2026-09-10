@@ -145,6 +145,25 @@ h3 {
 .preview-card .cloze { color:var(--green); font-weight:700; }
 .export-preview-note { padding:24px; margin:22px 0; }
 [data-cloze-number] { max-width:90px; }
+.choice-group { border:0; margin:20px 0 8px; padding:0; min-width:0; }
+.choice-group legend { font-size:13px; font-weight:600; margin-bottom:8px; }
+.choice-options { display:flex; flex-wrap:wrap; gap:8px; }
+.choice-option { display:flex; align-items:center; gap:8px; padding:10px 12px; margin:0; border:1px solid var(--line); border-radius:8px; cursor:pointer; background:var(--white); }
+.choice-option:has(input:checked) { border-color:var(--green); background:var(--pale); }
+.choice-option input { accent-color:var(--green); flex-shrink:0; }
+.choice-option:focus-within { outline:2px solid var(--green); outline-offset:2px; }
+.danger { background:#993f37; color:white; }
+.danger-link { color:#993f37; }
+.lecture-entry { display:block; }
+.tile-delete { display:inline-block; margin-top:14px; }
+.crop-editor { margin:22px 0; border-top:1px solid var(--line); padding-top:16px; }
+.crop-editor summary { cursor:pointer; font-size:13px; font-weight:600; }
+.crop-stage { position:relative; overflow:hidden; border:1px solid var(--line); margin:14px 0; user-select:none; }
+.crop-stage.crop-active { cursor:crosshair; touch-action:none; }
+.crop-stage img { display:block; width:100%; height:auto; }
+.crop-selection { position:absolute; border:2px dashed var(--green); box-shadow:0 0 0 2000px #243c3440; pointer-events:none; }
+.crop-coordinates { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.source-crop { display:block; max-width:100%; height:auto; margin-top:16px; }
 .connection-panel {
   padding: 32px;
 }

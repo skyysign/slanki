@@ -1,4 +1,6 @@
+import base64
 import json
+import uuid
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -11,10 +13,12 @@ from django.utils.text import slugify
 from django.views.decorators.http import require_GET, require_POST
 
 from .forms import CardForm, UploadForm
-from .models import Card, GenerationRun, Lecture, Page
+from .models import Card, GenerationRun, Lecture, Page, PendingFileDeletion
 from .services.backups import export_backup, restore_backup
 from .services.cards import Draft, add_drafts, update_card, validate_content, validate_payload
 from .services.connection import connection
+from .services.crops import crop_from_form, crop_png
+from .services.deletion import cleanup_deleted_files, delete_lecture
 from .services.documents import import_pdf
 from .services.exporting import export_deck
 from .services.files import WorkflowError, media_path
@@ -55,7 +59,15 @@ def home(request):
         item.accepted_count = sum(
             card.study_card_count for card in item.cards.all() if card.status == "accepted"
         )
-    return render(request, "converter/home.html", {"lectures": lectures, "form": UploadForm()})
+    return render(
+        request,
+        "converter/home.html",
+        {
+            "lectures": lectures,
+            "form": UploadForm(),
+            "pending_deletions": PendingFileDeletion.objects.all(),
+        },
+    )
 
 
 @require_GET
@@ -137,6 +149,15 @@ def lecture_context(item, request, selected=None, form=None):
     # Keep earlier warnings visible when a later run or JSON import is created.
     issue_runs = [run for run in item.runs.all() if run.issues]
     last_codex_run = item.runs.filter(provider="codex").order_by("-updated_at").first()
+    crop = selected.source_crop if selected else {}
+    crop_enabled = bool(crop)
+    if selected and request.method == "POST" and request.POST.get("crop_present") == "yes":
+        crop = {
+            key: request.POST.get("crop_" + key, "") for key in ("left", "top", "right", "bottom")
+        }
+        crop["on_question"] = request.POST.get("crop_on_question") == "yes"
+        crop_enabled = request.POST.get("crop_enabled") == "yes"
+    selected_format = last_codex_run.card_format if last_codex_run else "basic"
     return {
         "lecture": item,
         "cards": cards,
@@ -154,7 +175,9 @@ def lecture_context(item, request, selected=None, form=None):
         "card_formats": CARD_FORMATS,
         "learning_focuses": LEARNING_FOCUSES,
         "selected_focus": last_codex_run.learning_focus if last_codex_run else "balanced",
-        "selected_format": last_codex_run.card_format if last_codex_run else "basic",
+        "selected_formats": ["basic", "cloze"] if selected_format == "mixed" else [selected_format],
+        "crop": crop,
+        "crop_enabled": crop_enabled,
         "active_run": item.runs.filter(status__in=["queued", "running"]).first(),
         "last_run": last_run,
         "resume_count": resume_count,
@@ -186,7 +209,12 @@ def save_card(request, pk):
     form = CardForm(values, note_type=card.note_type)
     if form.is_valid():
         try:
-            update_card(card.pk, **form.cleaned_data)
+            crop = (
+                crop_from_form(values, card.page) if values.get("crop_present") == "yes" else None
+            )
+            if crop:
+                crop_png(card.page, crop)
+            update_card(card.pk, **form.cleaned_data, source_crop=crop)
             if values.get("action") == "accept_next":
                 next_card = card.lecture.cards.filter(status="draft").first()
                 if next_card:
@@ -220,6 +248,20 @@ def selected_pages(request, item):
     return pages
 
 
+def selected_card_format(request):
+    # Older scripts can still submit the original single card_format setting.
+    if request.POST.get("formats_present") != "yes":
+        return checked_choice(request.POST.get("card_format", "basic"), CARD_FORMATS, "card format")
+    formats = request.POST.getlist("formats")
+    if (
+        not formats
+        or any(value not in dict(NOTE_TYPES) for value in formats)
+        or len(formats) != len(set(formats))
+    ):
+        raise WorkflowError("Tick Q/A, cloze, or both card formats.")
+    return "mixed" if len(formats) == 2 else formats[0]
+
+
 @require_POST
 def generate(request, pk):
     item = get_object_or_404(Lecture, pk=pk)
@@ -236,9 +278,7 @@ def generate(request, pk):
         focus = checked_choice(
             request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
         )
-        card_format = checked_choice(
-            request.POST.get("card_format", "basic"), CARD_FORMATS, "card format"
-        )
+        card_format = selected_card_format(request)
         start_generation(
             item,
             [p.number for p in pages],
@@ -261,9 +301,7 @@ def prompt(request, pk):
         focus = checked_choice(
             request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
         )
-        card_format = checked_choice(
-            request.POST.get("card_format", "basic"), CARD_FORMATS, "card format"
-        )
+        card_format = selected_card_format(request)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
     questions = item.cards.order_by("-created_at").values_list("front", flat=True)[:200]
@@ -346,7 +384,27 @@ def preview_note(request, pk):
             note_type=note_type,
         )
         previews = study_previews(front, back, note_type)
-        return JsonResponse({"previews": previews, "study_cards": len(previews)})
+        crop_image, on_question = "", False
+        if request.POST.get("card_id"):
+            try:
+                card_id = uuid.UUID(request.POST["card_id"])
+            except ValueError as exc:
+                raise WorkflowError("Choose an existing note to preview its source crop.") from exc
+            card = get_object_or_404(item.cards.select_related("page"), pk=card_id)
+            crop = crop_from_form(request.POST, card.page)
+            if crop:
+                crop_image = "data:image/png;base64," + base64.b64encode(
+                    crop_png(card.page, crop)
+                ).decode("ascii")
+                on_question = crop["on_question"]
+        return JsonResponse(
+            {
+                "previews": previews,
+                "study_cards": len(previews),
+                "crop_image": crop_image,
+                "crop_on_question": on_question,
+            }
+        )
     except WorkflowError as exc:
         return JsonResponse({"error": str(exc)}, status=400)
 
@@ -382,6 +440,44 @@ def page_image(request, pk):
     if not path.is_file():
         return HttpResponse("Source image missing. Restore your backup.", status=404)
     return FileResponse(path.open("rb"), content_type="image/png")
+
+
+@require_GET
+def card_crop(request, pk):
+    card = get_object_or_404(Card.objects.select_related("page"), pk=pk)
+    try:
+        return HttpResponse(crop_png(card.page, card.source_crop), content_type="image/png")
+    except WorkflowError as exc:
+        return HttpResponse(str(exc), status=404, content_type="text/plain")
+
+
+@require_GET
+def confirm_delete(request, pk):
+    lecture = get_object_or_404(Lecture, pk=pk)
+    return render(request, "converter/delete_lecture.html", {"lecture": lecture})
+
+
+@require_POST
+def delete_set(request, pk):
+    if request.POST.get("confirm") != "yes":
+        return render(
+            request,
+            "converter/delete_lecture.html",
+            {
+                "lecture": get_object_or_404(Lecture, pk=pk),
+                "error": "Tick the confirmation before deleting this set.",
+            },
+            status=400,
+        )
+    delete_lecture(pk)
+    return redirect("/?deleted=1")
+
+
+@require_POST
+def retry_file_deletion(request, pk):
+    get_object_or_404(PendingFileDeletion, pk=pk)
+    complete = cleanup_deleted_files(pk)
+    return redirect("/?cleanup=" + ("done" if complete else "pending"))
 
 
 @require_GET

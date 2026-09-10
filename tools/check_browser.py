@@ -98,20 +98,21 @@ def main():
                     page.get_by_role("button", name="Open lecture").click()
                     page.get_by_role("heading", name="Memory & learning · sample").wait_for()
                     page.get_by_label("Maximum new cards").fill("2")
-                    reasoning = page.get_by_label("Reasoning level", exact=True)
-                    assert reasoning.input_value() == "low"
-                    assert reasoning.locator("option").all_text_contents() == [
-                        "Codex default",
-                        "Low",
-                        "Medium",
-                        "High",
-                        "Extra high",
-                        "Max",
-                    ]
-                    page.get_by_label("Learning focus", exact=True).select_option("understanding")
-                    page.get_by_label("Card format", exact=True).select_option("mixed")
-                    reasoning.select_option("xhigh")
-                    assert reasoning.input_value() == "xhigh"
+                    reasoning = page.get_by_role("group", name="Reasoning level", exact=True)
+                    assert reasoning.get_by_role("radio", name="Low", exact=True).is_checked()
+                    assert reasoning.get_by_role("radio").count() == 6
+                    page.get_by_role("group", name="Learning focus", exact=True).get_by_role(
+                        "radio", name="Understanding", exact=True
+                    ).check()
+                    formats = page.get_by_role("group", name="Card formats", exact=True)
+                    assert formats.get_by_role(
+                        "checkbox", name="Basic Q/A", exact=True
+                    ).is_checked()
+                    formats.get_by_role("checkbox", name="Cloze", exact=True).check()
+                    reasoning.get_by_role("radio", name="Extra high", exact=True).check()
+                    assert reasoning.get_by_role(
+                        "radio", name="Extra high", exact=True
+                    ).is_checked()
                     page.screenshot(
                         path=str(OUTPUT / "generation-settings-desktop.png"), full_page=True
                     )
@@ -237,7 +238,9 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                         generation.locator("summary").first.click()
                     page.get_by_text("Write a card yourself", exact=True).click()
                     manual = page.locator(".manual-card form")
-                    manual.get_by_label("Note format", exact=True).select_option("cloze")
+                    manual.get_by_role("group", name="Note format", exact=True).get_by_role(
+                        "radio", name="Cloze", exact=True
+                    ).check()
                     front = manual.get_by_label("Cloze text", exact=True)
                     front.fill("Retrieval practice means trying to recall information from memory.")
                     front.evaluate(
@@ -260,6 +263,25 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     editor = page.locator("[data-card-form]")
                     assert editor.get_by_label("Cloze text", exact=True).input_value() == cloze_text
                     assert editor.locator(".preview-card").count() == 2
+                    editor.locator(".crop-editor summary").click()
+                    editor.get_by_label("Include a source crop on this note", exact=True).check()
+                    crop_image = editor.locator("[data-crop-stage] img")
+                    crop_image.evaluate("image => image.decode()")
+                    crop_image.scroll_into_view_if_needed()
+                    box = crop_image.bounding_box()
+                    page.mouse.move(box["x"] + box["width"] * 0.15, box["y"] + box["height"] * 0.15)
+                    page.mouse.down()
+                    page.mouse.move(
+                        box["x"] + box["width"] * 0.7, box["y"] + box["height"] * 0.6, steps=8
+                    )
+                    page.mouse.up()
+                    assert (
+                        int(editor.get_by_label("Right", exact=True).input_value())
+                        > int(editor.get_by_label("Left", exact=True).input_value())
+                        > 0
+                    )
+                    assert editor.locator("[data-crop-selection]").is_visible()
+                    editor.get_by_label("Show the crop on the question too", exact=True).check()
                     editor.get_by_label("Extra explanation (optional)", exact=True).fill(
                         "My checked explanation."
                     )
@@ -267,6 +289,10 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     editor.get_by_text(
                         "Preview only; edits have not been saved.", exact=False
                     ).wait_for()
+                    assert editor.locator(".preview-question .source-crop").count() == 2
+                    editor.locator(".preview-question .source-crop").first.evaluate(
+                        "image => image.decode()"
+                    )
                     editor.locator(".preview-card summary").first.click()
                     assert (
                         "My checked explanation."
@@ -281,6 +307,10 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     page.get_by_role("heading", name="Export preview", exact=True).wait_for()
                     page.get_by_text("3 review cards from 2 accepted notes", exact=False).wait_for()
                     assert page.locator(".preview-card").count() == 3
+                    assert page.locator(".preview-question .source-crop").count() == 2
+                    page.locator(".preview-question .source-crop").first.evaluate(
+                        "image => image.decode()"
+                    )
                     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
                     page.screenshot(path=str(OUTPUT / "cloze-export-mobile.png"), full_page=True)
                     page.set_viewport_size({"width": 1512, "height": 1100})
@@ -288,13 +318,35 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     with page.expect_download() as cloze_export:
                         page.get_by_role("link", name="Export 3 to Anki", exact=False).click()
                     assert Path(cloze_export.value.path()).stat().st_size > 1000
+                    # Delete only this isolated synthetic set, then import the same PDF afresh.
+                    page.get_by_role("link", name="Back to lecture", exact=False).click()
+                    old_lecture_url = page.url.split("?")[0]
+                    page.get_by_role("link", name="Delete set", exact=True).click()
+                    page.get_by_role("heading", name="Delete this set?", exact=True).wait_for()
+                    assert page.get_by_role(
+                        "link", name="Save backup first", exact=True
+                    ).is_visible()
+                    page.screenshot(path=str(OUTPUT / "delete-set-desktop.png"), full_page=True)
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.get_by_role(
+                        "checkbox", name="I want to permanently delete this set from Recalloom."
+                    ).check()
+                    page.get_by_role("button", name="Delete set permanently", exact=True).click()
+                    page.get_by_text("Set removed.", exact=False).wait_for()
+                    assert page.locator(".lecture-tile").count() == 0
+                    page.get_by_role("button", name="Try a sample lecture", exact=True).click()
+                    page.locator(".card-list").wait_for()
+                    assert page.url.split("?")[0] != old_lecture_url
+                    assert page.locator(".card-item").count() == 5
+                    assert page.request.get(old_lecture_url).status == 404
                     assert not errors, errors
                     browser.close()
             finally:
                 process.terminate()
                 process.wait(timeout=10)
     print(
-        "Browser checks passed: sample import, source image, edit/accept, export, backup, page switch, generation recovery, learning focus/format, cloze selection and unsaved preview, mixed deck preview/export, desktop/mobile layouts, no JavaScript errors."
+        "Browser checks passed: sample import, edit/accept, export, backup, recovery, tickable generation choices, cloze/crop drag and unsaved preview, mixed export, confirmed set deletion and fresh reimport, desktop/mobile layouts, no JavaScript errors."
     )
     print(f"Screenshots: {OUTPUT}")
 

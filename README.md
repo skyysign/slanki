@@ -6,7 +6,7 @@ A local tool for turning lecture PDFs into editable Anki cards with source-slide
 
 **Current state:** a working personal-use alpha. Import a PDF, generate or import basic Q/A and cloze drafts, edit and accept cards beside their source slide, and export an Anki deck with bundled source images. Per-lecture backup and restore are included. Use “Try a sample lecture” to exercise the workflow without spending AI allowance.
 
-This first version supports selectable-text PDFs up to 25 MB and 100 pages. Scans and diagram-only pages are flagged. Generation uses text, not visual interpretation. Image crops/occlusion, PPTX, an internal reviewer, and mobile sync are not implemented yet.
+This first version supports selectable-text PDFs up to 25 MB and 100 pages. Scans and diagram-only pages are flagged. Generation uses text, not visual interpretation. You can manually attach a rectangular source-image crop to a note. Image occlusion, PPTX, an internal reviewer, and mobile sync are not implemented yet.
 
 ## Install and run (Windows / Python 3.12)
 
@@ -34,7 +34,7 @@ Equivalent direct commands:
 ## Make your first deck
 
 1. Open a lecture PDF, or choose **Try a sample lecture**. Re-uploading an identical PDF opens the existing lecture and preserves edits.
-2. Open **Create cards**. Select pages, learning focus, card format, and maximum new Anki cards. Use either **Generate drafts** or **Download prompt**. For the prompt route, ask your existing chat to return the requested JSON, save it as a `.json` file, and use **Import drafts**.
+2. Open **Create cards**. Tick Q/A, Cloze, or both formats; choose one learning focus and reasoning level using the visible options. Select pages and maximum new Anki cards. Use either **Generate drafts** or **Download prompt**. For the prompt route, ask your existing chat to return the requested JSON, save it as a `.json` file, and use **Import drafts**.
 3. Check each draft against its source page, edit it, and choose **Accept & next**. You can also write a card manually. Inputs are plain text.
 4. **Preview export** shows the accepted notes and their actual Anki review-card count. **Export to Anki** downloads an `.apkg` of accepted cards. Source-page images are bundled, so they remain available offline in Anki.
 5. **Save backup** downloads the original PDF, page images/text, all drafts and accepted/rejected notes, edit history, and generation-run metadata. Restore from the home page into an installation that does not already contain that lecture.
@@ -45,7 +45,7 @@ Anki backend 26.8.1 has been tested for repeated imports, question edits, bundle
 
 ## Learning focus, formats, and preview
 
-**Learning focus** offers Balanced, Core knowledge, Understanding, and Application. Balanced is the starting choice. Focus changes the requested learning task within the same card budget; Application stays within methods/examples supported by the source and does not request invented exercises. **Card format** independently offers Basic Q/A, Cloze, and Mixed Q/A and cloze. Basic Q/A remains the initial format. Both selections apply to generation and downloaded prompts, are saved with Codex runs, and survive resume and backup.
+**Learning focus** offers Balanced, Core knowledge, Understanding, and Application as visible single-choice options. Balanced is the starting choice. Focus changes the requested learning task within the same card budget; Application stays within methods/examples supported by the source and does not request invented exercises. **Card formats** has independent Basic Q/A and Cloze checkboxes: tick either one, or both for mixed generation. At least one must be selected. Basic Q/A remains the initial format. These selections apply to generation and downloaded prompts, are saved with Codex runs, and survive resume and backup.
 
 Cloze hides parts of a statement. For example, `Retrieval practice means trying to {{c1::recall}} information from {{c2::memory::where?}}.` produces two Anki cards. Reusing `c1` for both blanks produces one card hiding both together. The app supports flat, non-nested clozes numbered 1–20, with an optional hint after another `::`. Extra explanation is optional. Nested clozes, braces inside a blank, reverse cards, and image occlusion are not supported yet.
 
@@ -57,7 +57,19 @@ To preserve scheduling identities, existing note types and the set of cloze numb
 
 JSON drafts may include `"note_type": "basic"` or `"note_type": "cloze"`; cloze statements use `front` and optional extra explanation uses `back` (still include it as an empty string if unused). Earlier four-field JSON defaults to basic. Both formats need the same valid page and exact source excerpt for generated/imported drafts.
 
-Mixed basic/cloze export was checked with Anki's 26.8.1 backend: grouped and nonconsecutive cloze numbers, rendered questions/answers, repeated import, edits preserving each card's schedule, and bundled source media. Manual desktop/mobile checks for the new cloze format remain pending. The new focus/format prompts have only offline tests; their generation quality has not been measured with live lectures.
+Mixed basic/cloze export was checked with Anki's 26.8.1 backend: grouped and nonconsecutive cloze numbers, rendered questions/answers, repeated import, edits preserving each card's schedule, and bundled source media. Manual desktop/mobile checks for cloze and crops remain pending. The new focus/format prompts have only offline tests; their generation quality has not been measured with live lectures.
+
+## Source image crops
+
+Open an existing note's **Source image crop** section, tick **Include a source crop on this note**, and drag a rectangle over its source slide. The four pixel fields also let you adjust the rectangle with a keyboard. Tick **Show the crop on the question too** when the image is part of the question; otherwise it appears with the answer. Use **Preview current text**, then **Save changes** or **Accept & next**. To remove a crop, untick Include and save. For a new manual note, add its draft first, then open it to attach a crop.
+
+Each basic or cloze note supports one rectangle on its original source page. Crops are bundled as PNG media in the Anki export alongside the complete source slide. Backups preserve coordinates, placement, and revision history plus the source image used to reconstruct the crop. Editing or removing a crop retains the note's identity. Anki 26.8.1 backend checks cover crop rendering and edited reimports preserving review schedules. Cropping runs locally without model usage; it does not hide image labels or interpret diagrams.
+
+## Delete a set and test the same slides again
+
+Choose **Delete set** in the library or lecture header. The confirmation page offers **Save backup first**, identifies the set and its note/page counts, and requires a confirmation tick before deletion. Deletion removes its notes, history, imported PDF, and rendered source images and stops generation for that set. Downloaded decks, saved backups, and the original PDF outside the app remain available.
+
+Uploading the same PDF afterward creates a fresh set with new note identities. An earlier exported copy remains in Anki; fresh-set exports can therefore coexist with it. Restore a converter backup instead when you want to recover the original identities and edits. If Windows locks source files, the library shows **Retry file cleanup**; the slides can already be imported as a new set. Finish pending cleanup before restoring that deleted set's backup.
 
 ## Codex generation
 
@@ -94,7 +106,7 @@ Course logistics such as exam duration, permitted materials, dates, grading, and
 
 An invalid generated draft, including “The source excerpt is not present on page…”, appears under **skipped drafts · review details**. Other valid drafts are saved and later pages continue. Inspect the flagged question, answer, and unverified excerpt with **View source page**, then write a corrected card or generate just those pages again. Skipped drafts are excluded from cards and Anki exports; their history remains visible after later runs and is included in backups. A page being processed does not mean every learning objective is covered. Malformed JSON or a provider failure still stops the run and leaves its remaining pages available to resume. Manually imported JSON files remain all-or-nothing so you can correct the file before importing.
 
-Backups now use format version 5 to retain note formats/revisions, learning focus, generation format, actual review-card counters, reasoning selection, card limits, filtering counts, and skipped-draft details. Versions 1–4 still restore as basic notes; older application versions cannot read version 5 backups. Old generation runs restore with Codex default because their effective reasoning level is unknown.
+Backups now use format version 6 to retain source crops and their revisions alongside note formats, learning focus, generation format, actual review-card counters, reasoning selection, card limits, filtering counts, and skipped-draft details. Versions 1–5 remain readable without crops; versions 1–4 restore as basic notes. Older application versions cannot read version 6 backups. Old generation runs restore with Codex default because their effective reasoning level is unknown.
 
 Recalloom was previously named Slides to Anki. The rename preserves the backup format marker, Anki note type name/IDs, media names, and `SLIDES_*` environment variables so existing data and re-imports continue to match. Historical research filenames remain unchanged.
 
@@ -124,7 +136,7 @@ The implementation uses Python, Django, SQLite, local files, and a small browser
 .\.venv\Scripts\python.exe tools/check_browser.py
 ```
 
-The browser check needs installed Google Chrome and uses an isolated temporary database. It writes screenshots under `data/screenshots/`. The Anki backend check uses a temporary collection, never the user's Anki profile. Normal checks do not call a model. Python's temporary directories may require an unsandboxed test run in the Codex Windows environment; this is separate from running the application normally.
+The browser check needs installed Google Chrome and uses an isolated temporary database, including for confirmed deletion and reimport of synthetic slides. It covers tickable choices, crop dragging, previews, and exports and writes screenshots under `data/screenshots/`. The Anki backend check uses a temporary collection, never the user's Anki profile. Normal checks do not call a model. Python's temporary directories may require an unsandboxed test run in the Codex Windows environment; this is separate from running the application normally.
 
 For an explicitly live check using three synthetic pages and the existing Codex allowance:
 

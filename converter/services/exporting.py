@@ -11,6 +11,7 @@ from tempfile import TemporaryDirectory
 import genanki
 from django.conf import settings
 
+from .crops import crop_png
 from .files import WorkflowError, media_path
 from .note_types import study_card_count, text_html
 
@@ -20,7 +21,7 @@ CSS = """.card { font-family: Arial, sans-serif; font-size: 22px; text-align: le
 color: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }
 .nightMode.card { color: #e7eee8; background: #202825; }
 .source { font-size: 14px; opacity: .85; margin-top: 24px; }
-.source img { max-width: 100%; height: auto; margin-top: 12px; }
+.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }
 hr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }
 .cloze { font-weight: bold; color: #235945; }
 .nightMode .cloze { color: #9bcfb5; }"""
@@ -82,11 +83,21 @@ def export_deck(lecture):
         source = f"{text_html(lecture.title)} · Page {card.page.number}"
         if card.source_quote:
             source += f"<br>{text_html(card.source_quote)}"
+        front = text_html(card.front)
+        if card.source_crop:
+            cropped = crop_png(card.page, card.source_crop)
+            crop_name = f"crop_{card.pk.hex}_{hashlib.sha256(cropped).hexdigest()[:16]}.png"
+            media[crop_name] = cropped
+            crop_html = f'<br><img class="source-crop" src="{crop_name}">'
+            if card.source_crop["on_question"]:
+                front += crop_html
+            else:
+                source += crop_html
         source += f'<br><img src="{filename}">'
         deck.add_note(
             StableNote(
                 model=cloze_model if card.note_type == "cloze" else model,
-                fields=[text_html(card.front), text_html(card.back), source],
+                fields=[front, text_html(card.back), source],
                 guid=genanki.guid_for(str(card.pk)),
                 modified=card.anki_modified,
             )
@@ -104,5 +115,8 @@ def export_deck(lecture):
             archive.write(db_path, "collection.anki2")
             archive.writestr("media", json.dumps({str(i): name for i, name in enumerate(media)}))
             for index, path in enumerate(media.values()):
-                archive.write(path, str(index))
+                if isinstance(path, bytes):
+                    archive.writestr(str(index), path)
+                else:
+                    archive.write(path, str(index))
         return output.read_bytes()

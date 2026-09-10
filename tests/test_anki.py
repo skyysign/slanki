@@ -75,6 +75,14 @@ class AnkiImportTests(WorkflowFixture):
                     "Updated extra",
                     "",
                     "accepted",
+                    source_crop=dict(
+                        page=note.page.number,
+                        left=10,
+                        top=20,
+                        right=210,
+                        bottom=120,
+                        on_question=True,
+                    ),
                 )
                 update_card(
                     basic.pk,
@@ -94,6 +102,8 @@ class AnkiImportTests(WorkflowFixture):
                     if i in cloze_ids:
                         self.assertIn("Updated first", card.answer())
                         self.assertIn("Updated extra", card.answer())
+                        self.assertIn('class="source-crop"', card.question())
+                        self.assertIn('class="source-crop"', card.answer())
                 self.assertEqual(collection.media.check().missing, [])
             finally:
                 collection.close()
@@ -131,13 +141,21 @@ class AnkiImportTests(WorkflowFixture):
                 self.assertEqual(collection.find_cards(""), ids)
                 saved = collection.get_card(ids[0])
                 self.assertEqual((saved.id, saved.ivl, saved.due, saved.reps, saved.lapses), before)
-                update_card(
+                card = update_card(
                     card.id,
                     card.version,
                     "Updated question within the same second?",
                     card.back,
                     card.source_quote,
                     "accepted",
+                    source_crop=dict(
+                        page=card.page.number,
+                        left=10,
+                        top=20,
+                        right=210,
+                        bottom=120,
+                        on_question=False,
+                    ),
                 )
                 import_package()
                 saved = collection.get_card(ids[0])
@@ -145,6 +163,35 @@ class AnkiImportTests(WorkflowFixture):
                 self.assertIn("Updated question within the same second?", saved.note().fields[0])
                 self.assertIn("Page 1", saved.answer())
                 self.assertIn("<img", saved.answer())
+                self.assertNotIn('class="source-crop"', saved.question())
+                self.assertIn('class="source-crop"', saved.answer())
+                card = update_card(
+                    card.id,
+                    card.version,
+                    card.front,
+                    card.back,
+                    card.source_quote,
+                    "accepted",
+                    source_crop={**card.source_crop, "right": 220, "on_question": True},
+                )
+                import_package()
+                saved = collection.get_card(ids[0])
+                self.assertEqual((saved.id, saved.ivl, saved.due, saved.reps, saved.lapses), before)
+                self.assertIn('class="source-crop"', saved.question())
+                update_card(
+                    card.id,
+                    card.version,
+                    card.front,
+                    card.back,
+                    card.source_quote,
+                    "accepted",
+                    source_crop={},
+                )
+                import_package()
+                saved = collection.get_card(ids[0])
+                self.assertEqual((saved.id, saved.ivl, saved.due, saved.reps, saved.lapses), before)
+                self.assertNotIn('class="source-crop"', saved.question())
+                self.assertNotIn('class="source-crop"', saved.answer())
                 self.assertEqual(collection.media.check().missing, [])
             finally:
                 collection.close()

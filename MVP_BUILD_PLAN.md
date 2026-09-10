@@ -25,7 +25,7 @@ Keep the Codex integration local to each user and their own authentication. A do
 The user authorized the first batch: learning focuses, simple cloze, and card-count-aware previews. These are now implemented; see docs/STATUS.md for actual verification and remaining limitations.
 
 - Learning focus: Balanced (default), Core knowledge, Understanding, and Application. Keep this separate from reasoning effort and deck size.
-- Formats: basic Q/A and simple cloze are implemented; optional reversed cards and manual image occlusion are candidates for later work. A source-image crop is useful evidence attached to a card, and is distinct from an occlusion exercise.
+- Formats: basic Q/A and simple cloze are implemented, with tickable generation formats and visible single-choice learning focuses. Manual rectangular source-image crops can be attached to either format. Optional reversed cards and manual image occlusion are candidates for later work. A crop is attached evidence, distinct from an occlusion exercise.
 - Implemented deck-size rule for basic/cloze generation: count each basic card and each distinct cloze number when enforcing a user's budget. Show that count before export. Any future reverse-card support must count its extra cards as well.
 - Add meaningful export/re-import and backup checks for each implemented format, including preservation of existing basic notes and review scheduling. Verify rendering in the Anki clients used before claiming compatibility.
 
@@ -83,7 +83,7 @@ The earlier integrated paid-beta phase is superseded by the free, donation-suppo
 
 ## Next development task
 
-Continue from docs/STATUS.md. The basic end-to-end workflow exists. Evaluate compact card quality when live usage is authorized; simple cloze, learning focuses, and previews have been implemented with offline/backend/browser checks. Next validate their usefulness on real material and in the Anki clients actually used, then prioritize source-image crops or packaging from observed needs.
+Continue from docs/STATUS.md. The basic end-to-end workflow, cloze, learning focuses, previews, manual source crops, and confirmed set deletion exist with offline/backend/browser checks. Next validate their usefulness on real material and in the Anki clients actually used. Evaluate compact card quality when live usage is authorized, then prioritize installation and upgrade recovery for a small classmate pilot. Do not expand formats solely because they appear as later candidates here.
 
 ## Technical references
 

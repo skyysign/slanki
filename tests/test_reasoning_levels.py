@@ -84,7 +84,7 @@ class ReasoningLevelTests(WorkflowFixture):
         self.assertEqual(run.status, "failed")
         response = self.client.get(self.lecture.get_absolute_url())
         self.assertContains(response, "Reasoning: Extra high")
-        self.assertContains(response, 'value="xhigh" selected')
+        self.assertContains(response, 'value="xhigh" checked')
         self.assertEqual(
             self.client.get(reverse("run_status", args=[run.pk])).json()["reasoning_effort"],
             "Extra high",

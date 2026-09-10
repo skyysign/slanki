@@ -375,12 +375,18 @@ def launch_worker(run):
 
 def perform_run(run_id, generator=None, *, worker_token=None):
     if worker_token is None:
-        worker_token = GenerationRun.objects.get(pk=run_id).worker_token
+        worker_token = (
+            GenerationRun.objects.filter(pk=run_id).values_list("worker_token", flat=True).first()
+        )
+        if worker_token is None:
+            return
     # A cancelled worker must never save late output into a resumed attempt.
     attempt = GenerationRun.objects.filter(pk=run_id, worker_token=worker_token)
     if not attempt.filter(status="queued").update(status="running", updated_at=timezone.now()):
         return
-    run = GenerationRun.objects.select_related("lecture").get(pk=run_id)
+    run = GenerationRun.objects.select_related("lecture").filter(pk=run_id).first()
+    if run is None:
+        return
     pages = list(run.lecture.pages.filter(number__in=remaining_pages(run)))
     batch_size = max(3, math.ceil(len(run.page_numbers) / run.card_limit)) if run.card_limit else 3
 

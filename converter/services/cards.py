@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from converter.models import Card, CardRevision, Page
 
+from .crops import checked_crop
 from .files import WorkflowError
 from .note_types import plain_front, study_card_count
 
@@ -130,11 +131,12 @@ def add_drafts(lecture, validated, run=None):
     return count
 
 
-def update_card(card_id, version, front, back, source_quote, status):
+def update_card(card_id, version, front, back, source_quote, status, *, source_crop=None):
     if status not in dict(Card.STATUS):
         raise WorkflowError("Choose a valid card status.")
     with transaction.atomic():
         card = Card.objects.select_related("page").get(pk=card_id)
+        crop = checked_crop(card.source_crop if source_crop is None else source_crop, card.page)
         front, back, quote = validate_content(
             front, back, source_quote, card.page, note_type=card.note_type
         )
@@ -156,6 +158,7 @@ def update_card(card_id, version, front, back, source_quote, status):
             front=front,
             back=back,
             source_quote=quote,
+            source_crop=crop,
             status=status,
             version=version + 1,
             updated_at=timezone.now(),
@@ -169,6 +172,7 @@ def update_card(card_id, version, front, back, source_quote, status):
             front=card.front,
             back=card.back,
             source_quote=card.source_quote,
+            source_crop=card.source_crop,
             status=card.status,
             note_type=card.note_type,
         )

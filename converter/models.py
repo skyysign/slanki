@@ -42,6 +42,13 @@ class Page(models.Model):
         ]
 
 
+class PendingFileDeletion(models.Model):
+    """Committed set deletions whose private source directory still needs removal."""
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    title = models.CharField(max_length=180)
+
+
 class GenerationRun(models.Model):
     REASONING_LEVELS = [
         ("", "Codex default"),
@@ -94,6 +101,7 @@ class Card(models.Model):
     back = models.TextField(blank=True)
     note_type = models.CharField(max_length=12, choices=NOTE_TYPES, default="basic")
     source_quote = models.TextField(blank=True)
+    source_crop = models.JSONField(default=dict, blank=True)
     status = models.CharField(max_length=12, choices=STATUS, default="draft")
     fingerprint = models.CharField(max_length=64)
     version = models.PositiveIntegerField(default=1)
@@ -121,6 +129,7 @@ class CardRevision(models.Model):
     back = models.TextField(blank=True)
     note_type = models.CharField(max_length=12, choices=NOTE_TYPES, default="basic")
     source_quote = models.TextField(blank=True)
+    source_crop = models.JSONField(default=dict, blank=True)
     status = models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True)
 

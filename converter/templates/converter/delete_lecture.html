@@ -1,0 +1,17 @@
+{% extends 'converter/base.html' %}
+{% block title %}Delete set · Recalloom{% endblock %}
+{% block content %}
+<div class="home-wrap connection-wrap">
+  <a class="back-link" href="{{ lecture.get_absolute_url }}">← Keep this set</a>
+  <section class="panel connection-panel">
+    <p class="eyebrow">REMOVE A LECTURE</p><h1>Delete this set?</h1>
+    <h2>{{ lecture.title }}</h2>
+    <p>{{ lecture.cards.count }} notes and {{ lecture.pages.count }} source pages will be removed, along with the imported PDF and edit history. Any generation for this set will stop.</p>
+    <p>You can upload the same slides again to start fresh. That creates a new set with new Anki identities; an earlier exported deck remains in Anki.</p>
+    <p>Downloaded decks, saved backups, and your original PDF outside this app are kept.</p>
+    <div class="button-row"><a class="button secondary" href="{% url 'backup' lecture.pk %}">Save backup first</a><a class="button secondary" href="{{ lecture.get_absolute_url }}">Keep set</a></div>
+    {% if error %}<p class="notice warning" role="alert">{{ error }}</p>{% endif %}
+    <form action="{% url 'delete_set' lecture.pk %}" method="post">{% csrf_token %}<label class="consent"><input type="checkbox" name="confirm" value="yes" required>I want to permanently delete this set from Recalloom.</label><button class="button danger" type="submit">Delete set permanently</button></form>
+  </section>
+</div>
+{% endblock %}

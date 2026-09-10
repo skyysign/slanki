@@ -11,9 +11,10 @@ from django.db import transaction
 from django.utils.dateparse import parse_datetime
 from django.utils.timezone import is_aware
 
-from converter.models import Card, CardRevision, GenerationRun, Lecture, Page
+from converter.models import Card, CardRevision, GenerationRun, Lecture, Page, PendingFileDeletion
 
 from .cards import validate_content
+from .crops import checked_crop
 from .files import WorkflowError, media_path
 
 MAX_BACKUP_BYTES = 200 * 1024 * 1024
@@ -31,7 +32,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 5,
+        "version": 6,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -57,6 +58,7 @@ def export_backup(lecture):
                 "note_type": c.note_type,
                 "back": c.back,
                 "source_quote": c.source_quote,
+                "source_crop": checked_crop(c.source_crop, c.page),
                 "status": c.status,
                 "fingerprint": c.fingerprint,
                 "version": c.version,
@@ -71,6 +73,7 @@ def export_backup(lecture):
                         "note_type": r.note_type,
                         "back": r.back,
                         "source_quote": r.source_quote,
+                        "source_crop": checked_crop(r.source_crop, c.page),
                         "status": r.status,
                         "created_at": r.created_at.isoformat(),
                     }
@@ -185,12 +188,16 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3, 4, 5)
+                or manifest["version"] not in (1, 2, 3, 4, 5, 6)
             ):
                 raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]
             require_keys(info, "id title sha256 original_name created_at")
             lecture_id = uuid.UUID(info["id"])
+            if PendingFileDeletion.objects.filter(pk=lecture_id).exists():
+                raise WorkflowError(
+                    "Finish this set's pending file cleanup in the library before restoring it."
+                )
             if (
                 Lecture.objects.filter(pk=lecture_id).exists()
                 or Lecture.objects.filter(sha256=info["sha256"]).exists()
@@ -299,11 +306,13 @@ def restore_backup(upload):
                     require_keys(
                         c,
                         "id page front back source_quote status fingerprint version anki_modified run created_at updated_at revisions"
-                        + (" note_type" if manifest["version"] >= 5 else ""),
+                        + (" note_type" if manifest["version"] >= 5 else "")
+                        + (" source_crop" if manifest["version"] >= 6 else ""),
                     )
                     c = dict(c)
                     c.setdefault("note_type", "basic")
                     page = page_map[c.pop("page")]
+                    c["source_crop"] = checked_crop(c.get("source_crop", {}), page)
                     revisions = c.pop("revisions")
                     created, updated = (
                         timestamp(c.pop("created_at")),
@@ -325,9 +334,13 @@ def restore_backup(upload):
                         require_keys(
                             revision,
                             "version front back source_quote status created_at"
-                            + (" note_type" if manifest["version"] >= 5 else ""),
+                            + (" note_type" if manifest["version"] >= 5 else "")
+                            + (" source_crop" if manifest["version"] >= 6 else ""),
                         )
                         revision = dict(revision)
+                        revision["source_crop"] = checked_crop(
+                            revision.get("source_crop", {}), page
+                        )
                         revision.setdefault("note_type", "basic")
                         validate_content(
                             revision["front"],

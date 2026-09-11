@@ -1,5 +1,78 @@
 "use strict";
 
+const providerSettings = document.querySelector("[data-provider-settings]");
+if (providerSettings) {
+  const catalogs = JSON.parse(document.getElementById("model-catalogs").textContent);
+  const labels = JSON.parse(document.getElementById("effort-labels").textContent);
+  const provider = providerSettings.querySelector("[data-provider-select]");
+  const model = providerSettings.querySelector("[data-model-select]");
+  const effort = providerSettings.querySelector("[data-effort-select]");
+  const message = providerSettings.querySelector("[data-model-message]");
+  const refresh = providerSettings.querySelector("[data-refresh-models]");
+  const form = providerSettings.closest("form");
+  const remembered = {};
+  let activeProvider = provider.value, requestNumber = 0;
+  const selected = () => catalogs[provider.value].models.find(item => item.id === model.value);
+  const showEfforts = (wanted) => {
+    const item = selected();
+    const levels = item?.efforts || [""];
+    effort.replaceChildren(...levels.map(level => new Option(labels[level] || level, level)));
+    effort.value = levels.includes(wanted) ? wanted : (levels.includes("low") ? "low" : "");
+    // Keep the default value submitted even when the model has no effort control.
+    effort.disabled = levels.length === 1;
+  };
+  const showModels = (wantedModel, wantedEffort) => {
+    const data = catalogs[provider.value];
+    model.replaceChildren(...data.models.map(item => new Option(item.label, item.id)));
+    if (wantedModel && !data.models.some(item => item.id === wantedModel)) {
+      model.add(new Option(`Saved model: ${wantedModel} (refresh to verify)`, wantedModel));
+    }
+    model.value = wantedModel || "";
+    showEfforts(wantedEffort);
+    message.textContent = data.message;
+    providerSettings.querySelector("[data-provider-connect]").href = `/connections/${provider.value}/`;
+    form.querySelector("[data-consent-provider]").textContent = provider.value === "claude" ? "Anthropic through Claude Code" : "OpenAI through Codex";
+  };
+  const loadModels = async (initialEffort) => {
+    const requestedProvider = provider.value, number = ++requestNumber;
+    refresh.disabled = true;
+    message.textContent = "Reading model choices from your local CLI… No generation is running.";
+    try {
+      const response = await fetch(`/connections/${requestedProvider}/models/refresh/`, {
+        method: "POST", headers: { "X-CSRFToken": form.elements.csrfmiddlewaretoken.value },
+      });
+      const data = await response.json();
+      if (number !== requestNumber || requestedProvider !== provider.value) return;
+      if (!response.ok) throw new Error(data.error || "Could not read models. Check your CLI installation and sign-in.");
+      // Preserve the requested first-run level while discovery temporarily shows
+      // a disabled default-only control. Later refreshes retain the user's choice.
+      const nextEffort = effort.disabled && !catalogs[requestedProvider].updated_at
+        ? (initialEffort ?? effort.value) : effort.value;
+      catalogs[requestedProvider] = data;
+      showModels(model.value, nextEffort);
+    } catch (error) {
+      if (number === requestNumber) message.textContent = error.message;
+    } finally {
+      if (number === requestNumber) refresh.disabled = false;
+    }
+  };
+  provider.addEventListener("change", () => {
+    remembered[activeProvider] = [model.value, effort.value];
+    activeProvider = provider.value;
+    requestNumber += 1;
+    refresh.disabled = false;
+    // Changing who receives lecture text always clears the sharing confirmation.
+    form.elements.consent.checked = false;
+    const choices = remembered[activeProvider] || ["", "low"];
+    showModels(...choices);
+    if (!catalogs[activeProvider].updated_at) loadModels(choices[1]);
+  });
+  model.addEventListener("change", () => showEfforts(effort.value));
+  refresh.addEventListener("click", () => loadModels());
+  showModels(providerSettings.dataset.selectedModel, providerSettings.dataset.selectedEffort);
+  if (!catalogs[activeProvider].updated_at) loadModels(providerSettings.dataset.selectedEffort);
+}
+
 document.querySelectorAll("[data-crop-stage]").forEach((stage) => {
   const form = stage.closest("form");
   const image = stage.querySelector("img");
@@ -218,7 +291,7 @@ if (progress) {
       const skipped = run.issues ? ` ${run.issues} drafts skipped; refresh to review the details.` : "";
       const selection = ` ${run.filtered_count || 0} logistics candidates filtered; ${run.over_limit_count || 0} excluded by the card limit.`;
       const limit = run.card_limit ? ` (maximum ${run.card_limit})` : "";
-      const reasoning = run.reasoning_effort ? `${run.reasoning_effort} reasoning · ` : "";
+      const reasoning = `${run.provider} · ${run.model} · ${run.reasoning_effort} reasoning · `;
       const focus = `${run.learning_focus} · ${run.card_format} · `;
       message.textContent = `${reasoning}${focus}${run.completed} of ${run.total} pages processed · ${run.cards_added} draft notes / ${run.study_cards_added} Anki review cards saved${limit}.${skipped}${selection}`;
       if (!["queued", "running"].includes(run.status)) {

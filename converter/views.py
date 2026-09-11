@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.http import FileResponse, HttpResponse, JsonResponse
+from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.text import slugify
@@ -16,7 +16,7 @@ from .forms import CardForm, UploadForm
 from .models import Card, GenerationRun, Lecture, Page, PendingFileDeletion
 from .services.backups import export_backup, restore_backup
 from .services.cards import Draft, add_drafts, update_card, validate_content, validate_payload
-from .services.connection import connection
+from .services.connection import claude_connection, connection
 from .services.crops import crop_from_form, crop_png
 from .services.deletion import cleanup_deleted_files, delete_lecture
 from .services.documents import import_pdf
@@ -35,6 +35,13 @@ from .services.note_types import (
     NOTE_TYPES,
     checked_choice,
     study_previews,
+)
+from .services.providers import (
+    EFFORTS,
+    PROVIDERS,
+    checked_model_settings,
+    model_catalog,
+    refresh_models,
 )
 from .services.selection import (
     checked_card_limit,
@@ -70,26 +77,62 @@ def home(request):
     )
 
 
-@require_GET
-def codex_connection(request):
-    return render(request, "converter/connection.html", {"connection": connection.status()})
+def provider_connection(provider):
+    if provider not in dict(PROVIDERS):
+        raise Http404
+    return claude_connection if provider == "claude" else connection
 
 
 @require_GET
-def codex_connection_status(request):
-    return JsonResponse(connection.status())
+def codex_connection(request, provider="codex"):
+    manager = provider_connection(provider)
+    return render(
+        request,
+        "converter/connection.html",
+        {
+            "connection": manager.status(),
+            "provider_id": provider,
+            "provider_label": dict(PROVIDERS)[provider],
+            "providers": PROVIDERS,
+            "account_label": "Claude" if provider == "claude" else "ChatGPT",
+            "company_label": "Anthropic" if provider == "claude" else "OpenAI",
+            "setup_url": "https://code.claude.com/docs/en/setup"
+            if provider == "claude"
+            else "https://developers.openai.com/codex/cli",
+        },
+    )
+
+
+@require_GET
+def codex_connection_status(request, provider="codex"):
+    return JsonResponse(provider_connection(provider).status())
 
 
 @require_POST
-def connect_codex(request):
-    connection.start()
-    return redirect("codex_connection")
+def connect_codex(request, provider="codex"):
+    provider_connection(provider).start()
+    return redirect("provider_connection", provider=provider)
 
 
 @require_POST
-def cancel_codex_login(request):
-    connection.cancel()
-    return redirect("codex_connection")
+def cancel_codex_login(request, provider="codex"):
+    provider_connection(provider).cancel()
+    return redirect("provider_connection", provider=provider)
+
+
+@require_GET
+def provider_models(request, provider):
+    provider_connection(provider)
+    return JsonResponse(model_catalog(provider))
+
+
+@require_POST
+def refresh_provider_models(request, provider):
+    provider_connection(provider)
+    try:
+        return JsonResponse(refresh_models(provider))
+    except WorkflowError as exc:
+        return JsonResponse({**model_catalog(provider), "error": str(exc)}, status=400)
 
 
 @require_POST
@@ -143,12 +186,14 @@ def lecture_context(item, request, selected=None, form=None):
     last_run = item.runs.order_by("-updated_at").first()
     resume_count = (
         len(remaining_pages(last_run))
-        if last_run and last_run.provider == "codex" and last_run.status in ("failed", "cancelled")
+        if last_run
+        and last_run.provider in dict(PROVIDERS)
+        and last_run.status in ("failed", "cancelled")
         else 0
     )
     # Keep earlier warnings visible when a later run or JSON import is created.
     issue_runs = [run for run in item.runs.all() if run.issues]
-    last_codex_run = item.runs.filter(provider="codex").order_by("-updated_at").first()
+    last_codex_run = item.runs.filter(provider__in=dict(PROVIDERS)).order_by("-updated_at").first()
     crop = selected.source_crop if selected else {}
     crop_enabled = bool(crop)
     if selected and request.method == "POST" and request.POST.get("crop_present") == "yes":
@@ -158,6 +203,15 @@ def lecture_context(item, request, selected=None, form=None):
         crop["on_question"] = request.POST.get("crop_on_question") == "yes"
         crop_enabled = request.POST.get("crop_enabled") == "yes"
     selected_format = last_codex_run.card_format if last_codex_run else "basic"
+    selected_provider = last_codex_run.provider if last_codex_run else "codex"
+    selected_model = last_codex_run.model if last_codex_run else ""
+    selected_reasoning = last_codex_run.reasoning_effort if last_codex_run else "low"
+    catalogs = {provider: model_catalog(provider) for provider, _ in PROVIDERS}
+    models = list(catalogs[selected_provider]["models"])
+    if selected_model and selected_model not in [row["id"] for row in models]:
+        models.append(
+            {"id": selected_model, "label": f"Saved model: {selected_model} (refresh to verify)"}
+        )
     return {
         "lecture": item,
         "cards": cards,
@@ -186,8 +240,14 @@ def lecture_context(item, request, selected=None, form=None):
         "warning_pages": [p for p in pages if p.warning],
         "default_card_limit": default_card_limit(sum(not p.warning for p in pages)),
         "logistics_count": len(logistics_drafts(item)),
-        "reasoning_levels": GenerationRun.REASONING_LEVELS,
-        "selected_reasoning": last_codex_run.reasoning_effort if last_codex_run else "low",
+        "reasoning_levels": EFFORTS,
+        "selected_reasoning": selected_reasoning,
+        "providers": PROVIDERS,
+        "selected_provider": selected_provider,
+        "selected_model": selected_model,
+        "provider_models": models,
+        "model_catalogs": catalogs,
+        "effort_labels": dict(EFFORTS),
     }
 
 
@@ -268,13 +328,18 @@ def generate(request, pk):
     if request.POST.get("consent") != "yes":
         return error_page(
             request,
-            "Confirm that the selected slide text can be sent through your Codex account.",
+            "Confirm that the selected slide text can be sent through your chosen CLI account.",
             item,
         )
     try:
         pages = selected_pages(request, item)
         limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
         effort = checked_reasoning_effort(request.POST.get("reasoning_effort", "low"))
+        provider = request.POST.get("provider", "codex")
+        model = request.POST.get("model", "")
+        if "provider" in request.POST and "reasoning_effort" not in request.POST:
+            effort = ""
+        checked_model_settings(provider, model, effort)
         focus = checked_choice(
             request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
         )
@@ -286,6 +351,8 @@ def generate(request, pk):
             reasoning_effort=effort,
             learning_focus=focus,
             card_format=card_format,
+            provider=provider,
+            model=model,
         )
         return redirect(item)
     except WorkflowError as exc:
@@ -544,6 +611,8 @@ def run_status(request, pk):
             "issues": len(run.issues),
             "card_limit": run.card_limit,
             "reasoning_effort": run.get_reasoning_effort_display(),
+            "provider": run.provider_label,
+            "model": run.model_label,
             "filtered_count": run.filtered_count,
             "over_limit_count": run.over_limit_count,
         }

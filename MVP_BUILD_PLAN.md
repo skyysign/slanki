@@ -18,7 +18,7 @@ Use Anki for scheduling and mobile study. The local tool is the open-source prod
 4. **Local generation integration.** Automate one supported route, initially the user's installed Codex CLI. Keep credentials with the CLI. Codex non-interactive execution supports saved CLI authentication and schema-constrained output; enforce separate application-side validation. Process lecture content with restricted permissions, as source data rather than instructions to execute.
 5. **Independent installation and pilot.** Package the supported desktop environment, document the actual AI/data path and limits, and invite five classmates after the beta checkpoints pass.
 
-Keep the Codex integration local to each user and their own authentication. A donation page or static distribution website does not require a shared generation backend.
+Keep CLI integrations local to each user and their own authentication. The user subsequently requested Claude Code and provider-specific model/effort dropdowns; Codex and Claude Code adapters now exist. Other researched CLIs remain candidates, with verification tracked in docs/CLI_PROVIDERS.md. A donation page or static distribution website does not require a shared generation backend.
 
 ## Agreed direction for the next card features
 
@@ -46,7 +46,7 @@ Anki documents its [standard note types](https://docs.ankiweb.net/getting-starte
 - Start with basic Q/A, then simple cloze. A manually selected crop is an attached image, not automatic image occlusion.
 - Show the full source page whenever a smaller reliable region is unavailable.
 - Explicitly identify scans and slides whose meaning cannot be captured by the supported extraction path. Do not quietly present partial extraction as complete lecture coverage.
-- Defer native mobile apps, an internal SRS, Anki import, two-way Anki sync, accounts, payments, course search/scraping, automatic occlusion, OCR, tutoring, and multiple AI providers.
+- Defer native mobile apps, an internal SRS, Anki import, two-way Anki sync, accounts, payments, course search/scraping, automatic occlusion, OCR, and tutoring. Further CLI integrations beyond the requested Codex/Claude pair need their own narrow scope and verification.
 
 If most of the user's actual lectures are scans or diagram-only material, revise the input scope first; a text-only prototype would not meet the personal need.
 

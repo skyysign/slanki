@@ -32,6 +32,7 @@ class WorkflowFixture(TestCase):
         (root / "media").mkdir()
         (root / "work").mkdir()
         cls.overrides = override_settings(
+            DATA_DIR=root,
             MEDIA_ROOT=root / "media",
             WORK_DIR=root / "work",
             ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"],

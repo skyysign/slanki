@@ -1,0 +1,10 @@
+<div data-provider-settings data-selected-model="{{ selected_model }}" data-selected-effort="{{ selected_reasoning }}">
+  {{ model_catalogs|json_script:"model-catalogs" }}{{ effort_labels|json_script:"effort-labels" }}
+  <label for="ai-provider">AI provider</label>
+  <select id="ai-provider" name="provider" data-provider-select>{% for value, label in providers %}<option value="{{ value }}" {% if value == selected_provider %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+  <p class="form-note"><a class="text-button" href="{% url 'provider_connection' selected_provider %}" data-provider-connect>Check connection / sign in →</a></p>
+  <label for="ai-model">Model</label><select id="ai-model" name="model" data-model-select>{% for item in provider_models %}<option value="{{ item.id }}" {% if item.id == selected_model %}selected{% endif %}>{{ item.label }}</option>{% endfor %}</select>
+  <button class="text-button" type="button" data-refresh-models>Refresh models</button><p class="form-note" role="status" data-model-message>Choices come from your installed CLI. Refreshing checks metadata without generating cards.</p>
+  <label for="reasoning-effort">Reasoning level</label><select id="reasoning-effort" name="reasoning_effort" data-effort-select aria-describedby="reasoning-help">{% for value, label in reasoning_levels %}<option value="{{ value }}" {% if value == selected_reasoning %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+  <p class="form-note" id="reasoning-help">Available levels depend on the selected model. Higher levels can take longer and use more allowance. These choices apply to Generate drafts; for a downloaded prompt, choose the model and reasoning in your chat.</p>
+</div>

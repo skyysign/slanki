@@ -1,7 +1,6 @@
 import json
 import math
 import os
-import shutil
 import subprocess
 import sys
 import time
@@ -16,6 +15,13 @@ from django.utils import timezone
 from converter.models import GenerationRun
 
 from .cards import add_drafts, validate_generated_batch
+from .cli import (
+    claude_environment,
+    claude_executable,
+    claude_isolation_args,
+    codex_executable,
+    stop_process,
+)
 from .files import WorkflowError
 from .note_types import (
     CARD_FORMATS,
@@ -24,6 +30,7 @@ from .note_types import (
     checked_choice,
     study_card_count,
 )
+from .providers import checked_model_id, checked_model_settings, checked_provider
 from .selection import (
     checked_card_limit,
     default_card_limit,
@@ -127,36 +134,13 @@ def prompt_for(
     )
 
 
-def codex_executable():
-    executable = shutil.which(settings.CODEX_BINARY)
-    if settings.CODEX_BINARY == "codex" and (
-        not executable or Path(executable).suffix.lower() in (".cmd", ".bat")
-    ):
-        # VS Code bundles a native CLI; a double-clicked launcher may not inherit its PATH.
-        extensions = Path.home() / ".vscode" / "extensions"
-        candidates = list(extensions.glob("openai.chatgpt-*/bin/windows-*/codex.exe"))
-        if candidates:
-            executable = str(max(candidates, key=lambda path: path.stat().st_mtime))
-    if not executable:
-        raise WorkflowError(
-            "Codex CLI was not found. Install it and sign in, or use Import drafts. See the README for setup."
-        )
-    if Path(executable).suffix.lower() in (".cmd", ".bat"):
-        raise WorkflowError(
-            "Set SLIDES_CODEX_BINARY to the native codex.exe, rather than a .cmd wrapper. See the README."
-        )
-    return executable
-
-
 class Cancelled(Exception):
     pass
 
 
 def checked_reasoning_effort(value):
     if not isinstance(value, str) or value not in dict(GenerationRun.REASONING_LEVELS):
-        raise WorkflowError(
-            "Choose a supported reasoning level: Codex default, Low, Medium, High, Extra high, or Max."
-        )
+        raise WorkflowError("Choose a supported reasoning level.")
     return value
 
 
@@ -169,7 +153,9 @@ def codex_generate(
     reasoning_effort="",
     learning_focus="balanced",
     card_format="basic",
+    model="",
 ):
+    checked_model_id(model)
     reasoning_effort = checked_reasoning_effort(reasoning_effort)
     checked_choice(learning_focus, LEARNING_FOCUSES, "learning focus")
     checked_choice(card_format, CARD_FORMATS, "card format")
@@ -212,7 +198,8 @@ def codex_generate(
             str(output),
             "-",
         ]
-        if model := os.environ.get("SLIDES_CODEX_MODEL"):
+        if model := model or os.environ.get("SLIDES_CODEX_MODEL"):
+            checked_model_id(model)
             command[command.index("--output-schema") : command.index("--output-schema")] = [
                 "--model",
                 model,
@@ -284,6 +271,111 @@ def codex_generate(
             ) from exc
 
 
+def claude_generate(
+    pages,
+    cancelled=lambda: False,
+    *,
+    card_limit=None,
+    existing_questions=(),
+    reasoning_effort="",
+    learning_focus="balanced",
+    card_format="basic",
+    model="",
+):
+    from .connection import claude_login_status
+
+    checked_model_settings("claude", model, reasoning_effort)
+    if claude_login_status()["state"] != "connected":
+        raise WorkflowError("Connect Claude Code with your Claude account before generating.")
+    if sum(len(page.text) for page in pages) > 200000:
+        raise WorkflowError(
+            "This batch contains too much text. Select fewer pages or increase the card limit."
+        )
+    with TemporaryDirectory(dir=settings.WORK_DIR) as directory:
+        directory = Path(directory)
+        output = directory / "result.json"
+        command = [
+            claude_executable(),
+            "-p",
+            "--output-format",
+            "json",
+            "--json-schema",
+            json.dumps(SCHEMA),
+            "--max-turns",
+            "3",
+            *claude_isolation_args(),
+        ]
+        if model:
+            command.extend(["--model", model])
+        if reasoning_effort:
+            command.extend(["--effort", reasoning_effort])
+        with (
+            (directory / "prompt.txt").open("wb+") as prompt,
+            output.open("wb") as result,
+            (directory / "diagnostic.txt").open("wb") as log,
+        ):
+            prompt.write(
+                prompt_for(
+                    pages,
+                    card_limit,
+                    existing_questions,
+                    learning_focus=learning_focus,
+                    card_format=card_format,
+                ).encode("utf-8")
+            )
+            prompt.seek(0)
+            process = subprocess.Popen(
+                command,
+                stdin=prompt,
+                stdout=result,
+                stderr=log,
+                cwd=directory,
+                env=claude_environment(),
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            )
+            deadline = time.monotonic() + settings.GENERATION_TIMEOUT
+            try:
+                while process.poll() is None:
+                    if cancelled():
+                        raise Cancelled()
+                    if time.monotonic() > deadline:
+                        raise WorkflowError(
+                            "Claude Code timed out. Completed batches are saved; try fewer pages."
+                        )
+                    if output.stat().st_size > 2 * 1024 * 1024 or log.tell() > 5 * 1024 * 1024:
+                        raise WorkflowError(
+                            "Claude Code returned too much output. Try fewer pages."
+                        )
+                    time.sleep(0.5)
+            finally:
+                stop_process(process)
+        if process.returncode != 0:
+            raise WorkflowError(
+                "Claude Code could not finish. Check your sign-in, allowance, and selected model/effort. Completed drafts are preserved."
+            )
+        if output.stat().st_size > 2 * 1024 * 1024:
+            raise WorkflowError("Claude Code returned too much output. Try fewer pages.")
+        try:
+            envelope = json.loads(output.read_text(encoding="utf-8"))
+            if (
+                not isinstance(envelope, dict)
+                or envelope.get("type") != "result"
+                or envelope.get("is_error") is True
+                or envelope.get("subtype") != "success"
+            ):
+                raise ValueError
+            payload = envelope.get("structured_output")
+            if payload is None:
+                payload = json.loads(envelope.get("result", ""))
+            if not isinstance(payload, dict):
+                raise ValueError
+            return payload
+        except (ValueError, TypeError, UnicodeError) as exc:
+            raise WorkflowError(
+                "Claude Code did not return a successful JSON result. No cards from this batch were imported."
+            ) from exc
+
+
 def start_generation(
     lecture,
     page_numbers,
@@ -292,7 +384,10 @@ def start_generation(
     *,
     learning_focus="balanced",
     card_format="basic",
+    provider="codex",
+    model="",
 ):
+    checked_model_settings(provider, model, reasoning_effort)
     reasoning_effort = checked_reasoning_effort(reasoning_effort)
     checked_choice(learning_focus, LEARNING_FOCUSES, "learning focus")
     checked_choice(card_format, CARD_FORMATS, "card format")
@@ -300,10 +395,19 @@ def start_generation(
     if not pages:
         raise WorkflowError("Select at least one page with usable text.")
     card_limit = checked_card_limit(card_limit, len(pages))
-    codex_executable()
+    if provider == "claude":
+        from .connection import claude_login_status
+
+        claude_executable()
+        if claude_login_status()["state"] != "connected":
+            raise WorkflowError("Connect Claude Code with your Claude account before generating.")
+    else:
+        codex_executable()
     try:
         run = GenerationRun.objects.create(
             lecture=lecture,
+            provider=provider,
+            model=model,
             page_numbers=[page.number for page in pages],
             card_limit=card_limit,
             reasoning_effort=reasoning_effort,
@@ -327,12 +431,21 @@ def resume_generation(run):
     if run.status in ("queued", "running"):
         return run
     if (
-        run.provider != "codex"
+        run.provider not in ("codex", "claude")
         or run.status not in ("failed", "cancelled")
         or not remaining_pages(run)
     ):
         raise WorkflowError("This run has no remaining pages to resume.")
-    codex_executable()
+    checked_provider(run.provider)
+    checked_model_settings(run.provider, run.model, run.reasoning_effort)
+    if run.provider == "claude":
+        from .connection import claude_login_status
+
+        if claude_login_status()["state"] != "connected":
+            raise WorkflowError("Reconnect Claude Code to resume through the same provider.")
+        claude_executable()
+    else:
+        codex_executable()
     token = uuid.uuid4()
     try:
         with transaction.atomic():
@@ -427,7 +540,9 @@ def perform_run(run_id, generator=None, *, worker_token=None):
                     if run.card_limit is not None
                     else []
                 )
-                payload = codex_generate(
+                generate = claude_generate if run.provider == "claude" else codex_generate
+                checked_provider(run.provider)
+                payload = generate(
                     batch,
                     cancelled,
                     card_limit=batch_limit,
@@ -435,6 +550,7 @@ def perform_run(run_id, generator=None, *, worker_token=None):
                     reasoning_effort=run.reasoning_effort,
                     learning_focus=run.learning_focus,
                     card_format=run.card_format,
+                    model=run.model,
                 )
             payload, prefiltered = filter_generated_logistics(payload)
             validated, issues = validate_generated_batch(

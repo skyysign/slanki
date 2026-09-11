@@ -16,6 +16,7 @@ from converter.models import Card, CardRevision, GenerationRun, Lecture, Page, P
 from .cards import validate_content
 from .crops import checked_crop
 from .files import WorkflowError, media_path
+from .providers import checked_model_id
 
 MAX_BACKUP_BYTES = 200 * 1024 * 1024
 
@@ -32,7 +33,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 6,
+        "version": 7,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -87,6 +88,7 @@ def export_backup(lecture):
                 "id": str(r.id),
                 "status": r.status,
                 "provider": r.provider,
+                "model": r.model,
                 "page_numbers": r.page_numbers,
                 "completed_pages": r.completed_pages,
                 "issues": r.issues,
@@ -188,7 +190,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3, 4, 5, 6)
+                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7)
             ):
                 raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]
@@ -273,9 +275,12 @@ def restore_backup(upload):
                             " study_cards_added learning_focus card_format"
                             if manifest["version"] >= 5
                             else ""
-                        ),
+                        )
+                        + (" model" if manifest["version"] >= 7 else ""),
                     )
                     r = dict(r)
+                    r.setdefault("model", "")
+                    checked_model_id(r["model"])
                     r.setdefault("issues", [])
                     if manifest["version"] < 5:
                         r["study_cards_added"] = r["cards_added"]

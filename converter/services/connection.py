@@ -1,11 +1,13 @@
 """Reuse Codex's own local sign-in; never read, copy, or return its credentials."""
 
 import atexit
+import json
 import subprocess
 import threading
 
 from django.conf import settings
 
+from .cli import claude_environment, claude_executable, claude_is_external
 from .files import WorkflowError
 from .generation import codex_executable
 
@@ -57,10 +59,69 @@ def login_status():
     }
 
 
+def claude_login_status():
+    try:
+        executable = claude_executable()
+    except WorkflowError:
+        return {
+            "state": "missing",
+            "message": "Claude Code is not installed or could not be found on this computer.",
+        }
+    if claude_is_external():
+        return {
+            "state": "external",
+            "message": "Claude Code is configured for an API or another service. This integration uses your Claude subscription sign-in. Start Recalloom without those API overrides to connect.",
+        }
+    try:
+        result = subprocess.run(
+            [executable, "auth", "status"],
+            cwd=settings.WORK_DIR,
+            env=claude_environment(),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=8,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        if len(result.stdout) > 64 * 1024:
+            raise ValueError
+        data = json.loads(result.stdout)
+        if not isinstance(data, dict):
+            raise ValueError
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        return {
+            "state": "unknown",
+            "message": "Could not check Claude Code sign-in. Update Claude Code if needed, then try again.",
+        }
+    # Discard account identifiers and every raw output field after classification.
+    if result.returncode == 0 and data.get("loggedIn") is True:
+        if data.get("authMethod") in ("claude.ai", "oauth") and data.get("apiProvider") in (
+            None,
+            "firstParty",
+        ):
+            return {"state": "connected", "message": "Your saved Claude sign-in is ready to use."}
+        return {
+            "state": "external",
+            "message": "Claude Code reported API or external-provider authentication. Connect with its Claude subscription sign-in for this integration.",
+        }
+    if data.get("loggedIn") is False:
+        return {
+            "state": "signed_out",
+            "message": "Connect your Claude account to generate cards with Claude Code.",
+        }
+    return {
+        "state": "unknown",
+        "message": "Claude Code did not report a recognized sign-in. Check your installation and try again.",
+    }
+
+
 class CodexConnection:
     """One pending login in the single-process local app, bounded and cancellable."""
 
-    def __init__(self):
+    def __init__(self, provider="codex"):
+        self.provider = provider
+        self.label = "Claude Code" if provider == "claude" else "Codex"
         self._lock = threading.RLock()
         self._process = None
         self._timer = None
@@ -86,7 +147,7 @@ class CodexConnection:
         with self._lock:
             if self._process is process:
                 self._stop()
-                self._error = "Sign-in timed out. Choose Connect Codex to try again."
+                self._error = f"Sign-in timed out. Choose Connect {self.label} to try again."
 
     def status(self):
         with self._lock:
@@ -95,7 +156,7 @@ class CodexConnection:
                 if code is None:
                     return {
                         "state": "waiting",
-                        "message": "Finish signing in in the browser window opened by Codex, then return here.",
+                        "message": f"Finish signing in in the browser window opened by {self.label}, then return here.",
                     }
                 self._process = None
                 self._clear_timer()
@@ -103,7 +164,7 @@ class CodexConnection:
                     self._error = (
                         "Sign-in did not finish. Try again and complete the browser sign-in."
                     )
-            state = login_status()
+            state = claude_login_status() if self.provider == "claude" else login_status()
             if state["state"] == "connected":
                 self._error = ""
             elif self._error:
@@ -113,15 +174,18 @@ class CodexConnection:
     def start(self):
         with self._lock:
             state = self.status()
-            if state["state"] in ("connected", "waiting", "missing"):
+            if state["state"] in ("connected", "waiting", "missing", "external"):
                 return state
             self._error = ""
             try:
                 # The supported CLI login opens the official browser flow and
                 # stores the resulting sign-in itself. No shell or token copying.
                 self._process = subprocess.Popen(
-                    [codex_executable(), "login"],
+                    [claude_executable(), "auth", "login"]
+                    if self.provider == "claude"
+                    else [codex_executable(), "login"],
                     cwd=settings.WORK_DIR,
+                    env=claude_environment() if self.provider == "claude" else None,
                     stdin=subprocess.DEVNULL,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
@@ -133,12 +197,12 @@ class CodexConnection:
             except (OSError, WorkflowError):
                 self._process = None
                 self._error = (
-                    "Could not open Codex sign-in. Check your Codex installation and try again."
+                    f"Could not open {self.label} sign-in. Check its installation and try again."
                 )
                 return {"state": "failed", "message": self._error}
             return {
                 "state": "waiting",
-                "message": "Finish signing in in the browser window opened by Codex, then return here.",
+                "message": f"Finish signing in in the browser window opened by {self.label}, then return here.",
             }
 
     def cancel(self):
@@ -148,4 +212,6 @@ class CodexConnection:
 
 
 connection = CodexConnection()
+claude_connection = CodexConnection("claude")
 atexit.register(connection.cancel)
+atexit.register(claude_connection.cancel)

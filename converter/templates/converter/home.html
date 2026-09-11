@@ -20,7 +20,7 @@
     <section class="panel getting-started"><p class="eyebrow">A SMALLER STUDY WORKFLOW</p><h2>From slides to a study session.</h2>
       <ol class="steps"><li><span>01</span><div><strong>Bring your lecture</strong><p>Pages and their source images stay together.</p></div></li><li><span>02</span><div><strong>Make the cards yours</strong><p>Generate drafts, check the slide, edit and accept.</p></div></li><li><span>03</span><div><strong>Take them to Anki</strong><p>Export accepted cards with their source images.</p></div></li></ol>
       <form action="{% url 'demo' %}" method="post" data-busy="Opening sample…">{% csrf_token %}<button class="button secondary" type="submit">Try a sample lecture <span aria-hidden="true">↗</span></button><p class="form-note">Synthetic slides and prepared draft cards. No AI usage.</p></form>
-      <p class="form-note">Ready to generate from your own slides? <a class="text-button" href="{% url 'codex_connection' %}">Connect Codex →</a></p>
+      <p class="form-note">Ready to generate from your own slides? <a class="text-button" href="{% url 'codex_connection' %}">Connect an AI provider →</a></p>
     </section>
   </div>
   <section class="library"><div class="section-heading"><div><p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p><h2>Your lectures <span class="count">{{ lectures|length }}</span></h2></div></div>

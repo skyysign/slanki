@@ -3,6 +3,7 @@
 No provider calls, no access to the user's Anki profile, no edits to real lectures.
 """
 
+import json
 import os
 import socket
 import subprocess
@@ -27,7 +28,35 @@ def main():
             "SLIDES_DATA_DIR": directory,
             # Connection UI checks must not inspect or change a real Codex sign-in.
             "SLIDES_CODEX_BINARY": str(Path(directory) / "missing-codex.exe"),
+            "SLIDES_CLAUDE_BINARY": str(Path(directory) / "missing-claude.exe"),
         }
+        for provider in ("codex", "claude"):
+            levels = (
+                ["", "low", "medium", "high", "xhigh", "max"]
+                if provider == "codex"
+                else ["", "low", "medium", "high"]
+            )
+            models = [
+                {"id": "", "label": "CLI default", "efforts": levels, "default_effort": "low"},
+                {
+                    "id": "synthetic-" + provider,
+                    "label": "Synthetic " + provider,
+                    "efforts": levels,
+                    "default_effort": "low",
+                },
+            ]
+            if provider == "claude":
+                models.append(
+                    {
+                        "id": "synthetic-haiku",
+                        "label": "Synthetic Haiku",
+                        "efforts": [""],
+                        "default_effort": "",
+                    }
+                )
+            (Path(directory) / f"models-{provider}.json").write_text(
+                json.dumps({"models": models, "updated_at": 1}), encoding="utf-8"
+            )
         subprocess.run(
             [sys.executable, "manage.py", "migrate", "--noinput"],
             cwd=ROOT,
@@ -77,7 +106,7 @@ def main():
                     page.get_by_role("heading", name="Add a lecture").wait_for()
                     page.screenshot(path=str(OUTPUT / "home-desktop.png"), full_page=True)
                     assert page.title() == "Recalloom"
-                    page.get_by_role("link", name="Codex connection", exact=True).click()
+                    page.get_by_role("link", name="AI connections", exact=True).click()
                     page.get_by_role("link", name="Open the Codex setup guide").wait_for()
                     assert (
                         page.locator("[data-connection-state]").get_attribute(
@@ -91,16 +120,47 @@ def main():
                     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
                     page.get_by_role("link", name="Your lectures", exact=False).click()
                     page.set_viewport_size({"width": 1512, "height": 1100})
+                    # First installation: only a placeholder is available until
+                    # discovery finishes. Use synthetic metadata, never a CLI.
+                    catalog_path = Path(directory) / "models-codex.json"
+                    cached_catalog = catalog_path.read_text(encoding="utf-8")
+                    catalog_path.unlink()
+                    discovery = {**json.loads(cached_catalog), "message": "Synthetic models ready"}
+                    page.route(
+                        "**/connections/codex/models/refresh/",
+                        lambda route: route.fulfill(json=discovery),
+                    )
                     page.get_by_label("Title", exact=True).fill("Memory & learning · sample")
                     page.locator("#id_pdf").set_input_files(
                         str(ROOT / "tests/fixtures/synthetic/lecture.pdf")
                     )
                     page.get_by_role("button", name="Open lecture").click()
                     page.get_by_role("heading", name="Memory & learning · sample").wait_for()
+                    page.get_by_text("Synthetic models ready", exact=True).wait_for()
+                    catalog_path.write_text(cached_catalog, encoding="utf-8")
+                    page.unroute("**/connections/codex/models/refresh/")
                     page.get_by_label("Maximum new cards").fill("2")
-                    reasoning = page.get_by_role("group", name="Reasoning level", exact=True)
-                    assert reasoning.get_by_role("radio", name="Low", exact=True).is_checked()
-                    assert reasoning.get_by_role("radio").count() == 6
+                    reasoning = page.get_by_role("combobox", name="Reasoning level", exact=True)
+                    assert reasoning.input_value() == "low"
+                    assert reasoning.locator("option").count() == 6
+                    provider = page.get_by_role("combobox", name="AI provider", exact=True)
+                    model = page.get_by_role("combobox", name="Model", exact=True)
+                    page.locator('input[name="consent"]').check()
+                    provider.select_option("claude")
+                    assert not page.locator('input[name="consent"]').is_checked()
+                    assert (
+                        "Anthropic through Claude Code"
+                        in page.locator("[data-consent-provider]").inner_text()
+                    )
+                    assert reasoning.locator("option").count() == 4
+                    model.select_option("synthetic-haiku")
+                    assert reasoning.is_disabled()
+                    assert reasoning.input_value() == ""
+                    model.select_option("synthetic-claude")
+                    assert reasoning.is_enabled()
+                    assert reasoning.locator('option[value="xhigh"]').count() == 0
+                    provider.select_option("codex")
+                    assert reasoning.locator("option").count() == 6
                     page.get_by_role("group", name="Learning focus", exact=True).get_by_role(
                         "radio", name="Understanding", exact=True
                     ).check()
@@ -109,10 +169,9 @@ def main():
                         "checkbox", name="Basic Q/A", exact=True
                     ).is_checked()
                     formats.get_by_role("checkbox", name="Cloze", exact=True).check()
-                    reasoning.get_by_role("radio", name="Extra high", exact=True).check()
-                    assert reasoning.get_by_role(
-                        "radio", name="Extra high", exact=True
-                    ).is_checked()
+                    model.select_option("synthetic-codex")
+                    reasoning.select_option("xhigh")
+                    assert reasoning.input_value() == "xhigh"
                     page.screenshot(
                         path=str(OUTPUT / "generation-settings-desktop.png"), full_page=True
                     )
@@ -340,13 +399,25 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     assert page.url.split("?")[0] != old_lecture_url
                     assert page.locator(".card-item").count() == 5
                     assert page.request.get(old_lecture_url).status == 404
+                    page.get_by_role("link", name="AI connections", exact=True).click()
+                    page.get_by_role("navigation", name="AI connections", exact=True).get_by_role(
+                        "link", name="Claude Code", exact=True
+                    ).click()
+                    page.get_by_role("heading", name="Connect Claude Code.", exact=True).wait_for()
+                    page.get_by_role(
+                        "link", name="Open the Claude Code setup guide", exact=False
+                    ).wait_for()
+                    page.screenshot(
+                        path=str(OUTPUT / "claude-connection-mobile.png"), full_page=True
+                    )
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
                     assert not errors, errors
                     browser.close()
             finally:
                 process.terminate()
                 process.wait(timeout=10)
     print(
-        "Browser checks passed: sample import, edit/accept, export, backup, recovery, tickable generation choices, cloze/crop drag and unsaved preview, mixed export, confirmed set deletion and fresh reimport, desktop/mobile layouts, no JavaScript errors."
+        "Browser checks passed: sample import, edit/accept, export, backup, recovery, provider/model/effort dropdowns, cloze/crop drag and unsaved preview, mixed export, confirmed set deletion and fresh reimport, desktop/mobile layouts, no JavaScript errors."
     )
     print(f"Screenshots: {OUTPUT}")
 

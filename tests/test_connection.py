@@ -177,6 +177,8 @@ class ConnectionViewTests(SimpleTestCase):
             self.assertEqual(self.client.post(url, REMOTE_ADDR="203.0.113.1").status_code, 403)
             method.assert_not_called()
             self.assertRedirects(
-                self.client.post(url), reverse("codex_connection"), fetch_redirect_response=False
+                self.client.post(url),
+                reverse("provider_connection", args=["codex"]),
+                fetch_redirect_response=False,
             )
             method.assert_called_once()

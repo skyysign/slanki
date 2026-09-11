@@ -15,7 +15,7 @@ First path: native-text PDF -> source-linked basic card drafts -> accept/edit ->
 
 Current stack choice: Python, Django with server-rendered pages, SQLite, local media, and limited JavaScript for interactive editing. Add dependencies only when an implemented feature needs them. Pin a reproducible dependency set when application setup begins.
 
-Defer an internal SRS, native mobile apps, accounts, billing, course discovery, OCR, automatic image occlusion, broad Anki import, two-way sync, and multiple providers. The build plan contains the later milestones; it is not a request to implement them all at once.
+Defer an internal SRS, native mobile apps, accounts, billing, course discovery, OCR, automatic image occlusion, broad Anki import, and two-way sync. The user authorized local Codex and Claude Code integration with model/effort choices; further CLI candidates are researched in docs/CLI_PROVIDERS.md. The build plan contains later milestones; it is not a request to implement them all at once.
 
 ## Code structure
 

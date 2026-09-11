@@ -3,6 +3,24 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path("connections/<slug:provider>/", views.codex_connection, name="provider_connection"),
+    path(
+        "connections/<slug:provider>/status/",
+        views.codex_connection_status,
+        name="provider_connection_status",
+    ),
+    path("connections/<slug:provider>/connect/", views.connect_codex, name="connect_provider"),
+    path(
+        "connections/<slug:provider>/cancel/",
+        views.cancel_codex_login,
+        name="cancel_provider_login",
+    ),
+    path("connections/<slug:provider>/models/", views.provider_models, name="provider_models"),
+    path(
+        "connections/<slug:provider>/models/refresh/",
+        views.refresh_provider_models,
+        name="refresh_provider_models",
+    ),
     path("", views.home, name="home"),
     path("codex/", views.codex_connection, name="codex_connection"),
     path("codex/status/", views.codex_connection_status, name="codex_connection_status"),

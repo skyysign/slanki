@@ -5,6 +5,7 @@ from django.db import models
 from django.urls import reverse
 
 from .services.note_types import CARD_FORMATS, LEARNING_FOCUSES, NOTE_TYPES, study_card_count
+from .services.providers import EFFORTS, PROVIDERS
 
 
 def unix_seconds():
@@ -50,18 +51,12 @@ class PendingFileDeletion(models.Model):
 
 
 class GenerationRun(models.Model):
-    REASONING_LEVELS = [
-        ("", "Codex default"),
-        ("low", "Low"),
-        ("medium", "Medium"),
-        ("high", "High"),
-        ("xhigh", "Extra high"),
-        ("max", "Max"),
-    ]
+    REASONING_LEVELS = EFFORTS
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, related_name="runs")
     status = models.CharField(max_length=16, default="queued")
     provider = models.CharField(max_length=30, default="codex")
+    model = models.CharField(max_length=100, default="", blank=True)
     page_numbers = models.JSONField(default=list, blank=True)
     completed_pages = models.JSONField(default=list, blank=True)
     issues = models.JSONField(default=list, blank=True)
@@ -79,6 +74,14 @@ class GenerationRun(models.Model):
     error = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def provider_label(self):
+        return dict(PROVIDERS).get(self.provider, self.provider)
+
+    @property
+    def model_label(self):
+        return self.model or "CLI default"
 
     class Meta:
         ordering = ["-created_at"]

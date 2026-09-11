@@ -21,6 +21,9 @@ from converter.services.generation import (
 
 from .test_workflow import WorkflowFixture
 
+# Kimi also supports thinking on/off; Codex accepts effort levels only.
+CODEX_LEVELS = ("", "none", "minimal", "low", "medium", "high", "xhigh", "max")
+
 
 class ReasoningLevelTests(WorkflowFixture):
     @patch("converter.services.generation.codex_executable", return_value="codex.exe")
@@ -34,7 +37,7 @@ class ReasoningLevelTests(WorkflowFixture):
             return Mock(returncode=0, poll=Mock(return_value=0))
 
         popen.side_effect = completed_process
-        for level, _ in GenerationRun.REASONING_LEVELS:
+        for level in CODEX_LEVELS:
             with self.subTest(level=level):
                 self.assertEqual(
                     codex_generate(list(self.lecture.pages.all()), reasoning_effort=level),
@@ -58,7 +61,14 @@ class ReasoningLevelTests(WorkflowFixture):
     @patch("converter.services.generation.subprocess.Popen")
     @patch("converter.views.start_generation")
     def test_invalid_efforts_are_rejected_before_worker_or_provider_start(self, start, popen):
-        for effort in ("mid", "ultra", "max -c sandbox_mode=danger-full-access", "unknown"):
+        for effort in (
+            "mid",
+            "ultra",
+            "on",
+            "off",
+            "max -c sandbox_mode=danger-full-access",
+            "unknown",
+        ):
             with self.subTest(effort=effort):
                 response = self.client.post(
                     reverse("generate", args=[self.lecture.pk]),
@@ -102,7 +112,7 @@ class ReasoningLevelTests(WorkflowFixture):
 
     @patch("converter.views.start_generation")
     def test_form_selection_reaches_generation_service(self, start):
-        for level, _ in GenerationRun.REASONING_LEVELS:
+        for level in CODEX_LEVELS:
             response = self.client.post(
                 reverse("generate", args=[self.lecture.pk]),
                 {"pages": [1], "consent": "yes", "reasoning_effort": level},

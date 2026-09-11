@@ -73,25 +73,37 @@ Uploading the same PDF afterward creates a fresh set with new note identities. A
 
 ## Connect an AI CLI
 
-Choose **AI connections** in the header, then **Codex** or **Claude Code**. Recalloom reuses that CLI's saved sign-in. If needed, choose its **Connect** button, finish the official browser sign-in, and return to the page; it updates automatically. Codex uses the user's ChatGPT/Codex access, and Claude Code uses their Claude account with Claude Code access. Recalloom has no password or API-key field and does not read or copy authentication files. Connecting does not generate cards. See the [Codex authentication guide](https://developers.openai.com/codex/auth) and [Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference).
+Choose **AI connections** in the header, then **Codex**, **Claude Code**, **Gemini CLI**, or **Kimi Code**. Choose **Connect**, finish the official browser sign-in, and return to the page; it updates automatically. Each provider uses your own account and its available CLI allowance. Recalloom has no password or API-key field and does not read or copy authentication files. Connecting does not generate cards. See the [Codex authentication guide](https://developers.openai.com/codex/auth), [Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference), [Gemini authentication guide](https://geminicli.com/docs/get-started/authentication/), and [Kimi command reference](https://www.kimi.com/code/docs/en/kimi-code-cli/reference/kimi-command).
+
+Codex and Claude reuse their usual local sign-in. **Gemini and Kimi require one sign-in for Recalloom's separate CLI profile**, even if you already use them for coding. Their own CLIs manage those profiles under `~/.recalloom/cli/`, outside the lecture directory. This lets generation disable tools, hooks, and extensions without changing your coding configuration. Gemini's connected status records a completed Recalloom sign-in; it cannot validate expired tokens without contacting authentication services. Use **Sign in again** if generation or model refresh reports an expired connection.
 
 Each provider has a separate connection and pending login. **Stop sign-in** stops only the attempt started here; it never logs out the shared local account. Attempts time out after ten minutes and repeat clicks reuse the pending attempt. Raw authentication output is discarded. The Codex page identifies API-key authentication, which has separate billing. The Claude integration requires normal Claude subscription sign-in and rejects detected API credentials, custom API endpoints, and Bedrock/Vertex/Foundry profiles. It does not rewrite the user's CLI configuration.
 
-Install the chosen CLI separately for this development build. Missing-installation pages link to official setup. Codex discovery checks PATH and the VS Code Codex extension; Claude discovery checks the native installation and the native executable in the current npm package. Shell wrappers are not executed. If detection fails, set the relevant native path before starting Recalloom:
+Install the chosen CLI separately for this development build. Missing-installation pages link to official setup. Codex discovery checks PATH and the VS Code Codex extension; Claude discovery checks the native installation and the native executable in the current npm package. Gemini/Kimi support their current official native or npm installations. Shell wrappers are not executed; known npm JavaScript entry points run directly through Node. The legacy Python Kimi CLI is not supported.
+
+With Node.js 22.19 or newer installed, you can install the checked Gemini/Kimi versions locally in this project's ignored data directory:
+
+```powershell
+npm.cmd install --prefix data/clis --save-exact --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org @google/gemini-cli@0.59.0 @moonshot-ai/kimi-code@0.42.0
+```
+
+Recalloom checks `data/clis/node_modules` when the chosen CLI is absent from PATH. This installation does not change global packages. With a custom `SLIDES_DATA_DIR`, install into that directory's `clis` folder instead. To override executable discovery, set only the relevant path before starting Recalloom:
 
 ```powershell
 $env:SLIDES_CODEX_BINARY = 'C:\path\to\codex.exe'
 $env:SLIDES_CLAUDE_BINARY = 'C:\path\to\claude.exe'
+$env:SLIDES_GEMINI_BINARY = 'C:\path\to\@google\gemini-cli\bundle\gemini.js'
+$env:SLIDES_KIMI_BINARY = 'C:\path\to\@moonshot-ai\kimi-code\dist\main.mjs'
 .\start.cmd
 ```
 
-Set only the override you need. For troubleshooting, `codex login status` and `claude auth status` check their respective connections. PDF import, sample cards, manual editing, JSON import, crops, and export work without either sign-in. A bundled installer remains future work.
+For troubleshooting, `codex login status` and `claude auth status` check their respective connections. Use Recalloom's connection pages for Gemini/Kimi because their normal terminal commands use a different profile. Kimi's **Account website** choice supports `kimi.ai` (Global), `kimi.com` (Mainland China), or the CLI's default/saved region. Choose the website where you use your account before connecting. PDF import, sample cards, manual editing, JSON import, crops, and export work without any sign-in. A bundled installer remains future work.
 
 ## Model and reasoning dropdowns
 
 In **Create cards**, choose the provider, model, and reasoning level. **Refresh models** asks the installed CLI for model metadata without submitting a prompt or starting inference. The first visit refreshes automatically when there is no saved catalog. Refresh again after updating a CLI or changing accounts. Model names and reasoning capabilities come from the installed CLI; account entitlements and organization restrictions can still limit access. The app does not offer every model the provider markets as if it were available to this account.
 
-Reasoning options adjust to the selected model. The recognized levels are CLI default, None, Minimal, Low, Medium, High, Extra high, and Max, but each dropdown shows only the levels the CLI reports for that model. A model without effort control has a disabled **CLI default** selector. New lectures request Low when supported; existing lectures reuse their last AI run's selections. Higher levels can take longer and use more allowance. Ultra workflows are not mapped to a reasoning value.
+Reasoning options adjust to the selected model. The recognized levels are CLI default, None, Minimal, Low, Medium, High, Extra high, and Max, plus **Thinking off/on** for Kimi models that report toggles. Each dropdown shows only the controls reported for that model. The checked Gemini ACP interface does not expose a separate thinking control, so its reasoning selector is disabled at **CLI default**. Kimi model names and thinking options are discovered after sign-in; only its managed Kimi Code models are selectable. New lectures request Low when supported; existing lectures reuse their last AI run's selections. Higher levels can take longer and use more allowance. Ultra workflows are not mapped to a reasoning value.
 
 Provider, requested model, effort, focus, and formats are saved with each run and retained on resume and in backups. **CLI default** omits an explicit override; it does not record a resolved model version or effective effort. The legacy `SLIDES_CODEX_MODEL` environment variable remains a fallback when no explicit Codex model is selected; clear it to use the CLI's normal default. Selecting a model in the dropdown takes precedence. Changing providers clears the lecture-sharing confirmation because it changes who receives the text.
 
@@ -99,7 +111,9 @@ Codex runs with user configuration and repository instructions excluded, read-on
 
 Generation sends selected extracted text, page numbers, and recent existing questions to the selected provider through its CLI. PDF extraction, source images/crops, editing, storage, backups, and export remain local. This is cloud model inference through the user's own access, not on-device inference or a shared Recalloom generation service. A downloaded prompt cannot configure another chat's model or reasoning; select those in the chat itself.
 
-Actual metadata discovery was checked with Codex 0.153.4 and Claude Code 2.1.175 without inference. Earlier live Codex checks used the CLI default and did not record effective effort. Claude login and generation currently have simulated process tests; a real Claude generation check remains pending. See [CLI support and researched alternatives](docs/CLI_PROVIDERS.md) for the verification boundary and Gemini/Kimi/DeepSeek/Qwen findings.
+Gemini and Kimi use bounded ACP subprocesses with disabled host file/terminal capabilities, restricted CLI profiles, no approved tools, and temporary working directories. Source text travels through stdin, and generated JSON must pass the same source checks as Codex/Claude output. These restrictions are application/CLI controls, not an OS sandbox. Their CLIs may retain session history in the separate profile. Lecture backups exclude those profiles and credentials; deleting a lecture does not erase provider-side or CLI session history.
+
+Actual model metadata discovery was checked with Codex 0.153.4 and Claude Code 2.1.175 without inference. Gemini 0.59.0 and Kimi 0.42.0 both passed real ACP initialization and fresh signed-out checks on Windows using Node 24.16.0. Their authenticated model discovery, completed browser login, and live card generation are still pending; synthetic subprocess tests cover those workflows and failure handling. Earlier live Codex checks used the CLI default and did not record effective effort. See [CLI support and researched alternatives](docs/CLI_PROVIDERS.md), including Cursor feasibility and remaining checks.
 
 Before a new generation, the app asks for consent to send selected slide text and up to 200 recent existing questions through that account. The questions help avoid repeating concepts across batches. It consumes the account's normal allowance. PDF files and rendered images remain local in this initial text-only route. A source excerpt must match its cited page before a draft is saved; that check does **not** establish answer correctness. Older runs without a saved card limit do not send existing questions when resumed.
 

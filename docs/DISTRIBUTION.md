@@ -1,6 +1,6 @@
 # Distribution direction
 
-Updated 2026-09-11: entirely free software, optional donations, no service or app subscription, and local Codex/Claude Code connections with model and reasoning choices.
+Updated 2026-09-11: entirely free software, optional donations, no service or app subscription, and local Codex/Claude Code/Gemini CLI/Kimi Code connections with provider-reported model and reasoning choices. Authenticated/live validation of the newer adapters is tracked in CLI_PROVIDERS.md.
 
 The product name is **Recalloom**, combining recall and loom. The user delegated the choice and asked for a name between study-focused and abstract. An exact-name web search found no results on 2026-09-09; domain availability and trademark clearance have not been checked. Historical research and compatibility identifiers retain their original names.
 

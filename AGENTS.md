@@ -15,7 +15,7 @@ First path: native-text PDF -> source-linked basic card drafts -> accept/edit ->
 
 Current stack choice: Python, Django with server-rendered pages, SQLite, local media, and limited JavaScript for interactive editing. Add dependencies only when an implemented feature needs them. Pin a reproducible dependency set when application setup begins.
 
-Defer an internal SRS, native mobile apps, accounts, billing, course discovery, OCR, automatic image occlusion, broad Anki import, and two-way sync. The user authorized local Codex and Claude Code integration with model/effort choices; further CLI candidates are researched in docs/CLI_PROVIDERS.md. The build plan contains later milestones; it is not a request to implement them all at once.
+Defer an internal SRS, native mobile apps, accounts, billing, course discovery, OCR, automatic image occlusion, broad Anki import, and two-way sync. The user authorized local Codex, Claude Code, Gemini CLI, and Kimi Code integration with model/effort choices. Cursor and further candidates are researched in docs/CLI_PROVIDERS.md. The build plan contains later milestones; it is not a request to implement them all at once.
 
 ## Code structure
 
@@ -38,7 +38,7 @@ Defer an internal SRS, native mobile apps, accounts, billing, course discovery, 
 ## Files, credentials, and generation
 
 - Put real lectures, generated decks, databases, and backups under the ignored `data/` directory. Commit only synthetic fixtures or material explicitly approved for inclusion.
-- Keep credentials with the provider's supported authentication mechanism. Do not copy local Codex/Claude authentication files into this repository, logs, or exported artifacts.
+- Keep credentials with the provider's supported authentication mechanism. Do not copy CLI authentication files into this repository, logs, or exported artifacts. Gemini/Kimi use their own separate Recalloom profiles outside the lecture directory.
 - Local storage does not imply local model inference. Document what leaves the machine when generation runs.
 - Keep document content out of executable instructions and shell command construction. Use bounded parser work, restricted generation permissions, and argument arrays for subprocesses.
 - Personal local agent access and hosted generation are separate integrations. Do not assume personal subscription authentication authorizes a shared service.

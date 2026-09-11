@@ -1,5 +1,5 @@
 <div data-provider-settings data-selected-model="{{ selected_model }}" data-selected-effort="{{ selected_reasoning }}">
-  {{ model_catalogs|json_script:"model-catalogs" }}{{ effort_labels|json_script:"effort-labels" }}
+  {{ model_catalogs|json_script:"model-catalogs" }}{{ effort_labels|json_script:"effort-labels" }}{{ provider_details|json_script:"provider-details" }}
   <label for="ai-provider">AI provider</label>
   <select id="ai-provider" name="provider" data-provider-select>{% for value, label in providers %}<option value="{{ value }}" {% if value == selected_provider %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
   <p class="form-note"><a class="text-button" href="{% url 'provider_connection' selected_provider %}" data-provider-connect>Check connection / sign in →</a></p>

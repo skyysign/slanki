@@ -4,6 +4,7 @@ const providerSettings = document.querySelector("[data-provider-settings]");
 if (providerSettings) {
   const catalogs = JSON.parse(document.getElementById("model-catalogs").textContent);
   const labels = JSON.parse(document.getElementById("effort-labels").textContent);
+  const providers = JSON.parse(document.getElementById("provider-details").textContent);
   const provider = providerSettings.querySelector("[data-provider-select]");
   const model = providerSettings.querySelector("[data-model-select]");
   const effort = providerSettings.querySelector("[data-effort-select]");
@@ -31,7 +32,7 @@ if (providerSettings) {
     showEfforts(wantedEffort);
     message.textContent = data.message;
     providerSettings.querySelector("[data-provider-connect]").href = `/connections/${provider.value}/`;
-    form.querySelector("[data-consent-provider]").textContent = provider.value === "claude" ? "Anthropic through Claude Code" : "OpenAI through Codex";
+    form.querySelector("[data-consent-provider]").textContent = `${providers[provider.value].company} through ${providers[provider.value].label}`;
   };
   const loadModels = async (initialEffort) => {
     const requestedProvider = provider.value, number = ++requestNumber;

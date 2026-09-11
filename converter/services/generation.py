@@ -14,6 +14,8 @@ from django.utils import timezone
 
 from converter.models import GenerationRun
 
+from .acp import generate_acp
+from .acp import login_status as acp_login_status
 from .cards import add_drafts, validate_generated_batch
 from .cli import (
     claude_environment,
@@ -157,6 +159,8 @@ def codex_generate(
 ):
     checked_model_id(model)
     reasoning_effort = checked_reasoning_effort(reasoning_effort)
+    if reasoning_effort in ("on", "off"):
+        raise WorkflowError("Codex does not use a thinking on/off setting.")
     checked_choice(learning_focus, LEARNING_FOCUSES, "learning focus")
     checked_choice(card_format, CARD_FORMATS, "card format")
     if sum(len(page.text) for page in pages) > 200000:
@@ -395,7 +399,10 @@ def start_generation(
     if not pages:
         raise WorkflowError("Select at least one page with usable text.")
     card_limit = checked_card_limit(card_limit, len(pages))
-    if provider == "claude":
+    if provider in ("gemini", "kimi"):
+        if acp_login_status(provider)["state"] != "connected":
+            raise WorkflowError("Connect the selected CLI in AI connections before generating.")
+    elif provider == "claude":
         from .connection import claude_login_status
 
         claude_executable()
@@ -431,14 +438,17 @@ def resume_generation(run):
     if run.status in ("queued", "running"):
         return run
     if (
-        run.provider not in ("codex", "claude")
+        run.provider not in ("codex", "claude", "gemini", "kimi")
         or run.status not in ("failed", "cancelled")
         or not remaining_pages(run)
     ):
         raise WorkflowError("This run has no remaining pages to resume.")
     checked_provider(run.provider)
     checked_model_settings(run.provider, run.model, run.reasoning_effort)
-    if run.provider == "claude":
+    if run.provider in ("gemini", "kimi"):
+        if acp_login_status(run.provider)["state"] != "connected":
+            raise WorkflowError("Reconnect this run's CLI in AI connections before resuming.")
+    elif run.provider == "claude":
         from .connection import claude_login_status
 
         if claude_login_status()["state"] != "connected":
@@ -540,8 +550,13 @@ def perform_run(run_id, generator=None, *, worker_token=None):
                     if run.card_limit is not None
                     else []
                 )
-                generate = claude_generate if run.provider == "claude" else codex_generate
                 checked_provider(run.provider)
+                if run.provider in ("gemini", "kimi"):
+                    from functools import partial
+
+                    generate = partial(generate_acp, run.provider)
+                else:
+                    generate = claude_generate if run.provider == "claude" else codex_generate
                 payload = generate(
                     batch,
                     cancelled,

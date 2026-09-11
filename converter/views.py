@@ -16,7 +16,7 @@ from .forms import CardForm, UploadForm
 from .models import Card, GenerationRun, Lecture, Page, PendingFileDeletion
 from .services.backups import export_backup, restore_backup
 from .services.cards import Draft, add_drafts, update_card, validate_content, validate_payload
-from .services.connection import claude_connection, connection
+from .services.connection import claude_connection, connection, gemini_connection, kimi_connection
 from .services.crops import crop_from_form, crop_png
 from .services.deletion import cleanup_deleted_files, delete_lecture
 from .services.documents import import_pdf
@@ -38,6 +38,7 @@ from .services.note_types import (
 )
 from .services.providers import (
     EFFORTS,
+    PROVIDER_DETAILS,
     PROVIDERS,
     checked_model_settings,
     model_catalog,
@@ -80,7 +81,12 @@ def home(request):
 def provider_connection(provider):
     if provider not in dict(PROVIDERS):
         raise Http404
-    return claude_connection if provider == "claude" else connection
+    return {
+        "codex": connection,
+        "claude": claude_connection,
+        "gemini": gemini_connection,
+        "kimi": kimi_connection,
+    }[provider]
 
 
 @require_GET
@@ -94,11 +100,10 @@ def codex_connection(request, provider="codex"):
             "provider_id": provider,
             "provider_label": dict(PROVIDERS)[provider],
             "providers": PROVIDERS,
-            "account_label": "Claude" if provider == "claude" else "ChatGPT",
-            "company_label": "Anthropic" if provider == "claude" else "OpenAI",
-            "setup_url": "https://code.claude.com/docs/en/setup"
-            if provider == "claude"
-            else "https://developers.openai.com/codex/cli",
+            "account_label": PROVIDER_DETAILS[provider]["account"],
+            "company_label": PROVIDER_DETAILS[provider]["company"],
+            "setup_url": PROVIDER_DETAILS[provider]["setup"],
+            "separate_profile": provider in ("gemini", "kimi"),
         },
     )
 
@@ -110,7 +115,16 @@ def codex_connection_status(request, provider="codex"):
 
 @require_POST
 def connect_codex(request, provider="codex"):
-    provider_connection(provider).start()
+    manager = provider_connection(provider)
+    if provider in ("gemini", "kimi"):
+        try:
+            manager.start(
+                force=request.POST.get("reconnect") == "yes", region=request.POST.get("region", "")
+            )
+        except WorkflowError as exc:
+            return error_page(request, str(exc))
+    else:
+        manager.start()
     return redirect("provider_connection", provider=provider)
 
 
@@ -243,6 +257,8 @@ def lecture_context(item, request, selected=None, form=None):
         "reasoning_levels": EFFORTS,
         "selected_reasoning": selected_reasoning,
         "providers": PROVIDERS,
+        "provider_details": PROVIDER_DETAILS,
+        "selected_provider_details": PROVIDER_DETAILS[selected_provider],
         "selected_provider": selected_provider,
         "selected_model": selected_model,
         "provider_models": models,

@@ -29,20 +29,29 @@ def main():
             # Connection UI checks must not inspect or change a real Codex sign-in.
             "SLIDES_CODEX_BINARY": str(Path(directory) / "missing-codex.exe"),
             "SLIDES_CLAUDE_BINARY": str(Path(directory) / "missing-claude.exe"),
+            "SLIDES_GEMINI_BINARY": str(Path(directory) / "missing-gemini.exe"),
+            "SLIDES_KIMI_BINARY": str(Path(directory) / "missing-kimi.exe"),
         }
-        for provider in ("codex", "claude"):
-            levels = (
-                ["", "low", "medium", "high", "xhigh", "max"]
-                if provider == "codex"
-                else ["", "low", "medium", "high"]
-            )
+        for provider in ("codex", "claude", "gemini", "kimi"):
+            levels = {
+                "codex": ["", "low", "medium", "high", "xhigh", "max"],
+                "claude": ["", "low", "medium", "high"],
+                "gemini": [""],
+                "kimi": ["", "low", "high", "max"],
+            }[provider]
+            default_effort = "low" if "low" in levels else ""
             models = [
-                {"id": "", "label": "CLI default", "efforts": levels, "default_effort": "low"},
+                {
+                    "id": "",
+                    "label": "CLI default",
+                    "efforts": levels,
+                    "default_effort": default_effort,
+                },
                 {
                     "id": "synthetic-" + provider,
                     "label": "Synthetic " + provider,
                     "efforts": levels,
-                    "default_effort": "low",
+                    "default_effort": default_effort,
                 },
             ]
             if provider == "claude":
@@ -51,6 +60,15 @@ def main():
                         "id": "synthetic-haiku",
                         "label": "Synthetic Haiku",
                         "efforts": [""],
+                        "default_effort": "",
+                    }
+                )
+            if provider == "kimi":
+                models.append(
+                    {
+                        "id": "kimi-code/toggle",
+                        "label": "Synthetic thinking toggle",
+                        "efforts": ["", "off", "on"],
                         "default_effort": "",
                     }
                 )
@@ -159,6 +177,28 @@ def main():
                     model.select_option("synthetic-claude")
                     assert reasoning.is_enabled()
                     assert reasoning.locator('option[value="xhigh"]').count() == 0
+                    provider.select_option("gemini")
+                    model.select_option("synthetic-gemini")
+                    assert reasoning.is_disabled()
+                    assert reasoning.input_value() == ""
+                    assert (
+                        "Google through Gemini CLI"
+                        in page.locator("[data-consent-provider]").inner_text()
+                    )
+                    page.locator('input[name="consent"]').check()
+                    provider.select_option("kimi")
+                    assert not page.locator('input[name="consent"]').is_checked()
+                    model.select_option("synthetic-kimi")
+                    assert reasoning.locator('option[value="max"]').count() == 1
+                    assert reasoning.locator('option[value="on"]').count() == 0
+                    reasoning.select_option("max")
+                    model.select_option("kimi-code/toggle")
+                    assert reasoning.locator('option[value="max"]').count() == 0
+                    reasoning.select_option("off")
+                    assert (
+                        "Moonshot AI through Kimi Code"
+                        in page.locator("[data-consent-provider]").inner_text()
+                    )
                     provider.select_option("codex")
                     assert reasoning.locator("option").count() == 6
                     page.get_by_role("group", name="Learning focus", exact=True).get_by_role(
@@ -411,6 +451,22 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                         path=str(OUTPUT / "claude-connection-mobile.png"), full_page=True
                     )
                     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    for label, slug in (("Gemini CLI", "gemini"), ("Kimi Code", "kimi")):
+                        page.get_by_role(
+                            "navigation", name="AI connections", exact=True
+                        ).get_by_role("link", name=label, exact=True).click()
+                        page.get_by_role("heading", name=f"Connect {label}.", exact=True).wait_for()
+                        page.get_by_role(
+                            "link", name=f"Open the {label} setup guide", exact=False
+                        ).wait_for()
+                        assert (
+                            "separate local CLI profile"
+                            in page.locator(".connection-panel").inner_text()
+                        )
+                        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                        page.screenshot(
+                            path=str(OUTPUT / f"{slug}-connection-mobile.png"), full_page=True
+                        )
                     assert not errors, errors
                     browser.close()
             finally:

@@ -4,12 +4,14 @@ import atexit
 import json
 import subprocess
 import threading
+import time
 
 from django.conf import settings
 
 from .cli import claude_environment, claude_executable, claude_is_external
 from .files import WorkflowError
 from .generation import codex_executable
+from .providers import PROVIDER_DETAILS
 
 LOGIN_TIMEOUT = 10 * 60
 
@@ -215,3 +217,84 @@ connection = CodexConnection()
 claude_connection = CodexConnection("claude")
 atexit.register(connection.cancel)
 atexit.register(claude_connection.cancel)
+
+
+class AcpConnection:
+    """One cancellable browser login; status never initiates authentication."""
+
+    def __init__(self, provider):
+        self.provider = provider
+        self.label = PROVIDER_DETAILS[provider]["label"]
+        self._lock = threading.RLock()
+        self._thread = None
+        self._cancelled = threading.Event()
+        self._error = ""
+        self._cached = None
+        self._checked_at = 0
+
+    def status(self):
+        from .acp import login_status
+
+        with self._lock:
+            if self._thread is not None and self._thread.is_alive():
+                return {
+                    "state": "waiting",
+                    "message": f"Complete the browser sign-in opened by {self.label}, then return here.",
+                }
+            if self._error:
+                return {"state": "failed", "message": self._error}
+            if self._cached is None or time.monotonic() - self._checked_at > 15:
+                self._cached = login_status(self.provider)
+                self._checked_at = time.monotonic()
+            return self._cached
+
+    def start(self, *, force=False, region=""):
+        from .acp import login
+
+        if region not in ("", "global", "mainland-cn") or (region and self.provider != "kimi"):
+            raise WorkflowError("Choose a supported Kimi account website.")
+        with self._lock:
+            state = self.status()
+            if state["state"] in ("waiting", "missing") or (
+                state["state"] == "connected" and not force
+            ):
+                return state
+            self._cancelled = threading.Event()
+            cancellation = self._cancelled
+            self._error = ""
+            self._cached = None
+
+            def run():
+                error = ""
+                try:
+                    login(
+                        self.provider, cancellation.is_set, **({"region": region} if region else {})
+                    )
+                except Exception:
+                    # Login output can contain account details. Never expose it.
+                    if not cancellation.is_set():
+                        error = "Sign-in did not finish. Check the CLI installation and retry the browser sign-in."
+                with self._lock:
+                    if cancellation is self._cancelled:
+                        self._error = error
+                        self._cached = None
+
+            self._thread = threading.Thread(target=run, daemon=True)
+            self._thread.start()
+            return {"state": "waiting", "message": f"Opening {self.label} sign-in."}
+
+    def cancel(self):
+        with self._lock:
+            self._cancelled.set()
+            self._error = ""
+            self._cached = None
+        # The worker polls cancellation and owns terminating its own CLI process.
+        # Do not join under the lock: the worker takes it when it finishes.
+        if self._thread is not None:
+            self._thread.join(timeout=3)
+
+
+gemini_connection = AcpConnection("gemini")
+kimi_connection = AcpConnection("kimi")
+atexit.register(gemini_connection.cancel)
+atexit.register(kimi_connection.cancel)

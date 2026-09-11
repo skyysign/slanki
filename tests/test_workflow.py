@@ -35,6 +35,7 @@ class WorkflowFixture(TestCase):
             DATA_DIR=root,
             MEDIA_ROOT=root / "media",
             WORK_DIR=root / "work",
+            CLI_PROFILE_ROOT=root / "cli-profiles",
             ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"],
         )
         cls.overrides.enable()

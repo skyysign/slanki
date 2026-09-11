@@ -54,6 +54,46 @@ def claude_executable():
     return executable
 
 
+def node_cli_command(provider):
+    """Resolve official native or npm entry points without executing wrappers."""
+    if provider not in ("gemini", "kimi"):
+        raise WorkflowError("Choose Gemini CLI or Kimi Code.")
+    binary = settings.GEMINI_BINARY if provider == "gemini" else settings.KIMI_BINARY
+    executable = shutil.which(binary)
+    package = "@google/gemini-cli" if provider == "gemini" else "@moonshot-ai/kimi-code"
+    entries = ("bundle/gemini.js", "dist/index.js") if provider == "gemini" else ("dist/main.mjs",)
+    if binary == provider and not executable:
+        native = Path.home() / ".local/bin" / (provider + (".exe" if os.name == "nt" else ""))
+        if native.is_file():
+            executable = str(native)
+        else:
+            directory = settings.DATA_DIR / "clis/node_modules" / package
+            executable = next(
+                (str(directory / entry) for entry in entries if (directory / entry).is_file()),
+                None,
+            )
+    if not executable and Path(binary).is_file():
+        executable = str(Path(binary).resolve())
+    if not executable:
+        raise WorkflowError(
+            f"{provider.title()} CLI was not found. Install its official CLI or set SLIDES_{provider.upper()}_BINARY."
+        )
+    path = Path(executable)
+    if path.suffix.lower() in (".cmd", ".bat", ".ps1"):
+        directory = path.parent / "node_modules" / package
+        path = next((directory / entry for entry in entries if (directory / entry).is_file()), None)
+        if path is None:
+            raise WorkflowError(
+                f"Install the current official {provider.title()} CLI. Shell wrappers and legacy Kimi Python packages are not supported."
+            )
+    if path.suffix.lower() in (".js", ".mjs"):
+        node = shutil.which("node")
+        if not node:
+            raise WorkflowError("Install Node.js 22.19 or newer to run this CLI's npm package.")
+        return [node, str(path.resolve())]
+    return [str(path.resolve())]
+
+
 def claude_environment():
     # Each process uses the normal local Claude sign-in. Do not let inherited
     # session toggles change the model/effort or opt into tools and workflows.

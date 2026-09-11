@@ -1,4 +1,4 @@
-"""Two local CLI integrations with provider-reported model capabilities."""
+"""Local CLI integrations with provider-reported model capabilities."""
 
 import json
 import re
@@ -17,7 +17,33 @@ from .cli import (
 )
 from .files import WorkflowError
 
-PROVIDERS = [("codex", "Codex"), ("claude", "Claude Code")]
+PROVIDER_DETAILS = {
+    "codex": {
+        "label": "Codex",
+        "account": "ChatGPT",
+        "company": "OpenAI",
+        "setup": "https://developers.openai.com/codex/cli",
+    },
+    "claude": {
+        "label": "Claude Code",
+        "account": "Claude",
+        "company": "Anthropic",
+        "setup": "https://code.claude.com/docs/en/setup",
+    },
+    "gemini": {
+        "label": "Gemini CLI",
+        "account": "Google",
+        "company": "Google",
+        "setup": "https://geminicli.com/docs/get-started/installation/",
+    },
+    "kimi": {
+        "label": "Kimi Code",
+        "account": "Kimi",
+        "company": "Moonshot AI",
+        "setup": "https://www.kimi.com/code/docs/en/kimi-code-cli/getting-started.html",
+    },
+}
+PROVIDERS = [(key, item["label"]) for key, item in PROVIDER_DETAILS.items()]
 EFFORTS = [
     ("", "CLI default"),
     ("none", "None"),
@@ -27,6 +53,8 @@ EFFORTS = [
     ("high", "High"),
     ("xhigh", "Extra high"),
     ("max", "Max"),
+    ("off", "Thinking off"),
+    ("on", "Thinking on"),
 ]
 MODEL_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:/\[\]-]{0,99}\Z")
 _refresh_lock = threading.Lock()
@@ -34,7 +62,7 @@ _refresh_lock = threading.Lock()
 
 def checked_provider(provider):
     if provider not in dict(PROVIDERS):
-        raise WorkflowError("Choose Codex or Claude Code.")
+        raise WorkflowError("Choose one of the supported AI CLIs.")
     return provider
 
 
@@ -96,6 +124,10 @@ def normalize_models(rows, provider):
 
 def discover_models(provider):
     checked_provider(provider)
+    if provider in ("gemini", "kimi"):
+        from .acp import discover_acp_models
+
+        return discover_acp_models(provider)
     if provider == "codex":
         command = [
             codex_executable(),
@@ -234,8 +266,10 @@ def checked_model_settings(provider, model, effort):
     checked_model_id(model)
     if effort not in dict(EFFORTS):
         raise WorkflowError("Choose a supported reasoning level.")
+    if provider != "kimi" and effort in ("on", "off"):
+        raise WorkflowError("Thinking on/off is only available for Kimi models that report it.")
     catalog = model_catalog(provider)
-    if model or catalog["updated_at"] or provider == "claude":
+    if model or catalog["updated_at"] or provider != "codex":
         item = next((row for row in catalog["models"] if row["id"] == model), None)
         if item is None:
             raise WorkflowError("Refresh models and choose a model supported by this CLI.")

@@ -5,7 +5,8 @@ import re
 
 from .files import WorkflowError
 
-NOTE_TYPES = [("basic", "Basic Q/A"), ("cloze", "Cloze"), ("reversed", "Basic + reverse")]
+TEXT_NOTE_TYPES = [("basic", "Basic Q/A"), ("cloze", "Cloze"), ("reversed", "Basic + reverse")]
+NOTE_TYPES = TEXT_NOTE_TYPES + [("occlusion", "Image occlusion")]
 # Keep the original mixed value limited to Q/A + cloze for saved runs/backups.
 FORMAT_TYPES = {
     "basic": ("basic",),
@@ -16,7 +17,7 @@ FORMAT_TYPES = {
     "cloze_reversed": ("cloze", "reversed"),
     "all": ("basic", "cloze", "reversed"),
 }
-CARD_FORMATS = NOTE_TYPES + [
+CARD_FORMATS = TEXT_NOTE_TYPES + [
     ("mixed", "Mixed Q/A and cloze"),
     ("basic_reversed", "Q/A and reverse"),
     ("cloze_reversed", "Cloze and reverse"),
@@ -73,7 +74,7 @@ def cloze_matches(text):
 
 def study_card_count(front, note_type="basic"):
     checked_choice(note_type, NOTE_TYPES, "note format")
-    if note_type == "basic":
+    if note_type in ("basic", "occlusion"):
         return 1
     if note_type == "reversed":
         return 2
@@ -87,6 +88,8 @@ def plain_front(front, note_type="basic"):
 
 
 def plain_questions(front, back, note_type="basic"):
+    if note_type == "occlusion":
+        return ()
     return (front, back) if note_type == "reversed" else (plain_front(front, note_type),)
 
 
@@ -97,7 +100,7 @@ def text_html(text):
 def study_previews(front, back, note_type="basic"):
     """Escaped question/answer HTML for exactly the ordinals exported to Anki."""
     study_card_count(front, note_type)
-    if note_type == "basic":
+    if note_type in ("basic", "occlusion"):
         return [{"number": 1, "question": text_html(front), "answer": text_html(back)}]
     if note_type == "reversed":
         return [

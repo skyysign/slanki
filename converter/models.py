@@ -105,6 +105,7 @@ class Card(models.Model):
     note_type = models.CharField(max_length=12, choices=NOTE_TYPES, default="basic")
     source_quote = models.TextField(blank=True)
     source_crop = models.JSONField(default=dict, blank=True)
+    occlusion = models.JSONField(default=dict, blank=True)
     status = models.CharField(max_length=12, choices=STATUS, default="draft")
     fingerprint = models.CharField(max_length=64)
     version = models.PositiveIntegerField(default=1)
@@ -133,6 +134,7 @@ class CardRevision(models.Model):
     note_type = models.CharField(max_length=12, choices=NOTE_TYPES, default="basic")
     source_quote = models.TextField(blank=True)
     source_crop = models.JSONField(default=dict, blank=True)
+    occlusion = models.JSONField(default=dict, blank=True)
     status = models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True)
 

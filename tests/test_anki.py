@@ -9,13 +9,117 @@ from django.conf import settings
 from django.utils.html import strip_tags
 
 from converter.services.cards import Draft, add_drafts, update_card
-from converter.services.exporting import REVERSED_MODEL_ID, export_deck
+from converter.services.exporting import OCCLUSION_MODEL_ID, REVERSED_MODEL_ID, export_deck
 from converter.services.note_types import study_previews
+from converter.services.occlusion import add_occlusions
 from tests.test_workflow import WorkflowFixture
 
 
 @skipUnless(importlib.util.find_spec("anki"), "Install requirements-dev.txt for Anki backend tests")
 class AnkiImportTests(WorkflowFixture):
+    def test_occlusion_mask_edits_and_adding_regions_keep_independent_review_schedules(self):
+        from anki.collection import Collection
+        from anki.import_export_pb2 import ImportAnkiPackageOptions, ImportAnkiPackageRequest
+
+        self.accepted_card()
+        page = self.lecture.pages.get(number=4)
+        masks = [
+            dict(page=4, left=20, top=30, right=220, bottom=130),
+            dict(page=4, left=250, top=30, right=420, bottom=130),
+        ]
+        notes = add_occlusions(
+            self.lecture, page, "Name the hidden part.", "Extra explanation", masks
+        )
+        for note in notes:
+            update_card(note.pk, note.version, note.front, note.back, "", "accepted")
+        with TemporaryDirectory(dir=settings.WORK_DIR) as directory:
+            folder = Path(directory)
+            collection = Collection(str(folder / "occlusion.anki2"))
+            package = folder / "occlusion.apkg"
+            try:
+
+                def import_package():
+                    package.write_bytes(export_deck(self.lecture))
+                    collection.import_anki_package(
+                        ImportAnkiPackageRequest(
+                            package_path=str(package),
+                            options=ImportAnkiPackageOptions(with_scheduling=False),
+                        )
+                    )
+
+                import_package()
+                ids = collection.find_cards("")
+                self.assertEqual(len(ids), 3)
+                schedules = {}
+                hidden_fields = {}
+                for index, identifier in enumerate(ids):
+                    card = collection.get_card(identifier)
+                    card.type, card.queue = 2, 2
+                    card.ivl, card.due, card.reps, card.lapses = (
+                        15 + index,
+                        40 + index,
+                        8 + index,
+                        1,
+                    )
+                    collection.update_card(card)
+                    schedules[identifier] = (card.ord, card.ivl, card.due, card.reps, card.lapses)
+                    if card.note().mid == OCCLUSION_MODEL_ID:
+                        self.assertEqual(card.ord, 0)
+                        hidden_fields[identifier] = card.note()["Hidden"]
+                        self.assertIn(card.note()["Hidden"], card.question())
+                        self.assertNotIn(card.note()["Revealed"], card.question())
+                        self.assertNotIn("Extra explanation", card.question())
+                        self.assertNotIn("slides_", card.question())
+                        self.assertIn(card.note()["Revealed"], card.answer())
+                        self.assertIn("Extra explanation", card.answer())
+                        self.assertIn("slides_", card.answer())
+                self.assertEqual(len(hidden_fields), 2)
+                import_package()
+                edited = self.lecture.cards.get(pk=notes[0].pk)
+                update_card(
+                    edited.pk,
+                    edited.version,
+                    "Edited image prompt",
+                    "Edited explanation",
+                    "",
+                    "accepted",
+                    occlusion={**edited.occlusion, "right": 230},
+                )
+                import_package()
+                self.assertEqual(set(collection.find_cards("")), set(ids))
+                changed_images = 0
+                for identifier, expected in schedules.items():
+                    card = collection.get_card(identifier)
+                    self.assertEqual(
+                        (card.ord, card.ivl, card.due, card.reps, card.lapses), expected
+                    )
+                    if (
+                        identifier in hidden_fields
+                        and card.note()["Hidden"] != hidden_fields[identifier]
+                    ):
+                        changed_images += 1
+                        self.assertIn("Edited image prompt", card.question())
+                        self.assertIn("Edited explanation", card.answer())
+                self.assertEqual(changed_images, 1)
+                added = add_occlusions(
+                    self.lecture,
+                    page,
+                    "A new region",
+                    "",
+                    [dict(page=4, left=20, top=200, right=200, bottom=260)],
+                )[0]
+                update_card(added.pk, added.version, added.front, "", "", "accepted")
+                import_package()
+                self.assertEqual(len(collection.find_cards("")), 4)
+                for identifier, expected in schedules.items():
+                    card = collection.get_card(identifier)
+                    self.assertEqual(
+                        (card.ord, card.ivl, card.due, card.reps, card.lapses), expected
+                    )
+                self.assertEqual(collection.media.check().missing, [])
+            finally:
+                collection.close()
+
     def test_reverse_cards_render_both_directions_and_preserve_all_schedules_on_reimport(self):
         from anki.collection import Collection
         from anki.import_export_pb2 import ImportAnkiPackageOptions, ImportAnkiPackageRequest

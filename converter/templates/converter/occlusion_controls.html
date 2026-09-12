@@ -1,0 +1,21 @@
+<section class="occlusion-editor" data-occlusion-editor data-single="{% if single %}yes{% else %}no{% endif %}" data-page="{{ mask_page.number }}" data-width="{{ mask_page.width }}" data-height="{{ mask_page.height }}">
+  <h3>Hidden region{% if not single %}s{% endif %} · Page {{ mask_page.number }}</h3>
+  <p class="form-note">{% if single %}Drag to replace this card's rectangle, or adjust its edges below. Saving keeps the same Anki card. Set the note aside if you no longer want to export it.{% else %}Drag a rectangle over each label or detail you want to recall. Each region makes one card, with just that region hidden. Other regions stay visible. Add up to 20 at a time.{% endif %}</p>
+  <input type="hidden" name="masks" value="{{ masks_json }}">
+  <input type="hidden" name="preview_index" value="0">
+  <div class="occlusion-stage" data-mask-stage>
+    <img src="{% url 'page_image' mask_page.pk %}" alt="Slide for image occlusion, page {{ mask_page.number }}" draggable="false">
+    <div class="occlusion-overlays" data-mask-overlays></div>
+  </div>
+  <div class="button-row mask-list" data-mask-list aria-label="Regions to hide"></div>
+  <p class="form-note" data-mask-status role="status"></p>
+  <div class="crop-coordinates">
+    <label>Left <input type="number" min="0" max="{{ mask_page.width }}" data-mask-edge="left" aria-label="Region left"></label>
+    <label>Top <input type="number" min="0" max="{{ mask_page.height }}" data-mask-edge="top" aria-label="Region top"></label>
+    <label>Right <input type="number" min="1" max="{{ mask_page.width }}" data-mask-edge="right" aria-label="Region right"></label>
+    <label>Bottom <input type="number" min="1" max="{{ mask_page.height }}" data-mask-edge="bottom" aria-label="Region bottom"></label>
+  </div>
+  {% if not single %}<div class="button-row"><button class="button secondary" type="button" data-add-mask>Add region</button><button class="text-button" type="button" data-remove-mask>Remove selected region</button></div>{% endif %}
+  <p class="form-note">Preview the selected region to check what will be hidden. The answer reveals it with a green outline. This runs locally and uses no AI allowance.</p>
+  <noscript><p class="notice warning">Enable JavaScript to draw and preview hidden regions.</p></noscript>
+</section>

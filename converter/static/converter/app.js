@@ -132,6 +132,85 @@ document.querySelectorAll("[data-crop-stage]").forEach((stage) => {
   draw();
 });
 
+document.querySelectorAll("[data-occlusion-editor]").forEach((editor) => {
+  const form = editor.closest("form"), stage = editor.querySelector("[data-mask-stage]");
+  const image = stage.querySelector("img"), overlays = editor.querySelector("[data-mask-overlays]");
+  const list = editor.querySelector("[data-mask-list]"), status = editor.querySelector("[data-mask-status]");
+  const fields = Object.fromEntries([...editor.querySelectorAll("[data-mask-edge]")].map(field => [field.dataset.maskEdge, field]));
+  const width = Number(editor.dataset.width), height = Number(editor.dataset.height), page = Number(editor.dataset.page);
+  const single = editor.dataset.single === "yes", limit = single ? 1 : 20;
+  let masks = [], selected = 0, start = null, pending = null;
+  try { const saved = JSON.parse(form.elements.masks.value); if (Array.isArray(saved)) masks = saved.slice(0, limit); } catch { /* Server displays invalid input; start a fresh rectangle. */ }
+  const valid = mask => mask && mask.page === page && ["left", "top", "right", "bottom"].every(key => Number.isInteger(mask[key])) && mask.left >= 0 && mask.top >= 0 && mask.right <= width && mask.bottom <= height && mask.right - mask.left >= 2 && mask.bottom - mask.top >= 2;
+  masks = masks.filter(valid);
+  const draw = () => {
+    overlays.replaceChildren();
+    [...masks, ...(pending ? [pending] : [])].forEach((mask, index) => {
+      const box = document.createElement("span");
+      box.className = "occlusion-mask" + (index === selected ? " selected" : "");
+      box.style.left = `${100 * mask.left / width}%`; box.style.top = `${100 * mask.top / height}%`;
+      box.style.width = `${100 * (mask.right - mask.left) / width}%`; box.style.height = `${100 * (mask.bottom - mask.top) / height}%`;
+      box.textContent = String(index + 1);
+      overlays.append(box);
+    });
+  };
+  const sync = (changed = false) => {
+    form.elements.masks.value = JSON.stringify(masks);
+    form.elements.preview_index.value = selected;
+    list.replaceChildren();
+    masks.forEach((mask, index) => {
+      const button = document.createElement("button");
+      button.type = "button"; button.className = "button secondary";
+      button.textContent = `Region ${index + 1}`;
+      button.setAttribute("aria-pressed", String(index === selected));
+      button.addEventListener("click", () => { selected = index; sync(); });
+      list.append(button);
+    });
+    const current = masks[selected] || {left: 0, top: 0, right: Math.min(100, width), bottom: Math.min(60, height)};
+    Object.entries(fields).forEach(([key, field]) => { field.value = current[key]; field.setCustomValidity(""); });
+    status.textContent = masks.length ? `${masks.length} region${masks.length === 1 ? "" : "s"} · ${masks.length} Anki card${masks.length === 1 ? "" : "s"}. Region ${selected + 1} selected.` : "Draw a rectangle or use Add region, then adjust its coordinates.";
+    editor.querySelector("[data-remove-mask]")?.toggleAttribute("disabled", !masks.length);
+    editor.querySelector("[data-add-mask]")?.toggleAttribute("disabled", masks.length >= limit);
+    draw();
+    if (changed) form.elements.masks.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+  const add = mask => {
+    if (!valid(mask)) { status.textContent = "Keep the region within the slide and at least 2 pixels wide and high."; return; }
+    if (single) { masks = [mask]; selected = 0; }
+    else if (masks.length < limit) { masks.push(mask); selected = masks.length - 1; }
+    else { status.textContent = "Save these 20 regions before adding more."; return; }
+    sync(true);
+  };
+  Object.entries(fields).forEach(([key, field]) => field.addEventListener("change", () => {
+    const mask = {page, ...Object.fromEntries(Object.entries(fields).map(([edge, input]) => [edge, input.value === "" ? NaN : Number(input.value)]))};
+    Object.values(fields).forEach(input => input.setCustomValidity(""));
+    if (!valid(mask)) { status.textContent = "Keep the region within the slide and at least 2 pixels wide and high."; field.setCustomValidity(status.textContent); return; }
+    if (!masks.length) add(mask);
+    else { masks[selected] = mask; sync(true); }
+  }));
+  editor.querySelector("[data-add-mask]")?.addEventListener("click", () => add({page, left: 0, top: 0, right: Math.min(100, width), bottom: Math.min(60, height)}));
+  editor.querySelector("[data-remove-mask]")?.addEventListener("click", () => { masks.splice(selected, 1); selected = Math.max(0, Math.min(selected, masks.length - 1)); sync(true); });
+  const position = event => {
+    const rect = image.getBoundingClientRect();
+    return [Math.round(Math.max(0, Math.min(width, (event.clientX - rect.left) * width / rect.width))), Math.round(Math.max(0, Math.min(height, (event.clientY - rect.top) * height / rect.height)))];
+  };
+  const move = event => {
+    if (!start) return;
+    const end = position(event);
+    pending = {page, left: Math.min(start[0], end[0]), top: Math.min(start[1], end[1]), right: Math.max(start[0], end[0]), bottom: Math.max(start[1], end[1])};
+    draw();
+  };
+  stage.addEventListener("pointerdown", event => {
+    if (event.button !== 0 || !image.complete || !image.naturalWidth) return;
+    if (!single && masks.length >= limit) { status.textContent = "Save these 20 regions before adding more."; return; }
+    event.preventDefault(); stage.setPointerCapture(event.pointerId); start = position(event); move(event);
+  });
+  stage.addEventListener("pointermove", move);
+  stage.addEventListener("pointerup", event => { if (!start) return; move(event); const mask = pending; start = null; pending = null; add(mask); draw(); });
+  stage.addEventListener("pointercancel", () => { start = null; pending = null; draw(); });
+  sync();
+});
+
 document.querySelectorAll("[data-note-form]").forEach((form) => {
   const type = form.elements.note_type;
   const front = form.elements.front;
@@ -139,15 +218,17 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
   const updateLabels = () => {
     const cloze = type.value === "cloze";
     const reversed = type.value === "reversed";
+    const occlusion = type.value === "occlusion";
     form.querySelectorAll("[data-reverse-help]").forEach(help => { help.hidden = !reversed; });
-    form.querySelector("[data-cloze-controls]").hidden = !cloze;
-    form.querySelector("[data-front-label]").textContent = cloze ? "Cloze text" : reversed ? "Front (prompt for card 1)" : "Question";
-    form.querySelector("[data-back-label]").textContent = cloze ? "Extra explanation (optional)" : reversed ? "Back (prompt for card 2)" : "Answer";
-    form.elements.back.required = !cloze;
+    const clozeControls = form.querySelector("[data-cloze-controls]");
+    if (clozeControls) clozeControls.hidden = !cloze;
+    form.querySelector("[data-front-label]").textContent = cloze ? "Cloze text" : reversed ? "Front (prompt for card 1)" : occlusion ? "Prompt" : "Question";
+    form.querySelector("[data-back-label]").textContent = (cloze || occlusion) ? "Extra explanation (optional)" : reversed ? "Back (prompt for card 2)" : "Answer";
+    form.elements.back.required = !(cloze || occlusion);
   };
   updateLabels();
   form.querySelectorAll('[name="note_type"]').forEach(input => input.addEventListener("change", updateLabels));
-  form.querySelector("[data-add-cloze]").addEventListener("click", () => {
+  form.querySelector("[data-add-cloze]")?.addEventListener("click", () => {
     const number = form.querySelector("[data-cloze-number]");
     const start = front.selectionStart, end = front.selectionEnd;
     if (!number.checkValidity() || start === end) {
@@ -161,6 +242,7 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
   });
   form.querySelector("[data-preview-note]").addEventListener("click", async (event) => {
     const button = event.currentTarget;
+    if (!form.reportValidity()) return;
     button.disabled = true;
     try {
       const response = await fetch(form.dataset.previewUrl, { method: "POST", body: new FormData(form) });
@@ -173,7 +255,7 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
       const count = document.createElement("p");
       count.className = "form-note";
       count.setAttribute("role", "status");
-      count.textContent = `${data.study_cards} Anki review card${data.study_cards === 1 ? "" : "s"} from this note. Preview only; edits have not been saved.`;
+      count.textContent = data.caption || `${data.study_cards} Anki review card${data.study_cards === 1 ? "" : "s"} from this note. Preview only; edits have not been saved.`;
       output.append(count);
       data.previews.forEach((preview, index) => {
         const card = document.createElement("article");
@@ -191,6 +273,14 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
         const answer = document.createElement("div");
         answer.className = "preview-answer";
         answer.innerHTML = preview.answer;
+        for (const [key, target, description] of [["question_image", question, "Slide with one region hidden"], ["answer_image", answer, "Slide with the region revealed"]]) {
+          if (!preview[key]) continue;
+          const image = document.createElement("img");
+          image.src = preview[key];
+          image.className = "source-crop";
+          image.alt = description;
+          target.append(image);
+        }
         if (data.crop_image) {
           const crop = document.createElement("img");
           crop.src = data.crop_image;

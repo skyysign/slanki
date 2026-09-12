@@ -16,6 +16,7 @@ from converter.models import Card, CardRevision, GenerationRun, Lecture, Page, P
 from .cards import validate_content
 from .crops import checked_crop
 from .files import WorkflowError, media_path
+from .occlusion import checked_occlusion
 from .providers import checked_model_id
 
 MAX_BACKUP_BYTES = 200 * 1024 * 1024
@@ -33,7 +34,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 8,
+        "version": 9,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -60,6 +61,7 @@ def export_backup(lecture):
                 "back": c.back,
                 "source_quote": c.source_quote,
                 "source_crop": checked_crop(c.source_crop, c.page),
+                "occlusion": checked_occlusion(c.occlusion, c.page, c.note_type, c.source_crop),
                 "status": c.status,
                 "fingerprint": c.fingerprint,
                 "version": c.version,
@@ -75,6 +77,9 @@ def export_backup(lecture):
                         "back": r.back,
                         "source_quote": r.source_quote,
                         "source_crop": checked_crop(r.source_crop, c.page),
+                        "occlusion": checked_occlusion(
+                            r.occlusion, c.page, r.note_type, r.source_crop
+                        ),
                         "status": r.status,
                         "created_at": r.created_at.isoformat(),
                     }
@@ -190,7 +195,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7, 8)
+                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7, 8, 9)
             ):
                 raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]
@@ -312,12 +317,16 @@ def restore_backup(upload):
                         c,
                         "id page front back source_quote status fingerprint version anki_modified run created_at updated_at revisions"
                         + (" note_type" if manifest["version"] >= 5 else "")
-                        + (" source_crop" if manifest["version"] >= 6 else ""),
+                        + (" source_crop" if manifest["version"] >= 6 else "")
+                        + (" occlusion" if manifest["version"] >= 9 else ""),
                     )
                     c = dict(c)
                     c.setdefault("note_type", "basic")
                     page = page_map[c.pop("page")]
                     c["source_crop"] = checked_crop(c.get("source_crop", {}), page)
+                    c["occlusion"] = checked_occlusion(
+                        c.get("occlusion", {}), page, c["note_type"], c["source_crop"]
+                    )
                     revisions = c.pop("revisions")
                     created, updated = (
                         timestamp(c.pop("created_at")),
@@ -340,13 +349,20 @@ def restore_backup(upload):
                             revision,
                             "version front back source_quote status created_at"
                             + (" note_type" if manifest["version"] >= 5 else "")
-                            + (" source_crop" if manifest["version"] >= 6 else ""),
+                            + (" source_crop" if manifest["version"] >= 6 else "")
+                            + (" occlusion" if manifest["version"] >= 9 else ""),
                         )
                         revision = dict(revision)
                         revision["source_crop"] = checked_crop(
                             revision.get("source_crop", {}), page
                         )
                         revision.setdefault("note_type", "basic")
+                        revision["occlusion"] = checked_occlusion(
+                            revision.get("occlusion", {}),
+                            page,
+                            revision["note_type"],
+                            revision["source_crop"],
+                        )
                         validate_content(
                             revision["front"],
                             revision["back"],

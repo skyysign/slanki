@@ -10,6 +10,7 @@ from converter.models import Card, CardRevision, Page
 from .crops import checked_crop
 from .files import WorkflowError
 from .note_types import format_types, plain_front, study_card_count
+from .occlusion import checked_occlusion, occlusion_png
 
 
 class Draft(NamedTuple):
@@ -38,7 +39,7 @@ def validate_content(front, back, quote, page, require_quote=False, note_type="b
         if not isinstance(value, str) or len(value) > limit or "\x00" in value:
             raise WorkflowError(f"{label} is invalid or too long.")
     study_card_count(front, note_type)
-    if not front.strip() or (note_type != "cloze" and not back.strip()):
+    if not front.strip() or (note_type not in ("cloze", "occlusion") and not back.strip()):
         raise WorkflowError("Both a question and an answer are required.")
     if note_type == "reversed" and normalized(front).casefold() == normalized(back).casefold():
         raise WorkflowError("Use different text on the two sides of a reverse note.")
@@ -116,6 +117,8 @@ def add_drafts(lecture, validated, run=None):
     with transaction.atomic():
         for item in validated:
             page, front, back, quote, note_type = Draft(*item)
+            if note_type == "occlusion":
+                raise WorkflowError("Use the image occlusion editor to add a hidden region.")
             validate_content(front, back, quote, page, note_type=note_type)
             _, created = Card.objects.get_or_create(
                 lecture=lecture,
@@ -133,12 +136,19 @@ def add_drafts(lecture, validated, run=None):
     return count
 
 
-def update_card(card_id, version, front, back, source_quote, status, *, source_crop=None):
+def update_card(
+    card_id, version, front, back, source_quote, status, *, source_crop=None, occlusion=None
+):
     if status not in dict(Card.STATUS):
         raise WorkflowError("Choose a valid card status.")
     with transaction.atomic():
         card = Card.objects.select_related("page").get(pk=card_id)
         crop = checked_crop(card.source_crop if source_crop is None else source_crop, card.page)
+        mask = checked_occlusion(
+            card.occlusion if occlusion is None else occlusion, card.page, card.note_type, crop
+        )
+        if mask:
+            occlusion_png(card.page, mask)
         front, back, quote = validate_content(
             front, back, source_quote, card.page, note_type=card.note_type
         )
@@ -161,6 +171,7 @@ def update_card(card_id, version, front, back, source_quote, status, *, source_c
             back=back,
             source_quote=quote,
             source_crop=crop,
+            occlusion=mask,
             status=status,
             version=version + 1,
             updated_at=timezone.now(),
@@ -175,6 +186,7 @@ def update_card(card_id, version, front, back, source_quote, status, *, source_c
             back=card.back,
             source_quote=card.source_quote,
             source_crop=card.source_crop,
+            occlusion=card.occlusion,
             status=card.status,
             note_type=card.note_type,
         )

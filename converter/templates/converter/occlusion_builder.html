@@ -1,0 +1,21 @@
+{% extends 'converter/base.html' %}
+{% block title %}Image occlusion · Recalloom{% endblock %}
+{% block content %}
+<div class="home-wrap occlusion-builder">
+  <a class="back-link" href="{{ lecture.get_absolute_url }}">← Back to lecture</a>
+  <p class="eyebrow">DRAW, HIDE, RECALL</p><h1>Image occlusion</h1><p>{{ lecture.title }}</p>
+  <form method="get" class="button-row"><label for="occlusion-page">Source page</label><select id="occlusion-page" name="page">{% for p in pages %}<option value="{{ p.number }}" {% if p.pk == page.pk %}selected{% endif %}>Page {{ p.number }}{% if p.warning %} · image only{% endif %}</option>{% endfor %}</select><button class="button secondary" type="submit">Use page</button></form>
+  <p class="form-note">Save your regions before switching pages. Image-only slides work here too.</p>
+  {% if error %}<p class="notice warning" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" data-note-form data-card-form data-preview-url="{% url 'preview_note' lecture.pk %}" class="panel">
+    {% csrf_token %}<input type="hidden" name="page" value="{{ page.number }}"><input type="hidden" name="note_type" value="occlusion">
+    <label for="occlusion-front" data-front-label>Prompt</label><textarea id="occlusion-front" name="front" rows="2" maxlength="1000" required>{{ front }}</textarea>
+    {% include 'converter/occlusion_controls.html' with mask_page=page %}
+    <label for="occlusion-back" data-back-label>Extra explanation (optional)</label><textarea id="occlusion-back" name="back" rows="2" maxlength="5000">{{ back }}</textarea>
+    <p class="form-note">The prompt and explanation apply to every region added here. Edit individual drafts afterward.</p>
+    <div class="button-row"><button type="button" class="button secondary" data-preview-note>Preview selected region</button><button type="submit" class="button primary">Add drafts</button></div>
+    <p class="form-note" data-save-state>Regions are saved as drafts. Check each one before accepting it for export.</p>
+    <div data-preview-output></div>
+  </form>
+</div>
+{% endblock %}

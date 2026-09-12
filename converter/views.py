@@ -10,7 +10,7 @@ from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.text import slugify
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from .forms import CardForm, UploadForm
 from .models import Card, GenerationRun, Lecture, Page, PendingFileDeletion
@@ -33,11 +33,13 @@ from .services.note_types import (
     CARD_FORMATS,
     LEARNING_FOCUSES,
     NOTE_TYPES,
+    TEXT_NOTE_TYPES,
     checked_choice,
     format_from_types,
     format_types,
     study_previews,
 )
+from .services.occlusion import add_occlusions, masks_from_form, occlusion_png
 from .services.providers import (
     EFFORTS,
     PROVIDER_DETAILS,
@@ -242,7 +244,12 @@ def lecture_context(item, request, selected=None, form=None):
         "study_previews": study_previews(selected.front, selected.back, selected.note_type)
         if selected
         else [],
-        "note_types": NOTE_TYPES,
+        "note_types": TEXT_NOTE_TYPES,
+        "masks_json": request.POST.get("masks", "[]")
+        if request.method == "POST"
+        else json.dumps(
+            [selected.occlusion] if selected and selected.note_type == "occlusion" else []
+        ),
         "card_formats": CARD_FORMATS,
         "learning_focuses": LEARNING_FOCUSES,
         "selected_focus": last_codex_run.learning_focus if last_codex_run else "balanced",
@@ -293,7 +300,12 @@ def save_card(request, pk):
             )
             if crop:
                 crop_png(card.page, crop)
-            update_card(card.pk, **form.cleaned_data, source_crop=crop)
+            mask = (
+                masks_from_form(values, card.page, single=True)[0]
+                if card.note_type == "occlusion"
+                else None
+            )
+            update_card(card.pk, **form.cleaned_data, source_crop=crop, occlusion=mask)
             if values.get("action") == "accept_next":
                 next_card = card.lecture.cards.filter(status="draft").first()
                 if next_card:
@@ -440,7 +452,7 @@ def add_card(request, pk):
     page = get_object_or_404(item.pages, number=request.POST.get("page"))
     try:
         note_type = checked_choice(
-            request.POST.get("note_type", "basic"), NOTE_TYPES, "note format"
+            request.POST.get("note_type", "basic"), TEXT_NOTE_TYPES, "note format"
         )
         front, back, quote = validate_content(
             request.POST.get("front", ""),
@@ -462,6 +474,48 @@ def preview_note(request, pk):
         note_type = checked_choice(
             request.POST.get("note_type", "basic"), NOTE_TYPES, "note format"
         )
+        if note_type == "occlusion":
+            if request.POST.get("card_id"):
+                try:
+                    card_id = uuid.UUID(request.POST["card_id"])
+                except ValueError as exc:
+                    raise WorkflowError("Choose a saved image occlusion note.") from exc
+                card = get_object_or_404(
+                    item.cards.select_related("page"), pk=card_id, note_type="occlusion"
+                )
+                page = card.page
+            else:
+                try:
+                    page_number = int(request.POST.get("page", ""))
+                except ValueError as exc:
+                    raise WorkflowError("Choose a source page.") from exc
+                page = get_object_or_404(item.pages, number=page_number)
+            masks = masks_from_form(request.POST, page, single=bool(request.POST.get("card_id")))
+            front, back, _ = validate_content(
+                request.POST.get("front", ""),
+                request.POST.get("back", ""),
+                "",
+                page,
+                note_type=note_type,
+            )
+            try:
+                index = int(request.POST.get("preview_index", "0"))
+            except ValueError as exc:
+                raise WorkflowError("Select a region to preview.") from exc
+            if not 0 <= index < len(masks):
+                raise WorkflowError("Select a region to preview.")
+            previews = study_previews(front, back, note_type)
+            for key, answer in (("question_image", False), ("answer_image", True)):
+                previews[0][key] = "data:image/png;base64," + base64.b64encode(
+                    occlusion_png(page, masks[index], answer=answer)
+                ).decode("ascii")
+            return JsonResponse(
+                {
+                    "previews": previews,
+                    "study_cards": 1,
+                    "caption": f"Region {index + 1} of {len(masks)}. Each region makes one card. Preview only; changes have not been saved.",
+                }
+            )
         # Preview is content-only and never saves edits or calls a provider.
         front, back, _ = validate_content(
             request.POST.get("front", ""),
@@ -659,3 +713,56 @@ def demo(request):
     payload = json.loads((fixture / "cards.json").read_text(encoding="utf-8"))
     add_drafts(item, validate_payload(payload, {p.number: p for p in item.pages.all()}))
     return redirect(item)
+
+
+@require_http_methods(["GET", "POST"])
+def occlusion_builder(request, pk):
+    item = get_object_or_404(Lecture, pk=pk)
+    values = request.POST if request.method == "POST" else request.GET
+    try:
+        page_number = int(values.get("page", "1"))
+    except ValueError:
+        return error_page(request, "Choose a valid source page.", item)
+    page = get_object_or_404(item.pages, number=page_number)
+    error = ""
+    front = request.POST.get("front", "Name the hidden part.")
+    back = request.POST.get("back", "")
+    if request.method == "POST":
+        try:
+            masks = masks_from_form(request.POST, page)
+            saved = add_occlusions(item, page, front, back, masks)
+            if saved:
+                return redirect(
+                    f"{item.get_absolute_url()}?card={saved[0].pk}&occlusions_added={len(saved)}"
+                )
+            error = "These regions already have notes. Open the existing notes to edit them."
+        except WorkflowError as exc:
+            error = str(exc)
+    return render(
+        request,
+        "converter/occlusion_builder.html",
+        {
+            "lecture": item,
+            "page": page,
+            "pages": item.pages.all(),
+            "front": front,
+            "back": back,
+            "error": error,
+            "masks_json": request.POST.get("masks", "[]"),
+        },
+        status=400 if error else 200,
+    )
+
+
+@require_GET
+def card_occlusion(request, pk, side):
+    card = get_object_or_404(Card.objects.select_related("page"), pk=pk, note_type="occlusion")
+    if side not in ("question", "answer"):
+        raise Http404
+    try:
+        return HttpResponse(
+            occlusion_png(card.page, card.occlusion, answer=side == "answer"),
+            content_type="image/png",
+        )
+    except WorkflowError as exc:
+        return HttpResponse(str(exc), status=404, content_type="text/plain")

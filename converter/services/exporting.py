@@ -14,10 +14,12 @@ from django.conf import settings
 from .crops import crop_png
 from .files import WorkflowError, media_path
 from .note_types import study_card_count, text_html
+from .occlusion import checked_occlusion, occlusion_png
 
 MODEL_ID = 1890487183
 CLOZE_MODEL_ID = 1890487184
 REVERSED_MODEL_ID = 1890487185
+OCCLUSION_MODEL_ID = 1890487186
 CSS = """.card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;
 color: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }
 .nightMode.card { color: #e7eee8; background: #202825; }
@@ -89,7 +91,25 @@ def export_deck(lecture):
         ],
         css=CSS,
     )
-    models = {"basic": model, "cloze": cloze_model, "reversed": reversed_model}
+    occlusion_model = genanki.Model(
+        OCCLUSION_MODEL_ID,
+        "Recalloom — Image occlusion v1",
+        fields=[{"name": name} for name in ["Prompt", "Hidden", "Revealed", "Extra", "Source"]],
+        templates=[
+            {
+                "name": "Hidden region",
+                "qfmt": "{{Prompt}}<br>{{Hidden}}",
+                "afmt": '{{Prompt}}<br>{{Revealed}}<hr id="answer">{{Extra}}<div class="source">{{Source}}</div>',
+            }
+        ],
+        css=CSS,
+    )
+    models = {
+        "basic": model,
+        "cloze": cloze_model,
+        "reversed": reversed_model,
+        "occlusion": occlusion_model,
+    }
     media = {}
     for card in cards:
         study_card_count(card.front, card.note_type)
@@ -121,6 +141,15 @@ def export_deck(lecture):
         fields = [front, text_html(card.back), source]
         if card.note_type == "reversed":
             fields.append(question_image)
+        elif card.note_type == "occlusion":
+            mask = checked_occlusion(card.occlusion, card.page, card.note_type, card.source_crop)
+            images = []
+            for answer in (False, True):
+                png = occlusion_png(card.page, mask, answer=answer)
+                name = f"occlusion_{card.pk.hex}_{hashlib.sha256(png).hexdigest()[:16]}.png"
+                media[name] = png
+                images.append(f'<img class="source-crop" src="{name}">')
+            fields = [front, *images, text_html(card.back), source]
         deck.add_note(
             StableNote(
                 model=models[card.note_type],

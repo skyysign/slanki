@@ -4,9 +4,9 @@ A local tool for turning lecture PDFs into editable Anki cards with source-slide
 
 **Project direction:** free software supported by optional donations. There are no plans for app subscriptions, paid features, sold generation credits, or a hosted generation service. Users supply their own supported AI access; further expansion will follow demonstrated demand.
 
-**Current state:** a working personal-use alpha. Import a PDF, generate or import basic Q/A, cloze, and optional reverse-card drafts, edit and accept notes beside their source slide, and export an Anki deck with bundled source images. Per-lecture backup and restore are included. Use “Try a sample lecture” to exercise the workflow without spending AI allowance.
+**Current state:** a working personal-use alpha. Import a PDF, generate or import basic Q/A, cloze, and optional reverse-card drafts, edit and accept notes beside their source slide, and export an Anki deck with bundled source images. Manual image occlusion can turn hidden slide regions into cards, including on image-only pages. Per-lecture backup and restore are included. Use “Try a sample lecture” to exercise the workflow without spending AI allowance.
 
-This first version supports selectable-text PDFs up to 25 MB and 100 pages. Scans and diagram-only pages are flagged. Generation uses text, not visual interpretation. You can manually attach a rectangular source-image crop to a note. Image occlusion, PPTX, an internal reviewer, and mobile sync are not implemented yet.
+This first version supports selectable-text PDFs up to 25 MB and 100 pages. Scans and diagram-only pages are flagged. Generation uses text, not visual interpretation. You can manually attach a rectangular source-image crop to a note. Automatic diagram interpretation, PPTX, an internal reviewer, and mobile sync are not implemented yet.
 
 ## Install and run (Windows / Python 3.12)
 
@@ -47,7 +47,7 @@ Anki backend 26.8.1 has been tested for repeated imports, question edits, bundle
 
 **Learning focus** offers Balanced, Core knowledge, Understanding, and Application as visible single-choice options. Balanced is the starting choice. Focus changes the requested learning task within the same card budget; Application stays within methods/examples supported by the source and does not request invented exercises. **Card formats** has independent Basic Q/A, Cloze, and Basic + reverse checkboxes: tick any combination, with at least one selected. Basic Q/A remains the initial format; reverse cards are opt-in. These selections apply to generation and downloaded prompts, are saved with CLI runs, and survive resume and backup. Older saved Mixed runs still mean Q/A + cloze.
 
-Cloze hides parts of a statement. For example, `Retrieval practice means trying to {{c1::recall}} information from {{c2::memory::where?}}.` produces two Anki cards. Reusing `c1` for both blanks produces one card hiding both together. The app supports flat, non-nested clozes numbered 1–20, with an optional hint after another `::`. Extra explanation is optional. Nested clozes, braces inside a blank, and image occlusion are not supported yet.
+Cloze hides parts of a statement. For example, `Retrieval practice means trying to {{c1::recall}} information from {{c2::memory::where?}}.` produces two Anki cards. Reusing `c1` for both blanks produces one card hiding both together. The app supports flat, non-nested clozes numbered 1–20, with an optional hint after another `::`. Extra explanation is optional. Nested clozes and braces inside a blank are not supported.
 
 **Basic + reverse** creates two separately scheduled cards from one note: front → back and back → front. Use short terms, definitions, or clear paired facts for which either side is a useful prompt. Both sides are required and cannot be identical. Under **Write a card yourself**, select Basic + reverse and preview both directions before accepting. Edits update both cards. The generation prompt requests reverse notes only when both directions are supported and unambiguous; that judgment still needs human review. The layout follows Anki's [basic and reversed card behavior](https://docs.ankiweb.net/getting-started.html#note-types), with an additional source field on both answers.
 
@@ -61,7 +61,19 @@ JSON drafts may include `"note_type": "basic"`, `"note_type": "cloze"`, or `"not
 
 Mixed basic/cloze/reverse export was checked with Anki's 26.8.1 backend: cloze ordinals, both reverse directions, rendered questions/answers, repeated import, edits preserving each card's schedule, and bundled source media. Adding reverse notes preserves existing basic/cloze schedules. Manual desktop/mobile checks for these formats and crops remain pending. The new focus/format prompts have only offline tests; their generation quality has not been measured with live lectures.
 
-Converter backups now use format **8**, which preserves reverse notes, revisions, and all format combinations. Formats 1–7 remain readable. Restore format-8 backups with this version or newer; older Recalloom builds cannot read them.
+Converter backups now use format **9**, which also preserves image occlusion regions and their edit history. Formats 1–8 remain readable. Restore format-9 backups with this version or newer; older Recalloom builds cannot read them.
+
+## Manual image occlusion
+
+Open **Create cards → Create image occlusion**, choose a source page, and press **Use page**. Draw a rectangle over each label or detail to recall, up to 20 regions per submission. You can also press **Add region** and adjust the four pixel fields with a keyboard. Select a region from the numbered buttons to adjust, preview, or remove it before saving. Image-only slides work here; this feature uses no model or OCR.
+
+Each region becomes one independent draft note and one Anki card. Only that card's region is hidden; other parts of the slide remain visible. **Preview selected region** shows the actual masked question and revealed answer, with a green outline identifying the answer region. **Add drafts** applies the prompt and optional explanation to all submitted regions. Check and edit each draft before accepting it. Exact regions already represented on that source page are skipped, including previously edited regions, so repeated submission preserves existing work.
+
+An existing image occlusion note has the same drawing/pixel controls in the lecture editor. Drawing replaces its rectangle; saving retains its ID and Anki review card. Its source page stays fixed. Use **Set aside** when a card should no longer be exported; an earlier copy in Anki remains there. Adding another region creates a new card. Save before changing pages.
+
+Export uses a dedicated note type with bundled PNG question/answer images and the original source slide on the answer. Masks are opaque pixels in the question image; no JavaScript is needed to hide them during study. Edit regions in Recalloom and re-export. These exports do not use Anki's native image-occlusion editor; Anki describes its own [image-occlusion workflow](https://docs.ankiweb.net/editing.html#image-occlusion). Recalloom currently supports rectangular hide-one/reveal-one cards, without grouped masks, hide-all mode, automatic label detection, or visual AI generation. Source crops belong to the text formats; occlusion uses the full slide.
+
+Actual Anki 26.8.1 backend tests verify rendering/media, repeated imports, mask/text edits preserving separate review schedules, and adding regions without replacing existing cards. Backup restoration retains masks, IDs, revision history, and equivalent export media. Manual desktop/mobile client checks remain pending.
 
 ## Source image crops
 

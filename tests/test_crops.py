@@ -229,8 +229,10 @@ class SourceCropTests(WorkflowFixture):
                     manifest["version"] = 5
                     for card in manifest["cards"]:
                         card.pop("source_crop")
+                        card.pop("occlusion")
                         for revision in card["revisions"]:
                             revision.pop("source_crop")
+                            revision.pop("occlusion")
                 for name in source.namelist():
                     target.writestr(
                         name, json.dumps(manifest) if name == "manifest.json" else source.read(name)

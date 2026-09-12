@@ -487,6 +487,112 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     assert Path(reverse_export.value.path()).stat().st_size > 1000
                     page.set_viewport_size({"width": 1512, "height": 1100})
                     page.screenshot(path=str(OUTPUT / "reverse-export-desktop.png"), full_page=True)
+                    # Manual image occlusion works on the image-only slide without inference.
+                    page.get_by_role("link", name="Back to lecture", exact=False).click()
+                    generation = page.locator("details.generation-panel:not(.generation-issues)")
+                    if generation.get_attribute("open") is None:
+                        generation.locator("summary").first.click()
+                    page.get_by_role("link", name="Create image occlusion", exact=True).click()
+                    page.get_by_label("Source page", exact=True).select_option("4")
+                    page.get_by_role("button", name="Use page", exact=True).click()
+                    builder = page.locator("[data-card-form]")
+                    builder.get_by_label("Prompt", exact=True).fill("Image occlusion sample")
+                    image = builder.locator("[data-mask-stage] img")
+                    image.evaluate("image => image.decode()")
+                    image.scroll_into_view_if_needed()
+                    box = image.bounding_box()
+                    for left, right in ((0.1, 0.3), (0.5, 0.75)):
+                        page.mouse.move(
+                            box["x"] + box["width"] * left, box["y"] + box["height"] * 0.2
+                        )
+                        page.mouse.down()
+                        page.mouse.move(
+                            box["x"] + box["width"] * right, box["y"] + box["height"] * 0.5, steps=8
+                        )
+                        page.mouse.up()
+                    assert builder.locator("[data-mask-list] button").count() == 2
+                    masks = json.loads(builder.locator('[name="masks"]').input_value())
+                    assert all(mask["page"] == 4 and mask["right"] > mask["left"] for mask in masks)
+                    # Keyboard controls support adding/removing a region and precise adjustments.
+                    builder.get_by_role("button", name="Add region", exact=True).click()
+                    assert builder.locator("[data-mask-list] button").count() == 3
+                    builder.get_by_role("button", name="Remove selected region", exact=True).click()
+                    assert builder.locator("[data-mask-list] button").count() == 2
+                    builder.get_by_label("Region left", exact=True).fill(str(masks[1]["left"] + 5))
+                    builder.get_by_label("Region top", exact=True).focus()
+                    builder.get_by_role(
+                        "button", name="Preview selected region", exact=True
+                    ).click()
+                    builder.get_by_text(
+                        "Region 2 of 2. Each region makes one card.", exact=False
+                    ).wait_for()
+                    assert builder.locator(".preview-card").count() == 1
+                    hidden = builder.locator(".preview-question img")
+                    hidden.evaluate("image => image.decode()")
+                    builder.locator(".preview-card summary").click()
+                    revealed = builder.locator(".preview-answer img")
+                    revealed.evaluate("image => image.decode()")
+                    assert hidden.get_attribute("src") != revealed.get_attribute("src")
+                    page.screenshot(
+                        path=str(OUTPUT / "occlusion-builder-desktop.png"), full_page=True
+                    )
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.screenshot(
+                        path=str(OUTPUT / "occlusion-builder-mobile.png"), full_page=True
+                    )
+                    builder.get_by_role("button", name="Add drafts", exact=True).click()
+                    page.get_by_text("2 image occlusion draft(s) added.", exact=False).wait_for()
+                    editor = page.locator("[data-card-form]")
+                    assert editor.locator('[data-single="yes"]').count() == 1
+                    assert editor.locator('[name="crop_enabled"]').count() == 0
+                    original_action = editor.get_attribute("action")
+                    editor.get_by_label("Extra explanation (optional)", exact=True).fill(
+                        "Image answer explanation"
+                    )
+                    editor.get_by_label("Region right", exact=True).fill(
+                        str(masks[0]["right"] + 10)
+                    )
+                    editor.get_by_label("After saving", exact=True).select_option("accepted")
+                    editor.get_by_role("button", name="Preview current text", exact=True).click()
+                    editor.get_by_text(
+                        "Region 1 of 1. Each region makes one card.", exact=False
+                    ).wait_for()
+                    editor.get_by_role("button", name="Save changes", exact=True).click()
+                    assert (
+                        page.locator("[data-card-form]").get_attribute("action") == original_action
+                    )
+                    occlusion_notes = page.locator(".card-item").filter(
+                        has_text="Image occlusion sample"
+                    )
+                    assert occlusion_notes.count() == 2
+                    occlusion_notes.last.click()
+                    editor = page.locator("[data-card-form]")
+                    assert editor.get_attribute("action") != original_action
+                    editor.get_by_role("button", name="Accept & next", exact=False).click()
+                    page.get_by_role("link", name="Preview export", exact=True).click()
+                    page.get_by_text("7 review cards from 5 accepted notes", exact=False).wait_for()
+                    assert page.locator(".preview-card").count() == 7
+                    occlusion_previews = page.locator(".export-preview-note").filter(
+                        has_text="Image occlusion"
+                    )
+                    assert occlusion_previews.count() == 2
+                    occlusion_previews.locator(".preview-question img").first.evaluate(
+                        "image => image.decode()"
+                    )
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.screenshot(
+                        path=str(OUTPUT / "occlusion-export-mobile.png"), full_page=True
+                    )
+                    with page.expect_download() as occlusion_export:
+                        page.get_by_role("link", name="Export 7 to Anki", exact=False).click()
+                    assert Path(occlusion_export.value.path()).stat().st_size > 1000
+                    page.get_by_role("link", name="Back to lecture", exact=False).click()
+                    with page.expect_download() as occlusion_backup:
+                        page.get_by_role("link", name="Save backup", exact=True).click()
+                    assert Path(occlusion_backup.value.path()).stat().st_size > 1000
+                    # Return to export preview so the existing deletion workflow starts as before.
+                    page.get_by_role("link", name="Preview export", exact=True).click()
                     # Delete only this isolated synthetic set, then import the same PDF afresh.
                     page.get_by_role("link", name="Back to lecture", exact=False).click()
                     old_lecture_url = page.url.split("?")[0]
@@ -543,7 +649,7 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                 process.terminate()
                 process.wait(timeout=10)
     print(
-        "Browser checks passed: sample import, edit/accept, export, backup, recovery, provider/model/effort dropdowns, cloze/crop drag and unsaved preview, mixed export, confirmed set deletion and fresh reimport, desktop/mobile layouts, no JavaScript errors."
+        "Browser checks passed: sample import, edit/accept, export, backup, recovery, provider/model/effort dropdowns, cloze/reverse cards, crops, image occlusion drawing and unsaved previews, mixed export, confirmed set deletion and fresh reimport, desktop/mobile layouts, no JavaScript errors."
     )
     print(f"Screenshots: {OUTPUT}")
 

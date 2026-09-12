@@ -266,7 +266,7 @@ class ReverseCardTests(WorkflowFixture):
         original = self.archive_db(export_deck(self.lecture))[0][0]
         data = export_backup(self.lecture)
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
-            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], 8)
+            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], 9)
         Card.objects.all().delete()
         Lecture.objects.all().delete()
         destination = Path(self.directory.name) / str(uuid.uuid4())

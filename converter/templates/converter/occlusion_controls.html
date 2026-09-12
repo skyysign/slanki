@@ -1,9 +1,10 @@
 <section class="occlusion-editor" data-occlusion-editor data-single="{% if single %}yes{% else %}no{% endif %}" data-page="{{ mask_page.number }}" data-width="{{ mask_page.width }}" data-height="{{ mask_page.height }}">
   <h3>Hidden region{% if not single %}s{% endif %} · Page {{ mask_page.number }}</h3>
-  <p class="form-note">{% if single %}Drag to replace this card's rectangle, or adjust its edges below. Saving keeps the same Anki card. Set the note aside if you no longer want to export it.{% else %}Drag a rectangle over each label or detail you want to recall. Each region makes one card, with just that region hidden. Other regions stay visible. Add up to 20 at a time.{% endif %}</p>
+  <p class="form-note">Drag a region to move it. Drag its corner or edge handles to resize it. {% if single %}Use Redraw region to replace the rectangle. Saving keeps the same Anki card.{% else %}Drag on empty slide space to add a region, or use Draw new region to draw over an existing one. Each region makes one card; add up to 20 at a time.{% endif %}</p>
+  <div class="button-row"><button class="button secondary" type="button" data-draw-mask aria-pressed="false">{% if single %}Redraw region{% else %}Draw new region{% endif %}</button><button class="button secondary" type="button" data-undo-mask disabled>Undo</button></div>
   <input type="hidden" name="masks" value="{{ masks_json }}">
   <input type="hidden" name="preview_index" value="0">
-  <div class="occlusion-stage" data-mask-stage>
+  <div class="occlusion-stage" data-mask-stage tabindex="0" role="group" aria-label="Occlusion canvas: select a region, then use arrow keys to move it">
     <img src="{% url 'page_image' mask_page.pk %}" alt="Slide for image occlusion, page {{ mask_page.number }}" draggable="false">
     <div class="occlusion-overlays" data-mask-overlays></div>
   </div>
@@ -16,6 +17,6 @@
     <label>Bottom <input type="number" min="1" max="{{ mask_page.height }}" data-mask-edge="bottom" aria-label="Region bottom"></label>
   </div>
   {% if not single %}<div class="button-row"><button class="button secondary" type="button" data-add-mask>Add region</button><button class="text-button" type="button" data-remove-mask>Remove selected region</button></div>{% endif %}
-  <p class="form-note">Preview the selected region to check what will be hidden. The answer reveals it with a green outline. This runs locally and uses no AI allowance.</p>
+  <p class="form-note">Use arrow keys while the slide is focused to move the selected region; hold Shift for larger steps. Escape cancels a drag. Preview checks what will be hidden and revealed. Changes stay unsaved until you save the draft.</p>
   <noscript><p class="notice warning">Enable JavaScript to draw and preview hidden regions.</p></noscript>
 </section>

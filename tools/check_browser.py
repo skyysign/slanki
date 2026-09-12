@@ -21,6 +21,90 @@ OUTPUT = ROOT / "data" / "screenshots"
 OUTPUT.mkdir(parents=True, exist_ok=True)
 
 
+def check_mask_manipulation(page, form):
+    """Exercise real pointer geometry, cancellation, and history without saving notes."""
+
+    def masks():
+        return json.loads(form.locator('[name="masks"]').input_value())
+
+    def drag(locator, dx, dy, *, cancel=False):
+        locator.scroll_into_view_if_needed()
+        box = locator.bounding_box()
+        x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
+        page.mouse.move(x, y)
+        page.mouse.down()
+        page.mouse.move(x + dx, y + dy, steps=5)
+        if cancel:
+            page.keyboard.press("Escape")
+        page.mouse.up()
+
+    def undo():
+        form.get_by_role("button", name="Undo", exact=True).click()
+
+    original = masks()
+    region = form.locator('[data-mask-index="1"]')
+    drag(region, 24, 18)
+    moved = masks()
+    assert len(moved) == 2 and moved[0] == original[0]
+    assert moved[1]["left"] > original[1]["left"] and moved[1]["top"] > original[1]["top"]
+    assert moved[1]["right"] - moved[1]["left"] == original[1]["right"] - original[1]["left"]
+    assert moved[1]["bottom"] - moved[1]["top"] == original[1]["bottom"] - original[1]["top"]
+    assert int(form.get_by_label("Region left", exact=True).input_value()) == moved[1]["left"]
+    undo()
+    assert masks() == original
+    for edge in ("nw", "n", "ne", "e", "se", "s", "sw", "w"):
+        drag(
+            form.locator(f'.mask-handle[data-mask-edge="{edge}"]'),
+            -8 if "w" in edge else 8 if "e" in edge else 0,
+            -8 if "n" in edge else 8 if "s" in edge else 0,
+        )
+        resized = masks()
+        assert len(resized) == 2 and resized[0] == original[0]
+        for key, direction in (("left", "w"), ("right", "e"), ("top", "n"), ("bottom", "s")):
+            assert (resized[1][key] != original[1][key]) == (direction in edge)
+        undo()
+        assert masks() == original
+    drag(region, -2000, -2000)
+    bounded = masks()[1]
+    assert bounded["left"] == bounded["top"] == 0
+    assert bounded["right"] == original[1]["right"] - original[1]["left"]
+    assert bounded["bottom"] == original[1]["bottom"] - original[1]["top"]
+    undo()
+    drag(form.locator('.mask-handle[data-mask-edge="nw"]'), 2000, 2000)
+    tiny = masks()[1]
+    assert tiny["right"] - tiny["left"] == tiny["bottom"] - tiny["top"] == 2
+    undo()
+    drag(region, 30, 20, cancel=True)
+    assert masks() == original
+    drag(form.locator('.mask-handle[data-mask-edge="se"]'), 20, 20, cancel=True)
+    assert masks() == original
+    canvas = form.locator("[data-mask-stage]")
+    canvas.focus()
+    page.keyboard.press("Shift+ArrowRight")
+    assert masks()[1]["left"] == original[1]["left"] + 10
+    undo()
+    # Drawing over an existing region is an explicit mode, then returns to editing.
+    form.get_by_role("button", name="Draw new region", exact=True).click()
+    drag(region, 22, 18)
+    assert len(masks()) == 3
+    assert (
+        form.get_by_role("button", name="Draw new region", exact=True).get_attribute("aria-pressed")
+        == "false"
+    )
+    undo()
+    assert masks() == original
+    # Reaching the creation cap must not disable editing existing regions.
+    for _ in range(18):
+        form.get_by_role("button", name="Add region", exact=True).click()
+    assert len(masks()) == 20
+    drag(form.locator('[data-mask-index="19"]'), 25, 25)
+    assert len(masks()) == 20 and masks()[19]["left"] > 0
+    undo()
+    for _ in range(18):
+        undo()
+    assert masks() == original
+
+
 def main():
     with TemporaryDirectory(dir=ROOT / "data" / "work") as directory:
         environment = {
@@ -513,6 +597,7 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     assert builder.locator("[data-mask-list] button").count() == 2
                     masks = json.loads(builder.locator('[name="masks"]').input_value())
                     assert all(mask["page"] == 4 and mask["right"] > mask["left"] for mask in masks)
+                    check_mask_manipulation(page, builder)
                     # Keyboard controls support adding/removing a region and precise adjustments.
                     builder.get_by_role("button", name="Add region", exact=True).click()
                     assert builder.locator("[data-mask-list] button").count() == 3
@@ -538,6 +623,34 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     )
                     page.set_viewport_size({"width": 390, "height": 844})
                     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    touch_canvas = builder.locator("[data-mask-stage]")
+                    touch_canvas.scroll_into_view_if_needed()
+                    touch_region = builder.locator('[data-mask-index="1"]')
+                    touch_box = touch_region.bounding_box()
+                    tx, ty = (
+                        touch_box["x"] + touch_box["width"] / 2,
+                        touch_box["y"] + touch_box["height"] / 2,
+                    )
+                    before_touch = json.loads(builder.locator('[name="masks"]').input_value())
+                    cdp = page.context.new_cdp_session(page)
+                    cdp.send(
+                        "Input.dispatchTouchEvent",
+                        {"type": "touchStart", "touchPoints": [{"x": tx, "y": ty}]},
+                    )
+                    cdp.send(
+                        "Input.dispatchTouchEvent",
+                        {"type": "touchMove", "touchPoints": [{"x": tx + 10, "y": ty + 8}]},
+                    )
+                    cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
+                    after_touch = json.loads(builder.locator('[name="masks"]').input_value())
+                    assert (
+                        len(after_touch) == 2 and after_touch[1]["left"] > before_touch[1]["left"]
+                    )
+                    builder.get_by_role("button", name="Undo", exact=True).click()
+                    assert (
+                        json.loads(builder.locator('[name="masks"]').input_value()) == before_touch
+                    )
+                    cdp.detach()
                     page.screenshot(
                         path=str(OUTPUT / "occlusion-builder-mobile.png"), full_page=True
                     )
@@ -547,6 +660,23 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     assert editor.locator('[data-single="yes"]').count() == 1
                     assert editor.locator('[name="crop_enabled"]').count() == 0
                     original_action = editor.get_attribute("action")
+                    saved_region = editor.locator('[data-mask-index="0"]')
+                    saved_region.scroll_into_view_if_needed()
+                    region_box = saved_region.bounding_box()
+                    sx, sy = (
+                        region_box["x"] + region_box["width"] / 2,
+                        region_box["y"] + region_box["height"] / 2,
+                    )
+                    saved_mask = json.loads(editor.locator('[name="masks"]').input_value())[0]
+                    page.mouse.move(sx, sy)
+                    page.mouse.down()
+                    page.mouse.move(sx + 12, sy + 8, steps=5)
+                    page.mouse.up()
+                    assert editor.locator("[data-mask-list] button").count() == 1
+                    assert (
+                        json.loads(editor.locator('[name="masks"]').input_value())[0]["left"]
+                        > saved_mask["left"]
+                    )
                     editor.get_by_label("Extra explanation (optional)", exact=True).fill(
                         "Image answer explanation"
                     )

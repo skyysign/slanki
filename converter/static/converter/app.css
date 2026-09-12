@@ -1232,8 +1232,18 @@ summary {
 .occlusion-editor { margin: 20px 0; min-width: 0; }
 .occlusion-stage { position: relative; line-height: 0; touch-action: none; cursor: crosshair; border: 1px solid #c8d1cb; }
 .occlusion-stage > img { display: block; width: 100%; height: auto; user-select: none; }
-.occlusion-overlays { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.occlusion-mask { position: absolute; background: #d9aa54b3; border: 2px solid #936311; color: #30200a; font: bold 12px/1.2 Arial, sans-serif; overflow: hidden; }
-.occlusion-mask.selected { border-color: #203f83; box-shadow: 0 0 0 1px #fff; }
+.occlusion-overlays { position: absolute; inset: 0; pointer-events: none; }
+.occlusion-mask { position: absolute; background: #d9aa54b3; border: 2px solid #936311; color: #30200a; font: bold 12px/1.2 Arial, sans-serif; cursor: move; pointer-events: auto; user-select: none; }
+.occlusion-mask.selected { border-color: #203f83; box-shadow: 0 0 0 1px #fff; z-index: 1; }
+.occlusion-stage:focus-visible { outline: 3px solid #203f83; outline-offset: 3px; }
+.occlusion-stage.drawing .occlusion-mask { pointer-events: none; }
+.occlusion-stage.dragging { cursor: grabbing; }
+.mask-handle { position: absolute; width: 20px; height: 20px; transform: translate(-50%, -50%); touch-action: none; }
+.mask-handle::after { content: ""; position: absolute; inset: 5px; background: #fff; border: 2px solid #203f83; border-radius: 2px; }
+.mask-handle[data-mask-edge="nw"], .mask-handle[data-mask-edge="se"] { cursor: nwse-resize; }
+.mask-handle[data-mask-edge="ne"], .mask-handle[data-mask-edge="sw"] { cursor: nesw-resize; }
+.mask-handle[data-mask-edge="n"], .mask-handle[data-mask-edge="s"] { cursor: ns-resize; }
+.mask-handle[data-mask-edge="w"], .mask-handle[data-mask-edge="e"] { cursor: ew-resize; }
+.occlusion-mask.pending { pointer-events: none; }
 .mask-list { margin-top: 12px; flex-wrap: wrap; }
 .mask-list [aria-pressed="true"] { background: #e4ecff; border-color: #203f83; color: #203f83; }

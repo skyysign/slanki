@@ -136,21 +136,46 @@ document.querySelectorAll("[data-occlusion-editor]").forEach((editor) => {
   const form = editor.closest("form"), stage = editor.querySelector("[data-mask-stage]");
   const image = stage.querySelector("img"), overlays = editor.querySelector("[data-mask-overlays]");
   const list = editor.querySelector("[data-mask-list]"), status = editor.querySelector("[data-mask-status]");
-  const fields = Object.fromEntries([...editor.querySelectorAll("[data-mask-edge]")].map(field => [field.dataset.maskEdge, field]));
+  const fields = Object.fromEntries([...editor.querySelectorAll("input[data-mask-edge]")].map(field => [field.dataset.maskEdge, field]));
+  const drawButton = editor.querySelector("[data-draw-mask]"), undoButton = editor.querySelector("[data-undo-mask]");
   const width = Number(editor.dataset.width), height = Number(editor.dataset.height), page = Number(editor.dataset.page);
   const single = editor.dataset.single === "yes", limit = single ? 1 : 20;
-  let masks = [], selected = 0, start = null, pending = null;
-  try { const saved = JSON.parse(form.elements.masks.value); if (Array.isArray(saved)) masks = saved.slice(0, limit); } catch { /* Server displays invalid input; start a fresh rectangle. */ }
-  const valid = mask => mask && mask.page === page && ["left", "top", "right", "bottom"].every(key => Number.isInteger(mask[key])) && mask.left >= 0 && mask.top >= 0 && mask.right <= width && mask.bottom <= height && mask.right - mask.left >= 2 && mask.bottom - mask.top >= 2;
+  const handles = {nw: [0, 0], n: [50, 0], ne: [100, 0], e: [100, 50], se: [100, 100], s: [50, 100], sw: [0, 100], w: [0, 50]};
+  const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+  let masks = [], selected = 0, gesture = null, pending = null, drawing = false;
+  const history = [];
+  try { const saved = JSON.parse(form.elements.masks.value); if (Array.isArray(saved)) masks = saved.slice(0, limit); } catch { /* The server displays invalid input. */ }
+  const valid = mask => mask && mask.page === page && ["left", "top", "right", "bottom"].every(key => Number.isInteger(mask[key])) && mask.left >= 0 && mask.top >= 0 && mask.right <= width && mask.bottom - mask.top >= 2 && mask.bottom <= height && mask.right - mask.left >= 2;
   masks = masks.filter(valid);
+  const snapshot = () => ({masks: masks.map(mask => ({...mask})), selected});
+  const restore = state => { masks = state.masks; selected = state.selected; };
+  const remember = before => {
+    if (JSON.stringify(before.masks) === JSON.stringify(masks)) return false;
+    history.push(before);
+    if (history.length > 30) history.shift();
+    return true;
+  };
   const draw = () => {
     overlays.replaceChildren();
+    stage.classList.toggle("drawing", drawing || gesture?.mode === "draw");
+    stage.classList.toggle("dragging", gesture?.mode === "move");
     [...masks, ...(pending ? [pending] : [])].forEach((mask, index) => {
       const box = document.createElement("span");
-      box.className = "occlusion-mask" + (index === selected ? " selected" : "");
+      const isPending = index === masks.length;
+      box.className = "occlusion-mask" + (index === selected ? " selected" : "") + (isPending ? " pending" : "");
+      box.dataset.maskIndex = index;
       box.style.left = `${100 * mask.left / width}%`; box.style.top = `${100 * mask.top / height}%`;
       box.style.width = `${100 * (mask.right - mask.left) / width}%`; box.style.height = `${100 * (mask.bottom - mask.top) / height}%`;
       box.textContent = String(index + 1);
+      if (index === selected && !isPending && !drawing) {
+        Object.entries(handles).forEach(([edge, [left, top]]) => {
+          const handle = document.createElement("span");
+          handle.className = "mask-handle"; handle.dataset.maskEdge = edge;
+          handle.style.left = `${left}%`; handle.style.top = `${top}%`;
+          handle.setAttribute("aria-hidden", "true");
+          box.append(handle);
+        });
+      }
       overlays.append(box);
     });
   };
@@ -163,51 +188,108 @@ document.querySelectorAll("[data-occlusion-editor]").forEach((editor) => {
       button.type = "button"; button.className = "button secondary";
       button.textContent = `Region ${index + 1}`;
       button.setAttribute("aria-pressed", String(index === selected));
-      button.addEventListener("click", () => { selected = index; sync(); });
+      button.addEventListener("click", () => { selected = index; drawing = false; sync(); stage.focus({preventScroll: true}); });
       list.append(button);
     });
     const current = masks[selected] || {left: 0, top: 0, right: Math.min(100, width), bottom: Math.min(60, height)};
     Object.entries(fields).forEach(([key, field]) => { field.value = current[key]; field.setCustomValidity(""); });
-    status.textContent = masks.length ? `${masks.length} region${masks.length === 1 ? "" : "s"} · ${masks.length} Anki card${masks.length === 1 ? "" : "s"}. Region ${selected + 1} selected.` : "Draw a rectangle or use Add region, then adjust its coordinates.";
+    status.textContent = drawing ? "Drag on the slide to draw a region. Escape returns to moving and resizing." : masks.length ? `${masks.length} region${masks.length === 1 ? "" : "s"} / ${masks.length} Anki card${masks.length === 1 ? "" : "s"}. Region ${selected + 1} selected.` : "Draw a rectangle or use Add region, then adjust it on the slide.";
     editor.querySelector("[data-remove-mask]")?.toggleAttribute("disabled", !masks.length);
     editor.querySelector("[data-add-mask]")?.toggleAttribute("disabled", masks.length >= limit);
+    drawButton.setAttribute("aria-pressed", String(drawing));
+    undoButton.disabled = !history.length;
     draw();
     if (changed) form.elements.masks.dispatchEvent(new Event("input", {bubbles: true}));
   };
   const add = mask => {
-    if (!valid(mask)) { status.textContent = "Keep the region within the slide and at least 2 pixels wide and high."; return; }
+    if (!valid(mask)) { status.textContent = "Keep the region within the slide and at least 2 pixels wide and high."; return false; }
     if (single) { masks = [mask]; selected = 0; }
     else if (masks.length < limit) { masks.push(mask); selected = masks.length - 1; }
-    else { status.textContent = "Save these 20 regions before adding more."; return; }
-    sync(true);
+    else { status.textContent = "Save these 20 regions before adding more."; return false; }
+    drawing = false;
+    return true;
   };
-  Object.entries(fields).forEach(([key, field]) => field.addEventListener("change", () => {
+  Object.values(fields).forEach(field => field.addEventListener("change", () => {
     const mask = {page, ...Object.fromEntries(Object.entries(fields).map(([edge, input]) => [edge, input.value === "" ? NaN : Number(input.value)]))};
     Object.values(fields).forEach(input => input.setCustomValidity(""));
     if (!valid(mask)) { status.textContent = "Keep the region within the slide and at least 2 pixels wide and high."; field.setCustomValidity(status.textContent); return; }
+    const before = snapshot();
     if (!masks.length) add(mask);
-    else { masks[selected] = mask; sync(true); }
+    else masks[selected] = mask;
+    sync(remember(before));
   }));
-  editor.querySelector("[data-add-mask]")?.addEventListener("click", () => add({page, left: 0, top: 0, right: Math.min(100, width), bottom: Math.min(60, height)}));
-  editor.querySelector("[data-remove-mask]")?.addEventListener("click", () => { masks.splice(selected, 1); selected = Math.max(0, Math.min(selected, masks.length - 1)); sync(true); });
+  editor.querySelector("[data-add-mask]")?.addEventListener("click", () => {
+    const before = snapshot();
+    if (add({page, left: 0, top: 0, right: Math.min(100, width), bottom: Math.min(60, height)})) sync(remember(before));
+  });
+  editor.querySelector("[data-remove-mask]")?.addEventListener("click", () => {
+    const before = snapshot(); masks.splice(selected, 1); selected = Math.max(0, Math.min(selected, masks.length - 1)); sync(remember(before));
+  });
+  drawButton.addEventListener("click", () => { drawing = !drawing; sync(); stage.focus({preventScroll: true}); });
+  undoButton.addEventListener("click", () => { const previous = history.pop(); if (previous) { restore(previous); drawing = false; sync(true); } });
   const position = event => {
     const rect = image.getBoundingClientRect();
-    return [Math.round(Math.max(0, Math.min(width, (event.clientX - rect.left) * width / rect.width))), Math.round(Math.max(0, Math.min(height, (event.clientY - rect.top) * height / rect.height)))];
+    return [Math.round((event.clientX - rect.left) * width / rect.width), Math.round((event.clientY - rect.top) * height / rect.height)];
+  };
+  const translated = (mask, dx, dy) => {
+    dx = clamp(dx, -mask.left, width - mask.right); dy = clamp(dy, -mask.top, height - mask.bottom);
+    return {...mask, left: mask.left + dx, right: mask.right + dx, top: mask.top + dy, bottom: mask.bottom + dy};
   };
   const move = event => {
-    if (!start) return;
-    const end = position(event);
-    pending = {page, left: Math.min(start[0], end[0]), top: Math.min(start[1], end[1]), right: Math.max(start[0], end[0]), bottom: Math.max(start[1], end[1])};
+    if (!gesture || event.pointerId !== gesture.pointer) return;
+    const end = position(event), [x, y] = gesture.start;
+    if (gesture.mode === "draw") {
+      pending = {page, left: clamp(Math.min(x, end[0]), 0, width), top: clamp(Math.min(y, end[1]), 0, height), right: clamp(Math.max(x, end[0]), 0, width), bottom: clamp(Math.max(y, end[1]), 0, height)};
+    } else {
+      const original = gesture.original, dx = end[0] - x, dy = end[1] - y;
+      const mask = {...original};
+      if (gesture.mode === "move") masks[selected] = translated(original, dx, dy);
+      else {
+        if (gesture.edge.includes("w")) mask.left = clamp(original.left + dx, 0, original.right - 2);
+        if (gesture.edge.includes("e")) mask.right = clamp(original.right + dx, original.left + 2, width);
+        if (gesture.edge.includes("n")) mask.top = clamp(original.top + dy, 0, original.bottom - 2);
+        if (gesture.edge.includes("s")) mask.bottom = clamp(original.bottom + dy, original.top + 2, height);
+        masks[selected] = mask;
+      }
+      Object.entries(fields).forEach(([key, field]) => { field.value = masks[selected][key]; });
+    }
     draw();
   };
+  const finish = cancelled => {
+    if (!gesture) return;
+    const previous = gesture; gesture = null;
+    if (cancelled) restore(previous.before);
+    else if (previous.mode === "draw" && valid(pending)) add(pending);
+    pending = null;
+    if (stage.hasPointerCapture(previous.pointer)) stage.releasePointerCapture(previous.pointer);
+    sync(!cancelled && remember(previous.before));
+  };
   stage.addEventListener("pointerdown", event => {
-    if (event.button !== 0 || !image.complete || !image.naturalWidth) return;
-    if (!single && masks.length >= limit) { status.textContent = "Save these 20 regions before adding more."; return; }
-    event.preventDefault(); stage.setPointerCapture(event.pointerId); start = position(event); move(event);
+    if (gesture || !event.isPrimary || event.button !== 0 || !image.complete || !image.naturalWidth) return;
+    const region = !drawing && event.target.closest("[data-mask-index]");
+    const edge = region && event.target.closest(".mask-handle")?.dataset.maskEdge;
+    const mode = region ? (edge ? "resize" : "move") : "draw";
+    if (mode === "draw" && !single && masks.length >= limit) { status.textContent = "Save these 20 regions before adding more. Existing regions can still be moved or resized."; return; }
+    event.preventDefault(); stage.focus({preventScroll: true});
+    const before = snapshot();
+    if (region) selected = Number(region.dataset.maskIndex);
+    gesture = {mode, edge, pointer: event.pointerId, start: position(event), original: masks[selected] && {...masks[selected]}, before};
+    stage.setPointerCapture(event.pointerId);
+    sync(); move(event);
   });
   stage.addEventListener("pointermove", move);
-  stage.addEventListener("pointerup", event => { if (!start) return; move(event); const mask = pending; start = null; pending = null; add(mask); draw(); });
-  stage.addEventListener("pointercancel", () => { start = null; pending = null; draw(); });
+  stage.addEventListener("pointerup", event => { if (gesture?.pointer !== event.pointerId) return; move(event); finish(false); });
+  stage.addEventListener("pointercancel", event => { if (gesture?.pointer === event.pointerId) finish(true); });
+  stage.addEventListener("lostpointercapture", event => { if (gesture?.pointer === event.pointerId) finish(true); });
+  stage.addEventListener("keydown", event => {
+    if (event.key === "Escape") { event.preventDefault(); finish(true); drawing = false; sync(); return; }
+    if (gesture || drawing || !masks[selected] || event.altKey || event.ctrlKey || event.metaKey) return;
+    const delta = {ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1]}[event.key];
+    if (!delta) return;
+    event.preventDefault(); const before = snapshot(), step = event.shiftKey ? 10 : 1;
+    masks[selected] = translated(masks[selected], delta[0] * step, delta[1] * step);
+    sync(remember(before));
+  });
   sync();
 });
 

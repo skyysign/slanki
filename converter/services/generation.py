@@ -29,14 +29,16 @@ from .note_types import (
     CARD_FORMATS,
     FOCUS_INSTRUCTIONS,
     LEARNING_FOCUSES,
+    NOTE_TYPES,
     checked_choice,
+    format_types,
     study_card_count,
 )
 from .providers import checked_model_id, checked_model_settings, checked_provider
 from .selection import (
     checked_card_limit,
-    default_card_limit,
     filter_generated_logistics,
+    recent_questions,
     select_drafts,
 )
 
@@ -55,7 +57,7 @@ SCHEMA = {
                     "back": {"type": "string"},
                     "page": {"type": "integer"},
                     "source_quote": {"type": "string"},
-                    "note_type": {"type": "string", "enum": ["basic", "cloze"]},
+                    "note_type": {"type": "string", "enum": [value for value, _ in NOTE_TYPES]},
                 },
                 "required": ["front", "back", "page", "source_quote", "note_type"],
             },
@@ -96,12 +98,21 @@ def prompt_for(
     checked_choice(learning_focus, LEARNING_FOCUSES, "learning focus")
     checked_choice(card_format, CARD_FORMATS, "card format")
     pages = list(pages)
-    limit = default_card_limit(len(pages)) if card_limit is None else card_limit
+    limit = checked_card_limit(card_limit, len(pages), card_format=card_format)
+    formats = format_types(card_format)
     material = [{"page": page.number, "text": page.text} for page in pages]
     example = {
-        "note_type": "cloze" if card_format == "cloze" else "basic",
-        "front": "A statement with {{c1::the answer}}." if card_format == "cloze" else "Question?",
-        "back": "" if card_format == "cloze" else "Answer",
+        "note_type": formats[0],
+        "front": "A statement with {{c1::the answer}}."
+        if formats[0] == "cloze"
+        else "Term"
+        if formats[0] == "reversed"
+        else "Question?",
+        "back": ""
+        if formats[0] == "cloze"
+        else "Definition"
+        if formats[0] == "reversed"
+        else "Answer",
         "page": 1,
         "source_quote": "Exact supporting text",
     }
@@ -114,18 +125,26 @@ def prompt_for(
         + "\nCARD FORMAT: "
         + card_format
         + ". "
+        + "Use only these note_type values: "
+        + ", ".join(formats)
+        + ". Choose the clearest allowed format for each concept; do not duplicate a concept across formats.\n"
         + (
-            "Use only basic Q/A notes, with note_type basic.\n"
-            if card_format == "basic"
-            else (
-                "Use only cloze notes.\n"
-                if card_format == "cloze"
-                else "Choose basic or cloze for each concept, whichever makes the retrieval task clearer. Do not duplicate the same concept in both formats.\n"
-            )
-            + "For cloze notes use note_type cloze; front is a self-contained statement with {{c1::answer}} and optional {{c2::answer::hint}}. Use flat, non-nested clozes numbered 1–20; back is optional extra explanation (an empty string is allowed). Reusing c1 hides those parts together on ONE card; each distinct number creates ANOTHER card. Prefer one number per note.\n"
+            "For basic notes use a question in front and its answer in back.\n"
+            if "basic" in formats
+            else ""
+        )
+        + (
+            "For cloze notes use note_type cloze; front is a self-contained statement with {{c1::answer}} and optional {{c2::answer::hint}}. Use flat, non-nested clozes numbered 1–20; back is optional extra explanation (an empty string is allowed). Reusing c1 hides those parts together on ONE card; each distinct number creates ANOTHER card. Prefer one number per note.\n"
+            if "cloze" in formats
+            else ""
+        )
+        + (
+            "For reversed notes use note_type reversed. Put a short, distinct term or label in front and its unambiguous counterpart or definition in back. BOTH sides must work as standalone prompts and be supported by the source. This creates TWO cards: front → back and back → front. Do not reverse ordinary why/how questions, long explanations, or ambiguous many-to-one mappings. Do not output the swapped pair as another note. If no suitable pair exists, use another allowed format or return no notes.\n"
+            if "reversed" in formats
+            else ""
         )
         + f"\nReturn at most {limit} cards TOTAL for these supplied pages.\n"
-        + "Count actual Anki study cards: each basic note costs 1; each distinct cloze number costs 1. The limit is shared across all formats.\n"
+        + "Count actual Anki study cards: each basic note costs 1; each distinct cloze number costs 1; each reversed note costs 2. The limit is shared across all formats. Never split a reversed pair to fit the limit.\n"
         + "OUTPUT SHAPE EXAMPLE (illustrative only, not lecture content):\n"
         + json.dumps({"cards": [example]})
         + "\n"
@@ -398,7 +417,7 @@ def start_generation(
     pages = list(lecture.pages.filter(number__in=page_numbers, warning=""))
     if not pages:
         raise WorkflowError("Select at least one page with usable text.")
-    card_limit = checked_card_limit(card_limit, len(pages))
+    card_limit = checked_card_limit(card_limit, len(pages), card_format=card_format)
     if provider in ("gemini", "kimi"):
         if acp_login_status(provider)["state"] != "connected":
             raise WorkflowError("Connect the selected CLI in AI connections before generating.")
@@ -511,7 +530,9 @@ def perform_run(run_id, generator=None, *, worker_token=None):
     if run is None:
         return
     pages = list(run.lecture.pages.filter(number__in=remaining_pages(run)))
-    batch_size = max(3, math.ceil(len(run.page_numbers) / run.card_limit)) if run.card_limit else 3
+    minimum_cards = 2 if run.card_format == "reversed" else 1
+    slots = max(1, run.card_limit // minimum_cards) if run.card_limit else None
+    batch_size = max(3, math.ceil(len(run.page_numbers) / slots)) if slots else 3
 
     def cancelled():
         return not attempt.filter(status="running").exists()
@@ -531,25 +552,17 @@ def perform_run(run_id, generator=None, *, worker_token=None):
                     math.floor(run.card_limit * processed / len(run.page_numbers))
                     - run.study_cards_added,
                 )
-            if batch_limit == 0:
+            if batch_limit is not None and batch_limit < minimum_cards:
                 attempt.filter(status="running").update(
                     status="limited",
-                    error="Card limit reached. Some selected pages were not processed.",
+                    error="The remaining card budget cannot fit another note. Some selected pages were not processed.",
                     updated_at=timezone.now(),
                 )
                 return
             elif generator is not None:
                 payload = generator(batch, cancelled)
             else:
-                questions = (
-                    list(
-                        run.lecture.cards.order_by("-created_at").values_list("front", flat=True)[
-                            :200
-                        ]
-                    )
-                    if run.card_limit is not None
-                    else []
-                )
+                questions = recent_questions(run.lecture) if run.card_limit is not None else []
                 checked_provider(run.provider)
                 if run.provider in ("gemini", "kimi"):
                     from functools import partial

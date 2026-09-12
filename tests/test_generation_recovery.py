@@ -192,7 +192,7 @@ class GenerationRecoveryTests(WorkflowFixture):
         perform_run(run.pk, lambda *_: self.bad_payload())
         run.refresh_from_db()
         data = export_backup(self.lecture)
-        for version in (7, 6, 5, 4, 3, 2, 1):
+        for version in (8, 7, 6, 5, 4, 3, 2, 1):
             with self.subTest(version=version):
                 output = io.BytesIO()
                 with (

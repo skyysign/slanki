@@ -326,7 +326,7 @@ class LearningFocusTests(WorkflowFixture):
                 json.loads(Path(command[command.index("--output-schema") + 1]).read_text())[
                     "properties"
                 ]["cards"]["items"]["properties"]["note_type"]["enum"],
-                ["basic", "cloze"],
+                ["basic", "cloze", "reversed"],
             )
             content = kwargs["stdin"].read().decode()
             self.assertIn("LEARNING FOCUS: Understanding", content)

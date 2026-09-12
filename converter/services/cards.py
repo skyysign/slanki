@@ -9,7 +9,7 @@ from converter.models import Card, CardRevision, Page
 
 from .crops import checked_crop
 from .files import WorkflowError
-from .note_types import plain_front, study_card_count
+from .note_types import format_types, plain_front, study_card_count
 
 
 class Draft(NamedTuple):
@@ -38,8 +38,10 @@ def validate_content(front, back, quote, page, require_quote=False, note_type="b
         if not isinstance(value, str) or len(value) > limit or "\x00" in value:
             raise WorkflowError(f"{label} is invalid or too long.")
     study_card_count(front, note_type)
-    if not front.strip() or (note_type == "basic" and not back.strip()):
+    if not front.strip() or (note_type != "cloze" and not back.strip()):
         raise WorkflowError("Both a question and an answer are required.")
+    if note_type == "reversed" and normalized(front).casefold() == normalized(back).casefold():
+        raise WorkflowError("Use different text on the two sides of a reverse note.")
     if require_quote and not quote.strip():
         raise WorkflowError("Each generated card needs an exact supporting source excerpt.")
     if quote.strip() and normalized(quote) not in normalized(page.text):
@@ -61,7 +63,7 @@ def payload_items(payload):
     return payload["cards"]
 
 
-def validate_item(item, pages, index, card_format="mixed"):
+def validate_item(item, pages, index, card_format="all"):
     required = {"front", "back", "page", "source_quote"}
     if not isinstance(item, dict) or set(item) not in (required, required | {"note_type"}):
         raise WorkflowError(f"Card {index} must contain front, back, page and source_quote.")
@@ -69,7 +71,7 @@ def validate_item(item, pages, index, card_format="mixed"):
         raise WorkflowError(f"Card {index} refers to a page outside the selected lecture pages.")
     page = pages[item["page"]]
     note_type = item.get("note_type", "basic")
-    if card_format != "mixed" and note_type != card_format:
+    if note_type not in format_types(card_format):
         raise WorkflowError(f"Card {index} does not use the requested {card_format} format.")
     front, back, quote = validate_content(
         item["front"],

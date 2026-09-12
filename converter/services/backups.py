@@ -33,7 +33,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 7,
+        "version": 8,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -190,7 +190,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7)
+                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7, 8)
             ):
                 raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]

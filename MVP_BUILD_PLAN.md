@@ -25,11 +25,11 @@ Keep CLI integrations local to each user and their own authentication. The user 
 The user authorized the first batch: learning focuses, simple cloze, and card-count-aware previews. These are now implemented; see docs/STATUS.md for actual verification and remaining limitations.
 
 - Learning focus: Balanced (default), Core knowledge, Understanding, and Application. Keep this separate from reasoning effort and deck size.
-- Formats: basic Q/A and simple cloze are implemented, with tickable generation formats and visible single-choice learning focuses. Manual rectangular source-image crops can be attached to either format. Optional reversed cards and manual image occlusion are candidates for later work. A crop is attached evidence, distinct from an occlusion exercise.
-- Implemented deck-size rule for basic/cloze generation: count each basic card and each distinct cloze number when enforcing a user's budget. Show that count before export. Any future reverse-card support must count its extra cards as well.
+- Formats: basic Q/A, simple cloze, and opt-in Basic + reverse are implemented, with tickable generation formats and visible single-choice learning focuses. Manual rectangular source-image crops can be attached to all three. The user authorized continued format work; manual image occlusion is the next format candidate. A crop is attached evidence, distinct from an occlusion exercise.
+- Implemented deck-size rule: basic notes count as one card, reverse notes as two, and clozes as one per distinct blank number. Show the actual count before export. Reverse-only generation needs a minimum two-card budget and never splits a pair to fit.
 - Add meaningful export/re-import and backup checks for each implemented format, including preservation of existing basic notes and review scheduling. Verify rendering in the Anki clients used before claiming compatibility.
 
-Anki documents its [standard note types](https://docs.ankiweb.net/getting-started.html#note-types), [cloze behavior](https://docs.ankiweb.net/editing.html#cloze-deletion), and [native image occlusion](https://docs.ankiweb.net/editing.html#image-occlusion). These describe Anki support. This converter implements basic and simple cloze only; the other formats remain future work.
+Anki documents its [standard note types](https://docs.ankiweb.net/getting-started.html#note-types), [cloze behavior](https://docs.ankiweb.net/editing.html#cloze-deletion), and [native image occlusion](https://docs.ankiweb.net/editing.html#image-occlusion). This converter implements basic, simple cloze, and basic with a reversed card. Image occlusion remains future work.
 
 ## Storage and implementation decisions
 
@@ -83,7 +83,7 @@ The earlier integrated paid-beta phase is superseded by the free, donation-suppo
 
 ## Next development task
 
-Continue from docs/STATUS.md. The basic end-to-end workflow, cloze, learning focuses, previews, manual source crops, and confirmed set deletion exist with offline/backend/browser checks. Next validate their usefulness on real material and in the Anki clients actually used. Evaluate compact card quality when live usage is authorized, then prioritize installation and upgrade recovery for a small classmate pilot. Do not expand formats solely because they appear as later candidates here.
+Continue from docs/STATUS.md. The basic end-to-end workflow, cloze, opt-in reverse cards, learning focuses, previews, manual source crops, and confirmed set deletion exist with offline/backend/browser checks. Next validate their usefulness on real material and in the Anki clients actually used. Evaluate compact card quality when live usage is authorized, then prioritize installation and upgrade recovery for a small classmate pilot. Do not expand formats solely because they appear as later candidates here.
 
 ## Technical references
 

@@ -417,6 +417,76 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     with page.expect_download() as cloze_export:
                         page.get_by_role("link", name="Export 3 to Anki", exact=False).click()
                     assert Path(cloze_export.value.path()).stat().st_size > 1000
+                    page.get_by_role("link", name="Back to lecture", exact=False).click()
+                    # Reverse cards remain opt-in, and count twice in the shared limit.
+                    generation = page.locator("details.generation-panel:not(.generation-issues)")
+                    if generation.get_attribute("open") is None:
+                        generation.locator("summary").first.click()
+                    formats = page.get_by_role("group", name="Card formats", exact=True)
+                    formats.get_by_role("checkbox", name="Basic Q/A", exact=True).uncheck()
+                    formats.get_by_role("checkbox", name="Cloze", exact=True).uncheck()
+                    formats.get_by_role("checkbox", name="Basic + reverse", exact=True).check()
+                    limit = page.get_by_label("Maximum new cards", exact=True)
+                    limit.fill("1")
+                    assert not limit.evaluate("input => input.checkValidity()")
+                    limit.fill("3")
+                    with page.expect_download() as reverse_prompt:
+                        page.get_by_role("button", name="Download prompt", exact=True).click()
+                    prompt_text = Path(reverse_prompt.value.path()).read_text(encoding="utf-8")
+                    assert "CARD FORMAT: reversed" in prompt_text
+                    assert "each reversed note costs 2" in prompt_text
+                    for label in ("Basic Q/A", "Cloze"):
+                        formats.get_by_role("checkbox", name=label, exact=True).check()
+                    assert limit.get_attribute("min") == "1"
+                    page.screenshot(
+                        path=str(OUTPUT / "reverse-formats-desktop.png"), full_page=True
+                    )
+                    page.get_by_text("Write a card yourself", exact=True).click()
+                    manual = page.locator(".manual-card form")
+                    manual.get_by_role("radio", name="Basic + reverse", exact=True).check()
+                    manual.get_by_label("Front (prompt for card 1)", exact=True).fill(
+                        "Bidirectional sample term"
+                    )
+                    manual.get_by_label("Back (prompt for card 2)", exact=True).fill(
+                        "Bidirectional sample definition"
+                    )
+                    manual.get_by_role("button", name="Preview cards", exact=True).click()
+                    manual.get_by_text(
+                        "2 Anki review cards from this note.", exact=False
+                    ).wait_for()
+                    assert manual.locator(".preview-question").all_text_contents() == [
+                        "Bidirectional sample term",
+                        "Bidirectional sample definition",
+                    ]
+                    assert "Back → front" in manual.locator(".preview-card").last.inner_text()
+                    manual.get_by_role("button", name="Add draft", exact=True).click()
+                    page.locator(".card-item").filter(has_text="Bidirectional sample term").click()
+                    editor = page.locator("[data-card-form]")
+                    assert editor.locator(".preview-card").count() == 2
+                    editor.get_by_label("Back (prompt for card 2)", exact=True).fill(
+                        "Edited bidirectional definition"
+                    )
+                    editor.get_by_role("button", name="Preview current text", exact=True).click()
+                    editor.get_by_text(
+                        "Preview only; edits have not been saved.", exact=False
+                    ).wait_for()
+                    assert (
+                        editor.locator(".preview-question").last.inner_text()
+                        == "Edited bidirectional definition"
+                    )
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.screenshot(path=str(OUTPUT / "reverse-editor-mobile.png"), full_page=True)
+                    editor.get_by_role("button", name="Accept & next", exact=False).click()
+                    page.get_by_role("link", name="Preview export", exact=True).click()
+                    page.get_by_text("5 review cards from 3 accepted notes", exact=False).wait_for()
+                    assert page.locator(".preview-card").count() == 5
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    with page.expect_download() as reverse_export:
+                        page.get_by_role("link", name="Export 5 to Anki", exact=False).click()
+                    assert Path(reverse_export.value.path()).stat().st_size > 1000
+                    page.set_viewport_size({"width": 1512, "height": 1100})
+                    page.screenshot(path=str(OUTPUT / "reverse-export-desktop.png"), full_page=True)
                     # Delete only this isolated synthetic set, then import the same PDF afresh.
                     page.get_by_role("link", name="Back to lecture", exact=False).click()
                     old_lecture_url = page.url.split("?")[0]

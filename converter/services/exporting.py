@@ -17,6 +17,7 @@ from .note_types import study_card_count, text_html
 
 MODEL_ID = 1890487183
 CLOZE_MODEL_ID = 1890487184
+REVERSED_MODEL_ID = 1890487185
 CSS = """.card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;
 color: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }
 .nightMode.card { color: #e7eee8; background: #202825; }
@@ -70,6 +71,25 @@ def export_deck(lecture):
         model_type=genanki.Model.CLOZE,
         css=CSS,
     )
+    reversed_model = genanki.Model(
+        REVERSED_MODEL_ID,
+        "Recalloom — Basic + reverse v1",
+        fields=[{"name": name} for name in ["Front", "Back", "Source", "QuestionImage"]],
+        templates=[
+            {
+                "name": "Front → back",
+                "qfmt": "{{Front}}{{QuestionImage}}",
+                "afmt": '{{FrontSide}}<hr id="answer">{{Back}}<div class="source">{{Source}}</div>',
+            },
+            {
+                "name": "Back → front",
+                "qfmt": "{{Back}}{{QuestionImage}}",
+                "afmt": '{{FrontSide}}<hr id="answer">{{Front}}<div class="source">{{Source}}</div>',
+            },
+        ],
+        css=CSS,
+    )
+    models = {"basic": model, "cloze": cloze_model, "reversed": reversed_model}
     media = {}
     for card in cards:
         study_card_count(card.front, card.note_type)
@@ -84,20 +104,27 @@ def export_deck(lecture):
         if card.source_quote:
             source += f"<br>{text_html(card.source_quote)}"
         front = text_html(card.front)
+        question_image = ""
         if card.source_crop:
             cropped = crop_png(card.page, card.source_crop)
             crop_name = f"crop_{card.pk.hex}_{hashlib.sha256(cropped).hexdigest()[:16]}.png"
             media[crop_name] = cropped
             crop_html = f'<br><img class="source-crop" src="{crop_name}">'
             if card.source_crop["on_question"]:
-                front += crop_html
+                if card.note_type == "reversed":
+                    question_image = crop_html
+                else:
+                    front += crop_html
             else:
                 source += crop_html
         source += f'<br><img src="{filename}">'
+        fields = [front, text_html(card.back), source]
+        if card.note_type == "reversed":
+            fields.append(question_image)
         deck.add_note(
             StableNote(
-                model=cloze_model if card.note_type == "cloze" else model,
-                fields=[front, text_html(card.back), source],
+                model=models[card.note_type],
+                fields=fields,
                 guid=genanki.guid_for(str(card.pk)),
                 modified=card.anki_modified,
             )

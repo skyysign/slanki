@@ -11,6 +11,13 @@ if (providerSettings) {
   const message = providerSettings.querySelector("[data-model-message]");
   const refresh = providerSettings.querySelector("[data-refresh-models]");
   const form = providerSettings.closest("form");
+  const formatInputs = [...form.querySelectorAll('input[name="formats"]')];
+  const updateMinimumCards = () => {
+    const chosen = formatInputs.filter(input => input.checked);
+    form.elements.card_limit.min = chosen.length === 1 && chosen[0].value === "reversed" ? "2" : "1";
+  };
+  formatInputs.forEach(input => input.addEventListener("change", updateMinimumCards));
+  updateMinimumCards();
   const remembered = {};
   let activeProvider = provider.value, requestNumber = 0;
   const selected = () => catalogs[provider.value].models.find(item => item.id === model.value);
@@ -131,9 +138,11 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
   const output = form.querySelector("[data-preview-output]");
   const updateLabels = () => {
     const cloze = type.value === "cloze";
+    const reversed = type.value === "reversed";
+    form.querySelectorAll("[data-reverse-help]").forEach(help => { help.hidden = !reversed; });
     form.querySelector("[data-cloze-controls]").hidden = !cloze;
-    form.querySelector("[data-front-label]").textContent = cloze ? "Cloze text" : "Question";
-    form.querySelector("[data-back-label]").textContent = cloze ? "Extra explanation (optional)" : "Answer";
+    form.querySelector("[data-front-label]").textContent = cloze ? "Cloze text" : reversed ? "Front (prompt for card 1)" : "Question";
+    form.querySelector("[data-back-label]").textContent = cloze ? "Extra explanation (optional)" : reversed ? "Back (prompt for card 2)" : "Answer";
     form.elements.back.required = !cloze;
   };
   updateLabels();
@@ -171,7 +180,7 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
         card.className = "preview-card";
         const title = document.createElement("p");
         title.className = "eyebrow";
-        title.textContent = `Card ${index + 1} of ${data.study_cards}`;
+        title.textContent = `Card ${index + 1} of ${data.study_cards}${preview.direction ? " · " + preview.direction : ""}`;
         const question = document.createElement("div");
         question.className = "preview-question";
         // This endpoint only returns escaped text plus fixed cloze markup.

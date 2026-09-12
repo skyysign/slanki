@@ -20,6 +20,9 @@ class CardForm(forms.Form):
             self.fields["front"].label = "Cloze text"
             self.fields["back"].label = "Extra explanation (optional)"
             self.fields["back"].required = False
+        elif note_type == "reversed":
+            self.fields["front"].label = "Front (prompt for card 1)"
+            self.fields["back"].label = "Back (prompt for card 2)"
 
     version = forms.IntegerField(min_value=1, widget=forms.HiddenInput)
     front = forms.CharField(

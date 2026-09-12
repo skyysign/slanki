@@ -64,7 +64,7 @@ class GenerationRun(models.Model):
     cards_added = models.PositiveIntegerField(default=0)
     study_cards_added = models.PositiveIntegerField(default=0)
     learning_focus = models.CharField(max_length=20, choices=LEARNING_FOCUSES, default="balanced")
-    card_format = models.CharField(max_length=12, choices=CARD_FORMATS, default="basic")
+    card_format = models.CharField(max_length=20, choices=CARD_FORMATS, default="basic")
     card_limit = models.PositiveIntegerField(null=True, blank=True)
     reasoning_effort = models.CharField(
         max_length=12, choices=REASONING_LEVELS, default="", blank=True

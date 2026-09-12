@@ -1,12 +1,27 @@
-"""Supported flat clozes and their actual Anki card counts; no HTML from users."""
+"""Supported note formats and actual Anki card counts; no HTML from users."""
 
 import html
 import re
 
 from .files import WorkflowError
 
-NOTE_TYPES = [("basic", "Basic Q/A"), ("cloze", "Cloze")]
-CARD_FORMATS = NOTE_TYPES + [("mixed", "Mixed Q/A and cloze")]
+NOTE_TYPES = [("basic", "Basic Q/A"), ("cloze", "Cloze"), ("reversed", "Basic + reverse")]
+# Keep the original mixed value limited to Q/A + cloze for saved runs/backups.
+FORMAT_TYPES = {
+    "basic": ("basic",),
+    "cloze": ("cloze",),
+    "reversed": ("reversed",),
+    "mixed": ("basic", "cloze"),
+    "basic_reversed": ("basic", "reversed"),
+    "cloze_reversed": ("cloze", "reversed"),
+    "all": ("basic", "cloze", "reversed"),
+}
+CARD_FORMATS = NOTE_TYPES + [
+    ("mixed", "Mixed Q/A and cloze"),
+    ("basic_reversed", "Q/A and reverse"),
+    ("cloze_reversed", "Cloze and reverse"),
+    ("all", "Q/A, cloze and reverse"),
+]
 LEARNING_FOCUSES = [
     ("balanced", "Balanced"),
     ("core", "Core knowledge"),
@@ -28,6 +43,20 @@ def checked_choice(value, choices, label):
     return value
 
 
+def format_types(card_format):
+    checked_choice(card_format, CARD_FORMATS, "card format")
+    return FORMAT_TYPES[card_format]
+
+
+def format_from_types(types):
+    if not types or len(types) != len(set(types)):
+        raise WorkflowError("Tick at least one card format, without duplicate choices.")
+    for value, members in FORMAT_TYPES.items():
+        if set(types) == set(members):
+            return value
+    raise WorkflowError("Tick only supported card formats.")
+
+
 def cloze_matches(text):
     matches = list(CLOZE.finditer(text))
     remainder = CLOZE.sub("", text)
@@ -46,6 +75,8 @@ def study_card_count(front, note_type="basic"):
     checked_choice(note_type, NOTE_TYPES, "note format")
     if note_type == "basic":
         return 1
+    if note_type == "reversed":
+        return 2
     return len({int(match[1]) for match in cloze_matches(front)})
 
 
@@ -53,6 +84,10 @@ def plain_front(front, note_type="basic"):
     if note_type == "cloze":
         return CLOZE.sub(lambda match: match[2].split("::", 1)[0], front)
     return front
+
+
+def plain_questions(front, back, note_type="basic"):
+    return (front, back) if note_type == "reversed" else (plain_front(front, note_type),)
 
 
 def text_html(text):
@@ -64,6 +99,21 @@ def study_previews(front, back, note_type="basic"):
     study_card_count(front, note_type)
     if note_type == "basic":
         return [{"number": 1, "question": text_html(front), "answer": text_html(back)}]
+    if note_type == "reversed":
+        return [
+            {
+                "number": 1,
+                "direction": "Front → back",
+                "question": text_html(front),
+                "answer": text_html(back),
+            },
+            {
+                "number": 2,
+                "direction": "Back → front",
+                "question": text_html(back),
+                "answer": text_html(front),
+            },
+        ]
     matches = cloze_matches(front)
     previews = []
     for number in sorted({int(match[1]) for match in matches}):

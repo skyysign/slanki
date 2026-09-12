@@ -34,6 +34,8 @@ from .services.note_types import (
     LEARNING_FOCUSES,
     NOTE_TYPES,
     checked_choice,
+    format_from_types,
+    format_types,
     study_previews,
 )
 from .services.providers import (
@@ -48,6 +50,7 @@ from .services.selection import (
     checked_card_limit,
     default_card_limit,
     logistics_drafts,
+    recent_questions,
     select_drafts,
     set_aside_logistics,
 )
@@ -243,7 +246,7 @@ def lecture_context(item, request, selected=None, form=None):
         "card_formats": CARD_FORMATS,
         "learning_focuses": LEARNING_FOCUSES,
         "selected_focus": last_codex_run.learning_focus if last_codex_run else "balanced",
-        "selected_formats": ["basic", "cloze"] if selected_format == "mixed" else [selected_format],
+        "selected_formats": format_types(selected_format),
         "crop": crop,
         "crop_enabled": crop_enabled,
         "active_run": item.runs.filter(status__in=["queued", "running"]).first(),
@@ -328,14 +331,7 @@ def selected_card_format(request):
     # Older scripts can still submit the original single card_format setting.
     if request.POST.get("formats_present") != "yes":
         return checked_choice(request.POST.get("card_format", "basic"), CARD_FORMATS, "card format")
-    formats = request.POST.getlist("formats")
-    if (
-        not formats
-        or any(value not in dict(NOTE_TYPES) for value in formats)
-        or len(formats) != len(set(formats))
-    ):
-        raise WorkflowError("Tick Q/A, cloze, or both card formats.")
-    return "mixed" if len(formats) == 2 else formats[0]
+    return format_from_types(request.POST.getlist("formats"))
 
 
 @require_POST
@@ -349,7 +345,10 @@ def generate(request, pk):
         )
     try:
         pages = selected_pages(request, item)
-        limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
+        card_format = selected_card_format(request)
+        limit = checked_card_limit(
+            request.POST.get("card_limit"), len(pages), card_format=card_format
+        )
         effort = checked_reasoning_effort(request.POST.get("reasoning_effort", "low"))
         provider = request.POST.get("provider", "codex")
         model = request.POST.get("model", "")
@@ -359,7 +358,6 @@ def generate(request, pk):
         focus = checked_choice(
             request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
         )
-        card_format = selected_card_format(request)
         start_generation(
             item,
             [p.number for p in pages],
@@ -380,14 +378,16 @@ def prompt(request, pk):
     item = get_object_or_404(Lecture, pk=pk)
     try:
         pages = selected_pages(request, item)
-        limit = checked_card_limit(request.POST.get("card_limit"), len(pages))
+        card_format = selected_card_format(request)
+        limit = checked_card_limit(
+            request.POST.get("card_limit"), len(pages), card_format=card_format
+        )
         focus = checked_choice(
             request.POST.get("learning_focus", "balanced"), LEARNING_FOCUSES, "learning focus"
         )
-        card_format = selected_card_format(request)
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
-    questions = item.cards.order_by("-created_at").values_list("front", flat=True)[:200]
+    questions = recent_questions(item)
     response = HttpResponse(
         prompt_for(pages, limit, questions, learning_focus=focus, card_format=card_format),
         content_type="text/plain; charset=utf-8",
@@ -416,7 +416,11 @@ def import_cards(request, pk):
             )
             run.cards_added = add_drafts(item, validated, run)
             run.study_cards_added = sum(card.study_card_count for card in run.card_set.all())
-            run.card_format = "mixed"
+            run.card_format = (
+                format_from_types([*dict.fromkeys(draft.note_type for draft in validated)])
+                if validated
+                else "basic"
+            )
             run.completed_pages = run.page_numbers
             run.save()
         return redirect(item)

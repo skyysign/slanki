@@ -469,14 +469,25 @@ if (progress) {
       if (!response.ok) throw new Error("Could not get progress");
       const run = await response.json();
       failures = 0;
-      progress.querySelector("progress").value = run.completed;
+      const meter = progress.querySelector("progress");
+      const context = run.context;
+      const readingContext = context?.enabled && !context.ready;
+      progress.querySelector("[data-run-heading]").textContent = readingContext ? "Reading the lecture…" : "Drafting cards…";
+      meter.max = readingContext ? (context.total || 1) : run.total;
+      meter.value = readingContext ? context.read : run.completed;
       const skipped = run.issues ? ` ${run.issues} drafts skipped; refresh to review the details.` : "";
       const selection = ` ${run.filtered_count || 0} logistics candidates filtered; ${run.over_limit_count || 0} excluded by the card limit.`;
       const limit = run.card_limit ? ` (maximum ${run.card_limit})` : "";
       const reasoning = `${run.provider} · ${run.model} · ${run.reasoning_effort} reasoning · `;
       const focus = `${run.learning_focus} · ${run.card_format} · `;
       message.textContent = `${reasoning}${focus}${run.completed} of ${run.total} pages processed · ${run.cards_added} draft notes / ${run.study_cards_added} Anki review cards saved${limit}.${skipped}${selection}`;
+      if (readingContext) {
+        message.textContent = context.stage === "organizing"
+          ? `${run.provider}: combining the saved sections into a lecture overview. Cards will follow.`
+          : `${run.provider}: reading lecture context, ${context.read} of ${context.total || "all"} readable pages saved. Cards will follow.`;
+      }
       if (!["queued", "running"].includes(run.status)) {
+        progress.querySelector("[data-run-heading]").textContent = `Generation ${run.status}`;
         message.textContent = (run.error || `Generation ${run.status}. Your drafts are saved.`) + skipped + selection;
         const link = document.createElement("a");
         link.href = window.location.href;
@@ -494,3 +505,11 @@ if (progress) {
   };
   window.setTimeout(poll, 1000);
 }
+
+
+document.querySelectorAll("[data-lecture-context]").forEach(input => {
+  const form = input.closest("form");
+  const showScope = () => { form.querySelector("[data-context-sharing]").textContent = input.checked ? "text from all readable slides" : "selected slide text"; };
+  input.addEventListener("change", () => { form.elements.consent.checked = false; showScope(); });
+  showScope();
+});

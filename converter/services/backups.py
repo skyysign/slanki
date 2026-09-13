@@ -16,6 +16,7 @@ from converter.models import Card, CardRevision, GenerationRun, Lecture, Page, P
 from .cards import validate_content
 from .crops import checked_crop
 from .files import WorkflowError, media_path
+from .lecture_context import checked_context
 from .occlusion import checked_occlusion
 from .providers import checked_model_id
 
@@ -34,7 +35,7 @@ def export_backup(lecture):
         )
     manifest = {
         "format": "slides-to-anki",
-        "version": 9,
+        "version": 10,
         "lecture": {
             "id": str(lecture.id),
             "title": lecture.title,
@@ -96,6 +97,8 @@ def export_backup(lecture):
                 "model": r.model,
                 "page_numbers": r.page_numbers,
                 "completed_pages": r.completed_pages,
+                "context_enabled": r.context_enabled,
+                "context_data": checked_context(r.context_data, r.context_enabled, lecture, pages),
                 "issues": r.issues,
                 "cards_added": r.cards_added,
                 "study_cards_added": r.study_cards_added,
@@ -195,7 +198,7 @@ def restore_backup(upload):
             if (
                 manifest["format"] != "slides-to-anki"
                 or type(manifest["version"]) is not int
-                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7, 8, 9)
+                or manifest["version"] not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             ):
                 raise WorkflowError("This is not a supported Recalloom backup.")
             info = manifest["lecture"]
@@ -281,10 +284,16 @@ def restore_backup(upload):
                             if manifest["version"] >= 5
                             else ""
                         )
-                        + (" model" if manifest["version"] >= 7 else ""),
+                        + (" model" if manifest["version"] >= 7 else "")
+                        + (" context_enabled context_data" if manifest["version"] >= 10 else ""),
                     )
                     r = dict(r)
                     r.setdefault("model", "")
+                    r.setdefault("context_enabled", False)
+                    r.setdefault("context_data", {})
+                    checked_context(
+                        r["context_data"], r["context_enabled"], lecture, list(page_map.values())
+                    )
                     checked_model_id(r["model"])
                     r.setdefault("issues", [])
                     if manifest["version"] < 5:

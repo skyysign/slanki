@@ -545,8 +545,11 @@ def generate_acp(
     learning_focus="balanced",
     card_format="basic",
     model="",
+    lecture_context=None,
+    task="cards",
+    sections=None,
 ):
-    from .generation import prompt_for
+    from .generation import generation_request
     from .providers import checked_model_settings
 
     checked_model_settings(provider, model, reasoning_effort)
@@ -554,6 +557,16 @@ def generate_acp(
         raise WorkflowError(
             "This batch contains too much text. Select fewer pages or raise the card limit."
         )
+    text, _ = generation_request(
+        pages,
+        card_limit,
+        existing_questions,
+        learning_focus=learning_focus,
+        card_format=card_format,
+        lecture_context=lecture_context,
+        task=task,
+        sections=sections,
+    )
     with acp_client(provider, timeout=settings.GENERATION_TIMEOUT, cancelled=cancelled) as (
         client,
         directory,
@@ -597,13 +610,6 @@ def generate_acp(
                     raise WorkflowError("The CLI returned too much card output.")
                 chunks.append(content["text"])
 
-        text = prompt_for(
-            pages,
-            card_limit,
-            existing_questions,
-            learning_focus=learning_focus,
-            card_format=card_format,
-        )
         result = client.request(
             "session/prompt",
             {"sessionId": client.session_id, "prompt": [{"type": "text", "text": text}]},

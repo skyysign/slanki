@@ -296,6 +296,22 @@ def main():
                     model.select_option("synthetic-codex")
                     reasoning.select_option("xhigh")
                     assert reasoning.input_value() == "xhigh"
+                    lecture_context = page.locator("[data-lecture-context]")
+                    consent = page.locator('input[name="consent"]')
+                    assert lecture_context.is_checked()
+                    consent.check()
+                    lecture_context.uncheck()
+                    assert not consent.is_checked()
+                    assert (
+                        page.locator("[data-context-sharing]").inner_text() == "selected slide text"
+                    )
+                    consent.check()
+                    lecture_context.check()
+                    assert not consent.is_checked()
+                    assert (
+                        "all readable slides" in page.locator("[data-context-sharing]").inner_text()
+                    )
+                    page.locator('input[name="pages"][value="3"]').uncheck()
                     page.screenshot(
                         path=str(OUTPUT / "generation-settings-desktop.png"), full_page=True
                     )
@@ -312,6 +328,9 @@ def main():
                     )
                     assert "LEARNING FOCUS: Understanding" in downloaded_text
                     assert "CARD FORMAT: mixed" in downloaded_text
+                    context_only = json.loads(downloaded_text.splitlines()[1])["context_only_pages"]
+                    assert [source["page"] for source in context_only] == [3]
+                    page.locator('input[name="pages"][value="3"]').check()
                     page.locator("#cards-file").set_input_files(
                         str(ROOT / "tests/fixtures/synthetic/cards.json")
                     )
@@ -364,14 +383,22 @@ def main():
 from converter.models import GenerationRun, Lecture
 from converter.services.cards import validate_generated_batch
 from converter.services.cards import add_drafts
+from converter.services.lecture_context import new_context
 lecture = Lecture.objects.first()
 add_drafts(lecture, [(lecture.pages.first(), 'How long is the exam?', '90 minutes.', '')])
 _, issues = validate_generated_batch({'cards': [{
     'front': '<script>Unverified question</script>', 'back': 'Unverified answer',
     'page': 1, 'source_quote': 'An invented excerpt'
 }]}, {p.number: p for p in lecture.pages.filter(number=1)})
+source = lecture.pages.get(number=2)
+topic = {'title': '<script>Spaced practice</script>', 'summary': 'Distribute study sessions over time.',
+    'priority': 'core', 'page': 2, 'source_quote': source.text[:60]}
+context = new_context(lecture, list(lecture.pages.all()))
+context['sections'] = [{'pages': context['pages'], 'topics': [topic]}]
+context['outline'] = [topic]
 GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 2, 3],
-    completed_pages=[1], issues=issues, cards_added=5, error='Synthetic interruption')
+    completed_pages=[1], issues=issues, cards_added=5, error='Synthetic interruption',
+    context_enabled=True, context_data=context)
 """,
                         ],
                         cwd=ROOT,
@@ -380,6 +407,20 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                         capture_output=True,
                     )
                     page.reload()
+                    overview = page.locator(".lecture-context")
+                    overview.locator("summary").click()
+                    assert overview.locator("script").count() == 0
+                    assert "Spaced practice" in overview.inner_text()
+                    overview.get_by_role("button", name="View source page 2", exact=True).click()
+                    assert (
+                        page.locator("[data-source-image]").get_attribute("alt")
+                        == "Source slide, page 2"
+                    )
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.screenshot(
+                        path=str(OUTPUT / "lecture-overview-mobile.png"), full_page=True
+                    )
+                    overview.locator("summary").click()
                     page.get_by_role(
                         "button", name="Set aside 1 logistics draft", exact=True
                     ).click()

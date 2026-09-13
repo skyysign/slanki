@@ -219,7 +219,7 @@ class ImageOcclusionTests(WorkflowFixture):
         self.assertEqual(len([name for name in media.values() if name.startswith("occlusion_")]), 2)
         backup = export_backup(self.lecture)
         with zipfile.ZipFile(io.BytesIO(backup)) as archive:
-            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], 9)
+            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], 10)
         Card.objects.all().delete()
         Lecture.objects.all().delete()
         destination = Path(self.directory.name) / str(uuid.uuid4())

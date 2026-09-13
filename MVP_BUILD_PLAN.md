@@ -83,7 +83,7 @@ The earlier integrated paid-beta phase is superseded by the free, donation-suppo
 
 ## Next development task
 
-Continue from docs/STATUS.md. The basic end-to-end workflow, cloze, opt-in reverse cards, manual image occlusion, learning focuses, previews, manual source crops, and confirmed set deletion exist with offline/backend/browser checks. Next validate their usefulness on real material and in the Anki clients actually used. Evaluate compact card quality when live usage is authorized, then prioritize installation and upgrade recovery for a small classmate pilot. Do not expand formats solely because they appear as later candidates here.
+Continue from docs/STATUS.md. The basic end-to-end workflow, cloze, opt-in reverse cards, editable manual image occlusion, learning focuses, previews, manual source crops, and confirmed set deletion exist with offline/backend/browser checks. The user also authorized whole-lecture context: a saved text overview now precedes automatic card batches, with source validation, visible sharing scope, and resumable sections. Image analysis and suggested masks remain future work. Next compare the overview's usefulness on real material and verify deck rendering in the Anki clients actually used. Evaluate coverage and correction effort when live usage is authorized, then prioritize installation and upgrade recovery for a small classmate pilot. Do not expand formats solely because they appear as later candidates here.
 
 ## Technical references
 

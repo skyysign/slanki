@@ -59,6 +59,8 @@ class GenerationRun(models.Model):
     model = models.CharField(max_length=100, default="", blank=True)
     page_numbers = models.JSONField(default=list, blank=True)
     completed_pages = models.JSONField(default=list, blank=True)
+    context_enabled = models.BooleanField(default=False)
+    context_data = models.JSONField(default=dict, blank=True)
     issues = models.JSONField(default=list, blank=True)
     worker_token = models.UUIDField(default=uuid.uuid4, editable=False)
     cards_added = models.PositiveIntegerField(default=0)

@@ -29,6 +29,7 @@ from .services.generation import (
     resume_generation,
     start_generation,
 )
+from .services.lecture_context import context_download, context_progress
 from .services.note_types import (
     CARD_FORMATS,
     LEARNING_FOCUSES,
@@ -213,6 +214,8 @@ def lecture_context(item, request, selected=None, form=None):
     # Keep earlier warnings visible when a later run or JSON import is created.
     issue_runs = [run for run in item.runs.all() if run.issues]
     last_codex_run = item.runs.filter(provider__in=dict(PROVIDERS)).order_by("-updated_at").first()
+    context_run = item.runs.filter(context_enabled=True).first()
+    active_run = item.runs.filter(status__in=["queued", "running"]).first()
     crop = selected.source_crop if selected else {}
     crop_enabled = bool(crop)
     if selected and request.method == "POST" and request.POST.get("crop_present") == "yes":
@@ -256,8 +259,11 @@ def lecture_context(item, request, selected=None, form=None):
         "selected_formats": format_types(selected_format),
         "crop": crop,
         "crop_enabled": crop_enabled,
-        "active_run": item.runs.filter(status__in=["queued", "running"]).first(),
+        "active_run": active_run,
+        "active_context": context_progress(active_run) if active_run else None,
         "last_run": last_run,
+        "context_run": context_run,
+        "context_progress": context_progress(context_run) if context_run else None,
         "resume_count": resume_count,
         "issue_runs": issue_runs,
         "issue_count": sum(len(run.issues) for run in issue_runs),
@@ -379,6 +385,7 @@ def generate(request, pk):
             card_format=card_format,
             provider=provider,
             model=model,
+            **({"context_enabled": True} if request.POST.get("lecture_context") == "yes" else {}),
         )
         return redirect(item)
     except WorkflowError as exc:
@@ -400,10 +407,13 @@ def prompt(request, pk):
     except WorkflowError as exc:
         return error_page(request, str(exc), item)
     questions = recent_questions(item)
-    response = HttpResponse(
-        prompt_for(pages, limit, questions, learning_focus=focus, card_format=card_format),
-        content_type="text/plain; charset=utf-8",
-    )
+    text = prompt_for(pages, limit, questions, learning_focus=focus, card_format=card_format)
+    if request.POST.get("lecture_context") == "yes":
+        try:
+            text = context_download(item.pages.all(), {p.number for p in pages}, text)
+        except WorkflowError as exc:
+            return error_page(request, str(exc), item)
+    response = HttpResponse(text, content_type="text/plain; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="card-generation-prompt.txt"'
     return response
 
@@ -679,6 +689,7 @@ def run_status(request, pk):
             "total": len(run.page_numbers),
             "cards_added": run.cards_added,
             "study_cards_added": run.study_cards_added,
+            "context": context_progress(run),
             "learning_focus": run.get_learning_focus_display(),
             "card_format": run.get_card_format_display(),
             "error": run.error,

@@ -192,7 +192,7 @@ class GenerationRecoveryTests(WorkflowFixture):
         perform_run(run.pk, lambda *_: self.bad_payload())
         run.refresh_from_db()
         data = export_backup(self.lecture)
-        for version in (9, 8, 7, 6, 5, 4, 3, 2, 1):
+        for version in (10, 9, 8, 7, 6, 5, 4, 3, 2, 1):
             with self.subTest(version=version):
                 output = io.BytesIO()
                 with (
@@ -205,6 +205,10 @@ class GenerationRecoveryTests(WorkflowFixture):
                             manifest = json.loads(contents)
                             manifest["version"] = version
                             self.assertNotIn("worker_token", manifest["runs"][0])
+                            if version < 10:
+                                for record in manifest["runs"]:
+                                    record.pop("context_enabled")
+                                    record.pop("context_data")
                             if version < 9:
                                 for record in manifest["cards"]:
                                     record.pop("occlusion")

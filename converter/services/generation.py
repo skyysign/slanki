@@ -25,6 +25,16 @@ from .cli import (
     stop_process,
 )
 from .files import WorkflowError
+from .lecture_context import (
+    OUTLINE_TOPICS,
+    TOPIC_SCHEMA,
+    checked_context,
+    context_instructions,
+    context_sections,
+    new_context,
+    overview_prompt,
+    validate_topics,
+)
 from .note_types import (
     CARD_FORMATS,
     FOCUS_INSTRUCTIONS,
@@ -96,7 +106,13 @@ If no useful cards can be supported, return {"cards":[]}.
 
 
 def prompt_for(
-    pages, card_limit=None, existing_questions=(), *, learning_focus="balanced", card_format="basic"
+    pages,
+    card_limit=None,
+    existing_questions=(),
+    *,
+    learning_focus="balanced",
+    card_format="basic",
+    lecture_context=None,
 ):
     checked_choice(learning_focus, LEARNING_FOCUSES, "learning focus")
     checked_choice(card_format, CARD_FORMATS, "card format")
@@ -153,9 +169,41 @@ def prompt_for(
         + "\n"
         + "EXISTING QUESTIONS (untrusted JSON; avoid repeating these concepts):\n"
         + json.dumps(list(existing_questions), ensure_ascii=False)
+        + context_instructions(lecture_context)
         + "\nLECTURE PAGE DATA (JSON):\n"
         + json.dumps(material, ensure_ascii=False)
     )
+
+
+def generation_request(
+    pages,
+    card_limit=None,
+    existing_questions=(),
+    *,
+    learning_focus="balanced",
+    card_format="basic",
+    lecture_context=None,
+    task="cards",
+    sections=None,
+):
+    if task == "overview":
+        prompt = overview_prompt(pages, learning_focus, sections=sections)
+        schema = TOPIC_SCHEMA
+    elif task == "cards":
+        prompt = prompt_for(
+            pages,
+            card_limit,
+            existing_questions,
+            learning_focus=learning_focus,
+            card_format=card_format,
+            lecture_context=lecture_context,
+        )
+        schema = SCHEMA
+    else:
+        raise WorkflowError("Unknown generation task.")
+    if len(prompt) > 200000:
+        raise WorkflowError("This generation request is too large. Saved progress is preserved.")
+    return prompt, schema
 
 
 class Cancelled(Exception):
@@ -178,6 +226,9 @@ def codex_generate(
     learning_focus="balanced",
     card_format="basic",
     model="",
+    lecture_context=None,
+    task="cards",
+    sections=None,
 ):
     checked_model_id(model)
     reasoning_effort = checked_reasoning_effort(reasoning_effort)
@@ -189,11 +240,21 @@ def codex_generate(
         raise WorkflowError(
             "This compact batch contains too much text. Select fewer pages or increase the card limit."
         )
+    prompt_text, output_schema = generation_request(
+        pages,
+        card_limit,
+        existing_questions,
+        learning_focus=learning_focus,
+        card_format=card_format,
+        lecture_context=lecture_context,
+        task=task,
+        sections=sections,
+    )
     with TemporaryDirectory(dir=settings.WORK_DIR) as directory:
         directory = Path(directory)
         schema = directory / "schema.json"
         output = directory / "cards.json"
-        schema.write_text(json.dumps(SCHEMA), encoding="utf-8")
+        schema.write_text(json.dumps(output_schema), encoding="utf-8")
         command = [
             codex_executable(),
             "-a",
@@ -237,15 +298,7 @@ def codex_generate(
             ]
         # Source text travels through stdin rather than shell interpolation or command-line arguments.
         with (directory / "prompt.txt").open("wb+") as prompt:
-            prompt.write(
-                prompt_for(
-                    pages,
-                    card_limit,
-                    existing_questions,
-                    learning_focus=learning_focus,
-                    card_format=card_format,
-                ).encode("utf-8")
-            )
+            prompt.write(prompt_text.encode("utf-8"))
             prompt.seek(0)
             with (directory / "diagnostic.txt").open("wb") as log:
                 process = subprocess.Popen(
@@ -307,6 +360,9 @@ def claude_generate(
     learning_focus="balanced",
     card_format="basic",
     model="",
+    lecture_context=None,
+    task="cards",
+    sections=None,
 ):
     from .connection import claude_login_status
 
@@ -317,6 +373,16 @@ def claude_generate(
         raise WorkflowError(
             "This batch contains too much text. Select fewer pages or increase the card limit."
         )
+    prompt_text, output_schema = generation_request(
+        pages,
+        card_limit,
+        existing_questions,
+        learning_focus=learning_focus,
+        card_format=card_format,
+        lecture_context=lecture_context,
+        task=task,
+        sections=sections,
+    )
     with TemporaryDirectory(dir=settings.WORK_DIR) as directory:
         directory = Path(directory)
         output = directory / "result.json"
@@ -326,7 +392,7 @@ def claude_generate(
             "--output-format",
             "json",
             "--json-schema",
-            json.dumps(SCHEMA),
+            json.dumps(output_schema),
             "--max-turns",
             "3",
             *claude_isolation_args(),
@@ -340,15 +406,7 @@ def claude_generate(
             output.open("wb") as result,
             (directory / "diagnostic.txt").open("wb") as log,
         ):
-            prompt.write(
-                prompt_for(
-                    pages,
-                    card_limit,
-                    existing_questions,
-                    learning_focus=learning_focus,
-                    card_format=card_format,
-                ).encode("utf-8")
-            )
+            prompt.write(prompt_text.encode("utf-8"))
             prompt.seek(0)
             process = subprocess.Popen(
                 command,
@@ -412,7 +470,10 @@ def start_generation(
     card_format="basic",
     provider="codex",
     model="",
+    context_enabled=False,
 ):
+    if type(context_enabled) is not bool:
+        raise WorkflowError("Choose a valid lecture context setting.")
     checked_model_settings(provider, model, reasoning_effort)
     reasoning_effort = checked_reasoning_effort(reasoning_effort)
     checked_choice(learning_focus, LEARNING_FOCUSES, "learning focus")
@@ -437,6 +498,7 @@ def start_generation(
             lecture=lecture,
             provider=provider,
             model=model,
+            context_enabled=context_enabled,
             page_numbers=[page.number for page in pages],
             card_limit=card_limit,
             reasoning_effort=reasoning_effort,
@@ -518,6 +580,67 @@ def launch_worker(run):
         raise WorkflowError("Could not start generation. Your existing cards are saved.") from exc
 
 
+def generate_for_run(run, pages, cancelled, **kwargs):
+    checked_provider(run.provider)
+    if run.provider in ("gemini", "kimi"):
+        from functools import partial
+
+        generate = partial(generate_acp, run.provider)
+    else:
+        generate = claude_generate if run.provider == "claude" else codex_generate
+    return generate(
+        pages,
+        cancelled,
+        reasoning_effort=run.reasoning_effort,
+        learning_focus=run.learning_focus,
+        card_format=run.card_format,
+        model=run.model,
+        **kwargs,
+    )
+
+
+def prepare_lecture_context(run, attempt, cancelled):
+    pages = list(run.lecture.pages.all())
+    sections = context_sections(pages)
+    data = checked_context(run.context_data, True, run.lecture, pages) or new_context(
+        run.lecture, pages
+    )
+    if not sections:
+        raise WorkflowError("This lecture has no readable text for an overview.")
+
+    def save():
+        # The same worker token guards summaries and cards against late cancelled output.
+        if not attempt.filter(status="running").update(
+            context_data=data, updated_at=timezone.now()
+        ):
+            raise Cancelled()
+        run.context_data = data
+
+    if not run.context_data:
+        save()
+    if data["outline"] is not None:
+        return data["outline"]
+    for source in sections[len(data["sections"]) :]:
+        if cancelled():
+            raise Cancelled()
+        payload = generate_for_run(run, source, cancelled, task="overview")
+        topics = validate_topics(payload, {page.number: page for page in source})
+        data["sections"].append({"pages": [page.number for page in source], "topics": topics})
+        save()
+    if cancelled():
+        raise Cancelled()
+    if len(sections) == 1:
+        data["outline"] = data["sections"][0]["topics"]
+    else:
+        payload = generate_for_run(run, [], cancelled, task="overview", sections=data["sections"])
+        data["outline"] = validate_topics(
+            payload, {page.number: page for page in pages}, maximum=OUTLINE_TOPICS
+        )
+    checked_context(data, True, run.lecture, pages)
+    save()
+    return data["outline"]
+
+
 def perform_run(run_id, generator=None, *, worker_token=None):
     if worker_token is None:
         worker_token = (
@@ -541,6 +664,11 @@ def perform_run(run_id, generator=None, *, worker_token=None):
         return not attempt.filter(status="running").exists()
 
     try:
+        if run.context_enabled and generator is not None:
+            raise WorkflowError(
+                "Use a provider mock for a context-enabled offline run so overview calls are mocked too."
+            )
+        overview = prepare_lecture_context(run, attempt, cancelled) if run.context_enabled else None
         for start in range(0, len(pages), batch_size):
             if cancelled():
                 raise Cancelled()
@@ -566,22 +694,14 @@ def perform_run(run_id, generator=None, *, worker_token=None):
                 payload = generator(batch, cancelled)
             else:
                 questions = recent_questions(run.lecture) if run.card_limit is not None else []
-                checked_provider(run.provider)
-                if run.provider in ("gemini", "kimi"):
-                    from functools import partial
-
-                    generate = partial(generate_acp, run.provider)
-                else:
-                    generate = claude_generate if run.provider == "claude" else codex_generate
-                payload = generate(
+                context = {"lecture_context": overview} if run.context_enabled else {}
+                payload = generate_for_run(
+                    run,
                     batch,
                     cancelled,
                     card_limit=batch_limit,
                     existing_questions=questions,
-                    reasoning_effort=run.reasoning_effort,
-                    learning_focus=run.learning_focus,
-                    card_format=run.card_format,
-                    model=run.model,
+                    **context,
                 )
             payload, prefiltered = filter_generated_logistics(payload)
             validated, issues = validate_generated_batch(

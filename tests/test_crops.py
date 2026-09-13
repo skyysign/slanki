@@ -227,6 +227,9 @@ class SourceCropTests(WorkflowFixture):
                     note["revisions"][0]["source_crop"] = {**self.crop, "right": -1}
                 else:
                     manifest["version"] = 5
+                    for run in manifest["runs"]:
+                        run.pop("context_enabled")
+                        run.pop("context_data")
                     for card in manifest["cards"]:
                         card.pop("source_crop")
                         card.pop("occlusion")

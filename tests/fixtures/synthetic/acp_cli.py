@@ -111,6 +111,20 @@ for line in sys.stdin:
             sys.exit(1)
         payload = json.loads(Path(__file__).with_name("cards.json").read_text(encoding="utf-8"))
         payload["cards"] = payload["cards"][:1]
+        if scenario == "overview":
+            prompt = request["params"]["prompt"][0]["text"]
+            pages = json.loads(prompt.split("UNTRUSTED SOURCE DATA (JSON):\n")[1])
+            payload = {
+                "topics": [
+                    {
+                        "title": "Synthetic topic",
+                        "summary": pages[0]["text"][:100],
+                        "priority": "core",
+                        "page": pages[0]["page"],
+                        "source_quote": pages[0]["text"][:60],
+                    }
+                ]
+            }
         text = (
             json.dumps(payload) if scenario != "malformed-json" else "```json\nnot card JSON\n```"
         )

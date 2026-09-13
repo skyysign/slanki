@@ -1,0 +1,9 @@
+{% if context_run %}
+<details class="notice lecture-context">
+  <summary>{% if context_progress.ready %}Lecture overview · {{ context_progress.topics }} topic{{ context_progress.topics|pluralize }}{% else %}Lecture overview in progress · {{ context_progress.read }} of {{ context_progress.total }} readable pages{% endif %}</summary>
+  <p class="form-note">{{ context_run.created_at|date:"j M, H:i" }} · {{ context_run.provider_label }} · {{ context_run.get_learning_focus_display }}. This overview guides card selection. Check its source links; a matching excerpt does not prove that a summary is correct. Image-only pages are not interpreted.</p>
+  {% if context_progress.ready %}
+    {% for topic in context_run.context_data.outline %}<article class="overview-topic"><h3>{{ topic.title }} <span class="muted">· {{ topic.priority }}</span></h3><p>{{ topic.summary }}</p><button type="button" class="text-button" data-view-source="{{ topic.page }}">View source page {{ topic.page }}</button><blockquote>{{ topic.source_quote }}</blockquote></article>{% empty %}<p>No study topics were identified. Selected slides are still checked for useful, source-supported cards.</p>{% endfor %}
+  {% else %}<p>Saved sections will be reused when this run resumes. Card generation starts after the overview is complete.</p>{% endif %}
+</details>
+{% endif %}

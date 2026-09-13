@@ -33,6 +33,7 @@ from converter.services.generation import (
     resume_generation,
     start_generation,
 )
+from converter.services.lecture_context import validate_topics
 from converter.services.providers import checked_model_settings, refresh_models
 
 from .test_workflow import WorkflowFixture
@@ -104,6 +105,45 @@ class AcpProviderTests(WorkflowFixture):
                 for row in self.requests()
             )
         )
+
+    def test_overview_and_card_context_use_the_existing_restricted_transport(self):
+        page = self.lecture.pages.first()
+        for provider, model, effort in (
+            ("gemini", "gemini-synthetic", ""),
+            ("kimi", "kimi-code/advanced", "high"),
+        ):
+            self.catalog(provider)
+            with self.subTest(provider=provider):
+                with patch(
+                    "converter.services.acp.node_cli_command",
+                    return_value=self.fake(provider, "overview"),
+                ):
+                    payload = generate_acp(
+                        provider, [page], task="overview", model=model, reasoning_effort=effort
+                    )
+                topics = validate_topics(payload, {page.number: page})
+                with patch(
+                    "converter.services.acp.node_cli_command", return_value=self.fake(provider)
+                ):
+                    cards = generate_acp(
+                        provider,
+                        [page],
+                        lecture_context=topics,
+                        model=model,
+                        reasoning_effort=effort,
+                    )
+                self.assertEqual(len(cards["cards"]), 1)
+        prompts = [
+            row["params"]["prompt"][0]["text"]
+            for row in self.requests()
+            if row["method"] == "session/prompt"
+        ]
+        self.assertEqual(len(prompts), 4)
+        for overview, cards in zip(prompts[::2], prompts[1::2]):
+            self.assertIn("planning pass, NOT card creation", overview)
+            self.assertNotIn("LECTURE PAGE DATA", overview)
+            self.assertIn("Synthetic topic", cards)
+            self.assertIn("NOT evidence", cards)
 
     def test_malformed_partial_wrong_session_and_tool_output_never_becomes_cards(self):
         self.catalog("gemini")

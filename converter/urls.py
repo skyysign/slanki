@@ -43,6 +43,21 @@ urlpatterns = [
     path("deletions/<uuid:pk>/retry/", views.retry_file_deletion, name="retry_file_deletion"),
     path("lectures/<uuid:pk>/add/", views.add_card, name="add_card"),
     path("lectures/<uuid:pk>/occlusion/", views.occlusion_builder, name="occlusion_builder"),
+    path(
+        "lectures/<uuid:pk>/occlusion/suggestions/",
+        views.start_occlusion_suggestions,
+        name="start_occlusion_suggestions",
+    ),
+    path(
+        "lectures/<uuid:pk>/occlusion/suggestions/<uuid:job_id>/",
+        views.occlusion_suggestion_status,
+        name="occlusion_suggestion_status",
+    ),
+    path(
+        "lectures/<uuid:pk>/occlusion/suggestions/<uuid:job_id>/cancel/",
+        views.cancel_occlusion_suggestions,
+        name="cancel_occlusion_suggestions",
+    ),
     path("cards/<uuid:pk>/occlusion/<slug:side>/", views.card_occlusion, name="card_occlusion"),
     path("cards/<uuid:pk>/save/", views.save_card, name="save_card"),
     path("cards/<uuid:pk>/crop/", views.card_crop, name="card_crop"),

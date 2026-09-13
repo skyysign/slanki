@@ -13,6 +13,7 @@ if (providerSettings) {
   const form = providerSettings.closest("form");
   const formatInputs = [...form.querySelectorAll('input[name="formats"]')];
   const updateMinimumCards = () => {
+    if (!form.elements.card_limit) return;
     const chosen = formatInputs.filter(input => input.checked);
     form.elements.card_limit.min = chosen.length === 1 && chosen[0].value === "reversed" ? "2" : "1";
   };
@@ -209,6 +210,14 @@ document.querySelectorAll("[data-occlusion-editor]").forEach((editor) => {
     drawing = false;
     return true;
   };
+  editor.addEventListener("use-suggested-mask", event => {
+    if (single || gesture || !valid(event.detail)) { event.preventDefault(); return; }
+    const duplicate = masks.findIndex(mask => ["page", "left", "top", "right", "bottom"].every(key => mask[key] === event.detail[key]));
+    if (duplicate >= 0) { selected = duplicate; sync(); return; }
+    const before = snapshot();
+    if (add({...event.detail})) sync(remember(before));
+    else event.preventDefault();
+  });
   Object.values(fields).forEach(field => field.addEventListener("change", () => {
     const mask = {page, ...Object.fromEntries(Object.entries(fields).map(([edge, input]) => [edge, input.value === "" ? NaN : Number(input.value)]))};
     Object.values(fields).forEach(input => input.setCustomValidity(""));
@@ -506,6 +515,92 @@ if (progress) {
   window.setTimeout(poll, 1000);
 }
 
+
+const suggestionForm = document.querySelector("[data-suggestion-form]");
+if (suggestionForm) {
+  const panel = suggestionForm.closest("details"), editor = document.querySelector("[data-occlusion-editor]");
+  const start = suggestionForm.querySelector("[data-start-suggestions]"), stop = suggestionForm.querySelector("[data-stop-suggestions]");
+  const message = suggestionForm.querySelector("[data-suggestion-status]"), results = panel.querySelector("[data-suggestion-results]");
+  let current = null, timer = null, requestNumber = 0;
+  const statusUrl = id => `${suggestionForm.action}${id}/`;
+  const busy = value => { start.disabled = value; stop.hidden = !value; };
+  const render = job => {
+    results.replaceChildren();
+    if (job.status !== "completed") return;
+    message.textContent = job.suggestions.length
+      ? `${job.suggestions.length} suggestions ready. Choose regions to add to the editor, then check their placement. No cards have been created.`
+      : "No suitable regions were suggested. You can still draw a region yourself.";
+    job.suggestions.forEach((suggestion, index) => {
+      const article = document.createElement("article"), title = document.createElement("h3"), reason = document.createElement("p"), use = document.createElement("button");
+      article.className = "suggested-region";
+      title.textContent = `${index + 1}. ${suggestion.label}`; reason.textContent = suggestion.reason;
+      use.type = "button"; use.className = "button secondary"; use.textContent = `Use suggestion ${index + 1}`;
+      use.addEventListener("click", () => {
+        const event = new CustomEvent("use-suggested-mask", {detail: suggestion.mask, cancelable: true});
+        if (editor.dispatchEvent(event)) {
+          message.textContent = `Region ${index + 1} is in the editor. Move or resize it as needed, then add drafts to save.`;
+          editor.scrollIntoView({behavior: "smooth", block: "start"});
+        } else message.textContent = "Finish the current drag or remove a region before adding this suggestion.";
+      });
+      article.append(title, reason, use); results.append(article);
+    });
+  };
+  const poll = async (id, number) => {
+    try {
+      const response = await fetch(statusUrl(id));
+      const job = await response.json();
+      if (number !== requestNumber) return;
+      if (!response.ok) throw new Error(job.error || "Could not read suggestions.");
+      if (job.status === "running") {
+        message.textContent = `Analysing this slide with Codex (${job.model || "CLI default"}, ${job.reasoning_effort || "default"} reasoning)${job.context_used ? " and the saved overview" : ""}. You can keep editing or stop the request.`;
+        timer = window.setTimeout(() => poll(id, number), 1000);
+      } else {
+        current = null; busy(false);
+        message.textContent = job.error || "Suggestions stopped. Your regions and cards are unchanged.";
+        render(job);
+      }
+    } catch (error) {
+      if (number !== requestNumber) return;
+      message.textContent = `Could not read progress. ${error.message} Use Stop suggestions before trying again.`;
+      // Keep the active request and Stop control: a dropped poll must not start another model call.
+    }
+  };
+  suggestionForm.elements.overview?.addEventListener("change", () => { suggestionForm.elements.consent.checked = false; });
+  suggestionForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (start.disabled || !suggestionForm.reportValidity()) return;
+    const number = ++requestNumber;
+    busy(true); results.replaceChildren(); message.textContent = "Starting image suggestions…";
+    // Until the server returns a job ID, there is no request we can cancel.
+    stop.hidden = true;
+    try {
+      const response = await fetch(suggestionForm.action, {method: "POST", body: new FormData(suggestionForm)});
+      const job = await response.json();
+      if (!response.ok) throw new Error(job.error || "Could not start image suggestions.");
+      current = job.id; stop.hidden = false;
+      await poll(job.id, number);
+    } catch (error) {
+      busy(false); message.textContent = error.message;
+    }
+  });
+  stop.addEventListener("click", async () => {
+    if (!current) return;
+    stop.disabled = true;
+    try {
+      const response = await fetch(`${statusUrl(current)}cancel/`, {method: "POST", headers: {"X-CSRFToken": suggestionForm.elements.csrfmiddlewaretoken.value}});
+      if (!response.ok) throw new Error("Could not stop the request. Try again.");
+      requestNumber += 1; window.clearTimeout(timer); current = null; busy(false);
+      message.textContent = "Suggestions stopped. Your regions and cards are unchanged.";
+    } catch (error) { message.textContent = error.message; }
+    finally { stop.disabled = false; }
+  });
+  window.addEventListener("pagehide", () => {
+    if (current) {
+      const body = new FormData(); body.set("csrfmiddlewaretoken", suggestionForm.elements.csrfmiddlewaretoken.value);
+      navigator.sendBeacon(`${statusUrl(current)}cancel/`, body);
+    }
+  });
+}
 
 document.querySelectorAll("[data-lecture-context]").forEach(input => {
   const form = input.closest("form");

@@ -32,6 +32,8 @@ def cleanup_deleted_files(lecture_id):
 
 
 def delete_lecture(lecture_id):
+    from .occlusion_suggestions import suggestion_jobs
+
     with transaction.atomic():
         # Serialize deletion against generation saves/resume using a database write.
         GenerationRun.objects.filter(
@@ -48,3 +50,4 @@ def delete_lecture(lecture_id):
         # A failed cleanup keeps its marker, including across process restarts.
         # The library exposes a retry; the deleted PDF can already be imported anew.
         transaction.on_commit(lambda: cleanup_deleted_files(lecture_id))
+        transaction.on_commit(lambda: suggestion_jobs.cancel_lecture(lecture_id))

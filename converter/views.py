@@ -29,7 +29,7 @@ from .services.generation import (
     resume_generation,
     start_generation,
 )
-from .services.lecture_context import context_download, context_progress
+from .services.lecture_context import checked_context, context_download, context_progress
 from .services.note_types import (
     CARD_FORMATS,
     LEARNING_FOCUSES,
@@ -41,6 +41,7 @@ from .services.note_types import (
     study_previews,
 )
 from .services.occlusion import add_occlusions, masks_from_form, occlusion_png
+from .services.occlusion_suggestions import suggestion_jobs
 from .services.providers import (
     EFFORTS,
     PROVIDER_DETAILS,
@@ -738,6 +739,16 @@ def occlusion_builder(request, pk):
     error = ""
     front = request.POST.get("front", "Name the hidden part.")
     back = request.POST.get("back", "")
+    catalog = model_catalog("codex")
+    last_codex = item.runs.filter(provider="codex").first()
+    overview_run = next(
+        (
+            run
+            for run in item.runs.filter(context_enabled=True)
+            if run.context_data.get("outline") is not None
+        ),
+        None,
+    )
     if request.method == "POST":
         try:
             masks = masks_from_form(request.POST, page)
@@ -760,9 +771,76 @@ def occlusion_builder(request, pk):
             "back": back,
             "error": error,
             "masks_json": request.POST.get("masks", "[]"),
+            "overview_run": overview_run,
+            "providers": (("codex", "Codex"),),
+            "provider_details": PROVIDER_DETAILS,
+            "selected_provider": "codex",
+            "selected_model": last_codex.model if last_codex else "",
+            "selected_reasoning": last_codex.reasoning_effort if last_codex else "low",
+            "provider_models": catalog["models"],
+            "model_catalogs": {"codex": catalog},
+            "reasoning_levels": EFFORTS,
+            "effort_labels": dict(EFFORTS),
+            "image_suggestions": True,
         },
         status=400 if error else 200,
     )
+
+
+@require_POST
+def start_occlusion_suggestions(request, pk):
+    from .services.connection import login_status
+
+    item = get_object_or_404(Lecture, pk=pk)
+    try:
+        if request.POST.get("consent") != "yes":
+            raise WorkflowError(
+                "Confirm sharing this slide image and text before requesting suggestions."
+            )
+        if request.POST.get("provider", "codex") != "codex":
+            raise WorkflowError("Image suggestions currently require the Codex connection.")
+        try:
+            number = int(request.POST.get("page", ""))
+        except ValueError as exc:
+            raise WorkflowError("Choose a valid source page.") from exc
+        page = get_object_or_404(item.pages, number=number)
+        model, effort = request.POST.get("model", ""), request.POST.get("reasoning_effort", "")
+        checked_model_settings("codex", model, effort)
+        outline = None
+        if selected := request.POST.get("overview"):
+            try:
+                overview_id = uuid.UUID(selected)
+            except ValueError as exc:
+                raise WorkflowError("Choose a saved overview from this lecture.") from exc
+            run = get_object_or_404(item.runs, pk=overview_id, context_enabled=True)
+            data = checked_context(run.context_data, True, item, list(item.pages.all()))
+            outline = data.get("outline")
+            if outline is None:
+                raise WorkflowError(
+                    "This overview is incomplete. Finish it or untick the overview option."
+                )
+        if login_status()["state"] != "connected":
+            raise WorkflowError("Connect Codex with your ChatGPT account in AI connections first.")
+        data = suggestion_jobs.start(page, model, effort, outline)
+        return JsonResponse(data)
+    except WorkflowError as exc:
+        return JsonResponse({"error": str(exc)}, status=400)
+
+
+@require_GET
+def occlusion_suggestion_status(request, pk, job_id):
+    get_object_or_404(Lecture, pk=pk)
+    try:
+        return JsonResponse(suggestion_jobs.get(job_id, pk))
+    except WorkflowError as exc:
+        return JsonResponse({"error": str(exc)}, status=404)
+
+
+@require_POST
+def cancel_occlusion_suggestions(request, pk, job_id):
+    get_object_or_404(Lecture, pk=pk)
+    suggestion_jobs.cancel(job_id, pk)
+    return JsonResponse({"status": "cancelled"})
 
 
 @require_GET

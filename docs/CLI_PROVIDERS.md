@@ -2,6 +2,8 @@
 
 Checked 2026-09-11. Recalloom is free software with optional donations. Users connect their own supported AI access; Recalloom does not sell inference or operate a shared account. Local document processing does not make the provider's model inference local.
 
+Image-suggestion update, 2026-09-13: the installed Codex CLI 0.154.0-alpha.6.2 reports `exec --image <FILE>...` in its help. Recalloom stages one validated source PNG in the temporary request directory and attaches it while retaining its existing read-only/no-shell/no-web configuration, ephemeral mode, stdin prompt, and JSON schema. No arbitrary image path comes from the model. The [Codex CLI reference](https://developers.openai.com/codex/cli/reference) documents the non-interactive command; installed help and the synthetic live check establish the image flag behavior for this version. One Low-reasoning request returned three correctly placed rectangles over a synthetic diagram's labels. Claude/Gemini/Kimi image routes are not implemented and explicitly reject this task; there is no cross-provider fallback. Suggestions are temporary and require a separate user action to become notes.
+
 ## Implemented
 
 | Integration | Sign-in | Model and reasoning discovery | Verification |

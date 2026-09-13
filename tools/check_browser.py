@@ -639,6 +639,98 @@ GenerationRun.objects.create(lecture=lecture, status='failed', page_numbers=[1, 
                     masks = json.loads(builder.locator('[name="masks"]').input_value())
                     assert all(mask["page"] == 4 and mask["right"] > mask["left"] for mask in masks)
                     check_mask_manipulation(page, builder)
+                    # Suggestion transport is mocked: no image or text leaves this test.
+                    page.get_by_text("Suggest regions with AI", exact=True).click()
+                    suggestion_form = page.locator("[data-suggestion-form]")
+                    suggestion_results = page.locator("[data-suggestion-results]")
+                    suggestion_form.locator('[name="consent"]').check()
+                    suggestion_form.locator('[name="overview"]').uncheck()
+                    assert not suggestion_form.locator('[name="consent"]').is_checked()
+                    suggestion_form.locator('[name="overview"]').check()
+                    suggestion_form.locator('[name="consent"]').check()
+                    suggestion_state = {
+                        "id": "synthetic-job",
+                        "status": "completed",
+                        "page": 4,
+                        "model": "synthetic-codex",
+                        "reasoning_effort": "low",
+                        "context_used": True,
+                        "suggestions": [
+                            {
+                                "label": "<script>Visible label</script>",
+                                "reason": "Recall this label.",
+                                "mask": {
+                                    "page": 4,
+                                    "left": 20,
+                                    "top": 30,
+                                    "right": 180,
+                                    "bottom": 100,
+                                },
+                            }
+                        ],
+                        "error": "",
+                    }
+                    page.route(
+                        "**/occlusion/suggestions/",
+                        lambda route: route.fulfill(json=suggestion_state),
+                    )
+                    page.route(
+                        "**/occlusion/suggestions/synthetic-job/",
+                        lambda route: route.fulfill(json=suggestion_state),
+                    )
+                    page.route(
+                        "**/occlusion/suggestions/synthetic-job/cancel/",
+                        lambda route: route.fulfill(json={"status": "cancelled"}),
+                    )
+                    suggestion_form.get_by_role(
+                        "button", name="Suggest regions", exact=True
+                    ).click()
+                    suggestion_results.get_by_role("button", name="Use suggestion 1").wait_for()
+                    assert suggestion_results.locator("script").count() == 0
+                    assert json.loads(builder.locator('[name="masks"]').input_value()) == masks
+                    suggestion_results.get_by_role("button", name="Use suggestion 1").click()
+                    assert builder.locator("[data-mask-list] button").count() == 3
+                    suggestion_results.get_by_role("button", name="Use suggestion 1").click()
+                    assert builder.locator("[data-mask-list] button").count() == 3
+                    builder.get_by_label("Region right", exact=True).fill("210")
+                    builder.get_by_label("Region top", exact=True).focus()
+                    assert (
+                        json.loads(builder.locator('[name="masks"]').input_value())[2]["right"]
+                        == 210
+                    )
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    page.screenshot(
+                        path=str(OUTPUT / "occlusion-suggestions-mobile.png"), full_page=True
+                    )
+                    page.set_viewport_size({"width": 1512, "height": 1100})
+                    builder.get_by_role("button", name="Undo", exact=True).click()
+                    builder.get_by_role("button", name="Undo", exact=True).click()
+                    assert json.loads(builder.locator('[name="masks"]').input_value()) == masks
+                    suggestion_state["status"] = "running"
+                    suggestion_form.get_by_role(
+                        "button", name="Suggest regions", exact=True
+                    ).click()
+                    suggestion_form.get_by_text(
+                        "Analysing this slide with Codex", exact=False
+                    ).wait_for()
+                    suggestion_form.get_by_role(
+                        "button", name="Stop suggestions", exact=True
+                    ).click()
+                    suggestion_form.get_by_text("Suggestions stopped.", exact=False).wait_for()
+                    assert json.loads(builder.locator('[name="masks"]').input_value()) == masks
+                    suggestion_state.update(status="completed", suggestions=[])
+                    suggestion_form.get_by_role(
+                        "button", name="Suggest regions", exact=True
+                    ).click()
+                    suggestion_form.get_by_text(
+                        "No suitable regions were suggested.", exact=False
+                    ).wait_for()
+                    assert json.loads(builder.locator('[name="masks"]').input_value()) == masks
+                    page.get_by_text("Suggest regions with AI", exact=True).click()
+                    page.unroute("**/occlusion/suggestions/")
+                    page.unroute("**/occlusion/suggestions/synthetic-job/")
+                    page.unroute("**/occlusion/suggestions/synthetic-job/cancel/")
                     # Keyboard controls support adding/removing a region and precise adjustments.
                     builder.get_by_role("button", name="Add region", exact=True).click()
                     assert builder.locator("[data-mask-list] button").count() == 3

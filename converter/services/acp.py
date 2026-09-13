@@ -552,6 +552,9 @@ def generate_acp(
     from .generation import generation_request
     from .providers import checked_model_settings
 
+    if task == "occlusion":
+        raise WorkflowError("Image suggestions currently require the Codex connection.")
+
     checked_model_settings(provider, model, reasoning_effort)
     if sum(len(page.text) for page in pages) > 200000:
         raise WorkflowError(

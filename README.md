@@ -6,7 +6,7 @@ A local tool for turning lecture PDFs into editable Anki cards with source-slide
 
 **Current state:** a working personal-use alpha. Import a PDF, generate or import basic Q/A, cloze, and optional reverse-card drafts, edit and accept notes beside their source slide, and export an Anki deck with bundled source images. Manual image occlusion can turn hidden slide regions into cards, including on image-only pages. Per-lecture backup and restore are included. Use “Try a sample lecture” to exercise the workflow without spending AI allowance.
 
-This first version supports selectable-text PDFs up to 25 MB and 100 pages. Scans and diagram-only pages are flagged. Generation uses text, not visual interpretation. You can manually attach a rectangular source-image crop to a note. Automatic diagram interpretation, PPTX, an internal reviewer, and mobile sync are not implemented yet.
+This first version supports PDFs up to 25 MB and 100 pages. Automatic Q/A, cloze, and reverse generation uses selectable text; pages without usable text are flagged. Manual source crops and image occlusion work on rendered slides, and Codex can suggest occlusion regions from one selected slide image. Whole-lecture visual generation, PPTX, an internal reviewer, and mobile sync are not implemented yet.
 
 ## Install and run (Windows / Python 3.12)
 
@@ -63,9 +63,13 @@ Mixed basic/cloze/reverse export was checked with Anki's 26.8.1 backend: cloze o
 
 Converter backups now use format **10**, which preserves saved lecture overviews as well as image occlusion regions and edit history. Formats 1–9 remain readable. Restore format-10 backups with this version or newer; older Recalloom builds cannot read them.
 
-## Manual image occlusion
+## Image occlusion
 
-Open **Create cards → Create image occlusion**, choose a source page, and press **Use page**. Draw a rectangle over each label or detail to recall, up to 20 regions per submission. You can also press **Add region** and adjust the four pixel fields with a keyboard. Select a region from the numbered buttons to adjust, preview, or remove it before saving. Image-only slides work here; this feature uses no model or OCR.
+Open **Create cards → Create image occlusion**, choose a source page, and press **Use page**. Draw a rectangle over each label or detail to recall, up to 20 regions per submission. You can also press **Add region** and adjust the four pixel fields with a keyboard. Select a region from the numbered buttons to adjust, preview, or remove it before saving. Image-only slides work here. Manual drawing uses no model or OCR.
+
+For help choosing regions, expand **Suggest regions with AI**. Choose a Codex model and reasoning level, optionally include an existing completed lecture overview, and confirm sharing the selected slide image and text. **Suggest regions** makes one model request and returns up to six labelled suggestions with reasons. **Use suggestion** adds a region to the editor; it does not save a card or replace your existing regions. Adjust its geometry, preview it, then use **Add drafts**. Exact duplicate suggestions select the existing region instead of adding it again. A slide with no useful candidates can return no suggestions.
+
+Image suggestions currently support **Codex only**, through its ChatGPT sign-in. They attach just the selected source PNG and send that page's extracted text plus the overview if selected. They do not run a new lecture overview or send other slide images. Keep the page open while waiting, or use **Stop suggestions**. Requests have the existing five-minute timeout; repeated clicks reuse a running request. Suggestions are temporary previews held by the local server for up to fifteen minutes, lost on restart, and excluded from backups. Only regions saved as notes are backed up. Normal page navigation requests cancellation. If the browser disappears, the local server still enforces the request timeout. A forced server termination can leave its CLI child running; normal shutdown requests cancellation and waits briefly for cleanup. Whole-lecture automatic masking and image-based Q/A generation remain future work.
 
 Drag inside a region to move it; drag any of its eight corner/edge handles to resize it. Regions stay inside the slide and retain at least a two-pixel width and height. Drag empty slide space to add a region, or use **Draw new region** when it overlaps an existing one. **Undo** restores up to 30 region changes in the current page session, including drawing, moving, resizing, and removal. **Escape** cancels an active drag. With the slide focused, arrow keys move the selected region by one source pixel; Shift moves by ten. Mouse and touch input share the same controls. Preview and save after adjusting.
 
@@ -73,7 +77,7 @@ Each region becomes one independent draft note and one Anki card. Only that card
 
 An existing image occlusion note has the same move/resize/pixel controls in the lecture editor. **Redraw region** replaces its rectangle; saving retains its ID and Anki review card. Its source page stays fixed. Use **Set aside** when a card should no longer be exported; an earlier copy in Anki remains there. Adding another region creates a new card. Save before changing pages.
 
-Export uses a dedicated note type with bundled PNG question/answer images and the original source slide on the answer. Masks are opaque pixels in the question image; no JavaScript is needed to hide them during study. Edit regions in Recalloom and re-export. These exports do not use Anki's native image-occlusion editor; Anki describes its own [image-occlusion workflow](https://docs.ankiweb.net/editing.html#image-occlusion). Recalloom currently supports rectangular hide-one/reveal-one cards, without grouped masks, hide-all mode, automatic label detection, or visual AI generation. Source crops belong to the text formats; occlusion uses the full slide.
+Export uses a dedicated note type with bundled PNG question/answer images and the original source slide on the answer. Masks are opaque pixels in the question image; no JavaScript is needed to hide them during study. Edit regions in Recalloom and re-export. These exports do not use Anki's native image-occlusion editor; Anki describes its own [image-occlusion workflow](https://docs.ankiweb.net/editing.html#image-occlusion). Recalloom supports rectangular hide-one/reveal-one cards, without grouped masks or hide-all mode. Source crops belong to the text formats; occlusion uses the full slide.
 
 Actual Anki 26.8.1 backend tests verify rendering/media, repeated imports, mask/text edits preserving separate review schedules, and adding regions without replacing existing cards. Backup restoration retains masks, IDs, revision history, and equivalent export media. Manual desktop/mobile client checks remain pending.
 
@@ -127,7 +131,7 @@ Provider, requested model, effort, focus, and formats are saved with each run an
 
 Codex runs with user configuration and repository instructions excluded, read-only permissions, and shell/search/apps/delegation disabled. Claude runs with saved authentication, safe mode, custom setting sources/hooks/memory disabled, no ordinary tools, empty MCP configuration, and no session persistence. A temporary working directory contains bounded prompt/output files for each batch and is removed afterward. Claude's `--bare` mode is deliberately avoided because it bypasses subscription authentication. Organization-managed CLI policies may still apply. See [Codex non-interactive execution](https://developers.openai.com/codex/noninteractive) and [Claude headless mode](https://code.claude.com/docs/en/headless).
 
-Generation sends extracted text, page numbers, and recent existing questions to the selected provider through its CLI. With whole-lecture context enabled, this includes text from all readable slides, even pages not selected for cards. PDF extraction, source images/crops, editing, storage, backups, and export remain local. This is cloud model inference through the user's own access, not on-device inference or a shared Recalloom generation service. A downloaded prompt cannot configure another chat's model or reasoning; select those in the chat itself.
+Text-card generation sends extracted text, page numbers, and recent existing questions to the selected provider through its CLI. With whole-lecture context enabled, this includes text from all readable slides, even pages not selected for cards. Image-occlusion suggestions separately send one selected source PNG and its text to Codex, plus the saved overview when selected, after explicit consent. PDF extraction, rendering, editing, storage, backups, and export run locally. Model inference uses the user's own cloud access, not on-device inference or a shared Recalloom generation service. A downloaded prompt cannot configure another chat's model or reasoning; select those in the chat itself.
 
 Gemini and Kimi use bounded ACP subprocesses with disabled host file/terminal capabilities, restricted CLI profiles, no approved tools, and temporary working directories. Source text travels through stdin, and generated JSON must pass the same source checks as Codex/Claude output. These restrictions are application/CLI controls, not an OS sandbox. Their CLIs may retain session history in the separate profile. Lecture backups exclude those profiles and credentials; deleting a lecture does not erase provider-side or CLI session history.
 
@@ -190,6 +194,14 @@ For an explicitly live check using three synthetic pages and the existing Codex 
 ```
 
 The live check saves isolated results under `data/live-checks/`. Rebuild the synthetic PDF with `python tools/make_sample.py` using the virtual environment's Python.
+
+For one explicitly live **image-suggestion** check, using a generated synthetic neuron diagram and no real lecture material:
+
+```powershell
+.\.venv\Scripts\python.exe tools/check_occlusion_generation.py --live
+```
+
+This uses Codex's requested CLI-default model and Low reasoning; optional `--model` and `--reasoning` flags override them. The isolated folder contains the source PNG, model output, known label bounds, and masked question PNGs for inspection. One check on CLI 0.154.0-alpha.6.2 returned three regions fully covering the three labels. This is an integration/placement check on a simple synthetic diagram, not a real-slide accuracy benchmark.
 
 ## Research commands
 

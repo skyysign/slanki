@@ -189,6 +189,10 @@ def generation_request(
     if task == "overview":
         prompt = overview_prompt(pages, learning_focus, sections=sections)
         schema = TOPIC_SCHEMA
+    elif task == "occlusion":
+        from .occlusion_suggestions import SUGGESTION_SCHEMA, suggestion_prompt
+
+        prompt, schema = suggestion_prompt(pages, lecture_context), SUGGESTION_SCHEMA
     elif task == "cards":
         prompt = prompt_for(
             pages,
@@ -255,6 +259,12 @@ def codex_generate(
         schema = directory / "schema.json"
         output = directory / "cards.json"
         schema.write_text(json.dumps(output_schema), encoding="utf-8")
+        image_path = None
+        if task == "occlusion":
+            from .occlusion_suggestions import slide_image
+
+            image_path = directory / "slide.png"
+            image_path.write_bytes(slide_image(pages[0]))
         command = [
             codex_executable(),
             "-a",
@@ -285,6 +295,11 @@ def codex_generate(
             str(output),
             "-",
         ]
+        if image_path is not None:
+            command[command.index("--output-schema") : command.index("--output-schema")] = [
+                "--image",
+                str(image_path),
+            ]
         if model := model or os.environ.get("SLIDES_CODEX_MODEL"):
             checked_model_id(model)
             command[command.index("--output-schema") : command.index("--output-schema")] = [
@@ -365,6 +380,9 @@ def claude_generate(
     sections=None,
 ):
     from .connection import claude_login_status
+
+    if task == "occlusion":
+        raise WorkflowError("Image suggestions currently require the Codex connection.")
 
     checked_model_settings("claude", model, reasoning_effort)
     if claude_login_status()["state"] != "connected":

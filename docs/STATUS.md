@@ -82,6 +82,10 @@ The approved plan renames the app to **Slanki**: a static browser app for Vercel
   - Card limit respected; Stop.
 - Screenshots in ignored `data/screenshots/slanki/` and `data/e2e/` were inspected (desktop library and workspace, mobile workspace).
 
+**Firefox and WebKit (Playwright builds, same headers).**
+- `app/e2e/workflow.mjs` and `app/e2e/generation.mjs` also pass in both, run with `SLANKI_BROWSER=firefox|webkit`.
+- WebKit logs a CSP notice for its own internal styling of native `<select>` controls, and for Playwright's screenshot styles. The controls work, and only this exact notice is ignored, and only in WebKit.
+
 **`npm run size`.** Initial download 72.9 KB gzip; deployment 4.95 MB. pdf.js and sql.js load only on import and export.
 
 **Real CLIs, no inference.**
@@ -104,9 +108,8 @@ New lectures validate against their own pdf.js text; imported lectures keep thei
   - No Vercel deployment and no npm publish: these need the user's accounts, and the license is still to be chosen.
   - The production origin is the build constant `https://slanki.vercel.app`.
 - **Features not ported:** Gemini CLI and Kimi Code are not in the helper. There is no source-crop editor; existing crops export unchanged. Occlusion and visual notes are read-only apart from their text.
-- **Browsers:** automated runs use Chrome only. Unverified so far:
-  - Firefox;
-  - Safari, which is expected to need the local copy at `http://127.0.0.1:47213`;
+- **Browsers:** both workflows also pass in Playwright's Firefox and WebKit builds (see Checks run). Still unverified:
+  - real Safari, which is expected to need the local copy at `http://127.0.0.1:47213`;
   - Chrome's local-network permission prompt from the real Vercel origin.
 - **Anki clients:** manual Anki desktop and mobile client checks are pending.
 - **Storage:** the library is per browser and origin. The helper-served copy has its own library; lectures move between them with backups.

@@ -5,7 +5,7 @@ import { spawn } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createInterface } from "node:readline";
-import { chromium } from "playwright";
+import { chromium, firefox, webkit } from "playwright";
 
 const out = process.argv[2] ?? "data/e2e";
 mkdirSync(out, { recursive: true });
@@ -27,7 +27,9 @@ const code = await new Promise((resolve, reject) => {
 });
 const calls = () => readFileSync(log, "utf8").split("\n").filter(Boolean).length;
 
-const browser = await chromium.launch({ channel: "chrome" });
+const engine = process.env.SLANKI_BROWSER ?? "chrome";
+const browser = engine === "firefox" ? await firefox.launch() : engine === "webkit" ? await webkit.launch() : await chromium.launch({ channel: "chrome" });
+console.log(`browser: ${engine}`);
 const page = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
@@ -72,7 +74,7 @@ try {
   await page.click(".banner.info button:has-text('Stop')");
   await page.waitForSelector("button:has-text('Resume')", { timeout: 20000 });
   check((await page.textContent(".banner")).includes("Stopped"), "Stop ends the run and offers Resume");
-  await page.screenshot({ path: `${out}/generation-desktop.png`, fullPage: true });
+  await page.screenshot({ path: `${out}/generation-desktop-${engine}.png`, fullPage: true });
   check(errors.length === 0, `no page errors${errors.length ? ": " + errors.join(" | ") : ""}`);
 } finally {
   await browser.close();

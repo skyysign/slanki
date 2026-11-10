@@ -47,7 +47,7 @@ node app/scripts/compare-text.ts BACKUP.zip                      # pdf.js vs sto
 node helper/test/discover-real.ts                                # model lists from installed CLIs (no prompts)
 ```
 
-The e2e scripts use installed Google Chrome. `tools/golden.py` regenerates the frozen reference fixtures from the Django code; only rerun it deliberately (IDs change on each run). Deploy to Vercel by connecting the Git repository (settings come from `vercel.json`; `.vercelignore` keeps everything but the app out of uploads).
+The e2e scripts use installed Google Chrome; set `SLANKI_BROWSER=firefox` or `webkit` after `npx playwright install firefox webkit` to run them in those engines. `tools/golden.py` regenerates the frozen reference fixtures from the Django code; only rerun it deliberately (IDs change on each run). Deploy to Vercel by connecting the Git repository (settings come from `vercel.json`; `.vercelignore` keeps everything but the app out of uploads).
 
 ## Recalloom Django edition (frozen reference)
 

@@ -2,7 +2,7 @@
 // Start the server first: node app/scripts/serve.ts 4173
 // Usage: node app/e2e/workflow.mjs [output-dir]
 import { mkdirSync } from "node:fs";
-import { chromium } from "playwright";
+import { chromium, firefox, webkit } from "playwright";
 
 const out = process.argv[2] ?? "data/e2e";
 mkdirSync(out, { recursive: true });
@@ -13,30 +13,48 @@ const check = (condition, message) => {
   console.log(`${condition ? "  ok  " : "  FAIL"} ${message}`);
 };
 
-const browser = await chromium.launch({ channel: "chrome" });
+const engine = process.env.SLANKI_BROWSER ?? "chrome";
+const browser = engine === "firefox" ? await firefox.launch() : engine === "webkit" ? await webkit.launch() : await chromium.launch({ channel: "chrome" });
+console.log(`browser: ${engine}`);
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
 const page = await context.newPage();
 const errors = [];
-page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+// WebKit reports its own internal styles for native <select> controls (and Playwright's
+// screenshot styles) as CSP violations; the controls still work. Ignore only those.
+const knownNoise = (text) => engine === "webkit" && text.startsWith("Refused to apply a stylesheet");
+page.on("console", (m) => {
+  if (m.type() !== "error" || knownNoise(m.text())) return;
+  errors.push(m.text());
+  if (process.env.DEBUG_CONSOLE) console.log("    console error at", JSON.stringify(m.location()), m.text().slice(0, 60));
+});
 page.on("pageerror", (e) => errors.push(e.message));
 
 const tab = async (name) => Number((await page.textContent(`.tab:has-text("${name}") .muted`)) ?? "-1");
 const counts = async () => ({ review: await tab("To review"), ready: await tab("Ready"), aside: await tab("Set aside") });
 const body = () => page.click("h1");
+/** Wait (up to 10 s) until the tab counts satisfy `test`; slower engines reload IndexedDB later. */
+const settle = async (test) => {
+  for (let i = 0; i < 50; i++) {
+    const value = await counts();
+    if (test(value)) return true;
+    await page.waitForTimeout(200);
+  }
+  return false;
+};
 
 await page.goto(base);
 check((await page.textContent(".pill"))?.includes("Connect your AI"), "AI pill invites connecting when no helper is paired");
 await page.click("text=Try a sample lecture");
 await page.waitForSelector(".card-pane textarea.question", { timeout: 30000 });
-check((await counts()).review === 5, "sample lecture imports 5 drafts validated against pdf.js text");
+check(await settle((c) => c.review === 5), "sample lecture imports 5 drafts validated against pdf.js text");
 
 await body();
 await page.keyboard.press("a");
 await page.waitForFunction(() => document.querySelector(".banner.ok")?.textContent?.includes("Kept"));
-check((await counts()).ready === 1, "A keeps the card and moves on");
+check(await settle((c) => c.ready === 1), "A keeps the card and moves on");
 await page.keyboard.press("z");
 await page.waitForFunction(() => document.querySelector(".toast")?.textContent?.includes("undone"));
-check((await counts()).review === 5 && (await counts()).ready === 0, "Z undoes the last change");
+check(await settle((c) => c.review === 5 && c.ready === 0), "Z undoes the last change");
 
 await page.fill(".card-pane textarea.question", "What is retrieval practice, in one sentence?");
 await page.click("button:has-text('Keep & next')");
@@ -51,13 +69,12 @@ await page.click(".tab:has-text('To review')");
 await body();
 await page.keyboard.press("s");
 await page.waitForFunction(() => document.querySelector(".banner.ok")?.textContent?.includes("Set aside"));
-check((await counts()).aside === 1, "S sets a card aside");
+check(await settle((c) => c.aside === 1), "S sets a card aside");
 
 await page.click("button:has-text('Keep all')");
 await page.click("dialog[open] button:has-text('Keep all')");
 await page.waitForFunction(() => document.querySelector(".toast")?.textContent?.includes("kept"));
-const afterKeep = await counts();
-check(afterKeep.review === 0 && afterKeep.ready === 4 && afterKeep.aside === 1, "Keep all keeps the remaining drafts only");
+check(await settle((c) => c.review === 0 && c.ready === 4 && c.aside === 1), "Keep all keeps the remaining drafts only");
 
 await page.click("button[aria-label='More actions']");
 await page.click("text=Write a card yourself");
@@ -74,7 +91,7 @@ check((await page.inputValue("dialog[open] textarea >> nth=0")).includes("{{c1::
 check(await page.isVisible("dialog[open] .preview-card .cloze"), "manual card shows a live Anki preview");
 await page.click("dialog[open] button:has-text('Add card')");
 await page.waitForFunction(() => document.querySelector(".toast")?.textContent?.includes("Card added"));
-check((await counts()).review === 1, "manual card is added for review");
+check(await settle((c) => c.review === 1), "manual card is added for review");
 
 await page.click("button:has-text('Make cards')");
 const chatShown = await page
@@ -108,16 +125,15 @@ await page.waitForSelector("text=No lectures yet.");
 check(true, "lecture deleted after confirmation");
 await page.setInputFiles("input[accept='.zip,application/zip']", `${out}/sample-backup.zip`);
 await page.waitForSelector(".card-pane, .empty");
-const restored = await counts();
-check(JSON.stringify(restored) === JSON.stringify(before), "restoring the backup brings back every card and status");
+check(await settle((c) => JSON.stringify(c) === JSON.stringify(before)), "restoring the backup brings back every card and status");
 
-await page.screenshot({ path: `${out}/workspace-desktop.png`, fullPage: true });
+await page.screenshot({ path: `${out}/workspace-desktop-${engine}.png`, fullPage: true });
 await page.setViewportSize({ width: 390, height: 844 });
 await page.click(".mobile-switch .tab:has-text('Slide')");
 check(await page.isVisible(".slide-pane"), "phone layout switches to the slide");
 check(!(await page.isVisible(".card-pane")), "phone layout hides the card while showing the slide");
 check(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)), "no horizontal overflow on a phone");
-await page.screenshot({ path: `${out}/workspace-mobile-slide.png`, fullPage: true });
+await page.screenshot({ path: `${out}/workspace-mobile-slide-${engine}.png`, fullPage: true });
 
 check(errors.length === 0, `no console errors${errors.length ? ": " + errors.join(" | ") : ""}`);
 await browser.close();

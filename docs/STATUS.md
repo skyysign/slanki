@@ -1,5 +1,24 @@
 # Development handoff
 
+## Slanki rewrite (in progress, branch `slanki`)
+
+Approved 2026-11-10: rename to **Slanki**, a static browser app for Vercel Hobby with an on-device library (IndexedDB) and a small local `npx slanki` helper for CLI generation. Kept: Q/A + cloze, optional reverse. Removed from the UI: study guide, image occlusion, graphs & formulas, learning focus, the format checkboxes. Existing notes of every type still import and re-export with the same Anki identities. Django is retired only after the user confirms their migrated decks in Anki. Plan: `~/.claude/plans/hey-as-you-can-mossy-wilkes.md`.
+
+- **P0 done.** The Django working tree is committed and tagged `recalloom-django-final`, so `main` is unchanged. A snapshot is in ignored `data/backups/pre-slanki-20261110/`: SQLite, media hashes, and format-12 backups of all 3 lectures (152 pages, 128 notes, 19 accepted). It restored cleanly into a throwaway data dir with identical versions, `anki_modified` values and fingerprints. Mojibake in the card prompt and sample title is fixed. All 180 Django tests passed afterwards.
+- `tools/golden.py` froze the reference behaviour into `tests/fixtures/synthetic/golden/`, with every model call mocked:
+  - Unicode tables;
+  - text, validation and logistics vectors;
+  - exact prompts and schemas, and Codex/Claude argv;
+  - 8 mocked run transcripts;
+  - a synthetic lecture with all 5 note types: backups v1–12, their Django-restored state, the genanki deck with table dumps, and Pillow pixel hashes.
+
+  `tools/genanki_ref.py` is a Django-free reference exporter, verified identical to `export_deck` on the synthetic lecture and on both real lectures with accepted notes.
+- **P1 done.** `app/src/core` ports note types, validation, logistics, prompts, overview and batch math, with Python code-point/casefold/`\w` semantics. `app/src/export` holds a pure-TS PNG codec, Pillow-identical crops/masks/covers and an sql.js `.apkg` writer. `app/src/backup` reads Recalloom v1–12 and Slanki v1 and writes Slanki v1, a lossless superset of format 12. Checks run:
+  - `npm test`: 227 Vitest tests passed (golden vectors, backups v1–12 vs Django restore, pixel equality, whole-table deck equality).
+  - `npx tsc -p app` clean.
+  - `tools/check_anki.py` passed on Anki 26.8.1 for the golden lecture (reviews preserved, edits, new notes, rename, repeat import) and read-only for the 2 real lectures with accepted notes (12 and 7 notes: identical tables, schedules preserved, no duplicates, no missing media).
+- **Next: P2.** IndexedDB store, pdf.js import, the new library/review UI, export/backup in the browser, external-chat route, Vercel config. No browser UI or helper exists yet.
+
 Updated: 2026-10-26 (Keep all drafts). The review toolbar now offers an explicit bulk action with draft/Anki-card counts, unsaved-edit protection, and a signed version snapshot that preserves newer edits and excludes later drafts. All 180 offline tests and the desktop/mobile browser workflow passed without live inference. The redesigned library, Cards/Study guide workspace, individual undo and in-page zoomable slide viewer remain in place. Preview runs at http://127.0.0.1:8000. The user confirmed a future Vercel Hobby static browser edition with temporary device storage and a persistent desktop edition; docs/ARCHITECTURE.md distinguishes these targets from the current local implementation.
 
 ## What exists

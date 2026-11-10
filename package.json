@@ -1,0 +1,32 @@
+{
+  "name": "slanki-workspace",
+  "private": true,
+  "description": "Slanki: turn lecture PDFs into Anki cards in your browser, with your own AI CLI.",
+  "type": "module",
+  "workspaces": [
+    "app",
+    "helper"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace app",
+    "build": "npm run build --workspace app && npm run build --workspace helper",
+    "test": "vitest run",
+    "typecheck": "tsc -p app && tsc -p helper",
+    "size": "node app/scripts/size.ts",
+    "export-fixture": "node app/scripts/export-fixture.ts",
+    "gen:unicode": "node app/scripts/gen-unicode.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "24.19.2",
+    "@types/sql.js": "1.4.11",
+    "esbuild": "0.28.2",
+    "fake-indexeddb": "6.2.6",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  }
+}

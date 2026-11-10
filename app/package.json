@@ -1,0 +1,18 @@
+{
+  "name": "@slanki/app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@preact/signals": "2.11.3",
+    "fflate": "0.8.3",
+    "pdfjs-dist": "6.4.299",
+    "preact": "10.29.8",
+    "sql.js": "1.15.2"
+  }
+}

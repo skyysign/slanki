@@ -10,6 +10,21 @@ A local tool for turning lecture PDFs into editable Anki cards with source-slide
 
 This first version supports PDFs up to 25 MB and 100 pages. Automatic Q/A, cloze, reverse cards, and lecture rundowns use selectable text; unreadable pages are flagged. **Graphs & formulas** uses Codex slide images to draft interpretation questions with editable crops and optional answer-text covers. Label-recall occlusion lives separately under **Anatomy & diagrams**. PPTX, an internal reviewer, and mobile sync are not implemented.
 
+## Slanki (browser rewrite, in development on branch `slanki`)
+
+Recalloom is being rebuilt as **Slanki**, a static web app that keeps lectures in the browser plus an optional local helper for your AI CLI. See [docs/STATUS.md](docs/STATUS.md). The Django app below remains the working version until migration is confirmed. Development checks (Node.js 22.12+):
+
+```powershell
+npm install
+npm test                                   # Vitest: golden vectors, export, backups
+npx tsc -p app                             # type check
+.\.venv\Scripts\python.exe tools/check_anki.py              # Anki 26.8.1 import gate (temp collection)
+.\.venv\Scripts\python.exe tools/check_anki.py --real DIR   # also check backup-*.zip files in DIR read-only
+node app/scripts/export-fixture.ts BACKUP.zip OUT.apkg       # build a deck from a backup with the browser exporter
+```
+
+`tools/golden.py` regenerates the frozen reference fixtures from the Django code (deliberately; IDs change on each run).
+
 ## Install and run (Windows / Python 3.12)
 
 From this folder in PowerShell:

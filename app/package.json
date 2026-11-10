@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "1.8.0",
     "@preact/signals": "2.11.3",
     "fflate": "0.8.3",
     "pdfjs-dist": "6.4.299",

@@ -1,4 +1,5 @@
-// Starting and resuming generation with the user's AI through the helper.
+// Starting and resuming generation with the user's AI (API key or helper).
+import { generateWithKey, isKeyProvider } from "../ai/apiKeys.ts";
 import { startJob, waitForJob, type Provider } from "../ai/helper.ts";
 import { WorkflowError } from "../core/errors.ts";
 import type { CardFormat } from "../core/noteTypes.ts";
@@ -22,6 +23,7 @@ export function helperGenerator(provider: Provider, model: string, effort: strin
       sections: call.sections,
       validationFeedback: call.validationFeedback,
     });
+    if (isKeyProvider(provider)) return generateWithKey(provider, model, effort, prompt, schema, signal);
     const job = await startJob({ key, provider, model, effort, task: call.task, prompt, schema }, signal);
     return waitForJob(job, signal);
   };
@@ -65,10 +67,10 @@ export async function resumeGeneration(runId: string): Promise<void> {
   const run = await resumeRun(runId);
   const lecture = await getLecture(run.lecture_id);
   if (!lecture) throw new WorkflowError("This lecture is no longer in your library.");
-  if (run.provider !== "codex" && run.provider !== "claude") {
+  if (!["codex", "claude", "openai", "anthropic"].includes(run.provider)) {
     throw new WorkflowError("This run used an AI that Slanki cannot resume yet. Start a new run instead.");
   }
-  void launchRun(run, helperGenerator(run.provider, run.model, run.reasoning_effort));
+  void launchRun(run, helperGenerator(run.provider as Provider, run.model, run.reasoning_effort));
 }
 
 export { getRun };

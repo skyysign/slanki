@@ -5,7 +5,7 @@ Updated 2026-11-10. Personal alpha, branch `slanki`. The old Django app (Recallo
 ## Works
 
 - **Library and lectures.** PDF import in the browser; IndexedDB library; review workspace with keyboard shortcuts; manual cards; "Attach part of slide"; Keep all; Undo.
-- **Making cards.** Generation through the `npx slanki` helper (Codex, Claude Code), or the copy/paste chat route. The whole lecture is read first; stop and resume are supported.
+- **Making cards.** Three routes: an OpenAI or Anthropic API key used directly from the browser (`app/src/ai/apiKeys.ts`; keys only in localStorage, never in backups), the `npx slanki` helper (Codex, Claude Code), or copy/paste with any chat. The whole lecture is read first; stop and resume are supported.
 - **Anki export.** Answers show only the slide. Note identity and schedules are compatible with Recalloom exports.
 - **Backups.** Per-lecture and whole-library backups; reads Recalloom backups v1–12.
 - **Deployment.** Vercel-ready static build (Node 24, strict CSP, `.vercelignore`).
@@ -21,7 +21,7 @@ Updated 2026-11-10. Personal alpha, branch `slanki`. The old Django app (Recallo
 
 - **Releases:** no GitHub remote yet, no Vercel deployment, no npm publish, no license chosen.
 - **Untested:**
-  - live AI generation through the helper;
+  - live AI generation through the helper or an API key (the API-key route also needs `https://api.openai.com https://api.anthropic.com` in the CSP `connect-src`, pending approval);
   - real Safari;
   - Anki desktop and mobile apps.
 - **Missing features:** Gemini and Kimi are not supported in the helper.

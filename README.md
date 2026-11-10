@@ -12,7 +12,9 @@ Turn lecture PDFs into Anki cards in your browser. Your slides, cards and backup
 
 ## Connect your AI
 
-Install Codex or Claude Code, then run once:
+**Easiest: API key.** Click **Connect your AI → API key**, pick OpenAI or Anthropic and paste a key from platform.openai.com or platform.claude.com. Slanki calls that provider directly from your browser; usage is billed to your API account (separate from a ChatGPT/Claude subscription). The key stays in this browser.
+
+**Use your subscription (Codex / Claude Code).** Install Codex or Claude Code, then run once:
 
 ```
 npx slanki@1

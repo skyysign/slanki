@@ -7,12 +7,15 @@ export const HELPER_ORIGIN = `http://127.0.0.1:${HELPER_PORT}`;
 export const API_VERSION = 1;
 const TOKEN_KEY = "slanki:helper-token";
 
-export type Provider = "codex" | "claude" | "gemini" | "kimi";
+/** CLI providers run through the helper; "openai" and "anthropic" use an API key in the browser. */
+export type Provider = "codex" | "claude" | "gemini" | "kimi" | "openai" | "anthropic";
 export const PROVIDER_LABELS: Record<Provider, string> = {
   codex: "Codex",
   claude: "Claude Code",
   gemini: "Gemini CLI",
   kimi: "Kimi Code",
+  openai: "OpenAI API",
+  anthropic: "Anthropic API",
 };
 
 export interface ProviderStatus {

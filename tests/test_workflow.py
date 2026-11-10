@@ -291,7 +291,7 @@ class WorkflowTests(WorkflowFixture):
         card = self.lecture.cards.first()
         response = self.client.get(self.lecture.get_absolute_url())
         self.assertContains(response, card.front)
-        self.assertContains(response, "Some pages need manual attention")
+        self.assertContains(response, "1 slide needs source review")
         image_response = self.client.get(reverse("page_image", args=[card.page_id]))
         self.assertEqual(image_response.status_code, 200)
         image_response.close()

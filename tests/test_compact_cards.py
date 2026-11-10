@@ -255,7 +255,7 @@ class CompactGenerationTests(WorkflowFixture):
         )
         data = export_backup(self.lecture)
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
-            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], 10)
+            self.assertEqual(json.loads(archive.read("manifest.json"))["version"], 12)
         Lecture.objects.all().delete()
         destination = Path(self.directory.name) / str(uuid.uuid4())
         destination.mkdir()

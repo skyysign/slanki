@@ -8,7 +8,7 @@ from unittest import skipUnless
 from django.conf import settings
 from django.utils.html import strip_tags
 
-from converter.services.cards import Draft, add_drafts, update_card
+from converter.services.cards import Draft, add_drafts, undo_card_edit, update_card
 from converter.services.exporting import OCCLUSION_MODEL_ID, REVERSED_MODEL_ID, export_deck
 from converter.services.note_types import study_previews
 from converter.services.occlusion import add_occlusions
@@ -17,6 +17,86 @@ from tests.test_workflow import WorkflowFixture
 
 @skipUnless(importlib.util.find_spec("anki"), "Install requirements-dev.txt for Anki backend tests")
 class AnkiImportTests(WorkflowFixture):
+    def test_visual_question_covers_reveal_and_updates_preserve_schedule(self):
+        from anki.collection import Collection
+        from anki.import_export_pb2 import ImportAnkiPackageOptions, ImportAnkiPackageRequest
+
+        from converter.models import GenerationRun
+        from converter.services.exporting import VISUAL_MODEL_ID
+        from converter.services.visual_cards import add_visual_drafts, validate_visual_payload
+        from tests.test_visual_rundown import visual_output
+
+        page = self.lecture.pages.get(number=4)
+        run = GenerationRun.objects.create(lecture=self.lecture, page_numbers=[4])
+        add_visual_drafts(run, page, validate_visual_payload(visual_output(page), page), 1)
+        note = self.lecture.cards.get()
+        note = update_card(note.pk, 1, note.front, "Answer-only explanation", "", "accepted")
+        with TemporaryDirectory(dir=settings.WORK_DIR) as directory:
+            folder = Path(directory)
+            collection = Collection(str(folder / "visual.anki2"))
+            package = folder / "visual.apkg"
+            try:
+
+                def import_package():
+                    package.write_bytes(export_deck(self.lecture))
+                    collection.import_anki_package(
+                        ImportAnkiPackageRequest(
+                            package_path=str(package),
+                            options=ImportAnkiPackageOptions(with_scheduling=False),
+                        )
+                    )
+
+                import_package()
+                ids = collection.find_cards("")
+                self.assertEqual(len(ids), 1)
+                card = collection.get_card(ids[0])
+                self.assertEqual(card.note().mid, VISUAL_MODEL_ID)
+                self.assertIn(card.note()["Hidden"], card.question())
+                self.assertNotIn(card.note()["Revealed"], card.question())
+                self.assertNotIn("slides_", card.question())
+                self.assertNotIn("Answer-only explanation", card.question())
+                self.assertIn(card.note()["Revealed"], card.answer())
+                self.assertIn("Answer-only explanation", card.answer())
+                card.type, card.queue, card.ivl, card.due, card.reps, card.lapses = (
+                    2,
+                    2,
+                    15,
+                    40,
+                    8,
+                    1,
+                )
+                collection.update_card(card)
+                before = card.note()["Hidden"]
+                import_package()
+                note = update_card(
+                    note.pk,
+                    note.version,
+                    "Edited figure prompt",
+                    note.back,
+                    "",
+                    "accepted",
+                    visual_masks=[{**note.visual_masks[0], "right": 240}],
+                )
+                import_package()
+                self.assertEqual(collection.find_cards(""), ids)
+                card = collection.get_card(ids[0])
+                self.assertEqual(
+                    (card.ord, card.ivl, card.due, card.reps, card.lapses), (0, 15, 40, 8, 1)
+                )
+                self.assertNotEqual(card.note()["Hidden"], before)
+                self.assertIn("Edited figure prompt", card.question())
+                undo_card_edit(note.pk, note.version)
+                import_package()
+                self.assertEqual(collection.find_cards(""), ids)
+                card = collection.get_card(ids[0])
+                self.assertEqual(card.note()["Hidden"], before)
+                self.assertEqual(
+                    (card.ord, card.ivl, card.due, card.reps, card.lapses), (0, 15, 40, 8, 1)
+                )
+                self.assertEqual(collection.media.check().missing, [])
+            finally:
+                collection.close()
+
     def test_occlusion_mask_edits_and_adding_regions_keep_independent_review_schedules(self):
         from anki.collection import Collection
         from anki.import_export_pb2 import ImportAnkiPackageOptions, ImportAnkiPackageRequest

@@ -1,5 +1,6 @@
 import hashlib
 import unicodedata
+import uuid
 from typing import NamedTuple
 
 from django.db import transaction
@@ -11,6 +12,7 @@ from .crops import checked_crop
 from .files import WorkflowError
 from .note_types import format_types, plain_front, study_card_count
 from .occlusion import checked_occlusion, occlusion_png
+from .visual_cards import checked_visual_masks, visual_png
 
 
 class Draft(NamedTuple):
@@ -137,7 +139,16 @@ def add_drafts(lecture, validated, run=None):
 
 
 def update_card(
-    card_id, version, front, back, source_quote, status, *, source_crop=None, occlusion=None
+    card_id,
+    version,
+    front,
+    back,
+    source_quote,
+    status,
+    *,
+    source_crop=None,
+    occlusion=None,
+    visual_masks=None,
 ):
     if status not in dict(Card.STATUS):
         raise WorkflowError("Choose a valid card status.")
@@ -149,6 +160,11 @@ def update_card(
         )
         if mask:
             occlusion_png(card.page, mask)
+        covers = checked_visual_masks(
+            card.visual_masks if visual_masks is None else visual_masks, card.page, card.note_type
+        )
+        if card.note_type == "visual":
+            visual_png(card.page, crop, covers)
         front, back, quote = validate_content(
             front, back, source_quote, card.page, note_type=card.note_type
         )
@@ -172,6 +188,7 @@ def update_card(
             source_quote=quote,
             source_crop=crop,
             occlusion=mask,
+            visual_masks=covers,
             status=status,
             version=version + 1,
             updated_at=timezone.now(),
@@ -187,7 +204,58 @@ def update_card(
             source_quote=card.source_quote,
             source_crop=card.source_crop,
             occlusion=card.occlusion,
+            visual_masks=card.visual_masks,
             status=card.status,
             note_type=card.note_type,
         )
     return Card.objects.get(pk=card_id)
+
+
+def undo_card_edit(card_id, version):
+    """Restore the immediately preceding revision with the same source and Anki identity."""
+    with transaction.atomic():
+        card = Card.objects.get(pk=card_id)
+        if card.version != version:
+            raise WorkflowError("This card changed in another tab. Reload before undoing.")
+        revision = card.revisions.filter(version=version - 1).first()
+        if revision is None or revision.note_type != card.note_type:
+            raise WorkflowError("There is no compatible previous edit to undo.")
+        return update_card(
+            card.pk,
+            version,
+            revision.front,
+            revision.back,
+            revision.source_quote,
+            revision.status,
+            source_crop=revision.source_crop,
+            occlusion=revision.occlusion,
+            visual_masks=revision.visual_masks,
+        )
+
+
+def keep_drafts(lecture, versions):
+    """Accept the displayed drafts atomically, retaining edits, evidence and revisions."""
+    if not isinstance(versions, dict) or not versions:
+        raise WorkflowError("There are no drafts in this selection. Reload the lecture.")
+    try:
+        expected = {uuid.UUID(key): version for key, version in versions.items()}
+    except (ValueError, TypeError, AttributeError):
+        raise WorkflowError("The draft selection is invalid. Reload the lecture.") from None
+    if any(type(version) is not int or version < 1 for version in expected.values()):
+        raise WorkflowError("The draft selection is invalid. Reload the lecture.")
+    with transaction.atomic():
+        cards = list(
+            Card.objects.select_for_update()
+            .select_related("page")
+            .filter(lecture=lecture, pk__in=expected)
+        )
+        if len(cards) != len(expected) or any(
+            card.status != "draft" or card.version != expected[card.pk] for card in cards
+        ):
+            raise WorkflowError(
+                "Some drafts changed or were removed. Nothing was kept. Reload the lecture and try again."
+            )
+        return [
+            update_card(card.pk, card.version, card.front, card.back, card.source_quote, "accepted")
+            for card in cards
+        ]

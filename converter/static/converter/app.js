@@ -1,4 +1,6 @@
 "use strict";
+import {requestJson, readAiPreferences, writeAiPreferences} from "./transport.js";
+import {initWorkspace} from "./workspace.js";
 
 const providerSettings = document.querySelector("[data-provider-settings]");
 if (providerSettings) {
@@ -11,11 +13,16 @@ if (providerSettings) {
   const message = providerSettings.querySelector("[data-model-message]");
   const refresh = providerSettings.querySelector("[data-refresh-models]");
   const form = providerSettings.closest("form");
+  const savedPreferences = readAiPreferences();
+  const useSaved = savedPreferences && [...provider.options].some(option => option.value === savedPreferences.provider);
+  if (useSaved) provider.value = savedPreferences.provider;
   const formatInputs = [...form.querySelectorAll('input[name="formats"]')];
   const updateMinimumCards = () => {
     if (!form.elements.card_limit) return;
-    const chosen = formatInputs.filter(input => input.checked);
-    form.elements.card_limit.min = chosen.length === 1 && chosen[0].value === "reversed" ? "2" : "1";
+    const chosen = formatInputs.filter(input => input.checked && !["occlusion", "visual"].includes(input.value));
+    const images = form.querySelector("[data-image-format]")?.checked;
+    const textMinimum = chosen.length ? (chosen.length === 1 && chosen[0].value === "reversed" ? 2 : 1) : 0;
+    form.elements.card_limit.min = String(Math.max(1, textMinimum + Number(Boolean(images))));
   };
   formatInputs.forEach(input => input.addEventListener("change", updateMinimumCards));
   updateMinimumCards();
@@ -39,15 +46,21 @@ if (providerSettings) {
     model.value = wantedModel || "";
     showEfforts(wantedEffort);
     message.textContent = data.message;
-    providerSettings.querySelector("[data-provider-connect]").href = `/connections/${provider.value}/`;
+    providerSettings.querySelector("[data-provider-connect]").href = providers[provider.value].connect_url;
     form.querySelector("[data-consent-provider]").textContent = `${providers[provider.value].company} through ${providers[provider.value].label}`;
+    showSummary();
   };
+  const showSummary = () => {
+    const summary = form.querySelector("[data-ai-summary]");
+    if (summary) summary.textContent = `${providers[provider.value].label} · ${model.selectedOptions[0]?.textContent || "CLI default"} · ${labels[effort.value] || "CLI default"}`;
+  };
+  const remember = () => { writeAiPreferences(provider.value, model.value, effort.value); showSummary(); };
   const loadModels = async (initialEffort) => {
     const requestedProvider = provider.value, number = ++requestNumber;
     refresh.disabled = true;
     message.textContent = "Reading model choices from your local CLI… No generation is running.";
     try {
-      const response = await fetch(`/connections/${requestedProvider}/models/refresh/`, {
+      const response = await fetch(providers[requestedProvider].refresh_url, {
         method: "POST", headers: { "X-CSRFToken": form.elements.csrfmiddlewaretoken.value },
       });
       const data = await response.json();
@@ -74,12 +87,15 @@ if (providerSettings) {
     form.elements.consent.checked = false;
     const choices = remembered[activeProvider] || ["", "low"];
     showModels(...choices);
+    remember();
     if (!catalogs[activeProvider].updated_at) loadModels(choices[1]);
   });
-  model.addEventListener("change", () => showEfforts(effort.value));
+  model.addEventListener("change", () => { showEfforts(effort.value); remember(); });
+  effort.addEventListener("change", remember);
+  form.addEventListener("submit", remember);
   refresh.addEventListener("click", () => loadModels());
-  showModels(providerSettings.dataset.selectedModel, providerSettings.dataset.selectedEffort);
-  if (!catalogs[activeProvider].updated_at) loadModels(providerSettings.dataset.selectedEffort);
+  showModels(useSaved ? savedPreferences.model : providerSettings.dataset.selectedModel, useSaved ? savedPreferences.effort : providerSettings.dataset.selectedEffort);
+  if (!catalogs[activeProvider].updated_at) loadModels(useSaved ? savedPreferences.effort : providerSettings.dataset.selectedEffort);
 }
 
 document.querySelectorAll("[data-crop-stage]").forEach((stage) => {
@@ -140,6 +156,7 @@ document.querySelectorAll("[data-occlusion-editor]").forEach((editor) => {
   const fields = Object.fromEntries([...editor.querySelectorAll("input[data-mask-edge]")].map(field => [field.dataset.maskEdge, field]));
   const drawButton = editor.querySelector("[data-draw-mask]"), undoButton = editor.querySelector("[data-undo-mask]");
   const width = Number(editor.dataset.width), height = Number(editor.dataset.height), page = Number(editor.dataset.page);
+  const visual = editor.dataset.visual === "yes";
   const single = editor.dataset.single === "yes", limit = single ? 1 : 20;
   const handles = {nw: [0, 0], n: [50, 0], ne: [100, 0], e: [100, 50], se: [100, 100], s: [50, 100], sw: [0, 100], w: [0, 50]};
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
@@ -195,6 +212,7 @@ document.querySelectorAll("[data-occlusion-editor]").forEach((editor) => {
     const current = masks[selected] || {left: 0, top: 0, right: Math.min(100, width), bottom: Math.min(60, height)};
     Object.entries(fields).forEach(([key, field]) => { field.value = current[key]; field.setCustomValidity(""); });
     status.textContent = drawing ? "Drag on the slide to draw a region. Escape returns to moving and resizing." : masks.length ? `${masks.length} region${masks.length === 1 ? "" : "s"} / ${masks.length} Anki card${masks.length === 1 ? "" : "s"}. Region ${selected + 1} selected.` : "Draw a rectangle or use Add region, then adjust it on the slide.";
+    if (visual && !drawing) status.textContent = `${masks.length} optional text cover(s) on one card. Keep the figure readable; the answer reveals all covers.`;
     editor.querySelector("[data-remove-mask]")?.toggleAttribute("disabled", !masks.length);
     editor.querySelector("[data-add-mask]")?.toggleAttribute("disabled", masks.length >= limit);
     drawButton.setAttribute("aria-pressed", String(drawing));
@@ -331,13 +349,19 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
     front.dispatchEvent(new Event("input", { bubbles: true }));
     front.focus();
   });
-  form.querySelector("[data-preview-note]").addEventListener("click", async (event) => {
-    const button = event.currentTarget;
-    if (!form.reportValidity()) return;
+  const previewButton = form.querySelector("[data-preview-note]");
+  let previewNumber = 0, previewController = null, previewTimer = null;
+  const preview = async (automatic = false) => {
+    const button = previewButton;
+    if (!(automatic ? form.checkValidity() : form.reportValidity())) return;
+    const requestNumber = ++previewNumber;
+    previewController?.abort();
+    previewController = new AbortController();
     button.disabled = true;
+    output.setAttribute("aria-busy", "true");
     try {
-      const response = await fetch(form.dataset.previewUrl, { method: "POST", body: new FormData(form) });
-      const data = await response.json();
+      const {response, data} = await requestJson(form.dataset.previewUrl, { method: "POST", body: new FormData(form), signal: previewController.signal });
+      if (requestNumber !== previewNumber) return;
       output.replaceChildren();
       if (!response.ok) {
         output.textContent = data.error || "Could not preview this note.";
@@ -359,6 +383,7 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
         // This endpoint only returns escaped text plus fixed cloze markup.
         question.innerHTML = preview.question;
         const details = document.createElement("details");
+        details.open = form.hasAttribute("data-auto-preview");
         const summary = document.createElement("summary");
         summary.textContent = "Show answer";
         const answer = document.createElement("div");
@@ -383,11 +408,17 @@ document.querySelectorAll("[data-note-form]").forEach((form) => {
         card.append(title, question, details);
         output.append(card);
       });
-    } catch {
-      output.textContent = "Could not reach the local app. Try the preview again.";
+    } catch (error) {
+      if (error.name !== "AbortError" && requestNumber === previewNumber) output.textContent = "Could not reach the local app. Try the preview again.";
     } finally {
-      button.disabled = false;
+      if (requestNumber === previewNumber) { button.disabled = false; output.setAttribute("aria-busy", "false"); }
     }
+  };
+  previewButton.addEventListener("click", () => { clearTimeout(previewTimer); preview(); });
+  if (form.hasAttribute("data-auto-preview")) form.addEventListener("input", event => {
+    if (!event.target.name || event.target.name === "preview_index") return;
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(() => preview(true), 500);
   });
 });
 
@@ -417,17 +448,20 @@ if (connectionPanel) {
 }
 
 let dirty = false;
-const cardForm = document.querySelector("[data-card-form]");
-if (cardForm) {
-  cardForm.addEventListener("input", () => {
-    dirty = true;
-    document.querySelector("[data-save-state]").textContent = "Unsaved changes. Save before moving to another card.";
+const dirtyForms = new Set();
+document.querySelectorAll("[data-note-form]").forEach(form => {
+  form.addEventListener("input", event => {
+    if (!event.target.name || ["preview_index", "note_type", "page"].includes(event.target.name)) return;
+    dirtyForms.add(form);
+    dirty = dirtyForms.size > 0;
+    const state = form.querySelector("[data-save-state]");
+    if (state) state.textContent = "Unsaved changes. Save before moving to another card.";
   });
-  cardForm.addEventListener("submit", () => { dirty = false; });
-  window.addEventListener("beforeunload", (event) => {
-    if (dirty) { event.preventDefault(); event.returnValue = ""; }
-  });
-}
+  form.addEventListener("submit", () => { dirtyForms.delete(form); dirty = dirtyForms.size > 0; });
+});
+window.addEventListener("beforeunload", event => {
+  if (dirty) { event.preventDefault(); event.returnValue = ""; }
+});
 
 document.querySelectorAll("form[data-busy]").forEach((form) => {
   form.addEventListener("submit", (event) => {
@@ -481,11 +515,11 @@ if (progress) {
       const meter = progress.querySelector("progress");
       const context = run.context;
       const readingContext = context?.enabled && !context.ready;
-      progress.querySelector("[data-run-heading]").textContent = readingContext ? "Reading the lecture…" : "Drafting cards…";
+      progress.querySelector("[data-run-heading]").textContent = run.purpose === "rundown" ? "Writing the lecture rundown…" : readingContext ? "Reading the lecture…" : run.image_phase ? (run.visual_enabled ? "Drafting graph/formula questions…" : "Suggesting image regions…") : "Drafting cards…";
       meter.max = readingContext ? (context.total || 1) : run.total;
       meter.value = readingContext ? context.read : run.completed;
       const skipped = run.issues ? ` ${run.issues} drafts skipped; refresh to review the details.` : "";
-      const selection = ` ${run.filtered_count || 0} logistics candidates filtered; ${run.over_limit_count || 0} excluded by the card limit.`;
+      const selection = run.purpose === "rundown" ? "" : ` ${run.filtered_count || 0} logistics candidates filtered; ${run.over_limit_count || 0} excluded by the card limit.`;
       const limit = run.card_limit ? ` (maximum ${run.card_limit})` : "";
       const reasoning = `${run.provider} · ${run.model} · ${run.reasoning_effort} reasoning · `;
       const focus = `${run.learning_focus} · ${run.card_format} · `;
@@ -495,13 +529,26 @@ if (progress) {
           ? `${run.provider}: combining the saved sections into a lecture overview. Cards will follow.`
           : `${run.provider}: reading lecture context, ${context.read} of ${context.total || "all"} readable pages saved. Cards will follow.`;
       }
+      if (run.image_phase && !readingContext) message.textContent = `${reasoning}${run.completed} of ${run.total} slide images processed · ${run.suggestions} suggestions saved for review. Text cards follow when selected.`;
+      if (run.image_phase && run.visual_enabled && !readingContext) message.textContent = `${reasoning}${run.completed} of ${run.total} slide images processed. ${run.cards_added} visual drafts saved; text cards follow when selected.`;
+      if (run.purpose === "rundown") message.textContent = `${reasoning}${run.completed} of ${run.total} readable pages saved to your lecture rundown.`;
+      if (run.status === "running" && run.error) {
+        progress.querySelector("[data-run-heading]").textContent = "Correcting generated output…";
+        message.textContent = run.error;
+      }
       if (!["queued", "running"].includes(run.status)) {
         progress.querySelector("[data-run-heading]").textContent = `Generation ${run.status}`;
-        message.textContent = (run.error || `Generation ${run.status}. Your drafts are saved.`) + skipped + selection;
+        message.textContent = (run.error || `Generation ${run.status}. Your ${run.purpose === "rundown" ? "rundown sections" : "drafts"} are saved.`) + skipped + selection;
         const link = document.createElement("a");
         link.href = window.location.href;
-        link.textContent = " Refresh to see drafts and recovery options →";
+        link.textContent = run.purpose === "rundown" ? " Refresh for saved sections and recovery" : " Refresh to see drafts and recovery options →";
         message.append(link);
+        if ((run.suggestions || run.purpose === "rundown") && run.review_url) {
+          const review = document.createElement("a");
+          review.href = run.review_url; review.textContent = run.purpose === "rundown" ? " Open lecture rundown" : ` Review ${run.suggestions} image suggestions →`;
+          message.append(review);
+          if (run.status === "completed" && !dirty) { window.location.assign(run.review_url); return; }
+        }
         // Never reload an editor automatically: there may be unsaved work.
         return;
       }
@@ -602,9 +649,28 @@ if (suggestionForm) {
   });
 }
 
+document.querySelectorAll("[data-image-format]").forEach(input => {
+  const form = input.closest("form"), provider = form.querySelector("[data-provider-select]");
+  const update = () => {
+    input.setCustomValidity(input.checked && provider.value !== "codex" ? "Choose Codex for visual questions, or untick this format." : "");
+    form.querySelector("[data-image-sharing]").hidden = !input.checked;
+    form.querySelector("[data-download]").disabled = input.checked;
+    form.querySelectorAll("[data-image-only]").forEach(page => {
+      if (page.disabled && input.checked) page.checked = true;
+      page.disabled = !input.checked;
+      if (!input.checked) page.checked = false;
+    });
+  };
+  input.addEventListener("change", () => { form.elements.consent.checked = false; update(); });
+  provider.addEventListener("change", update);
+  update();
+});
+
 document.querySelectorAll("[data-lecture-context]").forEach(input => {
   const form = input.closest("form");
   const showScope = () => { form.querySelector("[data-context-sharing]").textContent = input.checked ? "text from all readable slides" : "selected slide text"; };
   input.addEventListener("change", () => { form.elements.consent.checked = false; showScope(); });
   showScope();
 });
+
+initWorkspace(() => dirty);

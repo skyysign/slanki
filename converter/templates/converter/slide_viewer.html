@@ -1,0 +1,12 @@
+<dialog id="slide-viewer" class="slide-viewer" data-slide-viewer aria-labelledby="slide-viewer-title">
+  <header class="slide-viewer-heading"><h2 id="slide-viewer-title" data-slide-title>Source slide</h2><button type="button" data-slide-close aria-label="Close slide viewer">Close <kbd>Esc</kbd></button></header>
+  <div class="slide-viewer-toolbar" aria-label="Slide viewer controls">
+    <div class="slide-viewer-pages"><button type="button" data-slide-previous aria-label="Previous slide">←</button><button type="button" data-slide-next aria-label="Next slide">→</button></div>
+    <div class="slide-viewer-zoom"><button type="button" data-slide-zoom-out aria-label="Zoom out">−</button><output data-slide-zoom aria-label="Zoom level">100%</output><button type="button" data-slide-zoom-in aria-label="Zoom in">+</button><button type="button" data-slide-fit>Fit</button><button type="button" data-slide-actual>Actual size</button></div>
+  </div>
+  <div class="slide-viewer-viewport" data-slide-viewport tabindex="0" role="region" aria-label="Enlarged slide. Scroll or pinch to zoom; drag to move.">
+    <div class="slide-viewer-canvas" data-slide-canvas></div>
+    <div class="slide-viewer-status"><p data-slide-status role="status">Loading slide…</p><button type="button" data-slide-retry hidden>Try again</button></div>
+  </div>
+  <p class="slide-viewer-help">Scroll or pinch to zoom · Drag to move · Double-click to zoom · Escape to return to your card</p>
+</dialog>

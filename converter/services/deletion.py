@@ -8,7 +8,7 @@ from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
-from converter.models import GenerationRun, Lecture, PendingFileDeletion
+from converter.models import GenerationRun, Lecture, OcclusionSuggestion, PendingFileDeletion
 
 
 def cleanup_deleted_files(lecture_id):
@@ -45,6 +45,7 @@ def delete_lecture(lecture_id):
                 pk=lecture.pk, defaults={"title": lecture.title}
             )
             # Page references are protected, so remove the owned notes first.
+            OcclusionSuggestion.objects.filter(run__lecture=lecture).delete()
             lecture.cards.all().delete()
             lecture.delete()
         # A failed cleanup keeps its marker, including across process restarts.

@@ -14,7 +14,7 @@ from tempfile import TemporaryDirectory
 from django.conf import settings
 
 from .cli import node_cli_command, stop_process
-from .files import WorkflowError
+from .files import GenerationOutputError, WorkflowError
 
 
 class AuthenticationRequired(WorkflowError):
@@ -548,11 +548,12 @@ def generate_acp(
     lecture_context=None,
     task="cards",
     sections=None,
+    validation_feedback="",
 ):
     from .generation import generation_request
     from .providers import checked_model_settings
 
-    if task == "occlusion":
+    if task in ("occlusion", "visual"):
         raise WorkflowError("Image suggestions currently require the Codex connection.")
 
     checked_model_settings(provider, model, reasoning_effort)
@@ -569,6 +570,7 @@ def generate_acp(
         lecture_context=lecture_context,
         task=task,
         sections=sections,
+        validation_feedback=validation_feedback,
     )
     with acp_client(provider, timeout=settings.GENERATION_TIMEOUT, cancelled=cancelled) as (
         client,
@@ -628,6 +630,6 @@ def generate_acp(
                 raise ValueError
             return payload
         except ValueError as exc:
-            raise WorkflowError(
+            raise GenerationOutputError(
                 "The CLI did not return valid card JSON. No drafts from this batch were imported."
             ) from exc

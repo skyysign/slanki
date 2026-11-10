@@ -23,7 +23,7 @@ from converter.services.generation import (
     resume_generation,
 )
 from converter.services.lecture_context import (
-    TOPIC_SCHEMA,
+    OVERVIEW_SCHEMA,
     checked_context,
     context_progress,
     context_sections,
@@ -228,7 +228,7 @@ class LectureContextTests(WorkflowFixture):
                     perform_run(run.pk)
                 run.refresh_from_db()
                 self.assertEqual((run.status, run.completed_pages), ("failed", []))
-                self.assertEqual(generate.call_count, 1)
+                self.assertEqual(generate.call_count, 3)
                 self.assertFalse(context_progress(run)["ready"])
                 self.assertFalse(Card.objects.exists())
         data = run.context_data
@@ -284,7 +284,7 @@ class LectureContextTests(WorkflowFixture):
                 zipfile.ZipFile(output, "w") as target,
             ):
                 manifest = json.loads(source.read("manifest.json"))
-                self.assertEqual(manifest["version"], 10)
+                self.assertEqual(manifest["version"], 12)
                 if not valid:
                     manifest["runs"][0]["context_data"]["outline"][0]["source_quote"] = "bad"
                 for name in source.namelist():
@@ -307,14 +307,23 @@ class LectureContextTests(WorkflowFixture):
 
     def test_native_adapters_use_overview_schema_and_keep_sources_in_stdin(self):
         page = self.lecture.pages.first()
-        payload = {"topics": [self.topic(page)]}
+        topic = self.topic(page)
+        payload = {
+            "topics": [
+                {k: topic[k] for k in ("title", "summary", "priority")} | {"source_id": "p1:e1"}
+            ]
+        }
         for provider, generate in (("codex", codex_generate), ("claude", claude_generate)):
 
             def finish(command, **kwargs):
                 text = kwargs["stdin"].read().decode()
                 self.assertIn("planning pass, NOT card creation", text)
                 sources = json.loads(text.split("UNTRUSTED SOURCE DATA (JSON):\n")[1])
-                self.assertEqual(sources, [{"page": page.number, "text": page.text}])
+                self.assertEqual(sources[0]["page"], page.number)
+                for excerpt in sources[0]["excerpts"]:
+                    self.assertIn(excerpt["text"], page.text)
+                    self.assertLessEqual(len(excerpt["text"]), 240)
+                    self.assertTrue(excerpt["source_id"].startswith("p1:e"))
                 self.assertNotIn(page.text, " ".join(command))
                 if provider == "codex":
                     schema = json.loads(
@@ -330,7 +339,7 @@ class LectureContextTests(WorkflowFixture):
                             {"type": "result", "subtype": "success", "structured_output": payload}
                         ).encode()
                     )
-                self.assertEqual(schema, TOPIC_SCHEMA)
+                self.assertEqual(schema, OVERVIEW_SCHEMA)
                 return Mock(returncode=0, poll=Mock(return_value=0))
 
             with (

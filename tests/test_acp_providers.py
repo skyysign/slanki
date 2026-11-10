@@ -33,7 +33,7 @@ from converter.services.generation import (
     resume_generation,
     start_generation,
 )
-from converter.services.lecture_context import validate_topics
+from converter.services.lecture_context import resolve_overview
 from converter.services.providers import checked_model_settings, refresh_models
 
 from .test_workflow import WorkflowFixture
@@ -121,7 +121,7 @@ class AcpProviderTests(WorkflowFixture):
                     payload = generate_acp(
                         provider, [page], task="overview", model=model, reasoning_effort=effort
                     )
-                topics = validate_topics(payload, {page.number: page})
+                topics = resolve_overview(payload, {page.number: page})
                 with patch(
                     "converter.services.acp.node_cli_command", return_value=self.fake(provider)
                 ):

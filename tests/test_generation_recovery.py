@@ -192,7 +192,7 @@ class GenerationRecoveryTests(WorkflowFixture):
         perform_run(run.pk, lambda *_: self.bad_payload())
         run.refresh_from_db()
         data = export_backup(self.lecture)
-        for version in (10, 9, 8, 7, 6, 5, 4, 3, 2, 1):
+        for version in (12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1):
             with self.subTest(version=version):
                 output = io.BytesIO()
                 with (
@@ -205,6 +205,23 @@ class GenerationRecoveryTests(WorkflowFixture):
                             manifest = json.loads(contents)
                             manifest["version"] = version
                             self.assertNotIn("worker_token", manifest["runs"][0])
+                            if version < 12:
+                                for record in manifest["runs"]:
+                                    for key in ("visual_enabled", "purpose", "rundown_data"):
+                                        record.pop(key)
+                                for record in manifest["cards"]:
+                                    record.pop("visual_masks")
+                                    for revision in record["revisions"]:
+                                        revision.pop("visual_masks")
+                            if version < 11:
+                                for record in manifest["runs"]:
+                                    for key in (
+                                        "text_enabled",
+                                        "occlusion_enabled",
+                                        "image_completed_pages",
+                                        "suggestions",
+                                    ):
+                                        record.pop(key)
                             if version < 10:
                                 for record in manifest["runs"]:
                                     record.pop("context_enabled")

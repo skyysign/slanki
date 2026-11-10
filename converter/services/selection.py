@@ -11,8 +11,11 @@ def default_card_limit(page_count):
     return max(1, (page_count + 1) // 2)
 
 
-def checked_card_limit(value, page_count, *, card_format="basic"):
-    minimum = 2 if card_format == "reversed" else 1
+def checked_card_limit(
+    value, page_count, *, card_format="basic", text_enabled=True, occlusion_enabled=False
+):
+    minimum = (2 if card_format == "reversed" else 1) if text_enabled else 0
+    minimum = max(1, minimum + int(occlusion_enabled))
     if value in (None, ""):
         return max(minimum, default_card_limit(page_count))
     if isinstance(value, bool) or not re.fullmatch(r"[0-9]{1,3}", str(value)):
@@ -21,6 +24,10 @@ def checked_card_limit(value, page_count, *, card_format="basic"):
     if not 1 <= value <= 500:
         raise WorkflowError("Choose a card limit from 1 to 500.")
     if value < minimum:
+        if occlusion_enabled:
+            raise WorkflowError(
+                f"The selected formats need room for at least {minimum} cards, including an image suggestion."
+            )
         raise WorkflowError(
             "Basic + reverse needs room for two cards. Set Maximum new cards to at least 2."
         )

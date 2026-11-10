@@ -29,7 +29,7 @@ The user authorized the first batch: learning focuses, simple cloze, and card-co
 - Implemented deck-size rule: basic notes count as one card, reverse notes as two, and clozes as one per distinct blank number. Show the actual count before export. Reverse-only generation needs a minimum two-card budget and never splits a pair to fit.
 - Add meaningful export/re-import and backup checks for each implemented format, including preservation of existing basic notes and review scheduling. Verify rendering in the Anki clients used before claiming compatibility.
 
-Anki documents its [standard note types](https://docs.ankiweb.net/getting-started.html#note-types), [cloze behavior](https://docs.ankiweb.net/editing.html#cloze-deletion), and [native image occlusion](https://docs.ankiweb.net/editing.html#image-occlusion). This converter implements basic, simple cloze, and basic with a reversed card. Hide-one/reveal-one rectangles export as image-based cards with stable IDs. Users can draw them or request editable Codex suggestions for one slide. Grouped masks, hide-all mode, and whole-lecture automatic masking remain future work.
+Anki documents its [standard note types](https://docs.ankiweb.net/getting-started.html#note-types), [cloze behavior](https://docs.ankiweb.net/editing.html#cloze-deletion), and [native image occlusion](https://docs.ankiweb.net/editing.html#image-occlusion). This converter implements basic, simple cloze, and basic with a reversed card. Hide-one/reveal-one rectangles export as image-based cards with stable IDs. Users can draw them, request editable Codex suggestions for one slide, or generate label suggestions under Anatomy & diagrams to analyse selected images and save a review queue. Suggestions require explicit acceptance. Grouped label-recall masks and automatic acceptance remain future work. Graph/formula interpretation questions now use a separate visual note type with optional answer-text covers hidden together. The independent lecture rundown explains concepts and formulas outside cards, with sources and saved versions; its initial path reads text only.
 
 ## Storage and implementation decisions
 
@@ -46,7 +46,7 @@ Anki documents its [standard note types](https://docs.ankiweb.net/getting-starte
 - Start with basic Q/A, then simple cloze. A manually selected crop is an attached image, not automatic image occlusion.
 - Show the full source page whenever a smaller reliable region is unavailable.
 - Explicitly identify scans and slides whose meaning cannot be captured by the supported extraction path. Do not quietly present partial extraction as complete lecture coverage.
-- Defer native mobile apps, an internal SRS, Anki import, two-way Anki sync, accounts, payments, course search/scraping, whole-lecture automatic masking, OCR, and tutoring. Further CLI integrations beyond the requested Codex/Claude/Gemini/Kimi set need their own narrow scope and verification.
+- Defer native mobile apps, an internal SRS, Anki import, two-way Anki sync, accounts, payments, course search/scraping, automatic acceptance of generated masks, OCR, and tutoring. Further CLI integrations beyond the requested Codex/Claude/Gemini/Kimi set need their own narrow scope and verification.
 
 If most of the user's actual lectures are scans or diagram-only material, revise the input scope first; a text-only prototype would not meet the personal need.
 
@@ -83,7 +83,7 @@ The earlier integrated paid-beta phase is superseded by the free, donation-suppo
 
 ## Next development task
 
-Continue from docs/STATUS.md. The basic end-to-end workflow, cloze, opt-in reverse cards, editable image occlusion, learning focuses, previews, source crops, and confirmed set deletion exist with offline/backend/browser checks. A saved lecture overview precedes text-card batches. Codex can also suggest up to six editable regions from one selected slide image, optionally guided by the saved overview; a synthetic live check verified image transport and placement. Next trial those suggestions on representative slides and assess the overview's coverage and correction effort. Verify deck rendering in the Anki clients actually used, then prioritize installation and upgrade recovery for a small classmate pilot. Broader visual generation and more provider image adapters need separate scope and validation.
+Continue from docs/STATUS.md. The first production UX redesign is implemented: library-first navigation, Cards/Study guide, compact generation/preferences, two-pane correction, live previews, keyboard keep/set-aside, and version-checked undo. Q/A+cloze defaults apply to new lectures; reverse remains an advanced opt-in and old formats/runs remain valid. The user confirmed a later Vercel Hobby static browser edition with temporary device storage and a persistent desktop edition. Follow docs/ARCHITECTURE.md for boundaries; no browser worker, temporary task store, browser export, companion pairing or deployment is implemented yet. Next gather feedback on the redesigned correction flow, then implement a narrow browser-processing/export slice using synthetic fixtures, without sending lectures to Vercel. Concept mappings, deck consolidation, broader quality/Anki-client checks and installation/upgrade validation remain separate work; do not expand all milestones at once.
 
 ## Technical references
 

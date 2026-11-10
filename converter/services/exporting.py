@@ -15,11 +15,13 @@ from .crops import crop_png
 from .files import WorkflowError, media_path
 from .note_types import study_card_count, text_html
 from .occlusion import checked_occlusion, occlusion_png
+from .visual_cards import visual_png
 
 MODEL_ID = 1890487183
 CLOZE_MODEL_ID = 1890487184
 REVERSED_MODEL_ID = 1890487185
 OCCLUSION_MODEL_ID = 1890487186
+VISUAL_MODEL_ID = 1890487187
 CSS = """.card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;
 color: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }
 .nightMode.card { color: #e7eee8; background: #202825; }
@@ -104,11 +106,25 @@ def export_deck(lecture):
         ],
         css=CSS,
     )
+    visual_model = genanki.Model(
+        VISUAL_MODEL_ID,
+        "Recalloom - Graph and formula v1",
+        fields=[{"name": name} for name in ["Question", "Answer", "Hidden", "Revealed", "Source"]],
+        templates=[
+            {
+                "name": "Interpret the figure",
+                "qfmt": "{{Question}}<br>{{Hidden}}",
+                "afmt": '{{Question}}<br>{{Revealed}}<hr id="answer">{{Answer}}<div class="source">{{Source}}</div>',
+            }
+        ],
+        css=CSS,
+    )
     models = {
         "basic": model,
         "cloze": cloze_model,
         "reversed": reversed_model,
         "occlusion": occlusion_model,
+        "visual": visual_model,
     }
     media = {}
     for card in cards:
@@ -125,7 +141,7 @@ def export_deck(lecture):
             source += f"<br>{text_html(card.source_quote)}"
         front = text_html(card.front)
         question_image = ""
-        if card.source_crop:
+        if card.source_crop and card.note_type != "visual":
             cropped = crop_png(card.page, card.source_crop)
             crop_name = f"crop_{card.pk.hex}_{hashlib.sha256(cropped).hexdigest()[:16]}.png"
             media[crop_name] = cropped
@@ -141,6 +157,14 @@ def export_deck(lecture):
         fields = [front, text_html(card.back), source]
         if card.note_type == "reversed":
             fields.append(question_image)
+        elif card.note_type == "visual":
+            images = []
+            for answer in (False, True):
+                png = visual_png(card.page, card.source_crop, card.visual_masks, answer=answer)
+                name = f"visual_{card.pk.hex}_{hashlib.sha256(png).hexdigest()[:16]}.png"
+                media[name] = png
+                images.append(f'<img class="source-crop" src="{name}">')
+            fields = [front, text_html(card.back), *images, source]
         elif card.note_type == "occlusion":
             mask = checked_occlusion(card.occlusion, card.page, card.note_type, card.source_crop)
             images = []

@@ -30,6 +30,12 @@ urlpatterns = [
     path("demo/", views.demo, name="demo"),
     path("restore/", views.restore, name="restore"),
     path("lectures/<uuid:pk>/", views.lecture, name="lecture"),
+    path("lectures/<uuid:pk>/keep-drafts/", views.keep_all_drafts, name="keep_all_drafts"),
+    path("lectures/<uuid:pk>/anatomy/", views.anatomy, name="anatomy"),
+    path("lectures/<uuid:pk>/rundown/", views.lecture_rundown, name="lecture_rundown"),
+    path("lectures/<uuid:pk>/rundown/generate/", views.generate_rundown, name="generate_rundown"),
+    path("runs/<uuid:pk>/rundown.md", views.download_rundown, name="download_rundown"),
+    path("cards/<uuid:pk>/visual/<slug:side>/", views.card_visual, name="card_visual"),
     path("lectures/<uuid:pk>/generate/", views.generate, name="generate"),
     path("lectures/<uuid:pk>/filter-logistics/", views.filter_logistics, name="filter_logistics"),
     path("lectures/<uuid:pk>/import/", views.import_cards, name="import_cards"),
@@ -43,6 +49,10 @@ urlpatterns = [
     path("deletions/<uuid:pk>/retry/", views.retry_file_deletion, name="retry_file_deletion"),
     path("lectures/<uuid:pk>/add/", views.add_card, name="add_card"),
     path("lectures/<uuid:pk>/occlusion/", views.occlusion_builder, name="occlusion_builder"),
+    path(
+        "lectures/<uuid:pk>/image-suggestions/", views.review_occlusions, name="review_occlusions"
+    ),
+    path("suggestions/<uuid:pk>/<slug:side>/", views.suggestion_image, name="suggestion_image"),
     path(
         "lectures/<uuid:pk>/occlusion/suggestions/",
         views.start_occlusion_suggestions,
@@ -60,6 +70,7 @@ urlpatterns = [
     ),
     path("cards/<uuid:pk>/occlusion/<slug:side>/", views.card_occlusion, name="card_occlusion"),
     path("cards/<uuid:pk>/save/", views.save_card, name="save_card"),
+    path("cards/<uuid:pk>/undo/", views.undo_card, name="undo_card"),
     path("cards/<uuid:pk>/crop/", views.card_crop, name="card_crop"),
     path("pages/<int:pk>/image/", views.page_image, name="page_image"),
     path("runs/<uuid:pk>/cancel/", views.cancel_run, name="cancel_run"),

@@ -61,6 +61,14 @@ class GenerationRun(models.Model):
     completed_pages = models.JSONField(default=list, blank=True)
     context_enabled = models.BooleanField(default=False)
     context_data = models.JSONField(default=dict, blank=True)
+    text_enabled = models.BooleanField(default=True)
+    occlusion_enabled = models.BooleanField(default=False)
+    image_completed_pages = models.JSONField(default=list, blank=True)
+    visual_enabled = models.BooleanField(default=False)
+    purpose = models.CharField(
+        max_length=12, default="cards", choices=[("cards", "Cards"), ("rundown", "Lecture rundown")]
+    )
+    rundown_data = models.JSONField(default=dict, blank=True)
     issues = models.JSONField(default=list, blank=True)
     worker_token = models.UUIDField(default=uuid.uuid4, editable=False)
     cards_added = models.PositiveIntegerField(default=0)
@@ -85,6 +93,34 @@ class GenerationRun(models.Model):
     def model_label(self):
         return self.model or "CLI default"
 
+    @property
+    def format_label(self):
+        if self.purpose == "rundown":
+            return "Lecture rundown"
+        text = self.get_card_format_display() if self.text_enabled else ""
+        return " + ".join(
+            filter(
+                None,
+                [
+                    text,
+                    "Image occlusion" if self.occlusion_enabled else "",
+                    "Graphs & formulas" if self.visual_enabled else "",
+                ],
+            )
+        )
+
+    @property
+    def image_phase(self):
+        return (self.occlusion_enabled or self.visual_enabled) and len(
+            self.image_completed_pages
+        ) < len(self.page_numbers)
+
+    @property
+    def progress_pages(self):
+        if self.image_phase or not self.text_enabled:
+            return self.image_completed_pages
+        return self.completed_pages
+
     class Meta:
         ordering = ["-created_at"]
         constraints = [
@@ -108,6 +144,7 @@ class Card(models.Model):
     source_quote = models.TextField(blank=True)
     source_crop = models.JSONField(default=dict, blank=True)
     occlusion = models.JSONField(default=dict, blank=True)
+    visual_masks = models.JSONField(default=list, blank=True)
     status = models.CharField(max_length=12, choices=STATUS, default="draft")
     fingerprint = models.CharField(max_length=64)
     version = models.PositiveIntegerField(default=1)
@@ -137,6 +174,7 @@ class CardRevision(models.Model):
     source_quote = models.TextField(blank=True)
     source_crop = models.JSONField(default=dict, blank=True)
     occlusion = models.JSONField(default=dict, blank=True)
+    visual_masks = models.JSONField(default=list, blank=True)
     status = models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -145,3 +183,23 @@ class CardRevision(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["card", "version"], name="unique_card_revision")
         ]
+
+
+class OcclusionSuggestion(models.Model):
+    STATUS = [("pending", "To review"), ("accepted", "Accepted"), ("discarded", "Discarded")]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    run = models.ForeignKey(GenerationRun, on_delete=models.CASCADE, related_name="suggestions")
+    page = models.ForeignKey(Page, on_delete=models.PROTECT)
+    label = models.CharField(max_length=120)
+    reason = models.CharField(max_length=300)
+    original_mask = models.JSONField()
+    mask = models.JSONField()
+    front = models.TextField(default="Name the hidden part.")
+    back = models.TextField(blank=True)
+    status = models.CharField(max_length=12, choices=STATUS, default="pending")
+    version = models.PositiveIntegerField(default=1)
+    card = models.ForeignKey(Card, null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["page__number", "created_at", "id"]

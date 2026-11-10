@@ -4,9 +4,9 @@
 <div class="home-wrap occlusion-builder">
   <a class="back-link" href="{{ lecture.get_absolute_url }}">← Back to lecture</a>
   <p class="eyebrow">DRAW, HIDE, RECALL</p><h1>Image occlusion</h1><p>{{ lecture.title }}</p>
-  <form method="get" class="button-row"><label for="occlusion-page">Source page</label><select id="occlusion-page" name="page">{% for p in pages %}<option value="{{ p.number }}" {% if p.pk == page.pk %}selected{% endif %}>Page {{ p.number }}{% if p.warning %} · image only{% endif %}</option>{% endfor %}</select><button class="button secondary" type="submit">Use page</button></form>
+  <form method="get" class="button-row">{% if request.GET.suggest == 'yes' %}<input type="hidden" name="suggest" value="yes">{% endif %}<label for="occlusion-page">Source page</label><select id="occlusion-page" name="page">{% for p in pages %}<option value="{{ p.number }}" {% if p.pk == page.pk %}selected{% endif %}>Page {{ p.number }}{% if p.warning %} · image only{% endif %}</option>{% endfor %}</select><button class="button secondary" type="submit">Use page</button></form>
   <p class="form-note">Save your regions before switching pages. Image-only slides work here too.</p>
-  <details class="panel"><summary>Suggest regions with AI</summary>
+  <details class="panel" id="image-suggestions" {% if request.GET.suggest == 'yes' %}open{% endif %}><summary>Suggest regions with AI</summary>
     <p class="form-note">Get up to six suggestions for this slide, then choose which regions to use. Check that each hides a useful answer and leaves enough context. Suggestions can be inaccurate; move, resize, or remove them before adding drafts. Image suggestions currently use Codex.</p>
     <form method="post" action="{% url 'start_occlusion_suggestions' lecture.pk %}" data-suggestion-form>
       {% csrf_token %}<input type="hidden" name="page" value="{{ page.number }}">

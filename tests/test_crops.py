@@ -228,14 +228,25 @@ class SourceCropTests(WorkflowFixture):
                 else:
                     manifest["version"] = 5
                     for run in manifest["runs"]:
+                        for key in (
+                            "text_enabled",
+                            "occlusion_enabled",
+                            "image_completed_pages",
+                            "suggestions",
+                        ):
+                            run.pop(key)
                         run.pop("context_enabled")
                         run.pop("context_data")
+                        for key in ("visual_enabled", "purpose", "rundown_data"):
+                            run.pop(key)
                     for card in manifest["cards"]:
                         card.pop("source_crop")
                         card.pop("occlusion")
+                        card.pop("visual_masks")
                         for revision in card["revisions"]:
                             revision.pop("source_crop")
                             revision.pop("occlusion")
+                            revision.pop("visual_masks")
                 for name in source.namelist():
                     target.writestr(
                         name, json.dumps(manifest) if name == "manifest.json" else source.read(name)

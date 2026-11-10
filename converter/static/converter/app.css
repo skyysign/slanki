@@ -152,6 +152,10 @@ h3 {
 .choice-option:has(input:checked) { border-color:var(--green); background:var(--pale); }
 .choice-option input { accent-color:var(--green); flex-shrink:0; }
 .choice-option:focus-within { outline:2px solid var(--green); outline-offset:2px; }
+.suggestion-queue { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0; }
+.suggestion-choice { display:flex; flex-direction:column; gap:4px; max-width:240px; padding:12px; border:1px solid var(--line); border-radius:8px; overflow-wrap:anywhere; }
+.suggestion-choice.selected { border-color:var(--green); background:var(--pale); }
+.suggestion-preview { display:block; width:100%; height:auto; margin:12px 0; }
 .danger { background:#993f37; color:white; }
 .danger-link { color:#993f37; }
 .lecture-entry { display:block; }
@@ -1247,3 +1251,10 @@ summary {
 .occlusion-mask.pending { pointer-events: none; }
 .mask-list { margin-top: 12px; flex-wrap: wrap; }
 .mask-list [aria-pressed="true"] { background: #e4ecff; border-color: #203f83; color: #203f83; }
+.lecture-navigation { margin: 1rem 0 1.5rem; flex-wrap: wrap; }
+.rundown { max-width: 850px; margin: 2rem auto; }
+.rundown article { border-top: 1px solid var(--border, #d6d8d0); padding: 1.25rem; margin-top: 1rem; scroll-margin-top: 2rem; }
+.rundown-prose { white-space: pre-line; line-height: 1.8; }
+.rundown-formula { padding: 1rem; border-radius: 10px; background: #f0f3ed; margin: 1rem 0; overflow-wrap: anywhere; }
+.rundown-formula pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1.05rem; }
+.rundown img { max-width: 100%; height: auto; }

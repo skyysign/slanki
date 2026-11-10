@@ -118,10 +118,9 @@ for line in sys.stdin:
                 "topics": [
                     {
                         "title": "Synthetic topic",
-                        "summary": pages[0]["text"][:100],
+                        "summary": pages[0]["excerpts"][0]["text"][:100],
                         "priority": "core",
-                        "page": pages[0]["page"],
-                        "source_quote": pages[0]["text"][:60],
+                        "source_id": pages[0]["excerpts"][0]["source_id"],
                     }
                 ]
             }

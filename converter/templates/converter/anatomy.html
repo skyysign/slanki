@@ -1,0 +1,21 @@
+{% extends 'converter/base.html' %}
+{% block title %}Anatomy &amp; diagrams · Recalloom{% endblock %}
+{% block content %}
+<div class="home-wrap occlusion-builder">
+  <h1>Anatomy &amp; labelled diagrams</h1><p>{{ lecture.title }}</p>
+  {% include 'converter/lecture_navigation.html' %}
+  <p>Hide labels to practise naming structures, parts or locations. Use the graph/formula format in Cards for interpreting plots and equations.</p>
+  <div class="button-row"><a class="button secondary" href="{% url 'occlusion_builder' lecture.pk %}">Draw masks manually</a>{% if has_suggestions %}<a class="button secondary" href="{% url 'review_occlusions' lecture.pk %}">Review {{ suggestion_count }} pending suggestions</a>{% endif %}</div>
+  <form method="post" action="{% url 'generate' lecture.pk %}" class="panel" data-busy="Starting suggestions…">
+    {% csrf_token %}<input type="hidden" name="formats_present" value="yes"><input type="hidden" name="formats" value="occlusion">
+    <h2>Suggest labels to hide</h2><p class="form-note">Codex analyses each selected image in a separate request. Suggestions may be unsuitable; review, edit or discard them before accepting cards. Manual drawing needs no AI.</p>
+    <div class="page-controls"><strong>Select slides</strong><button type="button" class="text-button" data-toggle-pages>Select / clear all</button></div>
+    <div class="page-choices">{% for p in pages %}<label class="page-choice"><input type="checkbox" name="pages" value="{{ p.number }}" checked>{{ p.number }}</label>{% endfor %}</div>
+    <label for="anatomy-limit">Maximum new suggestions</label><input id="anatomy-limit" name="card_limit" type="number" min="1" max="500" placeholder="Automatic: about one per two selected slides">
+    {% include 'converter/provider_settings.html' %}
+    <label class="consent"><input type="checkbox" name="lecture_context" value="yes" checked data-lecture-context>Use the whole lecture to guide selection</label>
+    <label class="consent"><input type="checkbox" name="consent" value="yes" required><span>Send <span data-context-sharing>text from all readable slides</span> and all selected slide images to <span data-consent-provider>OpenAI through Codex</span>. This uses my account's allowance.</span></label>
+    <button class="button primary" type="submit" {% if active_run %}disabled{% endif %}>Generate label suggestions</button>
+  </form>
+</div>
+{% endblock %}

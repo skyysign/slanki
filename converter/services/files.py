@@ -7,6 +7,10 @@ class WorkflowError(ValueError):
     """An error that can be shown to the user without exposing internals."""
 
 
+class GenerationOutputError(WorkflowError):
+    """A completed model response was unreadable; safe to retry within a fixed limit."""
+
+
 def media_path(relative):
     root = Path(settings.MEDIA_ROOT).resolve()
     path = (root / relative).resolve()

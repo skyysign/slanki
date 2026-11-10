@@ -51,3 +51,6 @@ Thumbs.db
 *.log
 *.swp
 *.swo
+
+# Bundled synthetic sample lecture for the web app
+!app/public/sample/*.pdf

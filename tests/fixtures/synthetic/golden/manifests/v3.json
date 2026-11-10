@@ -2,11 +2,11 @@
  "format": "slides-to-anki",
  "version": 3,
  "lecture": {
-  "id": "76a2a7ee-9f87-4d87-8643-bd0abf0cdf06",
+  "id": "5d52026a-8909-482c-80dd-ce72630d9247",
   "title": "Golden \"Memory\" & <learning> :: sample",
   "sha256": "0b12cc7c1aab1607cb75507dd92d432bf45530a8f568bf744b3f9013bb97e1a8",
   "original_name": "lecture.pdf",
-  "created_at": "2026-11-10T13:30:33.204727+00:00"
+  "created_at": "2026-11-10T14:08:38.346820+00:00"
  },
  "pages": [
   {
@@ -40,7 +40,7 @@
  ],
  "cards": [
   {
-   "id": "3d04d957-ef79-4cf1-9e3d-d48ab78a2992",
+   "id": "e43e8041-6ba0-493b-88d1-e2b2751b0919",
    "page": 1,
    "front": "Generated question for page 1?",
    "back": "Generated answer.",
@@ -48,14 +48,14 @@
    "status": "draft",
    "fingerprint": "f72bdf68efbe8b0c723a3b8668d85bbd8e52a138fe1a2a1b50120dca7d485cc8",
    "version": 1,
-   "anki_modified": 1794317433,
+   "anki_modified": 1794319719,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.239816+00:00",
-   "updated_at": "2026-11-10T13:30:33.239816+00:00",
+   "created_at": "2026-11-10T14:08:38.355820+00:00",
+   "updated_at": "2026-11-10T14:08:38.356820+00:00",
    "revisions": []
   },
   {
-   "id": "bdbb4143-678d-4177-a2ad-5cd96cf4cb86",
+   "id": "5a2c494a-1cfd-4f62-b281-64c053ddb8a1",
    "page": 1,
    "front": "What is retrieval practice?",
    "back": "Recalling information from memory.",
@@ -63,10 +63,10 @@
    "status": "accepted",
    "fingerprint": "6c565e149bff07f5e30b150bd3e2afb872e25272739adaedef4611bb2818952e",
    "version": 3,
-   "anki_modified": 1794317435,
+   "anki_modified": 1794319721,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.305966+00:00",
-   "updated_at": "2026-11-10T13:30:33.318992+00:00",
+   "created_at": "2026-11-10T14:08:38.377820+00:00",
+   "updated_at": "2026-11-10T14:08:38.396820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -74,7 +74,7 @@
      "back": "Trying to recall information from memory.",
      "source_quote": "Retrieval practice means trying to recall information from memory.",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.315073+00:00"
+     "created_at": "2026-11-10T14:08:38.395820+00:00"
     },
     {
      "version": 2,
@@ -82,12 +82,12 @@
      "back": "Recalling information from memory.",
      "source_quote": "Retrieval practice means trying to recall information from memory.",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.318992+00:00"
+     "created_at": "2026-11-10T14:08:38.398820+00:00"
     }
    ]
   },
   {
-   "id": "09796781-2e02-462b-9925-fcb4f094b609",
+   "id": "44de3289-1c94-4a62-80f7-e56c67fff62c",
    "page": 1,
    "front": "Why \"escape\" <tags> & 'quotes'?\nSecond line",
    "back": "Because & < > matter.\nLine 2 «ß» 𝑥²",
@@ -95,10 +95,10 @@
    "status": "accepted",
    "fingerprint": "4c66e3655fae5b1101e9bb7eee0f1227e8a536aa6d108e755245a52cdd0cd5ac",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.306966+00:00",
-   "updated_at": "2026-11-10T13:30:33.323498+00:00",
+   "created_at": "2026-11-10T14:08:38.379820+00:00",
+   "updated_at": "2026-11-10T14:08:38.399820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -106,12 +106,12 @@
      "back": "Because & < > matter.\nLine 2 «ß» 𝑥²",
      "source_quote": "Checking the answer gives feedback after the attempt.",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.324002+00:00"
+     "created_at": "2026-11-10T14:08:38.401820+00:00"
     }
    ]
   },
   {
-   "id": "f0416499-7444-4641-8145-ed53dbaccfa6",
+   "id": "ccd577f9-f613-4d7f-a749-6d4b8476a725",
    "page": 2,
    "front": "Generated question for page 2?",
    "back": "Generated answer.",
@@ -119,10 +119,10 @@
    "status": "accepted",
    "fingerprint": "5157774c0f81526a70cb9061db7e5fe45f6dd858274b127b80340a9e0c754ff2",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.240816+00:00",
-   "updated_at": "2026-11-10T13:30:33.365800+00:00",
+   "created_at": "2026-11-10T14:08:38.357820+00:00",
+   "updated_at": "2026-11-10T14:08:38.426820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -130,12 +130,12 @@
      "back": "Generated answer.",
      "source_quote": "Spaced practice distributes study sessions over time.",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.366799+00:00"
+     "created_at": "2026-11-10T14:08:38.428820+00:00"
     }
    ]
   },
   {
-   "id": "2b538504-98e7-4e81-8b2f-25477d05a6c2",
+   "id": "e5f8f706-28d1-4cc0-a37f-a0aad762ada4",
    "page": 3,
    "front": "Generated question for page 3?",
    "back": "Generated answer.",
@@ -143,14 +143,14 @@
    "status": "draft",
    "fingerprint": "56c57c850ba901bc734d6c48bd4cce9d9531980a863b610ec0f5c7a9d38ea90e",
    "version": 1,
-   "anki_modified": 1794317433,
+   "anki_modified": 1794319719,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.241816+00:00",
-   "updated_at": "2026-11-10T13:30:33.241816+00:00",
+   "created_at": "2026-11-10T14:08:38.359820+00:00",
+   "updated_at": "2026-11-10T14:08:38.360820+00:00",
    "revisions": []
   },
   {
-   "id": "7ec4550c-a6c9-48e0-9610-4b24bffbcd16",
+   "id": "9a1a207b-7a96-43c4-a3dd-46881d96d0c9",
    "page": 3,
    "front": "What does an atomic card test?",
    "back": "One clear idea.",
@@ -158,14 +158,14 @@
    "status": "draft",
    "fingerprint": "02b0ef1f4c4ba6be9313505567059ee5d0f2d99ffb5787914a375f81fc26f067",
    "version": 1,
-   "anki_modified": 1794317433,
-   "run": "a05c8753-561d-4729-b910-b2db782f4f9f",
-   "created_at": "2026-11-10T13:30:33.257795+00:00",
-   "updated_at": "2026-11-10T13:30:33.257795+00:00",
+   "anki_modified": 1794319719,
+   "run": "2a2edd5b-a464-4d10-9d15-c76255a6cc1b",
+   "created_at": "2026-11-10T14:08:38.368820+00:00",
+   "updated_at": "2026-11-10T14:08:38.369820+00:00",
    "revisions": []
   },
   {
-   "id": "9f49871c-630e-4e3e-aedb-a0cae004e3c3",
+   "id": "c0d7120c-dec4-468e-8e7b-6f21ba96a95a",
    "page": 3,
    "front": "Rejected question?",
    "back": "Rejected answer.",
@@ -173,10 +173,10 @@
    "status": "rejected",
    "fingerprint": "1290129f6623065814c8a24aee04a3fa0c81e23f574bd5375b1ab05053d2e379",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.309966+00:00",
-   "updated_at": "2026-11-10T13:30:33.341519+00:00",
+   "created_at": "2026-11-10T14:08:38.389820+00:00",
+   "updated_at": "2026-11-10T14:08:38.411820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -184,12 +184,12 @@
      "back": "Rejected answer.",
      "source_quote": "",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.343024+00:00"
+     "created_at": "2026-11-10T14:08:38.413820+00:00"
     }
    ]
   },
   {
-   "id": "bc1a6be2-c1e7-4284-9f87-35564486ba7c",
+   "id": "aa21fbcb-fec5-4277-b1e2-c57fe23676b7",
    "page": 3,
    "front": "Was ist eine Straße? 𝑥² ✓",
    "back": "Ein Weg.",
@@ -197,10 +197,10 @@
    "status": "accepted",
    "fingerprint": "1350fca25ad163f491fa475ed0c692b3bde479edbcd22b78c69afdbb0c3a3d5b",
    "version": 4,
-   "anki_modified": 1794317436,
+   "anki_modified": 1794319722,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.309966+00:00",
-   "updated_at": "2026-11-10T13:30:33.355958+00:00",
+   "created_at": "2026-11-10T14:08:38.391820+00:00",
+   "updated_at": "2026-11-10T14:08:38.420820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -208,7 +208,7 @@
      "back": "Ein Weg.",
      "source_quote": "",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.347446+00:00"
+     "created_at": "2026-11-10T14:08:38.416820+00:00"
     },
     {
      "version": 2,
@@ -216,7 +216,7 @@
      "back": "Ein Weg.",
      "source_quote": "",
      "status": "accepted",
-     "created_at": "2026-11-10T13:30:33.351447+00:00"
+     "created_at": "2026-11-10T14:08:38.419820+00:00"
     },
     {
      "version": 3,
@@ -224,14 +224,14 @@
      "back": "Ein Weg.",
      "source_quote": "",
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.356957+00:00"
+     "created_at": "2026-11-10T14:08:38.422820+00:00"
     }
    ]
   }
  ],
  "runs": [
   {
-   "id": "a05c8753-561d-4729-b910-b2db782f4f9f",
+   "id": "2a2edd5b-a464-4d10-9d15-c76255a6cc1b",
    "status": "completed",
    "provider": "codex",
    "page_numbers": [
@@ -257,8 +257,8 @@
    "filtered_count": 0,
    "over_limit_count": 0,
    "error": "",
-   "created_at": "2026-11-10T13:30:33.247830+00:00",
-   "updated_at": "2026-11-10T13:30:33.260793+00:00"
+   "created_at": "2026-11-10T14:08:38.364820+00:00",
+   "updated_at": "2026-11-10T14:08:38.370820+00:00"
   }
  ],
  "assets": {

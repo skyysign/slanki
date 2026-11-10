@@ -6,6 +6,7 @@ import { deckId, guidFor, uuidHex } from "../core/ids.ts";
 import { studyCardCount, textHtml, type NoteType } from "../core/noteTypes.ts";
 import { dumps } from "../core/pyjson.ts";
 import { sha256Hex } from "../core/sha256.ts";
+import { timeKey } from "../core/time.ts";
 import { zipEntries } from "../core/zip.ts";
 import { APKG_COL, APKG_SCHEMA } from "./genankiSql.ts";
 import { crop, occlusionImage, visualImage, type Rect } from "./images.ts";
@@ -198,7 +199,7 @@ interface BuiltNote {
 /** Note fields and media exactly as exporting.py assembles them. */
 export function buildNotes(input: ExportInput): { notes: BuiltNote[]; media: Map<string, Uint8Array> } {
   const ordered = [...input.notes].sort(
-    (a, b) => a.page - b.page || Date.parse(a.createdAt) - Date.parse(b.createdAt),
+    (a, b) => a.page - b.page || timeKey(a.createdAt) - timeKey(b.createdAt),
   );
   if (!ordered.length) throw new WorkflowError("Accept at least one card before exporting.");
   const lectureHex = uuidHex(input.lecture.id);

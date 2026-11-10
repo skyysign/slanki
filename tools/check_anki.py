@@ -299,12 +299,39 @@ def synthetic_scenarios(folder):
         gate.close()
 
 
+def package_check(path, folder):
+    """Import a deck downloaded from the browser app and render every card."""
+    print(f"[{path.name}] browser-built deck in a fresh collection")
+    gate = Gate(folder)
+    try:
+        gate.load(path)
+        state = gate.state()
+        check(state["notes"] > 0, f"imported {state['notes']} notes / {len(state['cards'])} cards")
+        col = gate.collection
+        rendered = 0
+        for card_id in state["cards"]:
+            card = col.get_card(card_id)
+            if card.question().strip() and card.answer().strip():
+                rendered += 1
+        check(rendered == len(state["cards"]), "every card renders a question and an answer")
+        check(state["missing_media"] == [], "no missing media")
+        gate.load(path)
+        check(
+            gate.state()["cards"].keys() == state["cards"].keys(), "re-import keeps the same cards"
+        )
+    finally:
+        gate.close()
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument(
         "--real", type=Path, help="folder with backup-*.zip files to check read-only"
+    )
+    parser.add_argument(
+        "--apkg", type=Path, action="append", default=[], help="deck exported by the app"
     )
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="slanki-anki-gate-") as directory:
@@ -322,6 +349,8 @@ def main():
                     print(f"[real-{index}] skipped: no accepted notes to export")
                     continue
                 replace_scenario(f"real-{index}", data, folder)
+        for path in args.apkg:
+            package_check(path, folder)
     print("Anki compatibility gate passed.")
 
 

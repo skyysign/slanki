@@ -2,11 +2,11 @@
  "format": "slides-to-anki",
  "version": 12,
  "lecture": {
-  "id": "76a2a7ee-9f87-4d87-8643-bd0abf0cdf06",
+  "id": "5d52026a-8909-482c-80dd-ce72630d9247",
   "title": "Golden \"Memory\" & <learning> :: sample",
   "sha256": "0b12cc7c1aab1607cb75507dd92d432bf45530a8f568bf744b3f9013bb97e1a8",
   "original_name": "lecture.pdf",
-  "created_at": "2026-11-10T13:30:33.204727+00:00"
+  "created_at": "2026-11-10T14:08:38.346820+00:00"
  },
  "pages": [
   {
@@ -40,7 +40,7 @@
  ],
  "cards": [
   {
-   "id": "3d04d957-ef79-4cf1-9e3d-d48ab78a2992",
+   "id": "e43e8041-6ba0-493b-88d1-e2b2751b0919",
    "page": 1,
    "front": "Generated question for page 1?",
    "note_type": "basic",
@@ -52,14 +52,14 @@
    "status": "draft",
    "fingerprint": "f72bdf68efbe8b0c723a3b8668d85bbd8e52a138fe1a2a1b50120dca7d485cc8",
    "version": 1,
-   "anki_modified": 1794317433,
-   "run": "cc43f24c-50e0-4d6f-9802-2b9b9c3ab0c3",
-   "created_at": "2026-11-10T13:30:33.239816+00:00",
-   "updated_at": "2026-11-10T13:30:33.239816+00:00",
+   "anki_modified": 1794319719,
+   "run": "cd8f252b-3422-4152-a525-fe8e5f50528c",
+   "created_at": "2026-11-10T14:08:38.355820+00:00",
+   "updated_at": "2026-11-10T14:08:38.356820+00:00",
    "revisions": []
   },
   {
-   "id": "bd859fa5-688a-49e0-9c4f-dad9c1252124",
+   "id": "5b6cf842-691d-4659-a02f-67129062ab6b",
    "page": 1,
    "front": "A {{c1::retrieval attempt}} happens before looking at the {{c2::answer::what?}}.",
    "note_type": "cloze",
@@ -71,10 +71,10 @@
    "status": "accepted",
    "fingerprint": "ba9b41008863c0bb36a70f1519c8ddebe5bbe639f3edf35b534c8b016acfe4ab",
    "version": 2,
-   "anki_modified": 1794317434,
-   "run": "cc43f24c-50e0-4d6f-9802-2b9b9c3ab0c3",
-   "created_at": "2026-11-10T13:30:33.241816+00:00",
-   "updated_at": "2026-11-10T13:30:33.360958+00:00",
+   "anki_modified": 1794319720,
+   "run": "cd8f252b-3422-4152-a525-fe8e5f50528c",
+   "created_at": "2026-11-10T14:08:38.361820+00:00",
+   "updated_at": "2026-11-10T14:08:38.423820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -86,12 +86,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.361957+00:00"
+     "created_at": "2026-11-10T14:08:38.425820+00:00"
     }
    ]
   },
   {
-   "id": "bdbb4143-678d-4177-a2ad-5cd96cf4cb86",
+   "id": "5a2c494a-1cfd-4f62-b281-64c053ddb8a1",
    "page": 1,
    "front": "What is retrieval practice?",
    "note_type": "basic",
@@ -110,10 +110,10 @@
    "status": "accepted",
    "fingerprint": "6c565e149bff07f5e30b150bd3e2afb872e25272739adaedef4611bb2818952e",
    "version": 3,
-   "anki_modified": 1794317435,
+   "anki_modified": 1794319721,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.305966+00:00",
-   "updated_at": "2026-11-10T13:30:33.318992+00:00",
+   "created_at": "2026-11-10T14:08:38.377820+00:00",
+   "updated_at": "2026-11-10T14:08:38.396820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -125,7 +125,7 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.315073+00:00"
+     "created_at": "2026-11-10T14:08:38.395820+00:00"
     },
     {
      "version": 2,
@@ -137,12 +137,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.318992+00:00"
+     "created_at": "2026-11-10T14:08:38.398820+00:00"
     }
    ]
   },
   {
-   "id": "09796781-2e02-462b-9925-fcb4f094b609",
+   "id": "44de3289-1c94-4a62-80f7-e56c67fff62c",
    "page": 1,
    "front": "Why \"escape\" <tags> & 'quotes'?\nSecond line",
    "note_type": "basic",
@@ -161,10 +161,10 @@
    "status": "accepted",
    "fingerprint": "4c66e3655fae5b1101e9bb7eee0f1227e8a536aa6d108e755245a52cdd0cd5ac",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.306966+00:00",
-   "updated_at": "2026-11-10T13:30:33.323498+00:00",
+   "created_at": "2026-11-10T14:08:38.379820+00:00",
+   "updated_at": "2026-11-10T14:08:38.399820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -176,12 +176,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.324002+00:00"
+     "created_at": "2026-11-10T14:08:38.401820+00:00"
     }
    ]
   },
   {
-   "id": "f0416499-7444-4641-8145-ed53dbaccfa6",
+   "id": "ccd577f9-f613-4d7f-a749-6d4b8476a725",
    "page": 2,
    "front": "Generated question for page 2?",
    "note_type": "basic",
@@ -193,10 +193,10 @@
    "status": "accepted",
    "fingerprint": "5157774c0f81526a70cb9061db7e5fe45f6dd858274b127b80340a9e0c754ff2",
    "version": 2,
-   "anki_modified": 1794317434,
-   "run": "cc43f24c-50e0-4d6f-9802-2b9b9c3ab0c3",
-   "created_at": "2026-11-10T13:30:33.240816+00:00",
-   "updated_at": "2026-11-10T13:30:33.365800+00:00",
+   "anki_modified": 1794319720,
+   "run": "cd8f252b-3422-4152-a525-fe8e5f50528c",
+   "created_at": "2026-11-10T14:08:38.357820+00:00",
+   "updated_at": "2026-11-10T14:08:38.426820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -208,12 +208,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.366799+00:00"
+     "created_at": "2026-11-10T14:08:38.428820+00:00"
     }
    ]
   },
   {
-   "id": "7e312bc2-d1c5-48ba-8afd-43590096b185",
+   "id": "7e699b9f-f25a-4dd8-80c1-8a1332de2930",
    "page": 2,
    "front": "Spaced practice {{c1::distributes}} study sessions over {{c2::time::when?}}.",
    "note_type": "cloze",
@@ -225,10 +225,10 @@
    "status": "accepted",
    "fingerprint": "7c1cf920b56d6e5b15ec299b98815f5ccc0620d2f5577efd2aa042fbb8627596",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.307966+00:00",
-   "updated_at": "2026-11-10T13:30:33.328009+00:00",
+   "created_at": "2026-11-10T14:08:38.381820+00:00",
+   "updated_at": "2026-11-10T14:08:38.402820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -240,12 +240,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.329008+00:00"
+     "created_at": "2026-11-10T14:08:38.404820+00:00"
     }
    ]
   },
   {
-   "id": "23fa511c-5c4f-44b6-9e09-258df3c95706",
+   "id": "d549f503-09e6-42ff-a58e-12c0b0532233",
    "page": 2,
    "front": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.",
    "note_type": "cloze",
@@ -264,10 +264,10 @@
    "status": "accepted",
    "fingerprint": "fbae391e6878ff64ca85355a189e074d646c6dcc1ca1e3721c042dbbeca18bae",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.307966+00:00",
-   "updated_at": "2026-11-10T13:30:33.333009+00:00",
+   "created_at": "2026-11-10T14:08:38.383820+00:00",
+   "updated_at": "2026-11-10T14:08:38.405820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -279,12 +279,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.333513+00:00"
+     "created_at": "2026-11-10T14:08:38.407820+00:00"
     }
    ]
   },
   {
-   "id": "2b538504-98e7-4e81-8b2f-25477d05a6c2",
+   "id": "e5f8f706-28d1-4cc0-a37f-a0aad762ada4",
    "page": 3,
    "front": "Generated question for page 3?",
    "note_type": "basic",
@@ -296,14 +296,14 @@
    "status": "draft",
    "fingerprint": "56c57c850ba901bc734d6c48bd4cce9d9531980a863b610ec0f5c7a9d38ea90e",
    "version": 1,
-   "anki_modified": 1794317433,
-   "run": "cc43f24c-50e0-4d6f-9802-2b9b9c3ab0c3",
-   "created_at": "2026-11-10T13:30:33.241816+00:00",
-   "updated_at": "2026-11-10T13:30:33.241816+00:00",
+   "anki_modified": 1794319719,
+   "run": "cd8f252b-3422-4152-a525-fe8e5f50528c",
+   "created_at": "2026-11-10T14:08:38.359820+00:00",
+   "updated_at": "2026-11-10T14:08:38.360820+00:00",
    "revisions": []
   },
   {
-   "id": "7ec4550c-a6c9-48e0-9610-4b24bffbcd16",
+   "id": "9a1a207b-7a96-43c4-a3dd-46881d96d0c9",
    "page": 3,
    "front": "What does an atomic card test?",
    "note_type": "basic",
@@ -315,14 +315,14 @@
    "status": "draft",
    "fingerprint": "02b0ef1f4c4ba6be9313505567059ee5d0f2d99ffb5787914a375f81fc26f067",
    "version": 1,
-   "anki_modified": 1794317433,
-   "run": "a05c8753-561d-4729-b910-b2db782f4f9f",
-   "created_at": "2026-11-10T13:30:33.257795+00:00",
-   "updated_at": "2026-11-10T13:30:33.257795+00:00",
+   "anki_modified": 1794319719,
+   "run": "2a2edd5b-a464-4d10-9d15-c76255a6cc1b",
+   "created_at": "2026-11-10T14:08:38.368820+00:00",
+   "updated_at": "2026-11-10T14:08:38.369820+00:00",
    "revisions": []
   },
   {
-   "id": "58ec013b-fbe4-46de-b88e-c259077a5317",
+   "id": "8ca73bd9-745f-4f9a-aad9-c1a143e4cfc5",
    "page": 3,
    "front": "Atomic card",
    "note_type": "reversed",
@@ -341,10 +341,10 @@
    "status": "accepted",
    "fingerprint": "da788c79f5f0567a79d280c1b6a570d9bfeb5faa474bd3b442114c4b001088d2",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.308966+00:00",
-   "updated_at": "2026-11-10T13:30:33.337519+00:00",
+   "created_at": "2026-11-10T14:08:38.385820+00:00",
+   "updated_at": "2026-11-10T14:08:38.408820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -356,12 +356,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.337519+00:00"
+     "created_at": "2026-11-10T14:08:38.410820+00:00"
     }
    ]
   },
   {
-   "id": "77badb16-68f3-4df5-b078-ec10f448a6f4",
+   "id": "55f848aa-7a34-4601-928b-75fd3bbec956",
    "page": 3,
    "front": "Source reference",
    "note_type": "reversed",
@@ -373,14 +373,14 @@
    "status": "draft",
    "fingerprint": "ec0c57629008b2d649d9acc022132a6241c1558426c7ef5f2be55ddee4003cf2",
    "version": 1,
-   "anki_modified": 1794317433,
+   "anki_modified": 1794319719,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.308966+00:00",
-   "updated_at": "2026-11-10T13:30:33.308966+00:00",
+   "created_at": "2026-11-10T14:08:38.387820+00:00",
+   "updated_at": "2026-11-10T14:08:38.388820+00:00",
    "revisions": []
   },
   {
-   "id": "9f49871c-630e-4e3e-aedb-a0cae004e3c3",
+   "id": "c0d7120c-dec4-468e-8e7b-6f21ba96a95a",
    "page": 3,
    "front": "Rejected question?",
    "note_type": "basic",
@@ -392,10 +392,10 @@
    "status": "rejected",
    "fingerprint": "1290129f6623065814c8a24aee04a3fa0c81e23f574bd5375b1ab05053d2e379",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.309966+00:00",
-   "updated_at": "2026-11-10T13:30:33.341519+00:00",
+   "created_at": "2026-11-10T14:08:38.389820+00:00",
+   "updated_at": "2026-11-10T14:08:38.411820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -407,12 +407,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.343024+00:00"
+     "created_at": "2026-11-10T14:08:38.413820+00:00"
     }
    ]
   },
   {
-   "id": "bc1a6be2-c1e7-4284-9f87-35564486ba7c",
+   "id": "aa21fbcb-fec5-4277-b1e2-c57fe23676b7",
    "page": 3,
    "front": "Was ist eine Straße? 𝑥² ✓",
    "note_type": "basic",
@@ -424,10 +424,10 @@
    "status": "accepted",
    "fingerprint": "1350fca25ad163f491fa475ed0c692b3bde479edbcd22b78c69afdbb0c3a3d5b",
    "version": 4,
-   "anki_modified": 1794317436,
+   "anki_modified": 1794319722,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.309966+00:00",
-   "updated_at": "2026-11-10T13:30:33.355958+00:00",
+   "created_at": "2026-11-10T14:08:38.391820+00:00",
+   "updated_at": "2026-11-10T14:08:38.420820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -439,7 +439,7 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.347446+00:00"
+     "created_at": "2026-11-10T14:08:38.416820+00:00"
     },
     {
      "version": 2,
@@ -451,7 +451,7 @@
      "source_crop": {},
      "occlusion": {},
      "status": "accepted",
-     "created_at": "2026-11-10T13:30:33.351447+00:00"
+     "created_at": "2026-11-10T14:08:38.419820+00:00"
     },
     {
      "version": 3,
@@ -463,12 +463,12 @@
      "source_crop": {},
      "occlusion": {},
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.356957+00:00"
+     "created_at": "2026-11-10T14:08:38.422820+00:00"
     }
    ]
   },
   {
-   "id": "f262d88f-bd01-4e8d-9985-4f2c2088814c",
+   "id": "098b8cd9-672b-4f9a-b0f3-b34f8b6684b4",
    "page": 4,
    "front": "Name the hidden part.",
    "note_type": "occlusion",
@@ -484,12 +484,12 @@
    },
    "visual_masks": [],
    "status": "accepted",
-   "fingerprint": "082b6d8681a836a2aca0529cbefb11d488fc104a118bff7ad120795bd42489e2",
+   "fingerprint": "ae94da4dfffa77c87881f71ec4c8901a9b60b0e5cbe0781f6440f58ba75b9e9f",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.391829+00:00",
-   "updated_at": "2026-11-10T13:30:33.408514+00:00",
+   "created_at": "2026-11-10T14:08:38.429820+00:00",
+   "updated_at": "2026-11-10T14:08:38.435820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -507,12 +507,12 @@
       "bottom": 140
      },
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.409513+00:00"
+     "created_at": "2026-11-10T14:08:38.437820+00:00"
     }
    ]
   },
   {
-   "id": "357bd2ef-e6b7-48cf-a63e-bcb63a9817fd",
+   "id": "037891e0-fbae-4a89-86a9-d37e7f63979e",
    "page": 4,
    "front": "Name the hidden part.",
    "note_type": "occlusion",
@@ -528,12 +528,12 @@
    },
    "visual_masks": [],
    "status": "accepted",
-   "fingerprint": "fe25fc7eb2956f6233c93d310eb1d2e62cd2268a34bc86b5c7b972554a4542a3",
+   "fingerprint": "7059f042d7f76178be2ae5cfa7bd24a55dde052f36e464638085ccca2c8e5ca7",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.394340+00:00",
-   "updated_at": "2026-11-10T13:30:33.423537+00:00",
+   "created_at": "2026-11-10T14:08:38.431820+00:00",
+   "updated_at": "2026-11-10T14:08:38.438820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -551,12 +551,12 @@
       "bottom": 2
      },
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.424684+00:00"
+     "created_at": "2026-11-10T14:08:38.440820+00:00"
     }
    ]
   },
   {
-   "id": "b9c4146e-3921-45ab-b733-de99a124a9cc",
+   "id": "a68bf856-de4c-40c1-be43-7586b533f664",
    "page": 4,
    "front": "Name the hidden part.",
    "note_type": "occlusion",
@@ -572,12 +572,12 @@
    },
    "visual_masks": [],
    "status": "accepted",
-   "fingerprint": "6a9f6110fddd5bb027b00158f83dd8e96aeb5a8631bcbbd7b2a77b1bf0724cf6",
+   "fingerprint": "364f2de4588919f16efa35dbd496671ec9d38e20c38366e4ed546f4e94e3fbfb",
    "version": 2,
-   "anki_modified": 1794317434,
+   "anki_modified": 1794319720,
    "run": null,
-   "created_at": "2026-11-10T13:30:33.394340+00:00",
-   "updated_at": "2026-11-10T13:30:33.438795+00:00",
+   "created_at": "2026-11-10T14:08:38.433820+00:00",
+   "updated_at": "2026-11-10T14:08:38.441820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -595,12 +595,12 @@
       "bottom": 844
      },
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.439785+00:00"
+     "created_at": "2026-11-10T14:08:38.443820+00:00"
     }
    ]
   },
   {
-   "id": "b2a8b486-ae74-4a4b-83e8-981803635ff1",
+   "id": "c1c6a4c2-51fa-4683-b5f0-807d53dad7b6",
    "page": 4,
    "front": "Name the hidden part.",
    "note_type": "occlusion",
@@ -616,12 +616,12 @@
    },
    "visual_masks": [],
    "status": "accepted",
-   "fingerprint": "931780ba67c9cfbaaf24439c325b1db4560be333c16fbcd2e74c000a9775e1c7",
+   "fingerprint": "62c3669b3697c6e1ae99713629212f93d3b90fcec1e0b519191648d559082b1f",
    "version": 2,
-   "anki_modified": 1794317434,
-   "run": "d84141eb-5500-4359-b5fd-0b29e013c540",
-   "created_at": "2026-11-10T13:30:33.509792+00:00",
-   "updated_at": "2026-11-10T13:30:33.521306+00:00",
+   "anki_modified": 1794319720,
+   "run": "0bcb2c6a-1449-44c8-b43e-400d01861fb0",
+   "created_at": "2026-11-10T14:08:38.460820+00:00",
+   "updated_at": "2026-11-10T14:08:38.462820+00:00",
    "revisions": [
     {
      "version": 1,
@@ -639,14 +639,14 @@
       "bottom": 380
      },
      "status": "draft",
-     "created_at": "2026-11-10T13:30:33.521306+00:00"
+     "created_at": "2026-11-10T14:08:38.464820+00:00"
     }
    ]
   }
  ],
  "runs": [
   {
-   "id": "d84141eb-5500-4359-b5fd-0b29e013c540",
+   "id": "0bcb2c6a-1449-44c8-b43e-400d01861fb0",
    "status": "completed",
    "provider": "codex",
    "model": "",
@@ -666,7 +666,33 @@
    ],
    "suggestions": [
     {
-     "id": "3d564c95-70c3-4e87-90c9-3fbaff8f0028",
+     "id": "f378d74f-8703-4792-ba68-13e6392008db",
+     "page": 4,
+     "label": "Label A",
+     "reason": "Recall the labelled structure.",
+     "original_mask": {
+      "page": 4,
+      "left": 400,
+      "top": 300,
+      "right": 600,
+      "bottom": 380
+     },
+     "mask": {
+      "page": 4,
+      "left": 400,
+      "top": 300,
+      "right": 600,
+      "bottom": 380
+     },
+     "front": "Name the hidden part.",
+     "back": "Accepted label explanation",
+     "status": "accepted",
+     "version": 2,
+     "card": "c1c6a4c2-51fa-4683-b5f0-807d53dad7b6",
+     "created_at": "2026-11-10T14:08:38.456820+00:00"
+    },
+    {
+     "id": "a514b55e-5d16-416f-a096-1e03ab4183d0",
      "page": 4,
      "label": "Label B",
      "reason": "Second structure.",
@@ -689,36 +715,10 @@
      "status": "discarded",
      "version": 2,
      "card": null,
-     "created_at": "2026-11-10T13:30:33.479261+00:00"
+     "created_at": "2026-11-10T14:08:38.457820+00:00"
     },
     {
-     "id": "a670d9a7-41aa-4657-adbe-d1b27d15ef53",
-     "page": 4,
-     "label": "Label A",
-     "reason": "Recall the labelled structure.",
-     "original_mask": {
-      "page": 4,
-      "left": 400,
-      "top": 300,
-      "right": 600,
-      "bottom": 380
-     },
-     "mask": {
-      "page": 4,
-      "left": 400,
-      "top": 300,
-      "right": 600,
-      "bottom": 380
-     },
-     "front": "Name the hidden part.",
-     "back": "Accepted label explanation",
-     "status": "accepted",
-     "version": 2,
-     "card": "b2a8b486-ae74-4a4b-83e8-981803635ff1",
-     "created_at": "2026-11-10T13:30:33.479261+00:00"
-    },
-    {
-     "id": "c7cb0999-6773-4b18-b28b-a6272d4a5f69",
+     "id": "29f13dd0-7aaf-4888-950e-120d9709b4d2",
      "page": 4,
      "label": "Label C",
      "reason": "Third structure.",
@@ -741,7 +741,7 @@
      "status": "pending",
      "version": 1,
      "card": null,
-     "created_at": "2026-11-10T13:30:33.479261+00:00"
+     "created_at": "2026-11-10T14:08:38.458820+00:00"
     }
    ],
    "issues": [],
@@ -754,11 +754,11 @@
    "filtered_count": 0,
    "over_limit_count": 0,
    "error": "",
-   "created_at": "2026-11-10T13:30:33.463737+00:00",
-   "updated_at": "2026-11-10T13:30:33.482765+00:00"
+   "created_at": "2026-11-10T14:08:38.451820+00:00",
+   "updated_at": "2026-11-10T14:08:38.459820+00:00"
   },
   {
-   "id": "a05c8753-561d-4729-b910-b2db782f4f9f",
+   "id": "2a2edd5b-a464-4d10-9d15-c76255a6cc1b",
    "status": "completed",
    "provider": "codex",
    "model": "",
@@ -798,11 +798,11 @@
    "filtered_count": 0,
    "over_limit_count": 0,
    "error": "",
-   "created_at": "2026-11-10T13:30:33.247830+00:00",
-   "updated_at": "2026-11-10T13:30:33.260793+00:00"
+   "created_at": "2026-11-10T14:08:38.364820+00:00",
+   "updated_at": "2026-11-10T14:08:38.370820+00:00"
   },
   {
-   "id": "cc43f24c-50e0-4d6f-9802-2b9b9c3ab0c3",
+   "id": "cd8f252b-3422-4152-a525-fe8e5f50528c",
    "status": "completed",
    "provider": "codex",
    "model": "gpt-5.5",
@@ -883,8 +883,8 @@
    "filtered_count": 1,
    "over_limit_count": 1,
    "error": "",
-   "created_at": "2026-11-10T13:30:33.216753+00:00",
-   "updated_at": "2026-11-10T13:30:33.244830+00:00"
+   "created_at": "2026-11-10T14:08:38.347820+00:00",
+   "updated_at": "2026-11-10T14:08:38.363820+00:00"
   }
  ],
  "assets": {

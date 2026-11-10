@@ -35,10 +35,10 @@
  },
  "derived": [
   {
-   "name": "crop_bdbb4143678d4177a2ad5cd96cf4cb86_cf71884ad67d117a.png",
+   "name": "crop_5a2c494a1cfd4f62b28164c053ddb8a1_cf71884ad67d117a.png",
    "kind": "crop",
    "answer": null,
-   "note_id": "bdbb4143-678d-4177-a2ad-5cd96cf4cb86",
+   "note_id": "5a2c494a-1cfd-4f62-b281-64c053ddb8a1",
    "page": 1,
    "source_crop": {
     "page": 1,
@@ -58,10 +58,10 @@
    "sha256": "636b61a083ad9d7f3424057f50dbfe5af56287ee909880e65793c5784e349261"
   },
   {
-   "name": "crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png",
+   "name": "crop_44de32891c944a6280f7e56c67fff62c_afbe7d4cb5c1b1ab.png",
    "kind": "crop",
    "answer": null,
-   "note_id": "09796781-2e02-462b-9925-fcb4f094b609",
+   "note_id": "44de3289-1c94-4a62-80f7-e56c67fff62c",
    "page": 1,
    "source_crop": {
     "page": 1,
@@ -81,10 +81,10 @@
    "sha256": "692224bc813e967acb4a748c6b2c6bc88af81eb20e12b939cf6b753b695f82bb"
   },
   {
-   "name": "crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png",
+   "name": "crop_d549f50309e642ffa58e12c0b0532233_5264b5db795b56c1.png",
    "kind": "crop",
    "answer": null,
-   "note_id": "23fa511c-5c4f-44b6-9e09-258df3c95706",
+   "note_id": "d549f503-09e6-42ff-a58e-12c0b0532233",
    "page": 2,
    "source_crop": {
     "page": 2,
@@ -104,10 +104,10 @@
    "sha256": "b4c25e8503edbd2a695e6e0acecb3df9ee2b587821007cf7e5fd4de6b5f639e1"
   },
   {
-   "name": "crop_58ec013bfbe446deb88ec259077a5317_b543e69c3df6545f.png",
+   "name": "crop_8ca73bd9745f4f9aaad9c1a143e4cfc5_b543e69c3df6545f.png",
    "kind": "crop",
    "answer": null,
-   "note_id": "58ec013b-fbe4-46de-b88e-c259077a5317",
+   "note_id": "8ca73bd9-745f-4f9a-aad9-c1a143e4cfc5",
    "page": 3,
    "source_crop": {
     "page": 3,
@@ -127,10 +127,10 @@
    "sha256": "9164741274e8de9233f253d6c4f8ea99834ad2fece2110f97f4ac48b39802035"
   },
   {
-   "name": "occlusion_f262d88fbd014e8d99854f2c2088814c_50df10db44ed58a7.png",
+   "name": "occlusion_098b8cd9672b4f9ab0f3b34f8b6684b4_50df10db44ed58a7.png",
    "kind": "occlusion",
    "answer": false,
-   "note_id": "f262d88f-bd01-4e8d-9985-4f2c2088814c",
+   "note_id": "098b8cd9-672b-4f9a-b0f3-b34f8b6684b4",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -149,10 +149,10 @@
    "sha256": "9e93c78119fecc5949e2b154db7779ce1d13660761935dc1f88d0cced5ad313e"
   },
   {
-   "name": "occlusion_f262d88fbd014e8d99854f2c2088814c_e121ef9c1b68ce65.png",
+   "name": "occlusion_098b8cd9672b4f9ab0f3b34f8b6684b4_e121ef9c1b68ce65.png",
    "kind": "occlusion",
    "answer": true,
-   "note_id": "f262d88f-bd01-4e8d-9985-4f2c2088814c",
+   "note_id": "098b8cd9-672b-4f9a-b0f3-b34f8b6684b4",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -171,10 +171,10 @@
    "sha256": "14d9d1227e505129517de9ea2314c55624a80d52b30cf20c3a83eb45306481d8"
   },
   {
-   "name": "occlusion_357bd2efe6b748cfa63ebcb63a9817fd_b0621f5d95fd0f31.png",
+   "name": "occlusion_037891e0fbae4a8986a9d37e7f63979e_b0621f5d95fd0f31.png",
    "kind": "occlusion",
    "answer": false,
-   "note_id": "357bd2ef-e6b7-48cf-a63e-bcb63a9817fd",
+   "note_id": "037891e0-fbae-4a89-86a9-d37e7f63979e",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -193,10 +193,10 @@
    "sha256": "b8f9632ab1d7968f82e1c10aaf0acedb08e93ec8202d8c7f5b92ff0410d60ddc"
   },
   {
-   "name": "occlusion_357bd2efe6b748cfa63ebcb63a9817fd_455d266168a38ce6.png",
+   "name": "occlusion_037891e0fbae4a8986a9d37e7f63979e_455d266168a38ce6.png",
    "kind": "occlusion",
    "answer": true,
-   "note_id": "357bd2ef-e6b7-48cf-a63e-bcb63a9817fd",
+   "note_id": "037891e0-fbae-4a89-86a9-d37e7f63979e",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -215,10 +215,10 @@
    "sha256": "23514c299dd2c972d52cf594ef2442dc173e88541019a217d82d0c7a4873b45a"
   },
   {
-   "name": "occlusion_b9c4146e392145abb733de99a124a9cc_962a9517a45f8759.png",
+   "name": "occlusion_a68bf856de4c40c1be437586b533f664_962a9517a45f8759.png",
    "kind": "occlusion",
    "answer": false,
-   "note_id": "b9c4146e-3921-45ab-b733-de99a124a9cc",
+   "note_id": "a68bf856-de4c-40c1-be43-7586b533f664",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -237,10 +237,10 @@
    "sha256": "dacd538c55d5462186b7e7de4aaa6ee1071e268f5bb1780203eae73fa8f6e0f4"
   },
   {
-   "name": "occlusion_b9c4146e392145abb733de99a124a9cc_0aa5bb197ff5eac5.png",
+   "name": "occlusion_a68bf856de4c40c1be437586b533f664_0aa5bb197ff5eac5.png",
    "kind": "occlusion",
    "answer": true,
-   "note_id": "b9c4146e-3921-45ab-b733-de99a124a9cc",
+   "note_id": "a68bf856-de4c-40c1-be43-7586b533f664",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -259,10 +259,10 @@
    "sha256": "454ca962142388ff4e74d32204f2329d8a43c77758b42e12d5719213b4523175"
   },
   {
-   "name": "visual_4b8fb66b77154d98b5e0338d69cca8ce_0d88533ffe005b7e.png",
+   "name": "visual_cfbb8c896e524f08912fdc33c886640c_0d88533ffe005b7e.png",
    "kind": "visual",
    "answer": false,
-   "note_id": "4b8fb66b-7715-4d98-b5e0-338d69cca8ce",
+   "note_id": "cfbb8c89-6e52-4f08-912f-dc33c886640c",
    "page": 4,
    "source_crop": {
     "left": 10,
@@ -290,10 +290,10 @@
    "sha256": "cb5c48fa0b9e929477a5788fe0f14f579ffa4ae1be9683bb5980cf75d8839719"
   },
   {
-   "name": "visual_4b8fb66b77154d98b5e0338d69cca8ce_c6f2d5efafbcce12.png",
+   "name": "visual_cfbb8c896e524f08912fdc33c886640c_c6f2d5efafbcce12.png",
    "kind": "visual",
    "answer": true,
-   "note_id": "4b8fb66b-7715-4d98-b5e0-338d69cca8ce",
+   "note_id": "cfbb8c89-6e52-4f08-912f-dc33c886640c",
    "page": 4,
    "source_crop": {
     "left": 10,
@@ -321,10 +321,10 @@
    "sha256": "54765fa1a38ddbd05b005430e071a0fbc488b6f35c85d53735f6861023022b7e"
   },
   {
-   "name": "occlusion_b2a8b486ae744a4b83e8981803635ff1_6a39145238552d01.png",
+   "name": "occlusion_c1c6a4c251fa4683b5f0807d53dad7b6_6a39145238552d01.png",
    "kind": "occlusion",
    "answer": false,
-   "note_id": "b2a8b486-ae74-4a4b-83e8-981803635ff1",
+   "note_id": "c1c6a4c2-51fa-4683-b5f0-807d53dad7b6",
    "page": 4,
    "source_crop": {},
    "occlusion": {
@@ -343,10 +343,10 @@
    "sha256": "86daecc7a1c11185a617b4e010aa6e6c3841f86668f0ed9d82c7a8bba5299207"
   },
   {
-   "name": "occlusion_b2a8b486ae744a4b83e8981803635ff1_946297cfd5359aa5.png",
+   "name": "occlusion_c1c6a4c251fa4683b5f0807d53dad7b6_946297cfd5359aa5.png",
    "kind": "occlusion",
    "answer": true,
-   "note_id": "b2a8b486-ae74-4a4b-83e8-981803635ff1",
+   "note_id": "c1c6a4c2-51fa-4683-b5f0-807d53dad7b6",
    "page": 4,
    "source_crop": {},
    "occlusion": {

@@ -16,8 +16,11 @@
     "test": "vitest run",
     "typecheck": "tsc -p app && tsc -p helper",
     "size": "node app/scripts/size.ts",
+    "serve": "node app/scripts/serve.ts 4173",
+    "e2e": "node app/e2e/workflow.mjs data/e2e",
     "export-fixture": "node app/scripts/export-fixture.ts",
-    "gen:unicode": "node app/scripts/gen-unicode.ts"
+    "gen:unicode": "node app/scripts/gen-unicode.ts",
+    "gen:genanki": "node app/scripts/gen-genanki.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

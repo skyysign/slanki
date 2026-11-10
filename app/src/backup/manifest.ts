@@ -9,6 +9,7 @@ import { isUuid } from "../core/ids.ts";
 import { CARD_FORMATS, LEARNING_FOCUSES, NOTE_TYPES } from "../core/noteTypes.ts";
 import { checkedContext } from "../core/overview.ts";
 import { cpLength, hasExactKeys, isInt, isPlainObject } from "../core/py.ts";
+import { compareNewest, compareNotes } from "../core/time.ts";
 
 export const MAX_PAGES = 100;
 export const RECALLOOM_FORMAT = "slides-to-anki";
@@ -471,9 +472,8 @@ export function upgradeManifest(raw: unknown): Manifest {
     });
   }
 
-  const created = (value: { created_at: string }) => Date.parse(value.created_at.replace(" ", "T"));
-  cards.sort((a, b) => a.page - b.page || created(a) - created(b));
-  runs.sort((a, b) => created(b) - created(a));
+  cards.sort(compareNotes);
+  runs.sort(compareNewest);
   return {
     format: SLANKI_FORMAT,
     version: SLANKI_VERSION,

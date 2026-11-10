@@ -84,92 +84,92 @@
  "media": [
   {
    "index": "0",
-   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png",
+   "name": "slides_5d52026a8909482c80ddce72630d9247_1.png",
    "sha256": "02e6a51d0ed7654b89f8cc479a824f200568de286e0cbc6666a54c95811a6a1c"
   },
   {
    "index": "1",
-   "name": "crop_bdbb4143678d4177a2ad5cd96cf4cb86_cf71884ad67d117a.png",
+   "name": "crop_5a2c494a1cfd4f62b28164c053ddb8a1_cf71884ad67d117a.png",
    "sha256": "cf71884ad67d117af9c86c1988141b24dd8acff43a3c1cca869bffe064bd2abe"
   },
   {
    "index": "2",
-   "name": "crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png",
+   "name": "crop_44de32891c944a6280f7e56c67fff62c_afbe7d4cb5c1b1ab.png",
    "sha256": "afbe7d4cb5c1b1ab51a341713002ac0854459625f1703cc06c02772fe8d3e4a3"
   },
   {
    "index": "3",
-   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png",
+   "name": "slides_5d52026a8909482c80ddce72630d9247_2.png",
    "sha256": "1584a6c8bd0f33fafb7d051eaf8aeb558dcd30ce38cbf9541f9fb1613de0edd3"
   },
   {
    "index": "4",
-   "name": "crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png",
+   "name": "crop_d549f50309e642ffa58e12c0b0532233_5264b5db795b56c1.png",
    "sha256": "5264b5db795b56c1554bb3cc8368a442d90009366803a533e217eab838f04797"
   },
   {
    "index": "5",
-   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_3.png",
+   "name": "slides_5d52026a8909482c80ddce72630d9247_3.png",
    "sha256": "77862be2885a522db1650bc2926b2fde61f7c79179bfcced1d3902b8c3c6897c"
   },
   {
    "index": "6",
-   "name": "crop_58ec013bfbe446deb88ec259077a5317_b543e69c3df6545f.png",
+   "name": "crop_8ca73bd9745f4f9aaad9c1a143e4cfc5_b543e69c3df6545f.png",
    "sha256": "b543e69c3df6545fc340e44e3a9a82f607d9ccc818314e3e4281a2d9ba0c780b"
   },
   {
    "index": "7",
-   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png",
+   "name": "slides_5d52026a8909482c80ddce72630d9247_4.png",
    "sha256": "c2b8ba380689961de6dbbe6a8bf6e38c4ce51481329588267c51cf0e25d4e549"
   },
   {
    "index": "8",
-   "name": "occlusion_f262d88fbd014e8d99854f2c2088814c_50df10db44ed58a7.png",
+   "name": "occlusion_098b8cd9672b4f9ab0f3b34f8b6684b4_50df10db44ed58a7.png",
    "sha256": "50df10db44ed58a79aedd8d673876cc52b7433127b9d2ee0f3d6574386458fea"
   },
   {
    "index": "9",
-   "name": "occlusion_f262d88fbd014e8d99854f2c2088814c_e121ef9c1b68ce65.png",
+   "name": "occlusion_098b8cd9672b4f9ab0f3b34f8b6684b4_e121ef9c1b68ce65.png",
    "sha256": "e121ef9c1b68ce65be30165e66acdd92410cbc19789b4b0cb3bad18b3ee0fa7d"
   },
   {
    "index": "10",
-   "name": "occlusion_357bd2efe6b748cfa63ebcb63a9817fd_b0621f5d95fd0f31.png",
+   "name": "occlusion_037891e0fbae4a8986a9d37e7f63979e_b0621f5d95fd0f31.png",
    "sha256": "b0621f5d95fd0f31659ad499c3e1bfca5983c86431bb141b4b5e146ffc22d686"
   },
   {
    "index": "11",
-   "name": "occlusion_357bd2efe6b748cfa63ebcb63a9817fd_455d266168a38ce6.png",
+   "name": "occlusion_037891e0fbae4a8986a9d37e7f63979e_455d266168a38ce6.png",
    "sha256": "455d266168a38ce62e3dce0f5f4a06f39da11bceba35cf282d01ed3cb695591a"
   },
   {
    "index": "12",
-   "name": "occlusion_b9c4146e392145abb733de99a124a9cc_962a9517a45f8759.png",
+   "name": "occlusion_a68bf856de4c40c1be437586b533f664_962a9517a45f8759.png",
    "sha256": "962a9517a45f875971a0fa34fb8b8badd739dd427455315e118c5e8481cc8389"
   },
   {
    "index": "13",
-   "name": "occlusion_b9c4146e392145abb733de99a124a9cc_0aa5bb197ff5eac5.png",
+   "name": "occlusion_a68bf856de4c40c1be437586b533f664_0aa5bb197ff5eac5.png",
    "sha256": "0aa5bb197ff5eac5534f0b0d4affe91c39f5c500d7fc4ed33d146b35d0ee891d"
   },
   {
    "index": "14",
-   "name": "visual_4b8fb66b77154d98b5e0338d69cca8ce_0d88533ffe005b7e.png",
+   "name": "visual_cfbb8c896e524f08912fdc33c886640c_0d88533ffe005b7e.png",
    "sha256": "0d88533ffe005b7e2cca7da99af8f4a8b386a1e1cc32f3e303e8fd6e402fd1bd"
   },
   {
    "index": "15",
-   "name": "visual_4b8fb66b77154d98b5e0338d69cca8ce_c6f2d5efafbcce12.png",
+   "name": "visual_cfbb8c896e524f08912fdc33c886640c_c6f2d5efafbcce12.png",
    "sha256": "c6f2d5efafbcce12973085597015baa709a605c5d62d8e15716344b6e907f843"
   },
   {
    "index": "16",
-   "name": "occlusion_b2a8b486ae744a4b83e8981803635ff1_6a39145238552d01.png",
+   "name": "occlusion_c1c6a4c251fa4683b5f0807d53dad7b6_6a39145238552d01.png",
    "sha256": "6a39145238552d015c8fe86162a1bdf5525616648aeb91624119605fce00b53e"
   },
   {
    "index": "17",
-   "name": "occlusion_b2a8b486ae744a4b83e8981803635ff1_946297cfd5359aa5.png",
+   "name": "occlusion_c1c6a4c251fa4683b5f0807d53dad7b6_946297cfd5359aa5.png",
    "sha256": "946297cfd5359aa5fc224bc691e89cb87632fc766da3cad650ece27a0c5dc0e2"
   }
  ],
@@ -202,7 +202,7 @@
   "models": {
    "1890487184": {
     "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
-    "did": 205187546995169,
+    "did": 278714702372520,
     "flds": [
      {
       "name": "Text",
@@ -236,7 +236,7 @@
     "latexPost": "\\end{document}",
     "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
     "latexsvg": false,
-    "mod": 1794317433,
+    "mod": 1794319720,
     "name": "Recalloom — Cloze v1",
     "req": [
      [
@@ -270,7 +270,7 @@
    },
    "1890487183": {
     "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
-    "did": 205187546995169,
+    "did": 278714702372520,
     "flds": [
      {
       "name": "Question",
@@ -304,7 +304,7 @@
     "latexPost": "\\end{document}",
     "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
     "latexsvg": false,
-    "mod": 1794317433,
+    "mod": 1794319720,
     "name": "Slides to Anki — Basic v1",
     "req": [
      [
@@ -336,7 +336,7 @@
    },
    "1890487185": {
     "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
-    "did": 205187546995169,
+    "did": 278714702372520,
     "flds": [
      {
       "name": "Front",
@@ -379,7 +379,7 @@
     "latexPost": "\\end{document}",
     "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
     "latexsvg": false,
-    "mod": 1794317433,
+    "mod": 1794319720,
     "name": "Recalloom — Basic + reverse v1",
     "req": [
      [
@@ -431,7 +431,7 @@
    },
    "1890487186": {
     "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
-    "did": 205187546995169,
+    "did": 278714702372520,
     "flds": [
      {
       "name": "Prompt",
@@ -483,7 +483,7 @@
     "latexPost": "\\end{document}",
     "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
     "latexsvg": false,
-    "mod": 1794317433,
+    "mod": 1794319720,
     "name": "Recalloom — Image occlusion v1",
     "req": [
      [
@@ -516,7 +516,7 @@
    },
    "1890487187": {
     "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
-    "did": 205187546995169,
+    "did": 278714702372520,
     "flds": [
      {
       "name": "Question",
@@ -568,7 +568,7 @@
     "latexPost": "\\end{document}",
     "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
     "latexsvg": false,
-    "mod": 1794317433,
+    "mod": 1794319720,
     "name": "Recalloom - Graph and formula v1",
     "req": [
      [
@@ -629,14 +629,14 @@
     ],
     "usn": 0
    },
-   "205187546995169": {
+   "278714702372520": {
     "collapsed": false,
     "conf": 1,
     "desc": "",
     "dyn": 0,
     "extendNew": 0,
     "extendRev": 50,
-    "id": 205187546995169,
+    "id": 278714702372520,
     "lrnToday": [
      163,
      2
@@ -706,163 +706,163 @@
   },
   "tags": {},
   "conf_text": "{\n        \"activeDecks\": [\n            1\n        ],\n        \"addToCur\": true,\n        \"collapseTime\": 1200,\n        \"curDeck\": 1,\n        \"curModel\": \"1425279151691\",\n        \"dueCounts\": true,\n        \"estTimes\": true,\n        \"newBury\": true,\n        \"newSpread\": 0,\n        \"nextPos\": 1,\n        \"sortBackwards\": false,\n        \"sortType\": \"noteFld\",\n        \"timeLim\": 0\n    }",
-  "models_text": "{\"1890487184\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Text\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Extra\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487184\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom \\u2014 Cloze v1\", \"req\": [[0, \"all\", [0, 1, 2]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Cloze\", \"qfmt\": \"{{cloze:Text}}\", \"afmt\": \"{{cloze:Text}}<hr id=\\\"answer\\\">{{Extra}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 1, \"usn\": -1, \"vers\": []}, \"1890487183\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Question\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Answer\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487183\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Slides to Anki \\u2014 Basic v1\", \"req\": [[0, \"all\", [0]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Card\", \"qfmt\": \"{{Question}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Answer}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487185\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Front\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Back\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"QuestionImage\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487185\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom \\u2014 Basic + reverse v1\", \"req\": [[0, \"any\", [0, 3]], [1, \"any\", [1, 3]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Front \\u2192 back\", \"qfmt\": \"{{Front}}{{QuestionImage}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Back}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}, {\"name\": \"Back \\u2192 front\", \"qfmt\": \"{{Back}}{{QuestionImage}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Front}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 1, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487186\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Prompt\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Hidden\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Revealed\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Extra\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 4, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487186\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom \\u2014 Image occlusion v1\", \"req\": [[0, \"any\", [0, 1]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Hidden region\", \"qfmt\": \"{{Prompt}}<br>{{Hidden}}\", \"afmt\": \"{{Prompt}}<br>{{Revealed}}<hr id=\\\"answer\\\">{{Extra}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487187\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Question\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Answer\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Hidden\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Revealed\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 4, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487187\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom - Graph and formula v1\", \"req\": [[0, \"any\", [0, 2]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Interpret the figure\", \"qfmt\": \"{{Question}}<br>{{Hidden}}\", \"afmt\": \"{{Question}}<br>{{Revealed}}<hr id=\\\"answer\\\">{{Answer}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}}",
-  "decks_text": "{\"1\": {\"collapsed\": false, \"conf\": 1, \"desc\": \"\", \"dyn\": 0, \"extendNew\": 10, \"extendRev\": 50, \"id\": 1, \"lrnToday\": [0, 0], \"mod\": 1425279151, \"name\": \"Default\", \"newToday\": [0, 0], \"revToday\": [0, 0], \"timeToday\": [0, 0], \"usn\": 0}, \"205187546995169\": {\"collapsed\": false, \"conf\": 1, \"desc\": \"\", \"dyn\": 0, \"extendNew\": 0, \"extendRev\": 50, \"id\": 205187546995169, \"lrnToday\": [163, 2], \"mod\": 1425278051, \"name\": \"Golden \\\"Memory\\\" & <learning>  \\u2014  sample\", \"newToday\": [163, 2], \"revToday\": [163, 0], \"timeToday\": [163, 23598], \"usn\": -1}}",
+  "models_text": "{\"1890487184\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 278714702372520, \"flds\": [{\"name\": \"Text\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Extra\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487184\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794319720, \"name\": \"Recalloom \\u2014 Cloze v1\", \"req\": [[0, \"all\", [0, 1, 2]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Cloze\", \"qfmt\": \"{{cloze:Text}}\", \"afmt\": \"{{cloze:Text}}<hr id=\\\"answer\\\">{{Extra}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 1, \"usn\": -1, \"vers\": []}, \"1890487183\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 278714702372520, \"flds\": [{\"name\": \"Question\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Answer\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487183\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794319720, \"name\": \"Slides to Anki \\u2014 Basic v1\", \"req\": [[0, \"all\", [0]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Card\", \"qfmt\": \"{{Question}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Answer}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487185\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 278714702372520, \"flds\": [{\"name\": \"Front\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Back\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"QuestionImage\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487185\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794319720, \"name\": \"Recalloom \\u2014 Basic + reverse v1\", \"req\": [[0, \"any\", [0, 3]], [1, \"any\", [1, 3]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Front \\u2192 back\", \"qfmt\": \"{{Front}}{{QuestionImage}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Back}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}, {\"name\": \"Back \\u2192 front\", \"qfmt\": \"{{Back}}{{QuestionImage}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Front}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 1, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487186\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 278714702372520, \"flds\": [{\"name\": \"Prompt\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Hidden\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Revealed\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Extra\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 4, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487186\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794319720, \"name\": \"Recalloom \\u2014 Image occlusion v1\", \"req\": [[0, \"any\", [0, 1]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Hidden region\", \"qfmt\": \"{{Prompt}}<br>{{Hidden}}\", \"afmt\": \"{{Prompt}}<br>{{Revealed}}<hr id=\\\"answer\\\">{{Extra}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487187\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 278714702372520, \"flds\": [{\"name\": \"Question\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Answer\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Hidden\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Revealed\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 4, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487187\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794319720, \"name\": \"Recalloom - Graph and formula v1\", \"req\": [[0, \"any\", [0, 2]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Interpret the figure\", \"qfmt\": \"{{Question}}<br>{{Hidden}}\", \"afmt\": \"{{Question}}<br>{{Revealed}}<hr id=\\\"answer\\\">{{Answer}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}}",
+  "decks_text": "{\"1\": {\"collapsed\": false, \"conf\": 1, \"desc\": \"\", \"dyn\": 0, \"extendNew\": 10, \"extendRev\": 50, \"id\": 1, \"lrnToday\": [0, 0], \"mod\": 1425279151, \"name\": \"Default\", \"newToday\": [0, 0], \"revToday\": [0, 0], \"timeToday\": [0, 0], \"usn\": 0}, \"278714702372520\": {\"collapsed\": false, \"conf\": 1, \"desc\": \"\", \"dyn\": 0, \"extendNew\": 0, \"extendRev\": 50, \"id\": 278714702372520, \"lrnToday\": [163, 2], \"mod\": 1425278051, \"name\": \"Golden \\\"Memory\\\" & <learning>  \\u2014  sample\", \"newToday\": [163, 2], \"revToday\": [163, 0], \"timeToday\": [163, 23598], \"usn\": -1}}",
   "dconf_text": "{\n        \"1\": {\n            \"autoplay\": true,\n            \"id\": 1,\n            \"lapse\": {\n                \"delays\": [\n                    10\n                ],\n                \"leechAction\": 0,\n                \"leechFails\": 8,\n                \"minInt\": 1,\n                \"mult\": 0\n            },\n            \"maxTaken\": 60,\n            \"mod\": 0,\n            \"name\": \"Default\",\n            \"new\": {\n                \"bury\": true,\n                \"delays\": [\n                    1,\n                    10\n                ],\n                \"initialFactor\": 2500,\n                \"ints\": [\n                    1,\n                    4,\n                    7\n                ],\n                \"order\": 1,\n                \"perDay\": 20,\n                \"separate\": true\n            },\n            \"replayq\": true,\n            \"rev\": {\n                \"bury\": true,\n                \"ease4\": 1.3,\n                \"fuzz\": 0.05,\n                \"ivlFct\": 1,\n                \"maxIvl\": 36500,\n                \"minSpace\": 1,\n                \"perDay\": 100\n            },\n            \"timer\": 0,\n            \"usn\": 0\n        }\n    }",
   "tags_text": "{}"
  },
  "notes": [
   {
-   "guid": "x1q7[qm76g",
+   "guid": "Q]Mh~toX_a",
    "mid": 1890487184,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "A {{c1::retrieval attempt}} happens before looking at the {{c2::answer::what?}}.\u001fEdited extra\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>A retrieval attempt happens before looking at the answer.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png\">",
+   "flds": "A {{c1::retrieval attempt}} happens before looking at the {{c2::answer::what?}}.\u001fEdited extra\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>A retrieval attempt happens before looking at the answer.<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_1.png\">",
    "sfld": "A {{c1::retrieval attempt}} happens before looking at the {{c2::answer::what?}}.",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "P]K8Ougo1l",
+   "guid": "pB{z{r=`*C",
    "mid": 1890487183,
-   "mod": 1794317435,
+   "mod": 1794319721,
    "usn": -1,
    "tags": "  ",
-   "flds": "What is retrieval practice?\u001fRecalling information from memory.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>Retrieval practice means trying to recall information from memory.<br><img class=\"source-crop\" src=\"crop_bdbb4143678d4177a2ad5cd96cf4cb86_cf71884ad67d117a.png\"><br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png\">",
+   "flds": "What is retrieval practice?\u001fRecalling information from memory.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>Retrieval practice means trying to recall information from memory.<br><img class=\"source-crop\" src=\"crop_5a2c494a1cfd4f62b28164c053ddb8a1_cf71884ad67d117a.png\"><br><img src=\"slides_5d52026a8909482c80ddce72630d9247_1.png\">",
    "sfld": "What is retrieval practice?",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "p]/wrq_hi&",
+   "guid": "pBPah>fhxG",
    "mid": 1890487183,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Why &quot;escape&quot; &lt;tags&gt; &amp; &#x27;quotes&#x27;?<br>Second line<br><img class=\"source-crop\" src=\"crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png\">\u001fBecause &amp; &lt; &gt; matter.<br>Line 2 «ß» 𝑥²\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>Checking the answer gives feedback after the attempt.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png\">",
-   "sfld": "Why &quot;escape&quot; &lt;tags&gt; &amp; &#x27;quotes&#x27;?<br>Second line<br><img class=\"source-crop\" src=\"crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png\">",
+   "flds": "Why &quot;escape&quot; &lt;tags&gt; &amp; &#x27;quotes&#x27;?<br>Second line<br><img class=\"source-crop\" src=\"crop_44de32891c944a6280f7e56c67fff62c_afbe7d4cb5c1b1ab.png\">\u001fBecause &amp; &lt; &gt; matter.<br>Line 2 «ß» 𝑥²\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>Checking the answer gives feedback after the attempt.<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_1.png\">",
+   "sfld": "Why &quot;escape&quot; &lt;tags&gt; &amp; &#x27;quotes&#x27;?<br>Second line<br><img class=\"source-crop\" src=\"crop_44de32891c944a6280f7e56c67fff62c_afbe7d4cb5c1b1ab.png\">",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "FxU7;fuOVI",
+   "guid": "m>Mj*R9Fqq",
    "mid": 1890487183,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Generated question for page 2?\u001fGenerated answer.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br>Spaced practice distributes study sessions over time.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png\">",
+   "flds": "Generated question for page 2?\u001fGenerated answer.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br>Spaced practice distributes study sessions over time.<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_2.png\">",
    "sfld": "Generated question for page 2?",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "EF2xyb;8[(",
+   "guid": "tOmGmp__]t",
    "mid": 1890487184,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Spaced practice {{c1::distributes}} study sessions over {{c2::time::when?}}.\u001fExtra explanation.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br>Spaced practice distributes study sessions over time.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png\">",
+   "flds": "Spaced practice {{c1::distributes}} study sessions over {{c2::time::when?}}.\u001fExtra explanation.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br>Spaced practice distributes study sessions over time.<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_2.png\">",
    "sfld": "Spaced practice {{c1::distributes}} study sessions over {{c2::time::when?}}.",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "vhSrOSs7(;",
+   "guid": "fDe[|cUU/!",
    "mid": 1890487184,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.<br><img class=\"source-crop\" src=\"crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png\">\u001f\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png\">",
-   "sfld": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.<br><img class=\"source-crop\" src=\"crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png\">",
+   "flds": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.<br><img class=\"source-crop\" src=\"crop_d549f50309e642ffa58e12c0b0532233_5264b5db795b56c1.png\">\u001f\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_2.png\">",
+   "sfld": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.<br><img class=\"source-crop\" src=\"crop_d549f50309e642ffa58e12c0b0532233_5264b5db795b56c1.png\">",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "r]ei{u-8~4",
+   "guid": "Lso$@>sI=f",
    "mid": 1890487185,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Atomic card\u001fA card that tests one clear idea.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 3<br>An atomic card tests one clear idea.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_3.png\">\u001f<br><img class=\"source-crop\" src=\"crop_58ec013bfbe446deb88ec259077a5317_b543e69c3df6545f.png\">",
+   "flds": "Atomic card\u001fA card that tests one clear idea.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 3<br>An atomic card tests one clear idea.<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_3.png\">\u001f<br><img class=\"source-crop\" src=\"crop_8ca73bd9745f4f9aaad9c1a143e4cfc5_b543e69c3df6545f.png\">",
    "sfld": "Atomic card",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "D[np=s`8{C",
+   "guid": "AY[`KaU7rF",
    "mid": 1890487183,
-   "mod": 1794317436,
+   "mod": 1794319722,
    "usn": -1,
    "tags": "  ",
-   "flds": "Was ist eine Straße? 𝑥² ✓\u001fEin Weg.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 3<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_3.png\">",
+   "flds": "Was ist eine Straße? 𝑥² ✓\u001fEin Weg.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 3<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_3.png\">",
    "sfld": "Was ist eine Straße? 𝑥² ✓",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "k;s`F|%|mf",
+   "guid": "Q?#53fDgAt",
    "mid": 1890487186,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_f262d88fbd014e8d99854f2c2088814c_50df10db44ed58a7.png\">\u001f<img class=\"source-crop\" src=\"occlusion_f262d88fbd014e8d99854f2c2088814c_e121ef9c1b68ce65.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_098b8cd9672b4f9ab0f3b34f8b6684b4_50df10db44ed58a7.png\">\u001f<img class=\"source-crop\" src=\"occlusion_098b8cd9672b4f9ab0f3b34f8b6684b4_e121ef9c1b68ce65.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_4.png\">",
    "sfld": "Name the hidden part.",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "M-s`e=uI.C",
+   "guid": "o93]<4Vwa",
    "mid": 1890487186,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_357bd2efe6b748cfa63ebcb63a9817fd_b0621f5d95fd0f31.png\">\u001f<img class=\"source-crop\" src=\"occlusion_357bd2efe6b748cfa63ebcb63a9817fd_455d266168a38ce6.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_037891e0fbae4a8986a9d37e7f63979e_b0621f5d95fd0f31.png\">\u001f<img class=\"source-crop\" src=\"occlusion_037891e0fbae4a8986a9d37e7f63979e_455d266168a38ce6.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_4.png\">",
    "sfld": "Name the hidden part.",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "i0R_U9WIgn",
+   "guid": "LW0q0&G+[I",
    "mid": 1890487186,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_b9c4146e392145abb733de99a124a9cc_962a9517a45f8759.png\">\u001f<img class=\"source-crop\" src=\"occlusion_b9c4146e392145abb733de99a124a9cc_0aa5bb197ff5eac5.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_a68bf856de4c40c1be437586b533f664_962a9517a45f8759.png\">\u001f<img class=\"source-crop\" src=\"occlusion_a68bf856de4c40c1be437586b533f664_0aa5bb197ff5eac5.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_4.png\">",
    "sfld": "Name the hidden part.",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "riw@Mpap+$",
+   "guid": "z(F)Qq<ebx",
    "mid": 1890487187,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "What relationship does the figure on page 4 illustrate?\u001fAnswer-only explanation\u001f<img class=\"source-crop\" src=\"visual_4b8fb66b77154d98b5e0338d69cca8ce_0d88533ffe005b7e.png\">\u001f<img class=\"source-crop\" src=\"visual_4b8fb66b77154d98b5e0338d69cca8ce_c6f2d5efafbcce12.png\">\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "flds": "What relationship does the figure on page 4 illustrate?\u001fAnswer-only explanation\u001f<img class=\"source-crop\" src=\"visual_cfbb8c896e524f08912fdc33c886640c_0d88533ffe005b7e.png\">\u001f<img class=\"source-crop\" src=\"visual_cfbb8c896e524f08912fdc33c886640c_c6f2d5efafbcce12.png\">\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_4.png\">",
    "sfld": "What relationship does the figure on page 4 illustrate?",
    "csum": 0,
    "flags": 0,
    "data": ""
   },
   {
-   "guid": "f_Cj5pB&(M",
+   "guid": "g2p}<=0kbZ",
    "mid": 1890487186,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "tags": "  ",
-   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_b2a8b486ae744a4b83e8981803635ff1_6a39145238552d01.png\">\u001f<img class=\"source-crop\" src=\"occlusion_b2a8b486ae744a4b83e8981803635ff1_946297cfd5359aa5.png\">\u001fAccepted label explanation\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_c1c6a4c251fa4683b5f0807d53dad7b6_6a39145238552d01.png\">\u001f<img class=\"source-crop\" src=\"occlusion_c1c6a4c251fa4683b5f0807d53dad7b6_946297cfd5359aa5.png\">\u001fAccepted label explanation\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_5d52026a8909482c80ddce72630d9247_4.png\">",
    "sfld": "Name the hidden part.",
    "csum": 0,
    "flags": 0,
@@ -871,9 +871,9 @@
  ],
  "cards": [
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -887,12 +887,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "x1q7[qm76g"
+   "note_guid": "Q]Mh~toX_a"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 1,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -906,12 +906,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "x1q7[qm76g"
+   "note_guid": "Q]Mh~toX_a"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317435,
+   "mod": 1794319721,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -925,12 +925,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "P]K8Ougo1l"
+   "note_guid": "pB{z{r=`*C"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -944,12 +944,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "p]/wrq_hi&"
+   "note_guid": "pBPah>fhxG"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -963,12 +963,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "FxU7;fuOVI"
+   "note_guid": "m>Mj*R9Fqq"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -982,12 +982,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "EF2xyb;8[("
+   "note_guid": "tOmGmp__]t"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 1,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1001,12 +1001,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "EF2xyb;8[("
+   "note_guid": "tOmGmp__]t"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1020,12 +1020,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "vhSrOSs7(;"
+   "note_guid": "fDe[|cUU/!"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 2,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1039,12 +1039,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "vhSrOSs7(;"
+   "note_guid": "fDe[|cUU/!"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1058,12 +1058,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "r]ei{u-8~4"
+   "note_guid": "Lso$@>sI=f"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 1,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1077,12 +1077,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "r]ei{u-8~4"
+   "note_guid": "Lso$@>sI=f"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317436,
+   "mod": 1794319722,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1096,12 +1096,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "D[np=s`8{C"
+   "note_guid": "AY[`KaU7rF"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1115,12 +1115,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "k;s`F|%|mf"
+   "note_guid": "Q?#53fDgAt"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1134,12 +1134,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "M-s`e=uI.C"
+   "note_guid": "o93]<4Vwa"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1153,12 +1153,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "i0R_U9WIgn"
+   "note_guid": "LW0q0&G+[I"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1172,12 +1172,12 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "riw@Mpap+$"
+   "note_guid": "z(F)Qq<ebx"
   },
   {
-   "did": 205187546995169,
+   "did": 278714702372520,
    "ord": 0,
-   "mod": 1794317434,
+   "mod": 1794319720,
    "usn": -1,
    "type": 0,
    "queue": 0,
@@ -1191,7 +1191,7 @@
    "odid": 0,
    "flags": 0,
    "data": "",
-   "note_guid": "f_Cj5pB&(M"
+   "note_guid": "g2p}<=0kbZ"
   }
  ],
  "revlog": [],

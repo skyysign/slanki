@@ -2185,6 +2185,20 @@ def main():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
+    # Windows clock resolution lets records created together share a timestamp,
+    # which makes "newest first" orderings arbitrary. Tick 1 ms per call instead.
+    from datetime import timedelta
+
+    from django.utils import timezone as django_timezone
+
+    clock = {"now": django_timezone.now()}
+
+    def ticking_now():
+        clock["now"] += timedelta(milliseconds=1)
+        return clock["now"]
+
+    clock_patch = patch("django.utils.timezone.now", ticking_now)
+    clock_patch.start()
     try:
         write_json("unicode.json", unicode_tables())
         write_json("text.json", text_vectors())
@@ -2199,6 +2213,7 @@ def main():
             json.dumps({k: v for k, v in summary.items() if k != "title"}),
         )
     finally:
+        clock_patch.stop()
         from django.db import connections
 
         connections.close_all()

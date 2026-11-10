@@ -1,0 +1,27 @@
+# Only the web app and the npm workspace manifests are needed to build Slanki.
+# This also guarantees that private lecture data in data/ is never uploaded.
+/data
+/.venv
+/node_modules
+/converter
+/config
+/tests
+/tools
+/docs
+/app/test
+/app/dist
+/backups
+/exports
+/uploads
+*.apkg
+*.sqlite3
+*.db
+/study-srs-*
+/build_research_artifacts.py
+/verify_research_artifacts.py
+/manage.py
+/start.cmd
+/requirements*.txt
+/pyproject.toml
+/.codex
+/.artifact-browser

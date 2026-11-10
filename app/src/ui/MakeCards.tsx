@@ -146,12 +146,18 @@ export function MakeCardsDialog({ open, bundle, onClose }: { open: boolean; bund
                 {ready ? "Change" : "Connect"}
               </button>
             </div>
-            {ready && !consented && (
+            {ready && (
               <label class="check" style={{ marginTop: "12px" }}>
                 <input
                   type="checkbox"
-                  checked={false}
-                  onChange={() => savePreferences({ consented: [...prefs.consented, prefs.provider] })}
+                  checked={consented}
+                  onChange={(event) =>
+                    savePreferences({
+                      consented: event.currentTarget.checked
+                        ? [...new Set([...prefs.consented, prefs.provider])]
+                        : prefs.consented.filter((provider) => provider !== prefs.provider),
+                    })
+                  }
                 />
                 <span class="small">
                   Send the text of this lecture's slides, and up to 200 of its existing questions, to {PROVIDER_LABELS[prefs.provider]} through my

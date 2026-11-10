@@ -23,7 +23,7 @@ Status: personal alpha on branch `slanki`; see [docs/STATUS.md](docs/STATUS.md).
 npx slanki@1
 ```
 
-The helper prints and opens a connection link (one-time code, valid two minutes; press Enter for a new one). Chrome/Edge then ask whether the site may access apps on your device: choose **Allow**. Sign in to your CLI the normal way first (`codex login` or `claude auth login`). The helper only runs your CLI with tools disabled, one prompt at a time; keep its window open while cards are made. `npx slanki@1 --reset` disconnects every paired browser. The npm package is not published yet; until then run `npm run build` and `node helper/dist/slanki.mjs`.
+The helper prints and opens a connection link (one-time code, valid two minutes; press Enter for a new one). Chrome/Edge then ask whether the site may access apps on your device: choose **Allow**. Sign in to your CLI the normal way first (`codex login` or `claude auth login`). The helper only runs your CLI with tools disabled, one prompt at a time; keep its window open while cards are made. `npx slanki@1 --reset` disconnects every paired browser. The npm package is not published and the website is not deployed yet; until then run `npm install`, `npm run build` and `node helper/dist/slanki.mjs --local`, which opens the helper's own copy of Slanki at `http://127.0.0.1:47213`.
 
 ## Develop Slanki
 

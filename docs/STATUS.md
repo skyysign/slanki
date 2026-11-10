@@ -122,7 +122,7 @@ New lectures validate against their own pdf.js text; imported lectures keep thei
 ### Next steps
 
 1. **User migration check:**
-   - Import the three backups from `data/backups/pre-slanki-20261110/` into Slanki. Local preview: `npm run build`, then `node helper/dist/slanki.mjs`.
+   - Import the three backups from `data/backups/pre-slanki-20261110/` into Slanki. Local preview: `npm install`, `npm run build`, then `node helper/dist/slanki.mjs --local`, which opens `http://127.0.0.1:47213` with the user's Codex or Claude connected.
    - Export one lecture and import it into Anki.
    - Confirm that reviewed cards keep their schedule.
 2. **User decisions:**

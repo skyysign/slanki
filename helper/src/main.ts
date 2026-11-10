@@ -18,6 +18,7 @@ const HELP = `Slanki helper ${VERSION}
 
 Usage: npx slanki@1 [options]
 
+  --local              open the copy of Slanki served by this helper (also for Safari)
   --no-open            do not open the browser
   --reset              forget paired browsers (new connection token)
   --allow-origin URL   also allow this web origin (development only)
@@ -127,7 +128,8 @@ async function main() {
       console.log(`  ${label}: ${status.installed ? status.message : "not found"}${status.signedIn === "no" && status.login ? `  (run: ${status.login})` : ""}`);
     });
     console.log("\nPress Ctrl+C to stop.\n");
-    if (!args.includes("--no-open")) openBrowser(`${APP_ORIGIN}/#pair=${PORT}.${code}`);
+    const target = args.includes("--local") && staticRoot() ? local : APP_ORIGIN;
+    if (!args.includes("--no-open")) openBrowser(`${target}/#pair=${PORT}.${code}`);
     createInterface({ input: process.stdin }).on("line", () => announce(pairing.issue()));
   });
   const stop = () => {

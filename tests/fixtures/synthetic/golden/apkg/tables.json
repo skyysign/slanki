@@ -1,0 +1,1213 @@
+{
+ "entries": [
+  {
+   "name": "collection.anki2",
+   "compress_type": 8
+  },
+  {
+   "name": "media",
+   "compress_type": 8
+  },
+  {
+   "name": "0",
+   "compress_type": 8
+  },
+  {
+   "name": "1",
+   "compress_type": 8
+  },
+  {
+   "name": "2",
+   "compress_type": 8
+  },
+  {
+   "name": "3",
+   "compress_type": 8
+  },
+  {
+   "name": "4",
+   "compress_type": 8
+  },
+  {
+   "name": "5",
+   "compress_type": 8
+  },
+  {
+   "name": "6",
+   "compress_type": 8
+  },
+  {
+   "name": "7",
+   "compress_type": 8
+  },
+  {
+   "name": "8",
+   "compress_type": 8
+  },
+  {
+   "name": "9",
+   "compress_type": 8
+  },
+  {
+   "name": "10",
+   "compress_type": 8
+  },
+  {
+   "name": "11",
+   "compress_type": 8
+  },
+  {
+   "name": "12",
+   "compress_type": 8
+  },
+  {
+   "name": "13",
+   "compress_type": 8
+  },
+  {
+   "name": "14",
+   "compress_type": 8
+  },
+  {
+   "name": "15",
+   "compress_type": 8
+  },
+  {
+   "name": "16",
+   "compress_type": 8
+  },
+  {
+   "name": "17",
+   "compress_type": 8
+  }
+ ],
+ "media": [
+  {
+   "index": "0",
+   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png",
+   "sha256": "02e6a51d0ed7654b89f8cc479a824f200568de286e0cbc6666a54c95811a6a1c"
+  },
+  {
+   "index": "1",
+   "name": "crop_bdbb4143678d4177a2ad5cd96cf4cb86_cf71884ad67d117a.png",
+   "sha256": "cf71884ad67d117af9c86c1988141b24dd8acff43a3c1cca869bffe064bd2abe"
+  },
+  {
+   "index": "2",
+   "name": "crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png",
+   "sha256": "afbe7d4cb5c1b1ab51a341713002ac0854459625f1703cc06c02772fe8d3e4a3"
+  },
+  {
+   "index": "3",
+   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png",
+   "sha256": "1584a6c8bd0f33fafb7d051eaf8aeb558dcd30ce38cbf9541f9fb1613de0edd3"
+  },
+  {
+   "index": "4",
+   "name": "crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png",
+   "sha256": "5264b5db795b56c1554bb3cc8368a442d90009366803a533e217eab838f04797"
+  },
+  {
+   "index": "5",
+   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_3.png",
+   "sha256": "77862be2885a522db1650bc2926b2fde61f7c79179bfcced1d3902b8c3c6897c"
+  },
+  {
+   "index": "6",
+   "name": "crop_58ec013bfbe446deb88ec259077a5317_b543e69c3df6545f.png",
+   "sha256": "b543e69c3df6545fc340e44e3a9a82f607d9ccc818314e3e4281a2d9ba0c780b"
+  },
+  {
+   "index": "7",
+   "name": "slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png",
+   "sha256": "c2b8ba380689961de6dbbe6a8bf6e38c4ce51481329588267c51cf0e25d4e549"
+  },
+  {
+   "index": "8",
+   "name": "occlusion_f262d88fbd014e8d99854f2c2088814c_50df10db44ed58a7.png",
+   "sha256": "50df10db44ed58a79aedd8d673876cc52b7433127b9d2ee0f3d6574386458fea"
+  },
+  {
+   "index": "9",
+   "name": "occlusion_f262d88fbd014e8d99854f2c2088814c_e121ef9c1b68ce65.png",
+   "sha256": "e121ef9c1b68ce65be30165e66acdd92410cbc19789b4b0cb3bad18b3ee0fa7d"
+  },
+  {
+   "index": "10",
+   "name": "occlusion_357bd2efe6b748cfa63ebcb63a9817fd_b0621f5d95fd0f31.png",
+   "sha256": "b0621f5d95fd0f31659ad499c3e1bfca5983c86431bb141b4b5e146ffc22d686"
+  },
+  {
+   "index": "11",
+   "name": "occlusion_357bd2efe6b748cfa63ebcb63a9817fd_455d266168a38ce6.png",
+   "sha256": "455d266168a38ce62e3dce0f5f4a06f39da11bceba35cf282d01ed3cb695591a"
+  },
+  {
+   "index": "12",
+   "name": "occlusion_b9c4146e392145abb733de99a124a9cc_962a9517a45f8759.png",
+   "sha256": "962a9517a45f875971a0fa34fb8b8badd739dd427455315e118c5e8481cc8389"
+  },
+  {
+   "index": "13",
+   "name": "occlusion_b9c4146e392145abb733de99a124a9cc_0aa5bb197ff5eac5.png",
+   "sha256": "0aa5bb197ff5eac5534f0b0d4affe91c39f5c500d7fc4ed33d146b35d0ee891d"
+  },
+  {
+   "index": "14",
+   "name": "visual_4b8fb66b77154d98b5e0338d69cca8ce_0d88533ffe005b7e.png",
+   "sha256": "0d88533ffe005b7e2cca7da99af8f4a8b386a1e1cc32f3e303e8fd6e402fd1bd"
+  },
+  {
+   "index": "15",
+   "name": "visual_4b8fb66b77154d98b5e0338d69cca8ce_c6f2d5efafbcce12.png",
+   "sha256": "c6f2d5efafbcce12973085597015baa709a605c5d62d8e15716344b6e907f843"
+  },
+  {
+   "index": "16",
+   "name": "occlusion_b2a8b486ae744a4b83e8981803635ff1_6a39145238552d01.png",
+   "sha256": "6a39145238552d015c8fe86162a1bdf5525616648aeb91624119605fce00b53e"
+  },
+  {
+   "index": "17",
+   "name": "occlusion_b2a8b486ae744a4b83e8981803635ff1_946297cfd5359aa5.png",
+   "sha256": "946297cfd5359aa5fc224bc691e89cb87632fc766da3cad650ece27a0c5dc0e2"
+  }
+ ],
+ "col": {
+  "id": 1,
+  "crt": 1411124400,
+  "mod": 1425279151694,
+  "scm": 1425279151690,
+  "ver": 11,
+  "dty": 0,
+  "usn": 0,
+  "ls": 0,
+  "conf": {
+   "activeDecks": [
+    1
+   ],
+   "addToCur": true,
+   "collapseTime": 1200,
+   "curDeck": 1,
+   "curModel": "1425279151691",
+   "dueCounts": true,
+   "estTimes": true,
+   "newBury": true,
+   "newSpread": 0,
+   "nextPos": 1,
+   "sortBackwards": false,
+   "sortType": "noteFld",
+   "timeLim": 0
+  },
+  "models": {
+   "1890487184": {
+    "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
+    "did": 205187546995169,
+    "flds": [
+     {
+      "name": "Text",
+      "ord": 0,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Extra",
+      "ord": 1,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Source",
+      "ord": 2,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     }
+    ],
+    "id": "1890487184",
+    "latexPost": "\\end{document}",
+    "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
+    "latexsvg": false,
+    "mod": 1794317433,
+    "name": "Recalloom — Cloze v1",
+    "req": [
+     [
+      0,
+      "all",
+      [
+       0,
+       1,
+       2
+      ]
+     ]
+    ],
+    "sortf": 0,
+    "tags": [],
+    "tmpls": [
+     {
+      "name": "Cloze",
+      "qfmt": "{{cloze:Text}}",
+      "afmt": "{{cloze:Text}}<hr id=\"answer\">{{Extra}}<div class=\"source\">{{Source}}</div>",
+      "ord": 0,
+      "bafmt": "",
+      "bqfmt": "",
+      "bfont": "",
+      "bsize": 0,
+      "did": null
+     }
+    ],
+    "type": 1,
+    "usn": -1,
+    "vers": []
+   },
+   "1890487183": {
+    "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
+    "did": 205187546995169,
+    "flds": [
+     {
+      "name": "Question",
+      "ord": 0,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Answer",
+      "ord": 1,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Source",
+      "ord": 2,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     }
+    ],
+    "id": "1890487183",
+    "latexPost": "\\end{document}",
+    "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
+    "latexsvg": false,
+    "mod": 1794317433,
+    "name": "Slides to Anki — Basic v1",
+    "req": [
+     [
+      0,
+      "all",
+      [
+       0
+      ]
+     ]
+    ],
+    "sortf": 0,
+    "tags": [],
+    "tmpls": [
+     {
+      "name": "Card",
+      "qfmt": "{{Question}}",
+      "afmt": "{{FrontSide}}<hr id=\"answer\">{{Answer}}<div class=\"source\">{{Source}}</div>",
+      "ord": 0,
+      "bafmt": "",
+      "bqfmt": "",
+      "bfont": "",
+      "bsize": 0,
+      "did": null
+     }
+    ],
+    "type": 0,
+    "usn": -1,
+    "vers": []
+   },
+   "1890487185": {
+    "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
+    "did": 205187546995169,
+    "flds": [
+     {
+      "name": "Front",
+      "ord": 0,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Back",
+      "ord": 1,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Source",
+      "ord": 2,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "QuestionImage",
+      "ord": 3,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     }
+    ],
+    "id": "1890487185",
+    "latexPost": "\\end{document}",
+    "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
+    "latexsvg": false,
+    "mod": 1794317433,
+    "name": "Recalloom — Basic + reverse v1",
+    "req": [
+     [
+      0,
+      "any",
+      [
+       0,
+       3
+      ]
+     ],
+     [
+      1,
+      "any",
+      [
+       1,
+       3
+      ]
+     ]
+    ],
+    "sortf": 0,
+    "tags": [],
+    "tmpls": [
+     {
+      "name": "Front → back",
+      "qfmt": "{{Front}}{{QuestionImage}}",
+      "afmt": "{{FrontSide}}<hr id=\"answer\">{{Back}}<div class=\"source\">{{Source}}</div>",
+      "ord": 0,
+      "bafmt": "",
+      "bqfmt": "",
+      "bfont": "",
+      "bsize": 0,
+      "did": null
+     },
+     {
+      "name": "Back → front",
+      "qfmt": "{{Back}}{{QuestionImage}}",
+      "afmt": "{{FrontSide}}<hr id=\"answer\">{{Front}}<div class=\"source\">{{Source}}</div>",
+      "ord": 1,
+      "bafmt": "",
+      "bqfmt": "",
+      "bfont": "",
+      "bsize": 0,
+      "did": null
+     }
+    ],
+    "type": 0,
+    "usn": -1,
+    "vers": []
+   },
+   "1890487186": {
+    "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
+    "did": 205187546995169,
+    "flds": [
+     {
+      "name": "Prompt",
+      "ord": 0,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Hidden",
+      "ord": 1,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Revealed",
+      "ord": 2,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Extra",
+      "ord": 3,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Source",
+      "ord": 4,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     }
+    ],
+    "id": "1890487186",
+    "latexPost": "\\end{document}",
+    "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
+    "latexsvg": false,
+    "mod": 1794317433,
+    "name": "Recalloom — Image occlusion v1",
+    "req": [
+     [
+      0,
+      "any",
+      [
+       0,
+       1
+      ]
+     ]
+    ],
+    "sortf": 0,
+    "tags": [],
+    "tmpls": [
+     {
+      "name": "Hidden region",
+      "qfmt": "{{Prompt}}<br>{{Hidden}}",
+      "afmt": "{{Prompt}}<br>{{Revealed}}<hr id=\"answer\">{{Extra}}<div class=\"source\">{{Source}}</div>",
+      "ord": 0,
+      "bafmt": "",
+      "bqfmt": "",
+      "bfont": "",
+      "bsize": 0,
+      "did": null
+     }
+    ],
+    "type": 0,
+    "usn": -1,
+    "vers": []
+   },
+   "1890487187": {
+    "css": ".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\n.nightMode.card { color: #e7eee8; background: #202825; }\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\n.cloze { font-weight: bold; color: #235945; }\n.nightMode .cloze { color: #9bcfb5; }",
+    "did": 205187546995169,
+    "flds": [
+     {
+      "name": "Question",
+      "ord": 0,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Answer",
+      "ord": 1,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Hidden",
+      "ord": 2,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Revealed",
+      "ord": 3,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     },
+     {
+      "name": "Source",
+      "ord": 4,
+      "font": "Liberation Sans",
+      "media": [],
+      "rtl": false,
+      "size": 20,
+      "sticky": false
+     }
+    ],
+    "id": "1890487187",
+    "latexPost": "\\end{document}",
+    "latexPre": "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
+    "latexsvg": false,
+    "mod": 1794317433,
+    "name": "Recalloom - Graph and formula v1",
+    "req": [
+     [
+      0,
+      "any",
+      [
+       0,
+       2
+      ]
+     ]
+    ],
+    "sortf": 0,
+    "tags": [],
+    "tmpls": [
+     {
+      "name": "Interpret the figure",
+      "qfmt": "{{Question}}<br>{{Hidden}}",
+      "afmt": "{{Question}}<br>{{Revealed}}<hr id=\"answer\">{{Answer}}<div class=\"source\">{{Source}}</div>",
+      "ord": 0,
+      "bafmt": "",
+      "bqfmt": "",
+      "bfont": "",
+      "bsize": 0,
+      "did": null
+     }
+    ],
+    "type": 0,
+    "usn": -1,
+    "vers": []
+   }
+  },
+  "decks": {
+   "1": {
+    "collapsed": false,
+    "conf": 1,
+    "desc": "",
+    "dyn": 0,
+    "extendNew": 10,
+    "extendRev": 50,
+    "id": 1,
+    "lrnToday": [
+     0,
+     0
+    ],
+    "mod": 1425279151,
+    "name": "Default",
+    "newToday": [
+     0,
+     0
+    ],
+    "revToday": [
+     0,
+     0
+    ],
+    "timeToday": [
+     0,
+     0
+    ],
+    "usn": 0
+   },
+   "205187546995169": {
+    "collapsed": false,
+    "conf": 1,
+    "desc": "",
+    "dyn": 0,
+    "extendNew": 0,
+    "extendRev": 50,
+    "id": 205187546995169,
+    "lrnToday": [
+     163,
+     2
+    ],
+    "mod": 1425278051,
+    "name": "Golden \"Memory\" & <learning>  —  sample",
+    "newToday": [
+     163,
+     2
+    ],
+    "revToday": [
+     163,
+     0
+    ],
+    "timeToday": [
+     163,
+     23598
+    ],
+    "usn": -1
+   }
+  },
+  "dconf": {
+   "1": {
+    "autoplay": true,
+    "id": 1,
+    "lapse": {
+     "delays": [
+      10
+     ],
+     "leechAction": 0,
+     "leechFails": 8,
+     "minInt": 1,
+     "mult": 0
+    },
+    "maxTaken": 60,
+    "mod": 0,
+    "name": "Default",
+    "new": {
+     "bury": true,
+     "delays": [
+      1,
+      10
+     ],
+     "initialFactor": 2500,
+     "ints": [
+      1,
+      4,
+      7
+     ],
+     "order": 1,
+     "perDay": 20,
+     "separate": true
+    },
+    "replayq": true,
+    "rev": {
+     "bury": true,
+     "ease4": 1.3,
+     "fuzz": 0.05,
+     "ivlFct": 1,
+     "maxIvl": 36500,
+     "minSpace": 1,
+     "perDay": 100
+    },
+    "timer": 0,
+    "usn": 0
+   }
+  },
+  "tags": {},
+  "conf_text": "{\n        \"activeDecks\": [\n            1\n        ],\n        \"addToCur\": true,\n        \"collapseTime\": 1200,\n        \"curDeck\": 1,\n        \"curModel\": \"1425279151691\",\n        \"dueCounts\": true,\n        \"estTimes\": true,\n        \"newBury\": true,\n        \"newSpread\": 0,\n        \"nextPos\": 1,\n        \"sortBackwards\": false,\n        \"sortType\": \"noteFld\",\n        \"timeLim\": 0\n    }",
+  "models_text": "{\"1890487184\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Text\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Extra\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487184\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom \\u2014 Cloze v1\", \"req\": [[0, \"all\", [0, 1, 2]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Cloze\", \"qfmt\": \"{{cloze:Text}}\", \"afmt\": \"{{cloze:Text}}<hr id=\\\"answer\\\">{{Extra}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 1, \"usn\": -1, \"vers\": []}, \"1890487183\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Question\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Answer\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487183\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Slides to Anki \\u2014 Basic v1\", \"req\": [[0, \"all\", [0]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Card\", \"qfmt\": \"{{Question}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Answer}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487185\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Front\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Back\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"QuestionImage\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487185\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom \\u2014 Basic + reverse v1\", \"req\": [[0, \"any\", [0, 3]], [1, \"any\", [1, 3]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Front \\u2192 back\", \"qfmt\": \"{{Front}}{{QuestionImage}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Back}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}, {\"name\": \"Back \\u2192 front\", \"qfmt\": \"{{Back}}{{QuestionImage}}\", \"afmt\": \"{{FrontSide}}<hr id=\\\"answer\\\">{{Front}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 1, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487186\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Prompt\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Hidden\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Revealed\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Extra\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 4, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487186\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom \\u2014 Image occlusion v1\", \"req\": [[0, \"any\", [0, 1]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Hidden region\", \"qfmt\": \"{{Prompt}}<br>{{Hidden}}\", \"afmt\": \"{{Prompt}}<br>{{Revealed}}<hr id=\\\"answer\\\">{{Extra}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}, \"1890487187\": {\"css\": \".card { font-family: Arial, sans-serif; font-size: 22px; text-align: left;\\ncolor: #20342e; background: #fafbf7; padding: 24px; line-height: 1.5; }\\n.nightMode.card { color: #e7eee8; background: #202825; }\\n.source { font-size: 14px; opacity: .85; margin-top: 24px; }\\n.source img, .source-crop { max-width: 100%; height: auto; margin-top: 12px; }\\nhr { border: 0; border-top: 1px solid #aebdb2; margin: 20px 0; }\\n.cloze { font-weight: bold; color: #235945; }\\n.nightMode .cloze { color: #9bcfb5; }\", \"did\": 205187546995169, \"flds\": [{\"name\": \"Question\", \"ord\": 0, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Answer\", \"ord\": 1, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Hidden\", \"ord\": 2, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Revealed\", \"ord\": 3, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}, {\"name\": \"Source\", \"ord\": 4, \"font\": \"Liberation Sans\", \"media\": [], \"rtl\": false, \"size\": 20, \"sticky\": false}], \"id\": \"1890487187\", \"latexPost\": \"\\\\end{document}\", \"latexPre\": \"\\\\documentclass[12pt]{article}\\n\\\\special{papersize=3in,5in}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\usepackage{amssymb,amsmath}\\n\\\\pagestyle{empty}\\n\\\\setlength{\\\\parindent}{0in}\\n\\\\begin{document}\\n\", \"latexsvg\": false, \"mod\": 1794317433, \"name\": \"Recalloom - Graph and formula v1\", \"req\": [[0, \"any\", [0, 2]]], \"sortf\": 0, \"tags\": [], \"tmpls\": [{\"name\": \"Interpret the figure\", \"qfmt\": \"{{Question}}<br>{{Hidden}}\", \"afmt\": \"{{Question}}<br>{{Revealed}}<hr id=\\\"answer\\\">{{Answer}}<div class=\\\"source\\\">{{Source}}</div>\", \"ord\": 0, \"bafmt\": \"\", \"bqfmt\": \"\", \"bfont\": \"\", \"bsize\": 0, \"did\": null}], \"type\": 0, \"usn\": -1, \"vers\": []}}",
+  "decks_text": "{\"1\": {\"collapsed\": false, \"conf\": 1, \"desc\": \"\", \"dyn\": 0, \"extendNew\": 10, \"extendRev\": 50, \"id\": 1, \"lrnToday\": [0, 0], \"mod\": 1425279151, \"name\": \"Default\", \"newToday\": [0, 0], \"revToday\": [0, 0], \"timeToday\": [0, 0], \"usn\": 0}, \"205187546995169\": {\"collapsed\": false, \"conf\": 1, \"desc\": \"\", \"dyn\": 0, \"extendNew\": 0, \"extendRev\": 50, \"id\": 205187546995169, \"lrnToday\": [163, 2], \"mod\": 1425278051, \"name\": \"Golden \\\"Memory\\\" & <learning>  \\u2014  sample\", \"newToday\": [163, 2], \"revToday\": [163, 0], \"timeToday\": [163, 23598], \"usn\": -1}}",
+  "dconf_text": "{\n        \"1\": {\n            \"autoplay\": true,\n            \"id\": 1,\n            \"lapse\": {\n                \"delays\": [\n                    10\n                ],\n                \"leechAction\": 0,\n                \"leechFails\": 8,\n                \"minInt\": 1,\n                \"mult\": 0\n            },\n            \"maxTaken\": 60,\n            \"mod\": 0,\n            \"name\": \"Default\",\n            \"new\": {\n                \"bury\": true,\n                \"delays\": [\n                    1,\n                    10\n                ],\n                \"initialFactor\": 2500,\n                \"ints\": [\n                    1,\n                    4,\n                    7\n                ],\n                \"order\": 1,\n                \"perDay\": 20,\n                \"separate\": true\n            },\n            \"replayq\": true,\n            \"rev\": {\n                \"bury\": true,\n                \"ease4\": 1.3,\n                \"fuzz\": 0.05,\n                \"ivlFct\": 1,\n                \"maxIvl\": 36500,\n                \"minSpace\": 1,\n                \"perDay\": 100\n            },\n            \"timer\": 0,\n            \"usn\": 0\n        }\n    }",
+  "tags_text": "{}"
+ },
+ "notes": [
+  {
+   "guid": "x1q7[qm76g",
+   "mid": 1890487184,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "A {{c1::retrieval attempt}} happens before looking at the {{c2::answer::what?}}.\u001fEdited extra\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>A retrieval attempt happens before looking at the answer.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png\">",
+   "sfld": "A {{c1::retrieval attempt}} happens before looking at the {{c2::answer::what?}}.",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "P]K8Ougo1l",
+   "mid": 1890487183,
+   "mod": 1794317435,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "What is retrieval practice?\u001fRecalling information from memory.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>Retrieval practice means trying to recall information from memory.<br><img class=\"source-crop\" src=\"crop_bdbb4143678d4177a2ad5cd96cf4cb86_cf71884ad67d117a.png\"><br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png\">",
+   "sfld": "What is retrieval practice?",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "p]/wrq_hi&",
+   "mid": 1890487183,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Why &quot;escape&quot; &lt;tags&gt; &amp; &#x27;quotes&#x27;?<br>Second line<br><img class=\"source-crop\" src=\"crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png\">\u001fBecause &amp; &lt; &gt; matter.<br>Line 2 «ß» 𝑥²\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 1<br>Checking the answer gives feedback after the attempt.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_1.png\">",
+   "sfld": "Why &quot;escape&quot; &lt;tags&gt; &amp; &#x27;quotes&#x27;?<br>Second line<br><img class=\"source-crop\" src=\"crop_097967812e02462b9925fcb4f094b609_afbe7d4cb5c1b1ab.png\">",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "FxU7;fuOVI",
+   "mid": 1890487183,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Generated question for page 2?\u001fGenerated answer.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br>Spaced practice distributes study sessions over time.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png\">",
+   "sfld": "Generated question for page 2?",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "EF2xyb;8[(",
+   "mid": 1890487184,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Spaced practice {{c1::distributes}} study sessions over {{c2::time::when?}}.\u001fExtra explanation.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br>Spaced practice distributes study sessions over time.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png\">",
+   "sfld": "Spaced practice {{c1::distributes}} study sessions over {{c2::time::when?}}.",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "vhSrOSs7(;",
+   "mid": 1890487184,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.<br><img class=\"source-crop\" src=\"crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png\">\u001f\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 2<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_2.png\">",
+   "sfld": "{{c1::Massed}} and {{c1::spaced}} practice differ; {{c3::schedules}} decide reviews.<br><img class=\"source-crop\" src=\"crop_23fa511c5c4f44b69e09258df3c95706_5264b5db795b56c1.png\">",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "r]ei{u-8~4",
+   "mid": 1890487185,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Atomic card\u001fA card that tests one clear idea.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 3<br>An atomic card tests one clear idea.<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_3.png\">\u001f<br><img class=\"source-crop\" src=\"crop_58ec013bfbe446deb88ec259077a5317_b543e69c3df6545f.png\">",
+   "sfld": "Atomic card",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "D[np=s`8{C",
+   "mid": 1890487183,
+   "mod": 1794317436,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Was ist eine Straße? 𝑥² ✓\u001fEin Weg.\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 3<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_3.png\">",
+   "sfld": "Was ist eine Straße? 𝑥² ✓",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "k;s`F|%|mf",
+   "mid": 1890487186,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_f262d88fbd014e8d99854f2c2088814c_50df10db44ed58a7.png\">\u001f<img class=\"source-crop\" src=\"occlusion_f262d88fbd014e8d99854f2c2088814c_e121ef9c1b68ce65.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "sfld": "Name the hidden part.",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "M-s`e=uI.C",
+   "mid": 1890487186,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_357bd2efe6b748cfa63ebcb63a9817fd_b0621f5d95fd0f31.png\">\u001f<img class=\"source-crop\" src=\"occlusion_357bd2efe6b748cfa63ebcb63a9817fd_455d266168a38ce6.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "sfld": "Name the hidden part.",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "i0R_U9WIgn",
+   "mid": 1890487186,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_b9c4146e392145abb733de99a124a9cc_962a9517a45f8759.png\">\u001f<img class=\"source-crop\" src=\"occlusion_b9c4146e392145abb733de99a124a9cc_0aa5bb197ff5eac5.png\">\u001fHidden explanation &amp; &lt;b&gt;\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "sfld": "Name the hidden part.",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "riw@Mpap+$",
+   "mid": 1890487187,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "What relationship does the figure on page 4 illustrate?\u001fAnswer-only explanation\u001f<img class=\"source-crop\" src=\"visual_4b8fb66b77154d98b5e0338d69cca8ce_0d88533ffe005b7e.png\">\u001f<img class=\"source-crop\" src=\"visual_4b8fb66b77154d98b5e0338d69cca8ce_c6f2d5efafbcce12.png\">\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "sfld": "What relationship does the figure on page 4 illustrate?",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  },
+  {
+   "guid": "f_Cj5pB&(M",
+   "mid": 1890487186,
+   "mod": 1794317434,
+   "usn": -1,
+   "tags": "  ",
+   "flds": "Name the hidden part.\u001f<img class=\"source-crop\" src=\"occlusion_b2a8b486ae744a4b83e8981803635ff1_6a39145238552d01.png\">\u001f<img class=\"source-crop\" src=\"occlusion_b2a8b486ae744a4b83e8981803635ff1_946297cfd5359aa5.png\">\u001fAccepted label explanation\u001fGolden &quot;Memory&quot; &amp; &lt;learning&gt; :: sample · Page 4<br><img src=\"slides_76a2a7ee9f874d878643bd0abf0cdf06_4.png\">",
+   "sfld": "Name the hidden part.",
+   "csum": 0,
+   "flags": 0,
+   "data": ""
+  }
+ ],
+ "cards": [
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "x1q7[qm76g"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 1,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "x1q7[qm76g"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317435,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "P]K8Ougo1l"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "p]/wrq_hi&"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "FxU7;fuOVI"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "EF2xyb;8[("
+  },
+  {
+   "did": 205187546995169,
+   "ord": 1,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "EF2xyb;8[("
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "vhSrOSs7(;"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 2,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "vhSrOSs7(;"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "r]ei{u-8~4"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 1,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "r]ei{u-8~4"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317436,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "D[np=s`8{C"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "k;s`F|%|mf"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "M-s`e=uI.C"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "i0R_U9WIgn"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "riw@Mpap+$"
+  },
+  {
+   "did": 205187546995169,
+   "ord": 0,
+   "mod": 1794317434,
+   "usn": -1,
+   "type": 0,
+   "queue": 0,
+   "due": 0,
+   "ivl": 0,
+   "factor": 0,
+   "reps": 0,
+   "lapses": 0,
+   "left": 0,
+   "odue": 0,
+   "odid": 0,
+   "flags": 0,
+   "data": "",
+   "note_guid": "f_Cj5pB&(M"
+  }
+ ],
+ "revlog": [],
+ "graves": [],
+ "schema": [
+  "CREATE TABLE cards (\n    id              integer primary key,   /* 0 */\n    nid             integer not null,      /* 1 */\n    did             integer not null,      /* 2 */\n    ord             integer not null,      /* 3 */\n    mod             integer not null,      /* 4 */\n    usn             integer not null,      /* 5 */\n    type            integer not null,      /* 6 */\n    queue           integer not null,      /* 7 */\n    due             integer not null,      /* 8 */\n    ivl             integer not null,      /* 9 */\n    factor          integer not null,      /* 10 */\n    reps            integer not null,      /* 11 */\n    lapses          integer not null,      /* 12 */\n    left            integer not null,      /* 13 */\n    odue            integer not null,      /* 14 */\n    odid            integer not null,      /* 15 */\n    flags           integer not null,      /* 16 */\n    data            text not null          /* 17 */\n)",
+  "CREATE TABLE col (\n    id              integer primary key,\n    crt             integer not null,\n    mod             integer not null,\n    scm             integer not null,\n    ver             integer not null,\n    dty             integer not null,\n    usn             integer not null,\n    ls              integer not null,\n    conf            text not null,\n    models          text not null,\n    decks           text not null,\n    dconf           text not null,\n    tags            text not null\n)",
+  "CREATE TABLE graves (\n    usn             integer not null,\n    oid             integer not null,\n    type            integer not null\n)",
+  "CREATE INDEX ix_cards_nid on cards (nid)",
+  "CREATE INDEX ix_cards_sched on cards (did, queue, due)",
+  "CREATE INDEX ix_cards_usn on cards (usn)",
+  "CREATE INDEX ix_notes_csum on notes (csum)",
+  "CREATE INDEX ix_notes_usn on notes (usn)",
+  "CREATE INDEX ix_revlog_cid on revlog (cid)",
+  "CREATE INDEX ix_revlog_usn on revlog (usn)",
+  "CREATE TABLE notes (\n    id              integer primary key,   /* 0 */\n    guid            text not null,         /* 1 */\n    mid             integer not null,      /* 2 */\n    mod             integer not null,      /* 3 */\n    usn             integer not null,      /* 4 */\n    tags            text not null,         /* 5 */\n    flds            text not null,         /* 6 */\n    sfld            integer not null,      /* 7 */\n    csum            integer not null,      /* 8 */\n    flags           integer not null,      /* 9 */\n    data            text not null          /* 10 */\n)",
+  "CREATE TABLE revlog (\n    id              integer primary key,\n    cid             integer not null,\n    usn             integer not null,\n    ease            integer not null,\n    ivl             integer not null,\n    lastIvl         integer not null,\n    factor          integer not null,\n    time            integer not null,\n    type            integer not null\n)"
+ ]
+}

@@ -1,0 +1,70 @@
+{
+ "lecture_id": "76a2a7ee-9f87-4d87-8643-bd0abf0cdf06",
+ "title": "Golden \"Memory\" & <learning> :: sample",
+ "cards": 18,
+ "accepted": 13,
+ "runs": 5,
+ "media": 18,
+ "legacy": {
+  "1": {
+   "cards": 8,
+   "runs": 1,
+   "accepted": 4
+  },
+  "2": {
+   "cards": 8,
+   "runs": 1,
+   "accepted": 4
+  },
+  "3": {
+   "cards": 8,
+   "runs": 1,
+   "accepted": 4
+  },
+  "4": {
+   "cards": 8,
+   "runs": 1,
+   "accepted": 4
+  },
+  "5": {
+   "cards": 11,
+   "runs": 1,
+   "accepted": 7
+  },
+  "6": {
+   "cards": 11,
+   "runs": 1,
+   "accepted": 7
+  },
+  "7": {
+   "cards": 11,
+   "runs": 1,
+   "accepted": 7
+  },
+  "8": {
+   "cards": 13,
+   "runs": 2,
+   "accepted": 8
+  },
+  "9": {
+   "cards": 17,
+   "runs": 2,
+   "accepted": 12
+  },
+  "10": {
+   "cards": 17,
+   "runs": 2,
+   "accepted": 12
+  },
+  "11": {
+   "cards": 17,
+   "runs": 3,
+   "accepted": 12
+  },
+  "12": {
+   "cards": 18,
+   "runs": 5,
+   "accepted": 13
+  }
+ }
+}

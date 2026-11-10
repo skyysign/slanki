@@ -1,0 +1,349 @@
+{
+ "format": "slides-to-anki",
+ "version": 12,
+ "lecture": {
+  "id": "76a2a7ee-9f87-4d87-8643-bd0abf0cdf06",
+  "title": "Golden \"Memory\" & <learning> :: sample",
+  "sha256": "0b12cc7c1aab1607cb75507dd92d432bf45530a8f568bf744b3f9013bb97e1a8",
+  "original_name": "lecture.pdf",
+  "created_at": "2026-11-10T13:30:33.204727+00:00"
+ },
+ "pages": [
+  {
+   "number": 1,
+   "text": "01 / MEMORY & LEARNING\nRetrieval practice\nRetrieval practice means trying to recall information from memory.\nA retrieval attempt happens before looking at the answer.\nChecking the answer gives feedback after the attempt.\nSYNTHETIC EXAMPLE / prepared for application testing",
+   "width": 1500,
+   "height": 844,
+   "warning": ""
+  },
+  {
+   "number": 2,
+   "text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nA review schedule decides when a card should be studied again.\nSYNTHETIC EXAMPLE / prepared for application testing",
+   "width": 1500,
+   "height": 844,
+   "warning": ""
+  },
+  {
+   "number": 3,
+   "text": "03 / MEMORY & LEARNING\nMake a useful card\nAn atomic card tests one clear idea.\nA source reference points back to the supporting lecture page.\nAn ambiguous question can have more than one plausible answer.\nSYNTHETIC EXAMPLE / prepared for application testing",
+   "width": 1500,
+   "height": 844,
+   "warning": ""
+  },
+  {
+   "number": 4,
+   "text": "",
+   "width": 1500,
+   "height": 844,
+   "warning": "No usable text found. This page needs manual cards; scans and diagrams are not interpreted."
+  }
+ ],
+ "cards": [
+  {
+   "id": "3d04d957-ef79-4cf1-9e3d-d48ab78a2992",
+   "page": 1,
+   "front": "Generated question for page 1?",
+   "note_type": "basic",
+   "back": "Generated answer.",
+   "source_quote": "Retrieval practice means trying to recall information from memory.",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "draft",
+   "fingerprint": "f72bdf68efbe8b0c723a3b8668d85bbd8e52a138fe1a2a1b50120dca7d485cc8",
+   "version": 1,
+   "anki_modified": 1794317433,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.239816+00:00",
+   "updated_at": "2026-11-10T13:30:33.239816+00:00",
+   "revisions": []
+  },
+  {
+   "id": "bdbb4143-678d-4177-a2ad-5cd96cf4cb86",
+   "page": 1,
+   "front": "What is retrieval practice?",
+   "note_type": "basic",
+   "back": "Recalling information from memory.",
+   "source_quote": "Retrieval practice means trying to recall information from memory.",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "accepted",
+   "fingerprint": "6c565e149bff07f5e30b150bd3e2afb872e25272739adaedef4611bb2818952e",
+   "version": 3,
+   "anki_modified": 1794317435,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.305966+00:00",
+   "updated_at": "2026-11-10T13:30:33.318992+00:00",
+   "revisions": [
+    {
+     "version": 1,
+     "front": "What is retrieval practice?",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Trying to recall information from memory.",
+     "source_quote": "Retrieval practice means trying to recall information from memory.",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.315073+00:00"
+    },
+    {
+     "version": 2,
+     "front": "What is retrieval practice?",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Recalling information from memory.",
+     "source_quote": "Retrieval practice means trying to recall information from memory.",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.318992+00:00"
+    }
+   ]
+  },
+  {
+   "id": "09796781-2e02-462b-9925-fcb4f094b609",
+   "page": 1,
+   "front": "Why \"escape\" <tags> & 'quotes'?\nSecond line",
+   "note_type": "basic",
+   "back": "Because & < > matter.\nLine 2 «ß» 𝑥²",
+   "source_quote": "Checking the answer gives feedback after the attempt.",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "accepted",
+   "fingerprint": "4c66e3655fae5b1101e9bb7eee0f1227e8a536aa6d108e755245a52cdd0cd5ac",
+   "version": 2,
+   "anki_modified": 1794317434,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.306966+00:00",
+   "updated_at": "2026-11-10T13:30:33.323498+00:00",
+   "revisions": [
+    {
+     "version": 1,
+     "front": "Why \"escape\" <tags> & 'quotes'?\nSecond line",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Because & < > matter.\nLine 2 «ß» 𝑥²",
+     "source_quote": "Checking the answer gives feedback after the attempt.",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.324002+00:00"
+    }
+   ]
+  },
+  {
+   "id": "f0416499-7444-4641-8145-ed53dbaccfa6",
+   "page": 2,
+   "front": "Generated question for page 2?",
+   "note_type": "basic",
+   "back": "Generated answer.",
+   "source_quote": "Spaced practice distributes study sessions over time.",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "accepted",
+   "fingerprint": "5157774c0f81526a70cb9061db7e5fe45f6dd858274b127b80340a9e0c754ff2",
+   "version": 2,
+   "anki_modified": 1794317434,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.240816+00:00",
+   "updated_at": "2026-11-10T13:30:33.365800+00:00",
+   "revisions": [
+    {
+     "version": 1,
+     "front": "Generated question for page 2?",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Generated answer.",
+     "source_quote": "Spaced practice distributes study sessions over time.",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.366799+00:00"
+    }
+   ]
+  },
+  {
+   "id": "2b538504-98e7-4e81-8b2f-25477d05a6c2",
+   "page": 3,
+   "front": "Generated question for page 3?",
+   "note_type": "basic",
+   "back": "Generated answer.",
+   "source_quote": "An atomic card tests one clear idea.",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "draft",
+   "fingerprint": "56c57c850ba901bc734d6c48bd4cce9d9531980a863b610ec0f5c7a9d38ea90e",
+   "version": 1,
+   "anki_modified": 1794317433,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.241816+00:00",
+   "updated_at": "2026-11-10T13:30:33.241816+00:00",
+   "revisions": []
+  },
+  {
+   "id": "7ec4550c-a6c9-48e0-9610-4b24bffbcd16",
+   "page": 3,
+   "front": "What does an atomic card test?",
+   "note_type": "basic",
+   "back": "One clear idea.",
+   "source_quote": "An atomic card tests one clear idea.",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "draft",
+   "fingerprint": "02b0ef1f4c4ba6be9313505567059ee5d0f2d99ffb5787914a375f81fc26f067",
+   "version": 1,
+   "anki_modified": 1794317433,
+   "run": "a05c8753-561d-4729-b910-b2db782f4f9f",
+   "created_at": "2026-11-10T13:30:33.257795+00:00",
+   "updated_at": "2026-11-10T13:30:33.257795+00:00",
+   "revisions": []
+  },
+  {
+   "id": "9f49871c-630e-4e3e-aedb-a0cae004e3c3",
+   "page": 3,
+   "front": "Rejected question?",
+   "note_type": "basic",
+   "back": "Rejected answer.",
+   "source_quote": "",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "rejected",
+   "fingerprint": "1290129f6623065814c8a24aee04a3fa0c81e23f574bd5375b1ab05053d2e379",
+   "version": 2,
+   "anki_modified": 1794317434,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.309966+00:00",
+   "updated_at": "2026-11-10T13:30:33.341519+00:00",
+   "revisions": [
+    {
+     "version": 1,
+     "front": "Rejected question?",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Rejected answer.",
+     "source_quote": "",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.343024+00:00"
+    }
+   ]
+  },
+  {
+   "id": "bc1a6be2-c1e7-4284-9f87-35564486ba7c",
+   "page": 3,
+   "front": "Was ist eine Straße? 𝑥² ✓",
+   "note_type": "basic",
+   "back": "Ein Weg.",
+   "source_quote": "",
+   "source_crop": {},
+   "occlusion": {},
+   "visual_masks": [],
+   "status": "accepted",
+   "fingerprint": "1350fca25ad163f491fa475ed0c692b3bde479edbcd22b78c69afdbb0c3a3d5b",
+   "version": 4,
+   "anki_modified": 1794317436,
+   "run": null,
+   "created_at": "2026-11-10T13:30:33.309966+00:00",
+   "updated_at": "2026-11-10T13:30:33.355958+00:00",
+   "revisions": [
+    {
+     "version": 1,
+     "front": "Was ist eine Straße? 𝑥² ✓",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Ein Weg.",
+     "source_quote": "",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.347446+00:00"
+    },
+    {
+     "version": 2,
+     "front": "Was ist eine Straße? 𝑥² ✓ (edited)",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Ein Weg.",
+     "source_quote": "",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "accepted",
+     "created_at": "2026-11-10T13:30:33.351447+00:00"
+    },
+    {
+     "version": 3,
+     "front": "Was ist eine Straße? 𝑥² ✓",
+     "note_type": "basic",
+     "visual_masks": [],
+     "back": "Ein Weg.",
+     "source_quote": "",
+     "source_crop": {},
+     "occlusion": {},
+     "status": "draft",
+     "created_at": "2026-11-10T13:30:33.356957+00:00"
+    }
+   ]
+  }
+ ],
+ "runs": [
+  {
+   "id": "a05c8753-561d-4729-b910-b2db782f4f9f",
+   "status": "completed",
+   "provider": "codex",
+   "model": "",
+   "page_numbers": [
+    3
+   ],
+   "completed_pages": [
+    3
+   ],
+   "context_enabled": false,
+   "context_data": {},
+   "text_enabled": true,
+   "occlusion_enabled": false,
+   "visual_enabled": false,
+   "purpose": "cards",
+   "rundown_data": {},
+   "image_completed_pages": [],
+   "suggestions": [],
+   "issues": [
+    {
+     "page": 3,
+     "batch_pages": [
+      3
+     ],
+     "reason": "The source excerpt is not present on page 3. Check the page and excerpt.",
+     "front": "Unsupported?",
+     "back": "x",
+     "source_quote": "Missing from the page."
+    }
+   ],
+   "cards_added": 1,
+   "study_cards_added": 1,
+   "learning_focus": "balanced",
+   "card_format": "basic",
+   "card_limit": 2,
+   "reasoning_effort": "medium",
+   "filtered_count": 0,
+   "over_limit_count": 0,
+   "error": "",
+   "created_at": "2026-11-10T13:30:33.247830+00:00",
+   "updated_at": "2026-11-10T13:30:33.260793+00:00"
+  }
+ ],
+ "assets": {
+  "original.pdf": "0b12cc7c1aab1607cb75507dd92d432bf45530a8f568bf744b3f9013bb97e1a8",
+  "pages/1.png": "02e6a51d0ed7654b89f8cc479a824f200568de286e0cbc6666a54c95811a6a1c",
+  "pages/2.png": "1584a6c8bd0f33fafb7d051eaf8aeb558dcd30ce38cbf9541f9fb1613de0edd3",
+  "pages/3.png": "77862be2885a522db1650bc2926b2fde61f7c79179bfcced1d3902b8c3c6897c",
+  "pages/4.png": "c2b8ba380689961de6dbbe6a8bf6e38c4ce51481329588267c51cf0e25d4e549"
+ }
+}

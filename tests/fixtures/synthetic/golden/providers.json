@@ -1,0 +1,1051 @@
+{
+ "codex": [
+  {
+   "model": "",
+   "effort": "",
+   "result": {
+    "ok": {
+     "cards": []
+    }
+   },
+   "argv": [
+    "CODEX_EXE",
+    "-a",
+    "never",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--color",
+    "never",
+    "--disable",
+    "shell_tool",
+    "--disable",
+    "unified_exec",
+    "--disable",
+    "apps",
+    "--disable",
+    "multi_agent",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "project_doc_max_bytes=0",
+    "--output-schema",
+    "<temp>/schema.json",
+    "--output-last-message",
+    "<temp>/cards.json",
+    "-"
+   ],
+   "stdin_is_prompt": true
+  },
+  {
+   "model": "gpt-5.5",
+   "effort": "low",
+   "result": {
+    "ok": {
+     "cards": []
+    }
+   },
+   "argv": [
+    "CODEX_EXE",
+    "-a",
+    "never",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--color",
+    "never",
+    "--disable",
+    "shell_tool",
+    "--disable",
+    "unified_exec",
+    "--disable",
+    "apps",
+    "--disable",
+    "multi_agent",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "project_doc_max_bytes=0",
+    "--model",
+    "gpt-5.5",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "--output-schema",
+    "<temp>/schema.json",
+    "--output-last-message",
+    "<temp>/cards.json",
+    "-"
+   ],
+   "stdin_is_prompt": true
+  },
+  {
+   "model": "",
+   "effort": "xhigh",
+   "result": {
+    "ok": {
+     "cards": []
+    }
+   },
+   "argv": [
+    "CODEX_EXE",
+    "-a",
+    "never",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--color",
+    "never",
+    "--disable",
+    "shell_tool",
+    "--disable",
+    "unified_exec",
+    "--disable",
+    "apps",
+    "--disable",
+    "multi_agent",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "project_doc_max_bytes=0",
+    "-c",
+    "model_reasoning_effort=\"xhigh\"",
+    "--output-schema",
+    "<temp>/schema.json",
+    "--output-last-message",
+    "<temp>/cards.json",
+    "-"
+   ],
+   "stdin_is_prompt": true
+  },
+  {
+   "model": "o4-mini",
+   "effort": "minimal",
+   "result": {
+    "ok": {
+     "cards": []
+    }
+   },
+   "argv": [
+    "CODEX_EXE",
+    "-a",
+    "never",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--color",
+    "never",
+    "--disable",
+    "shell_tool",
+    "--disable",
+    "unified_exec",
+    "--disable",
+    "apps",
+    "--disable",
+    "multi_agent",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "project_doc_max_bytes=0",
+    "--model",
+    "o4-mini",
+    "-c",
+    "model_reasoning_effort=\"minimal\"",
+    "--output-schema",
+    "<temp>/schema.json",
+    "--output-last-message",
+    "<temp>/cards.json",
+    "-"
+   ],
+   "stdin_is_prompt": true
+  },
+  {
+   "model": "",
+   "effort": "on",
+   "result": {
+    "error": "Codex does not use a thinking on/off setting."
+   }
+  }
+ ],
+ "claude": [
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "is_error": false,
+    "structured_output": {
+     "cards": []
+    }
+   },
+   "result": {
+    "ok": {
+     "cards": []
+    }
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "is_error": false,
+    "structured_output": {
+     "cards": []
+    }
+   },
+   "result": {
+    "ok": {
+     "cards": []
+    }
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence",
+    "--model",
+    "claude-sonnet-5-5",
+    "--effort",
+    "high"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "result": "{\"cards\": [1]}"
+   },
+   "result": {
+    "ok": {
+     "cards": [
+      1
+     ]
+    }
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "result": "not json"
+   },
+   "result": {
+    "output_error": "Claude Code did not return a successful JSON result. No cards from this batch were imported."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "result": "[1, 2]"
+   },
+   "result": {
+    "output_error": "Claude Code did not return a successful JSON result. No cards from this batch were imported."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "is_error": true,
+    "structured_output": {}
+   },
+   "result": {
+    "error": "Claude Code did not return a successful JSON result. Check your connection and allowance."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "error_max_turns"
+   },
+   "result": {
+    "error": "Claude Code did not return a successful JSON result. Check your connection and allowance."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "assistant"
+   },
+   "result": {
+    "error": "Claude Code did not return a successful JSON result. Check your connection and allowance."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": [
+    1,
+    2
+   ],
+   "result": {
+    "error": "Claude Code did not return a successful JSON result. Check your connection and allowance."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": "{broken",
+   "result": {
+    "output_error": "Claude Code returned invalid result JSON."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "structured_output": null,
+    "result": "{\"a\": 1}"
+   },
+   "result": {
+    "ok": {
+     "a": 1
+    }
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "",
+   "envelope": {
+    "type": "result",
+    "subtype": "success",
+    "structured_output": [
+     1
+    ]
+   },
+   "result": {
+    "output_error": "Claude Code did not return a successful JSON result. No cards from this batch were imported."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence"
+   ]
+  },
+  {
+   "model": "",
+   "effort": "low",
+   "envelope": null,
+   "result": {
+    "output_error": "Claude Code returned invalid result JSON."
+   },
+   "argv": [
+    "CLAUDE_EXE",
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "{\"type\": \"object\", \"additionalProperties\": false, \"required\": [\"cards\"], \"properties\": {\"cards\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"front\": {\"type\": \"string\"}, \"back\": {\"type\": \"string\"}, \"page\": {\"type\": \"integer\"}, \"source_quote\": {\"type\": \"string\"}, \"note_type\": {\"type\": \"string\", \"enum\": [\"basic\", \"cloze\", \"reversed\"]}}, \"required\": [\"front\", \"back\", \"page\", \"source_quote\", \"note_type\"]}}}}",
+    "--max-turns",
+    "3",
+    "--safe-mode",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+    "--tools",
+    "",
+    "--disallowedTools",
+    "mcp__*",
+    "--strict-mcp-config",
+    "--mcp-config",
+    "{\"mcpServers\":{}}",
+    "--disable-slash-commands",
+    "--no-chrome",
+    "--no-session-persistence",
+    "--effort",
+    "low"
+   ]
+  },
+  {
+   "model": "unknown-model",
+   "effort": "",
+   "envelope": null,
+   "result": {
+    "error": "Refresh models and choose a model supported by this CLI."
+   },
+   "argv": null
+  }
+ ],
+ "claude_isolation_args": [
+  "--safe-mode",
+  "--setting-sources",
+  "",
+  "--settings",
+  "{\"disableAllHooks\": true, \"autoMemoryEnabled\": false, \"permissions\": {\"defaultMode\": \"dontAsk\"}}",
+  "--tools",
+  "",
+  "--disallowedTools",
+  "mcp__*",
+  "--strict-mcp-config",
+  "--mcp-config",
+  "{\"mcpServers\":{}}",
+  "--disable-slash-commands",
+  "--no-chrome",
+  "--no-session-persistence"
+ ],
+ "claude_environment": {
+  "input": [
+   "ANTHROPIC_API_KEY_HELPER",
+   "ANTHROPIC_DEFAULT_SONNET_MODEL",
+   "ANTHROPIC_MODEL",
+   "CLAUDECODE",
+   "CLAUDE_CODE_BARE",
+   "CLAUDE_CODE_EFFORT_LEVEL",
+   "CLAUDE_CODE_EXPERIMENTAL_X",
+   "CLAUDE_CODE_SIMPLE",
+   "CLAUDE_CODE_SUBAGENT_MODEL",
+   "CLAUDE_CONFIG_DIR",
+   "PATH"
+  ],
+  "kept": [
+   "ANTHROPIC_API_KEY_HELPER",
+   "CLAUDE_CONFIG_DIR",
+   "PATH"
+  ]
+ },
+ "efforts": [
+  [
+   "",
+   "CLI default"
+  ],
+  [
+   "none",
+   "None"
+  ],
+  [
+   "minimal",
+   "Minimal"
+  ],
+  [
+   "low",
+   "Low"
+  ],
+  [
+   "medium",
+   "Medium"
+  ],
+  [
+   "high",
+   "High"
+  ],
+  [
+   "xhigh",
+   "Extra high"
+  ],
+  [
+   "max",
+   "Max"
+  ],
+  [
+   "off",
+   "Thinking off"
+  ],
+  [
+   "on",
+   "Thinking on"
+  ]
+ ],
+ "providers": {
+  "codex": {
+   "label": "Codex",
+   "account": "ChatGPT",
+   "company": "OpenAI",
+   "setup": "https://developers.openai.com/codex/cli"
+  },
+  "claude": {
+   "label": "Claude Code",
+   "account": "Claude",
+   "company": "Anthropic",
+   "setup": "https://code.claude.com/docs/en/setup"
+  },
+  "gemini": {
+   "label": "Gemini CLI",
+   "account": "Google",
+   "company": "Google",
+   "setup": "https://geminicli.com/docs/get-started/installation/"
+  },
+  "kimi": {
+   "label": "Kimi Code",
+   "account": "Kimi",
+   "company": "Moonshot AI",
+   "setup": "https://www.kimi.com/code/docs/en/kimi-code-cli/getting-started.html"
+  }
+ },
+ "model_ids": [
+  {
+   "id": "",
+   "result": {
+    "ok": ""
+   }
+  },
+  {
+   "id": "gpt-5.5",
+   "result": {
+    "ok": "gpt-5.5"
+   }
+  },
+  {
+   "id": "claude-sonnet-5-5[1m]",
+   "result": {
+    "ok": "claude-sonnet-5-5[1m]"
+   }
+  },
+  {
+   "id": "kimi-code/k2",
+   "result": {
+    "ok": "kimi-code/k2"
+   }
+  },
+  {
+   "id": "models/gemini-3-pro",
+   "result": {
+    "ok": "models/gemini-3-pro"
+   }
+  },
+  {
+   "id": "-flag",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": "a b",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": "x\"y",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "result": {
+    "ok": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+   }
+  },
+  {
+   "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": "ünï",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": "a\nb",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": ".dot",
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  },
+  {
+   "id": "a:b/c_d-e.f",
+   "result": {
+    "ok": "a:b/c_d-e.f"
+   }
+  }
+ ],
+ "normalize_models": [
+  {
+   "provider": "codex",
+   "rows": [
+    {
+     "model": "gpt-5.5",
+     "displayName": "GPT-5.5",
+     "supportedReasoningEfforts": [
+      {
+       "reasoningEffort": "low"
+      },
+      {
+       "reasoningEffort": "high"
+      },
+      {
+       "reasoningEffort": "ultra"
+      }
+     ],
+     "defaultReasoningEffort": "low",
+     "isDefault": true
+    },
+    {
+     "model": "gpt-5.5-mini",
+     "displayName": "",
+     "supportedReasoningEfforts": [
+      {
+       "reasoningEffort": "minimal"
+      },
+      "bad"
+     ],
+     "defaultReasoningEffort": "medium"
+    },
+    {
+     "model": "hidden-model",
+     "hidden": true
+    },
+    {
+     "model": "gpt-5.5",
+     "displayName": "Duplicate"
+    }
+   ],
+   "result": {
+    "ok": [
+     {
+      "id": "",
+      "label": "CLI default (GPT-5.5)",
+      "efforts": [
+       "",
+       "low",
+       "high"
+      ],
+      "default_effort": "low"
+     },
+     {
+      "id": "gpt-5.5",
+      "label": "GPT-5.5",
+      "efforts": [
+       "",
+       "low",
+       "high"
+      ],
+      "default_effort": "low"
+     },
+     {
+      "id": "gpt-5.5-mini",
+      "label": "gpt-5.5-mini",
+      "efforts": [
+       "",
+       "minimal"
+      ],
+      "default_effort": ""
+     }
+    ]
+   }
+  },
+  {
+   "provider": "claude",
+   "rows": [
+    {
+     "value": "default",
+     "displayName": "Default (recommended)",
+     "supportedEffortLevels": [
+      "low",
+      "medium",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "value": "claude-sonnet-5-5",
+     "displayName": "Sonnet",
+     "supportedEffortLevels": [
+      "low",
+      "high",
+      "xhigh"
+     ]
+    },
+    {
+     "value": "claude-haiku-5-5",
+     "displayName": "Haiku",
+     "supportsEffort": false,
+     "supportedEffortLevels": [
+      "low"
+     ]
+    }
+   ],
+   "result": {
+    "ok": [
+     {
+      "id": "",
+      "label": "CLI default",
+      "efforts": [
+       "",
+       "low",
+       "medium",
+       "high",
+       "max"
+      ],
+      "default_effort": ""
+     },
+     {
+      "id": "claude-sonnet-5-5",
+      "label": "Sonnet",
+      "efforts": [
+       "",
+       "low",
+       "high",
+       "xhigh"
+      ],
+      "default_effort": ""
+     },
+     {
+      "id": "claude-haiku-5-5",
+      "label": "Haiku",
+      "efforts": [
+       ""
+      ],
+      "default_effort": ""
+     }
+    ]
+   }
+  },
+  {
+   "provider": "codex",
+   "rows": [],
+   "result": {
+    "error": "The CLI did not return a usable model list."
+   }
+  },
+  {
+   "provider": "codex",
+   "rows": [
+    {
+     "model": "x",
+     "hidden": true
+    }
+   ],
+   "result": {
+    "error": "No selectable models were returned by this CLI."
+   }
+  },
+  {
+   "provider": "codex",
+   "rows": [
+    {
+     "model": "-bad"
+    }
+   ],
+   "result": {
+    "error": "Choose a model from this CLI's model list."
+   }
+  }
+ ]
+}

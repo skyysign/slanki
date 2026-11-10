@@ -1,0 +1,4038 @@
+{
+ "identity": [
+  {
+   "uuid": "00000000-0000-0000-0000-000000000000",
+   "guid": "dn[tsql4-=",
+   "deck_id": 20586709171838,
+   "hex": "00000000000000000000000000000000"
+  },
+  {
+   "uuid": "12345678-1234-5678-1234-567812345678",
+   "guid": "t5F%i;7>&&",
+   "deck_id": 128179154495962,
+   "hex": "12345678123456781234567812345678"
+  },
+  {
+   "uuid": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+   "guid": "dBxzX1rR}{",
+   "deck_id": 21544809560313,
+   "hex": "ffffffffffffffffffffffffffffffff"
+  },
+  {
+   "uuid": "6243fd6b-43a2-537d-8e1a-80111e42f7fd",
+   "guid": "Bi}a>M@Jc>",
+   "deck_id": 176945869055760,
+   "hex": "6243fd6b43a2537d8e1a80111e42f7fd"
+  },
+  {
+   "uuid": "ccea324f-27f0-5240-82e0-0ddfd086f802",
+   "guid": "zcH*4a_GFn",
+   "deck_id": 163412397730432,
+   "hex": "ccea324f27f0524082e00ddfd086f802"
+  },
+  {
+   "uuid": "3250ba0a-fcf2-5985-8598-5de65aad8364",
+   "guid": "FPy.A>xfLG",
+   "deck_id": 205381915114298,
+   "hex": "3250ba0afcf2598585985de65aad8364"
+  },
+  {
+   "uuid": "15ed1482-a0c9-5015-aa73-e6aeb4c28598",
+   "guid": "ec;3@?s.7E",
+   "deck_id": 26322683389185,
+   "hex": "15ed1482a0c95015aa73e6aeb4c28598"
+  },
+  {
+   "uuid": "6dcea1a8-bf50-5112-b5a7-563540618186",
+   "guid": "JsFtMO:$u0",
+   "deck_id": 229855368776266,
+   "hex": "6dcea1a8bf505112b5a7563540618186"
+  },
+  {
+   "uuid": "7d1c3a58-4a87-5fbe-a1e0-ac2e1a6b92b7",
+   "guid": "G@/X$~g1a8",
+   "deck_id": 214821020724721,
+   "hex": "7d1c3a584a875fbea1e0ac2e1a6b92b7"
+  },
+  {
+   "uuid": "6bcbd92c-8674-5c24-bd32-c0741d8d00aa",
+   "guid": "rO{v>r&0J8",
+   "deck_id": 113943723351692,
+   "hex": "6bcbd92c86745c24bd32c0741d8d00aa"
+  },
+  {
+   "uuid": "380927fa-b0ed-5c50-ae99-45227fe72a09",
+   "guid": "Ra,92`>Nni",
+   "deck_id": 280833212154806,
+   "hex": "380927fab0ed5c50ae9945227fe72a09"
+  },
+  {
+   "uuid": "d45a291d-5596-5e81-81c8-815788d9f69f",
+   "guid": "lT7+JF_GG2",
+   "deck_id": 75102696232875,
+   "hex": "d45a291d55965e8181c8815788d9f69f"
+  },
+  {
+   "uuid": "01b557b4-b3ec-5f05-96dd-5f4043fe5957",
+   "guid": "O%(p&u50t{",
+   "deck_id": 265904653599334,
+   "hex": "01b557b4b3ec5f0596dd5f4043fe5957"
+  },
+  {
+   "uuid": "a22e607e-b0d7-5098-a3ed-18ecae47b464",
+   "guid": "g`mEGT##LJ",
+   "deck_id": 45358784891551,
+   "hex": "a22e607eb0d75098a3ed18ecae47b464"
+  },
+  {
+   "uuid": "9ebdb8ec-9ed3-5e98-9032-d2ce296d6cf1",
+   "guid": "I|Lozmzmj*",
+   "deck_id": 228353203605730,
+   "hex": "9ebdb8ec9ed35e989032d2ce296d6cf1"
+  },
+  {
+   "uuid": "46235c5e-3643-5ede-82ea-f118f81c43ea",
+   "guid": "lv!iV.PaN{",
+   "deck_id": 73382409543348,
+   "hex": "46235c5e36435ede82eaf118f81c43ea"
+  },
+  {
+   "uuid": "a79f9950-ed10-5332-9b75-db060189ae0c",
+   "guid": "h8I5vZ-ML)",
+   "deck_id": 50040429810935,
+   "hex": "a79f9950ed1053329b75db060189ae0c"
+  },
+  {
+   "uuid": "a7f7eb36-bd7e-593a-9179-0010abef923d",
+   "guid": "Mg;GP;^Kf5",
+   "deck_id": 248618978474129,
+   "hex": "a7f7eb36bd7e593a91790010abef923d"
+  },
+  {
+   "uuid": "eb95e0b2-079e-5a48-b344-b0dae45e6d93",
+   "guid": "I_>fm^r&GF",
+   "deck_id": 228170977553442,
+   "hex": "eb95e0b2079e5a48b344b0dae45e6d93"
+  },
+  {
+   "uuid": "07da9767-30d6-5b49-9c45-13d3282ed32d",
+   "guid": "gK]O#(C`Dk",
+   "deck_id": 41827116999931,
+   "hex": "07da976730d65b499c4513d3282ed32d"
+  },
+  {
+   "uuid": "5da4d84f-5cc4-50f3-ad48-d4fd1077308c",
+   "guid": "LlCP/0]a$b",
+   "deck_id": 242410294521264,
+   "hex": "5da4d84f5cc450f3ad48d4fd1077308c"
+  },
+  {
+   "uuid": "ef307e54-5f2b-5013-881d-8e54d4098dae",
+   "guid": "f1AvnJcJ>Y",
+   "deck_id": 36472143977595,
+   "hex": "ef307e545f2b5013881d8e54d4098dae"
+  },
+  {
+   "uuid": "db1a841f-e928-58e6-94d6-8b290acc061d",
+   "guid": "k#W*)j.eam",
+   "deck_id": 69855913613598,
+   "hex": "db1a841fe92858e694d68b290acc061d"
+  },
+  {
+   "uuid": "401e72da-d1a6-5bda-a148-76ea444c8a80",
+   "guid": "O)W*Do42i?",
+   "deck_id": 266105400723467,
+   "hex": "401e72dad1a65bdaa14876ea444c8a80"
+  },
+  {
+   "uuid": "80430f24-83e7-5033-80db-cd1aaab0ced1",
+   "guid": "B;FZ[;+<td",
+   "deck_id": 181779906646043,
+   "hex": "80430f2483e7503380dbcd1aaab0ced1"
+  },
+  {
+   "uuid": "8f7f7631-90fc-551c-af07-995d24abd06d",
+   "guid": "u>GCwi,-Dj",
+   "deck_id": 136287920729103,
+   "hex": "8f7f763190fc551caf07995d24abd06d"
+  },
+  {
+   "uuid": "3241225c-e295-5a68-8768-f6847acbe2e7",
+   "guid": "mj<NISwez2",
+   "deck_id": 79063137069664,
+   "hex": "3241225ce2955a688768f6847acbe2e7"
+  },
+  {
+   "uuid": "dbbe413a-b003-5241-a929-11dcda6cf36d",
+   "guid": "i.vg(BuC[*",
+   "deck_id": 57492245048857,
+   "hex": "dbbe413ab0035241a92911dcda6cf36d"
+  },
+  {
+   "uuid": "10f076c9-966d-53cd-b95a-3a9d4c27d1f5",
+   "guid": "ArUX#RY.+h",
+   "deck_id": 171028489005717,
+   "hex": "10f076c9966d53cdb95a3a9d4c27d1f5"
+  },
+  {
+   "uuid": "e62bded6-3406-528e-bf36-a0060dbd1c59",
+   "guid": "Gw}Gmy<J;f",
+   "deck_id": 210599160487440,
+   "hex": "e62bded63406528ebf36a0060dbd1c59"
+  },
+  {
+   "uuid": "3a43952d-c4d4-5976-9f91-1d3406d183cb",
+   "guid": "J6-zVBN*x@",
+   "deck_id": 232757944363504,
+   "hex": "3a43952dc4d459769f911d3406d183cb"
+  },
+  {
+   "uuid": "355b866b-b651-5081-bd35-9c5d4890a335",
+   "guid": "FWx8/0u$H1",
+   "deck_id": 205883302385614,
+   "hex": "355b866bb6515081bd359c5d4890a335"
+  },
+  {
+   "uuid": "648c7622-a575-51b2-b37a-28721377ee10",
+   "guid": "bM2BSs[ai-",
+   "deck_id": 9299192481508,
+   "hex": "648c7622a57551b2b37a28721377ee10"
+  },
+  {
+   "uuid": "5f970f21-4c3e-5780-acc2-ff0740bdfc55",
+   "guid": "En]+/82);R",
+   "deck_id": 196889589931205,
+   "hex": "5f970f214c3e5780acc2ff0740bdfc55"
+  },
+  {
+   "uuid": "1eab2a64-fa26-52b1-aacc-1786d5b4b9d7",
+   "guid": "B=E-*5n-t/",
+   "deck_id": 181922808520350,
+   "hex": "1eab2a64fa2652b1aacc1786d5b4b9d7"
+  },
+  {
+   "uuid": "a655780e-6627-5724-89cd-9da5bd64d60c",
+   "guid": "pQ0a0Cr({h",
+   "deck_id": 101000069385925,
+   "hex": "a655780e6627572489cd9da5bd64d60c"
+  },
+  {
+   "uuid": "d3a2e339-7684-5a66-a2c8-c71c8881592b",
+   "guid": "d?=U*V<mpq",
+   "deck_id": 25391368320944,
+   "hex": "d3a2e33976845a66a2c8c71c8881592b"
+  },
+  {
+   "uuid": "7e7e5708-e921-5042-a75b-31e7771348b9",
+   "guid": "M({2;9ZPj?",
+   "deck_id": 253004891399054,
+   "hex": "7e7e5708e9215042a75b31e7771348b9"
+  },
+  {
+   "uuid": "e484725d-70bf-531f-a3a1-a709c7ce65d2",
+   "guid": "H{^t*k(|i|",
+   "deck_id": 221788865916530,
+   "hex": "e484725d70bf531fa3a1a709c7ce65d2"
+  },
+  {
+   "uuid": "44da3849-1ce5-53c0-b802-313382198d1d",
+   "guid": "E^GAB)vk/E",
+   "deck_id": 201943583681038,
+   "hex": "44da38491ce553c0b802313382198d1d"
+  },
+  {
+   "uuid": "74983072-d30c-5cdb-a388-35593d6e07f6",
+   "guid": "z=36%V>Cy{",
+   "deck_id": 168883018580799,
+   "hex": "74983072d30c5cdba38835593d6e07f6"
+  },
+  {
+   "uuid": "43806f42-2b83-5e3c-b5f5-d2b2e94ef84a",
+   "guid": "t0O<9XtEJ5",
+   "deck_id": 127827585920258,
+   "hex": "43806f422b835e3cb5f5d2b2e94ef84a"
+  },
+  {
+   "uuid": "1b265e0e-de01-5141-babd-a74a4d153165",
+   "guid": "B,RnN2kYkQ",
+   "deck_id": 181430261228608,
+   "hex": "1b265e0ede015141babda74a4d153165"
+  }
+ ],
+ "strings": [
+  {
+   "text": "What is retrieval practice?",
+   "normalized": "What is retrieval practice?",
+   "casefold": "what is retrieval practice?",
+   "fingerprint": "6c565e149bff07f5e30b150bd3e2afb872e25272739adaedef4611bb2818952e",
+   "split": [
+    "What",
+    "is",
+    "retrieval",
+    "practice?"
+   ],
+   "strip": "What is retrieval practice?",
+   "text_html": "What is retrieval practice?",
+   "length": 27
+  },
+  {
+   "text": "  Leading and trailing  ",
+   "normalized": "Leading and trailing",
+   "casefold": "leading and trailing",
+   "fingerprint": "2f5342d289b88dceed4f7407da698a273299607167eb5cab5d0fdecbcceb988f",
+   "split": [
+    "Leading",
+    "and",
+    "trailing"
+   ],
+   "strip": "Leading and trailing",
+   "text_html": "  Leading and trailing  ",
+   "length": 24
+  },
+  {
+   "text": "Straße",
+   "normalized": "Straße",
+   "casefold": "strasse",
+   "fingerprint": "16d96952087774fee069b7585d3991b24d90c181c09b2129b4908c35baa7f0c0",
+   "split": [
+    "Straße"
+   ],
+   "strip": "Straße",
+   "text_html": "Straße",
+   "length": 6
+  },
+  {
+   "text": "STRASSE",
+   "normalized": "STRASSE",
+   "casefold": "strasse",
+   "fingerprint": "16d96952087774fee069b7585d3991b24d90c181c09b2129b4908c35baa7f0c0",
+   "split": [
+    "STRASSE"
+   ],
+   "strip": "STRASSE",
+   "text_html": "STRASSE",
+   "length": 7
+  },
+  {
+   "text": "ẞ capital sharp s",
+   "normalized": "ẞ capital sharp s",
+   "casefold": "ss capital sharp s",
+   "fingerprint": "9caaac4b95d168dcc5d3be01427e2d925224a9e9329e421a9e1f18816ffeb6a7",
+   "split": [
+    "ẞ",
+    "capital",
+    "sharp",
+    "s"
+   ],
+   "strip": "ẞ capital sharp s",
+   "text_html": "ẞ capital sharp s",
+   "length": 17
+  },
+  {
+   "text": "ﬁnance ﬂow ﬀ",
+   "normalized": "finance flow ff",
+   "casefold": "finance flow ff",
+   "fingerprint": "399018a4404c3ad2e8859874390854a58747e65e3fc9c9fe46efe77567c767a8",
+   "split": [
+    "ﬁnance",
+    "ﬂow",
+    "ﬀ"
+   ],
+   "strip": "ﬁnance ﬂow ﬀ",
+   "text_html": "ﬁnance ﬂow ﬀ",
+   "length": 12
+  },
+  {
+   "text": "ΣΊΣΥΦΟΣ and σίσυφος and ς",
+   "normalized": "ΣΊΣΥΦΟΣ and σίσυφος and ς",
+   "casefold": "σίσυφοσ and σίσυφοσ and σ",
+   "fingerprint": "4d5b073990b4ec25443df210dbef0267eebb8d5935a98f8b5a2db0e9f1e24ab3",
+   "split": [
+    "ΣΊΣΥΦΟΣ",
+    "and",
+    "σίσυφος",
+    "and",
+    "ς"
+   ],
+   "strip": "ΣΊΣΥΦΟΣ and σίσυφος and ς",
+   "text_html": "ΣΊΣΥΦΟΣ and σίσυφος and ς",
+   "length": 25
+  },
+  {
+   "text": "İstanbul and ı",
+   "normalized": "İstanbul and ı",
+   "casefold": "i̇stanbul and ı",
+   "fingerprint": "f2f9d7199ed87a1bf4deb5c102534d5e99558785d6e04ab8177cb8377ed495a8",
+   "split": [
+    "İstanbul",
+    "and",
+    "ı"
+   ],
+   "strip": "İstanbul and ı",
+   "text_html": "İstanbul and ı",
+   "length": 14
+  },
+  {
+   "text": "ǅ ǈ ǋ",
+   "normalized": "Dž Lj Nj",
+   "casefold": "dž lj nj",
+   "fingerprint": "63c41beb4d1d3ec7ff82e966e454d598473cf70a617e72755c89e76916664ca7",
+   "split": [
+    "ǅ",
+    "ǈ",
+    "ǋ"
+   ],
+   "strip": "ǅ ǈ ǋ",
+   "text_html": "ǅ ǈ ǋ",
+   "length": 5
+  },
+  {
+   "text": "Ⅻ ⅻ ① ²",
+   "normalized": "XII xii 1 2",
+   "casefold": "xii xii 1 2",
+   "fingerprint": "0d695d4508108f1318617df074954f683f9b293d220732151831e5ee8449aa00",
+   "split": [
+    "Ⅻ",
+    "ⅻ",
+    "①",
+    "²"
+   ],
+   "strip": "Ⅻ ⅻ ① ²",
+   "text_html": "Ⅻ ⅻ ① ²",
+   "length": 7
+  },
+  {
+   "text": "𝑥² + 𝑦² = 𝑟²",
+   "normalized": "x2 + y2 = r2",
+   "casefold": "x2 + y2 = r2",
+   "fingerprint": "9cba4b39baec201af5be751f28c8da66fc5b07bb6ab25a8f85fb5d5698b5a718",
+   "split": [
+    "𝑥²",
+    "+",
+    "𝑦²",
+    "=",
+    "𝑟²"
+   ],
+   "strip": "𝑥² + 𝑦² = 𝑟²",
+   "text_html": "𝑥² + 𝑦² = 𝑟²",
+   "length": 12
+  },
+  {
+   "text": "x y z w",
+   "normalized": "x y z w",
+   "casefold": "x y z w",
+   "fingerprint": "ae3fccae84b0e410c57879394bdb59692706f1bcf5f32e9e213c7242a50b865c",
+   "split": [
+    "x",
+    "y",
+    "z",
+    "w"
+   ],
+   "strip": "x y z w",
+   "text_html": "x y z w",
+   "length": 7
+  },
+  {
+   "text": "a\u001cb\u001dc\u001ed\u001fe",
+   "normalized": "a b c d e",
+   "casefold": "a b c d e",
+   "fingerprint": "52cf9f06f83e0a0a90dc25dcf548c18421244f9520c577672cd27b6618f12134",
+   "split": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e"
+   ],
+   "strip": "a\u001cb\u001dc\u001ed\u001fe",
+   "text_html": "a\u001cb\u001dc\u001ed\u001fe",
+   "length": 9
+  },
+  {
+   "text": "ab",
+   "normalized": "a b",
+   "casefold": "a b",
+   "fingerprint": "c8687a08aa5d6ed2044328fa6a697ab8e96dc34291e8c2034ae8c38e6fcc6d65",
+   "split": [
+    "a",
+    "b"
+   ],
+   "strip": "ab",
+   "text_html": "ab",
+   "length": 3
+  },
+  {
+   "text": "a﻿b",
+   "normalized": "a﻿b",
+   "casefold": "a﻿b",
+   "fingerprint": "47a12dcb64e9ad8dc2c0819464d72388679ea0da7811edea2acedaf2f13deda7",
+   "split": [
+    "a﻿b"
+   ],
+   "strip": "a﻿b",
+   "text_html": "a﻿b",
+   "length": 3
+  },
+  {
+   "text": "a​b",
+   "normalized": "a​b",
+   "casefold": "a​b",
+   "fingerprint": "8df62aef5f92e4c30c0c938497f55f60078c361a476e7e0448485194ad79f884",
+   "split": [
+    "a​b"
+   ],
+   "strip": "a​b",
+   "text_html": "a​b",
+   "length": 3
+  },
+  {
+   "text": "tab\tnew\nline\r\nend\u000bv\ff",
+   "normalized": "tab new line end v f",
+   "casefold": "tab new line end v f",
+   "fingerprint": "6663665c26840c8ca30e2f6c84368de209fb28b96a060b84ead7de0f539cd72a",
+   "split": [
+    "tab",
+    "new",
+    "line",
+    "end",
+    "v",
+    "f"
+   ],
+   "strip": "tab\tnew\nline\r\nend\u000bv\ff",
+   "text_html": "tab\tnew<br>line\r<br>end\u000bv\ff",
+   "length": 21
+  },
+  {
+   "text": "é vs é",
+   "normalized": "é vs é",
+   "casefold": "é vs é",
+   "fingerprint": "938ef1218fa8342d755825afd96933fd2242386502abe76f1644ec6f2765e151",
+   "split": [
+    "é",
+    "vs",
+    "é"
+   ],
+   "strip": "é vs é",
+   "text_html": "é vs é",
+   "length": 7
+  },
+  {
+   "text": "Ｆｕｌｌｗｉｄｔｈ ＡＢＣ",
+   "normalized": "Fullwidth ABC",
+   "casefold": "fullwidth abc",
+   "fingerprint": "77917e4e10dc6e792f1ce4c0a39391f079e5ddf4ebcf06a18438a0056fa6b890",
+   "split": [
+    "Ｆｕｌｌｗｉｄｔｈ",
+    "ＡＢＣ"
+   ],
+   "strip": "Ｆｕｌｌｗｉｄｔｈ ＡＢＣ",
+   "text_html": "Ｆｕｌｌｗｉｄｔｈ ＡＢＣ",
+   "length": 13
+  },
+  {
+   "text": "µ vs μ",
+   "normalized": "μ vs μ",
+   "casefold": "μ vs μ",
+   "fingerprint": "fe9aafc0aac41436e5df8339ff190079629db2985021e5e504f90e4c312a8c6d",
+   "split": [
+    "µ",
+    "vs",
+    "μ"
+   ],
+   "strip": "µ vs μ",
+   "text_html": "µ vs μ",
+   "length": 6
+  },
+  {
+   "text": "K Kelvin",
+   "normalized": "K Kelvin",
+   "casefold": "k kelvin",
+   "fingerprint": "e9b9d204a7dc8f7c052b09cc60334f9117c19ae2bd7c1685bd7274891b7db066",
+   "split": [
+    "K",
+    "Kelvin"
+   ],
+   "strip": "K Kelvin",
+   "text_html": "K Kelvin",
+   "length": 8
+  },
+  {
+   "text": "ſ long s",
+   "normalized": "s long s",
+   "casefold": "s long s",
+   "fingerprint": "5051ef17addc83c5b554466a10b79b0f41d066f8af1817f6be6e9ec70b8e5974",
+   "split": [
+    "ſ",
+    "long",
+    "s"
+   ],
+   "strip": "ſ long s",
+   "text_html": "ſ long s",
+   "length": 8
+  },
+  {
+   "text": "ΐ ŉ ǰ",
+   "normalized": "ΐ ʼn ǰ",
+   "casefold": "ΐ ʼn ǰ",
+   "fingerprint": "cd574f6de56a309255c2446d51cc0e8784e860155b3c9028c9a3f1a3c47875e6",
+   "split": [
+    "ΐ",
+    "ŉ",
+    "ǰ"
+   ],
+   "strip": "ΐ ŉ ǰ",
+   "text_html": "ΐ ŉ ǰ",
+   "length": 5
+  },
+  {
+   "text": "Ꭰ Ꮿ ꭰ",
+   "normalized": "Ꭰ Ꮿ ꭰ",
+   "casefold": "Ꭰ Ꮿ Ꭰ",
+   "fingerprint": "b004c41e26883eacaa58d15d7cb3fdb4b452e4ae9adb7a378eb1fcb81a6929f9",
+   "split": [
+    "Ꭰ",
+    "Ꮿ",
+    "ꭰ"
+   ],
+   "strip": "Ꭰ Ꮿ ꭰ",
+   "text_html": "Ꭰ Ꮿ ꭰ",
+   "length": 5
+  },
+  {
+   "text": "😀 emoji 👩‍🔬",
+   "normalized": "😀 emoji 👩‍🔬",
+   "casefold": "😀 emoji 👩‍🔬",
+   "fingerprint": "a9d168729680cff07507227751ada40a5c9b8729e7933d7aeea796dcdff4641d",
+   "split": [
+    "😀",
+    "emoji",
+    "👩‍🔬"
+   ],
+   "strip": "😀 emoji 👩‍🔬",
+   "text_html": "😀 emoji 👩‍🔬",
+   "length": 11
+  },
+  {
+   "text": " line para",
+   "normalized": "line para",
+   "casefold": "line para",
+   "fingerprint": "d4003a00f83f6f1f0b4a9e535f54f7267bfc1d62a27b938fb5f6ad03ff416538",
+   "split": [
+    "line",
+    "para"
+   ],
+   "strip": "line para",
+   "text_html": " line para",
+   "length": 10
+  },
+  {
+   "text": "　ideographic　",
+   "normalized": "ideographic",
+   "casefold": "ideographic",
+   "fingerprint": "19fdee47ae0b71f0acc52ba9435eeaf426b912f2a77437339effd70b742e0bc6",
+   "split": [
+    "ideographic"
+   ],
+   "strip": "ideographic",
+   "text_html": "　ideographic　",
+   "length": 13
+  },
+  {
+   "text": "᠎mongolian",
+   "normalized": "᠎mongolian",
+   "casefold": "᠎mongolian",
+   "fingerprint": "027ace83d5b8edc2c53ad05e88f289ddc11362611042990398879f943e1dcad6",
+   "split": [
+    "᠎mongolian"
+   ],
+   "strip": "᠎mongolian",
+   "text_html": "᠎mongolian",
+   "length": 10
+  },
+  {
+   "text": "Wie lange dauert die Prüfung?",
+   "normalized": "Wie lange dauert die Prüfung?",
+   "casefold": "wie lange dauert die prüfung?",
+   "fingerprint": "453085df58a98d25d54edd23aa88c5af1fe59a26436edf49984c38a9dec89ff2",
+   "split": [
+    "Wie",
+    "lange",
+    "dauert",
+    "die",
+    "Prüfung?"
+   ],
+   "strip": "Wie lange dauert die Prüfung?",
+   "text_html": "Wie lange dauert die Prüfung?",
+   "length": 29
+  },
+  {
+   "text": "körperliche Untersuchung",
+   "normalized": "körperliche Untersuchung",
+   "casefold": "körperliche untersuchung",
+   "fingerprint": "c35de1e828e1bcb9a88ce3a036b836237d93fd0cebcbba72493a47f382dfd2a2",
+   "split": [
+    "körperliche",
+    "Untersuchung"
+   ],
+   "strip": "körperliche Untersuchung",
+   "text_html": "körperliche Untersuchung",
+   "length": 24
+  },
+  {
+   "text": "",
+   "normalized": "",
+   "casefold": "",
+   "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "split": [],
+   "strip": "",
+   "text_html": "",
+   "length": 0
+  },
+  {
+   "text": "   ",
+   "normalized": "",
+   "casefold": "",
+   "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "split": [],
+   "strip": "",
+   "text_html": "   ",
+   "length": 3
+  },
+  {
+   "text": "How long is the exam?",
+   "normalized": "How long is the exam?",
+   "casefold": "how long is the exam?",
+   "fingerprint": "f247cd9d4084f55e00217bce3d893ec0468e7087604219c02b6b6488aacd9a4d",
+   "split": [
+    "How",
+    "long",
+    "is",
+    "the",
+    "exam?"
+   ],
+   "strip": "How long is the exam?",
+   "text_html": "How long is the exam?",
+   "length": 21
+  },
+  {
+   "text": "When is the final exam scheduled?",
+   "normalized": "When is the final exam scheduled?",
+   "casefold": "when is the final exam scheduled?",
+   "fingerprint": "d84564db2c5962e8bb876548d7c4821bbf46f80af20dfbf9b90b934ae4c3a6d8",
+   "split": [
+    "When",
+    "is",
+    "the",
+    "final",
+    "exam",
+    "scheduled?"
+   ],
+   "strip": "When is the final exam scheduled?",
+   "text_html": "When is the final exam scheduled?",
+   "length": 33
+  },
+  {
+   "text": "What is the exam duration?",
+   "normalized": "What is the exam duration?",
+   "casefold": "what is the exam duration?",
+   "fingerprint": "88786db20ff345806799ebebee22825c084104e3f317fa420ea7c793fb2a8c42",
+   "split": [
+    "What",
+    "is",
+    "the",
+    "exam",
+    "duration?"
+   ],
+   "strip": "What is the exam duration?",
+   "text_html": "What is the exam duration?",
+   "length": 26
+  },
+  {
+   "text": "Where does the midterm take place?",
+   "normalized": "Where does the midterm take place?",
+   "casefold": "where does the midterm take place?",
+   "fingerprint": "ebc1259d7dd420deedb6652d35bc7f6700f2fda5a3b589202d85bcc0ece7fbc9",
+   "split": [
+    "Where",
+    "does",
+    "the",
+    "midterm",
+    "take",
+    "place?"
+   ],
+   "strip": "Where does the midterm take place?",
+   "text_html": "Where does the midterm take place?",
+   "length": 34
+  },
+  {
+   "text": "Which materials are allowed in the exam?",
+   "normalized": "Which materials are allowed in the exam?",
+   "casefold": "which materials are allowed in the exam?",
+   "fingerprint": "a9275bd7df5e89e7600242ac38381702cc5cb5b2593ec773df7c1d6d5e3e3345",
+   "split": [
+    "Which",
+    "materials",
+    "are",
+    "allowed",
+    "in",
+    "the",
+    "exam?"
+   ],
+   "strip": "Which materials are allowed in the exam?",
+   "text_html": "Which materials are allowed in the exam?",
+   "length": 40
+  },
+  {
+   "text": "Are calculators permitted during the exam?",
+   "normalized": "Are calculators permitted during the exam?",
+   "casefold": "are calculators permitted during the exam?",
+   "fingerprint": "ddf482507e42523f35e263c98b330b1e4331fbd69fdd14c5e02a4715b8c6e28c",
+   "split": [
+    "Are",
+    "calculators",
+    "permitted",
+    "during",
+    "the",
+    "exam?"
+   ],
+   "strip": "Are calculators permitted during the exam?",
+   "text_html": "Are calculators permitted during the exam?",
+   "length": 42
+  },
+  {
+   "text": "What topics will the exam cover?",
+   "normalized": "What topics will the exam cover?",
+   "casefold": "what topics will the exam cover?",
+   "fingerprint": "502c2ee11a1ca27be80bc36cc3958a4969120777181f274b421d8cb17b93fb0d",
+   "split": [
+    "What",
+    "topics",
+    "will",
+    "the",
+    "exam",
+    "cover?"
+   ],
+   "strip": "What topics will the exam cover?",
+   "text_html": "What topics will the exam cover?",
+   "length": 32
+  },
+  {
+   "text": "How difficult is the exam?",
+   "normalized": "How difficult is the exam?",
+   "casefold": "how difficult is the exam?",
+   "fingerprint": "0db7c60dde63ac08fe62b5eda61065062ed5ef915a3c335a43a9b7002c29a041",
+   "split": [
+    "How",
+    "difficult",
+    "is",
+    "the",
+    "exam?"
+   ],
+   "strip": "How difficult is the exam?",
+   "text_html": "How difficult is the exam?",
+   "length": 26
+  },
+  {
+   "text": "How is the course graded?",
+   "normalized": "How is the course graded?",
+   "casefold": "how is the course graded?",
+   "fingerprint": "d5d9e42fb714a135ed2e2b7bd98940d2807e156553dbb2e43afd243123720809",
+   "split": [
+    "How",
+    "is",
+    "the",
+    "course",
+    "graded?"
+   ],
+   "strip": "How is the course graded?",
+   "text_html": "How is the course graded?",
+   "length": 25
+  },
+  {
+   "text": "When are the office hours?",
+   "normalized": "When are the office hours?",
+   "casefold": "when are the office hours?",
+   "fingerprint": "84be1fd5ff533ce542c24fc2edfe494b74ea93070fa43a0618ec5c4ef1e0016e",
+   "split": [
+    "When",
+    "are",
+    "the",
+    "office",
+    "hours?"
+   ],
+   "strip": "When are the office hours?",
+   "text_html": "When are the office hours?",
+   "length": 26
+  },
+  {
+   "text": "How do I email the lecturer?",
+   "normalized": "How do I email the lecturer?",
+   "casefold": "how do i email the lecturer?",
+   "fingerprint": "e982cb5a8c18a706df9569f7368c68879da73c0e407bcda614e486dd07e4c3df",
+   "split": [
+    "How",
+    "do",
+    "I",
+    "email",
+    "the",
+    "lecturer?"
+   ],
+   "strip": "How do I email the lecturer?",
+   "text_html": "How do I email the lecturer?",
+   "length": 28
+  },
+  {
+   "text": "What does a clinical examination include?",
+   "normalized": "What does a clinical examination include?",
+   "casefold": "what does a clinical examination include?",
+   "fingerprint": "5e137b1d357f35d159f86614a2c02f3dc5b736caca54a40142050c023d78c37b",
+   "split": [
+    "What",
+    "does",
+    "a",
+    "clinical",
+    "examination",
+    "include?"
+   ],
+   "strip": "What does a clinical examination include?",
+   "text_html": "What does a clinical examination include?",
+   "length": 41
+  },
+  {
+   "text": "What is a physical examination?",
+   "normalized": "What is a physical examination?",
+   "casefold": "what is a physical examination?",
+   "fingerprint": "f5682e46c19776100eee519905143f0c8ef1ad98aebc1f4a4cb9bf69876df5f0",
+   "split": [
+    "What",
+    "is",
+    "a",
+    "physical",
+    "examination?"
+   ],
+   "strip": "What is a physical examination?",
+   "text_html": "What is a physical examination?",
+   "length": 31
+  },
+  {
+   "text": "What is bond duration?",
+   "normalized": "What is bond duration?",
+   "casefold": "what is bond duration?",
+   "fingerprint": "ec4f20343075cd1e71830ff96ddab21102d0ad7ee85767d06f5ed1e4a1389173",
+   "split": [
+    "What",
+    "is",
+    "bond",
+    "duration?"
+   ],
+   "strip": "What is bond duration?",
+   "text_html": "What is bond duration?",
+   "length": 22
+  },
+  {
+   "text": "How long does a neurological exam take?",
+   "normalized": "How long does a neurological exam take?",
+   "casefold": "how long does a neurological exam take?",
+   "fingerprint": "a2ec47cf332b034816c96d454d1d7d1e156cbbc96bdec7f20c17cb95eb9d82ef",
+   "split": [
+    "How",
+    "long",
+    "does",
+    "a",
+    "neurological",
+    "exam",
+    "take?"
+   ],
+   "strip": "How long does a neurological exam take?",
+   "text_html": "How long does a neurological exam take?",
+   "length": 39
+  },
+  {
+   "text": "Wie lange dauert die Klausur?",
+   "normalized": "Wie lange dauert die Klausur?",
+   "casefold": "wie lange dauert die klausur?",
+   "fingerprint": "23b1925134e6e79ef98376cebda9631f4e5af7ee7030f0236c974656d79e9afa",
+   "split": [
+    "Wie",
+    "lange",
+    "dauert",
+    "die",
+    "Klausur?"
+   ],
+   "strip": "Wie lange dauert die Klausur?",
+   "text_html": "Wie lange dauert die Klausur?",
+   "length": 29
+  },
+  {
+   "text": "Wann ist die Prüfung?",
+   "normalized": "Wann ist die Prüfung?",
+   "casefold": "wann ist die prüfung?",
+   "fingerprint": "523f28bacf1b316be62370b7e8666025929c6dda66e29d67eef713a73807bc32",
+   "split": [
+    "Wann",
+    "ist",
+    "die",
+    "Prüfung?"
+   ],
+   "strip": "Wann ist die Prüfung?",
+   "text_html": "Wann ist die Prüfung?",
+   "length": 21
+  },
+  {
+   "text": "Welche Hilfsmittel sind in der Prüfung erlaubt?",
+   "normalized": "Welche Hilfsmittel sind in der Prüfung erlaubt?",
+   "casefold": "welche hilfsmittel sind in der prüfung erlaubt?",
+   "fingerprint": "9be14e79c7da22f6e53145f0cc66be64c204e9c142c10922d937b96d0fca007a",
+   "split": [
+    "Welche",
+    "Hilfsmittel",
+    "sind",
+    "in",
+    "der",
+    "Prüfung",
+    "erlaubt?"
+   ],
+   "strip": "Welche Hilfsmittel sind in der Prüfung erlaubt?",
+   "text_html": "Welche Hilfsmittel sind in der Prüfung erlaubt?",
+   "length": 47
+  },
+  {
+   "text": "Was ist die Prüfungsdauer?",
+   "normalized": "Was ist die Prüfungsdauer?",
+   "casefold": "was ist die prüfungsdauer?",
+   "fingerprint": "1ab2e05cd0aefd9312d1564c99cf4d6b3993eab54a6ba247705c83c655ecc6c6",
+   "split": [
+    "Was",
+    "ist",
+    "die",
+    "Prüfungsdauer?"
+   ],
+   "strip": "Was ist die Prüfungsdauer?",
+   "text_html": "Was ist die Prüfungsdauer?",
+   "length": 26
+  },
+  {
+   "text": "Wann ist die Sprechstunde?",
+   "normalized": "Wann ist die Sprechstunde?",
+   "casefold": "wann ist die sprechstunde?",
+   "fingerprint": "df89ad7921f4e448922ae3b54a3b1caf9f335e845b9813911bcbcfcdb4d6152d",
+   "split": [
+    "Wann",
+    "ist",
+    "die",
+    "Sprechstunde?"
+   ],
+   "strip": "Wann ist die Sprechstunde?",
+   "text_html": "Wann ist die Sprechstunde?",
+   "length": 26
+  },
+  {
+   "text": "Wie wird das Modul benotet?",
+   "normalized": "Wie wird das Modul benotet?",
+   "casefold": "wie wird das modul benotet?",
+   "fingerprint": "899882cfeed028cce88f0858b3f3c9651e0bf8bb3976aa417e3ededc86404e4e",
+   "split": [
+    "Wie",
+    "wird",
+    "das",
+    "Modul",
+    "benotet?"
+   ],
+   "strip": "Wie wird das Modul benotet?",
+   "text_html": "Wie wird das Modul benotet?",
+   "length": 27
+  },
+  {
+   "text": "Was umfasst eine körperliche Untersuchung?",
+   "normalized": "Was umfasst eine körperliche Untersuchung?",
+   "casefold": "was umfasst eine körperliche untersuchung?",
+   "fingerprint": "994a03a5312d4093a234e5f7d3ac351802af004a6ce11fa939ae4a24c6020e00",
+   "split": [
+    "Was",
+    "umfasst",
+    "eine",
+    "körperliche",
+    "Untersuchung?"
+   ],
+   "strip": "Was umfasst eine körperliche Untersuchung?",
+   "text_html": "Was umfasst eine körperliche Untersuchung?",
+   "length": 42
+  },
+  {
+   "text": "What is retrieval practice?",
+   "normalized": "What is retrieval practice?",
+   "casefold": "what is retrieval practice?",
+   "fingerprint": "6c565e149bff07f5e30b150bd3e2afb872e25272739adaedef4611bb2818952e",
+   "split": [
+    "What",
+    "is",
+    "retrieval",
+    "practice?"
+   ],
+   "strip": "What is retrieval practice?",
+   "text_html": "What is retrieval practice?",
+   "length": 27
+  },
+  {
+   "text": "EXAM DATE for the course?",
+   "normalized": "EXAM DATE for the course?",
+   "casefold": "exam date for the course?",
+   "fingerprint": "b0ec286e87ece652e15850653580cdb288cb2e86cab6366a52a1b5ba39d1daf9",
+   "split": [
+    "EXAM",
+    "DATE",
+    "for",
+    "the",
+    "course?"
+   ],
+   "strip": "EXAM DATE for the course?",
+   "text_html": "EXAM DATE for the course?",
+   "length": 25
+  },
+  {
+   "text": "Is the exam   format oral?",
+   "normalized": "Is the exam format oral?",
+   "casefold": "is the exam format oral?",
+   "fingerprint": "d464f6487c212baa56d943f8bca1d77056346bb43eaf45496e893e04986078ce",
+   "split": [
+    "Is",
+    "the",
+    "exam",
+    "format",
+    "oral?"
+   ],
+   "strip": "Is the exam   format oral?",
+   "text_html": "Is the exam   format oral?",
+   "length": 26
+  },
+  {
+   "text": "When does the examination start?",
+   "normalized": "When does the examination start?",
+   "casefold": "when does the examination start?",
+   "fingerprint": "757e4c04216253c622313f951603ef9b7769336b2dc50b26f7603847fbdf15a8",
+   "split": [
+    "When",
+    "does",
+    "the",
+    "examination",
+    "start?"
+   ],
+   "strip": "When does the examination start?",
+   "text_html": "When does the examination start?",
+   "length": 32
+  },
+  {
+   "text": "What is the expected exam difficulty?",
+   "normalized": "What is the expected exam difficulty?",
+   "casefold": "what is the expected exam difficulty?",
+   "fingerprint": "98717d8745ea820f09b414b449be1fbd2ad4b6d5d17ae0f7a1880be79cf8b7b1",
+   "split": [
+    "What",
+    "is",
+    "the",
+    "expected",
+    "exam",
+    "difficulty?"
+   ],
+   "strip": "What is the expected exam difficulty?",
+   "text_html": "What is the expected exam difficulty?",
+   "length": 37
+  },
+  {
+   "text": "How many ECTS credits does the module give?",
+   "normalized": "How many ECTS credits does the module give?",
+   "casefold": "how many ects credits does the module give?",
+   "fingerprint": "db9ce43675c17e4b15b8c77c5e21fb15d3d24d6b8c6ef9586ea2a7f7816891ed",
+   "split": [
+    "How",
+    "many",
+    "ECTS",
+    "credits",
+    "does",
+    "the",
+    "module",
+    "give?"
+   ],
+   "strip": "How many ECTS credits does the module give?",
+   "text_html": "How many ECTS credits does the module give?",
+   "length": 43
+  },
+  {
+   "text": "Explain the Prüfungsordnung",
+   "normalized": "Explain the Prüfungsordnung",
+   "casefold": "explain the prüfungsordnung",
+   "fingerprint": "c041a170234fdc0c3f5bce57442d05592ad2a8e9b34f9e1281d518b1b4d816d9",
+   "split": [
+    "Explain",
+    "the",
+    "Prüfungsordnung"
+   ],
+   "strip": "Explain the Prüfungsordnung",
+   "text_html": "Explain the Prüfungsordnung",
+   "length": 27
+  },
+  {
+   "text": "Stoff der Klausur?",
+   "normalized": "Stoff der Klausur?",
+   "casefold": "stoff der klausur?",
+   "fingerprint": "ffe68c25460beab94de47057ea202390ed06878e12a3d94b687a5815168eba30",
+   "split": [
+    "Stoff",
+    "der",
+    "Klausur?"
+   ],
+   "strip": "Stoff der Klausur?",
+   "text_html": "Stoff der Klausur?",
+   "length": 18
+  }
+ ],
+ "cloze": [
+  {
+   "front": "Retrieval practice means trying to {{c1::recall}} information from {{c2::memory::where?}}.",
+   "matches": [
+    {
+     "number": 1,
+     "body": "recall",
+     "start": 35,
+     "end": 49
+    },
+    {
+     "number": 2,
+     "body": "memory::where?",
+     "start": 67,
+     "end": 89
+    }
+   ],
+   "count": {
+    "ok": 2
+   },
+   "plain_front": "Retrieval practice means trying to recall information from memory.",
+   "fingerprint": "6067c9d3506085b685287af8e6a6e776216ee8b4663433d5a577e43f4a27cdcd",
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "Retrieval practice means trying to <span class=\"cloze\">[...]</span> information from memory.",
+      "answer": "Retrieval practice means trying to <span class=\"cloze\">recall</span> information from memory.<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     },
+     {
+      "number": 2,
+      "question": "Retrieval practice means trying to recall information from <span class=\"cloze\">[where?]</span>.",
+      "answer": "Retrieval practice means trying to recall information from <span class=\"cloze\">memory</span>.<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     }
+    ]
+   },
+   "previews_no_back": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "Retrieval practice means trying to <span class=\"cloze\">[...]</span> information from memory.",
+      "answer": "Retrieval practice means trying to <span class=\"cloze\">recall</span> information from memory."
+     },
+     {
+      "number": 2,
+      "question": "Retrieval practice means trying to recall information from <span class=\"cloze\">[where?]</span>.",
+      "answer": "Retrieval practice means trying to recall information from <span class=\"cloze\">memory</span>."
+     }
+    ]
+   }
+  },
+  {
+   "front": "{{c1::A}} and {{c1::B}} together, then {{c3::C}}.",
+   "matches": [
+    {
+     "number": 1,
+     "body": "A",
+     "start": 0,
+     "end": 9
+    },
+    {
+     "number": 1,
+     "body": "B",
+     "start": 14,
+     "end": 23
+    },
+    {
+     "number": 3,
+     "body": "C",
+     "start": 39,
+     "end": 48
+    }
+   ],
+   "count": {
+    "ok": 2
+   },
+   "plain_front": "A and B together, then C.",
+   "fingerprint": "b7f48e074a137510710c574d691cd0958ad37900fcbc8f1c4d197ae425895113",
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "<span class=\"cloze\">[...]</span> and <span class=\"cloze\">[...]</span> together, then C.",
+      "answer": "<span class=\"cloze\">A</span> and <span class=\"cloze\">B</span> together, then C.<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     },
+     {
+      "number": 3,
+      "question": "A and B together, then <span class=\"cloze\">[...]</span>.",
+      "answer": "A and B together, then <span class=\"cloze\">C</span>.<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     }
+    ]
+   },
+   "previews_no_back": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "<span class=\"cloze\">[...]</span> and <span class=\"cloze\">[...]</span> together, then C.",
+      "answer": "<span class=\"cloze\">A</span> and <span class=\"cloze\">B</span> together, then C."
+     },
+     {
+      "number": 3,
+      "question": "A and B together, then <span class=\"cloze\">[...]</span>.",
+      "answer": "A and B together, then <span class=\"cloze\">C</span>."
+     }
+    ]
+   }
+  },
+  {
+   "front": "{{c20::twenty}} is the highest.",
+   "matches": [
+    {
+     "number": 20,
+     "body": "twenty",
+     "start": 0,
+     "end": 15
+    }
+   ],
+   "count": {
+    "ok": 1
+   },
+   "plain_front": "twenty is the highest.",
+   "fingerprint": "f3cec654b78ae26547cdf0825595663d627088e9fcb1a14f5046328f45a74228",
+   "previews": {
+    "ok": [
+     {
+      "number": 20,
+      "question": "<span class=\"cloze\">[...]</span> is the highest.",
+      "answer": "<span class=\"cloze\">twenty</span> is the highest.<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     }
+    ]
+   },
+   "previews_no_back": {
+    "ok": [
+     {
+      "number": 20,
+      "question": "<span class=\"cloze\">[...]</span> is the highest.",
+      "answer": "<span class=\"cloze\">twenty</span> is the highest."
+     }
+    ]
+   }
+  },
+  {
+   "front": "{{c21::too high}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "{{c21::too high}}",
+   "fingerprint": "b27d488fe5388f8730c5624efd156466d6d1ef84cd512351fbaedbde5b86b82e",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c0::zero}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "{{c0::zero}}",
+   "fingerprint": "7dd3ef6ca20c17afc49068bcb2fc58935a2777251bf7054d3a0c8687635e636d",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "No cloze here.",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "No cloze here.",
+   "fingerprint": "44fc04da9b1e8f6d2fa1de9d681da3c3f0ae8100101ed62ce2235f92ac6bb3fd",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c1::outer {{c2::inner}}}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "{{c1::outer inner}}",
+   "fingerprint": "700d3db71e33978b6d6643fe3e9fafdb33ab7672ff6d4b192cc26da411ccb584",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c1::}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "{{c1::}}",
+   "fingerprint": "638e69c599fa91156ef027ac7842296b9a9aa27afd64c569a4aa2b990214ef3b",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c1:: }}",
+   "matches_error": "Each cloze needs a nonempty answer and at most one hint.",
+   "count": {
+    "error": "Each cloze needs a nonempty answer and at most one hint."
+   },
+   "plain_front": " ",
+   "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "previews": {
+    "error": "Each cloze needs a nonempty answer and at most one hint."
+   },
+   "previews_no_back": {
+    "error": "Each cloze needs a nonempty answer and at most one hint."
+   }
+  },
+  {
+   "front": "{{c1::answer::hint::extra}}",
+   "matches_error": "Each cloze needs a nonempty answer and at most one hint.",
+   "count": {
+    "error": "Each cloze needs a nonempty answer and at most one hint."
+   },
+   "plain_front": "answer",
+   "fingerprint": "0db52f4076c082518412afd3dd3576e2cb0c63703fd7fed5e23ade60efef31d9",
+   "previews": {
+    "error": "Each cloze needs a nonempty answer and at most one hint."
+   },
+   "previews_no_back": {
+    "error": "Each cloze needs a nonempty answer and at most one hint."
+   }
+  },
+  {
+   "front": "Unclosed {{c1::answer",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "Unclosed {{c1::answer",
+   "fingerprint": "78749fc78bc20c62355b4818b8d64480aa1e91f0254afbe63ff59f8455854bc0",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "Stray }} brace {{c1::ok}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "Stray }} brace ok",
+   "fingerprint": "ccc263c50b8399c9086fa880e42f556e34b34607cbf36c3cead2956cd1038928",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c1::a::}} empty hint",
+   "matches": [
+    {
+     "number": 1,
+     "body": "a::",
+     "start": 0,
+     "end": 11
+    }
+   ],
+   "count": {
+    "ok": 1
+   },
+   "plain_front": "a empty hint",
+   "fingerprint": "011714c48c8d6ca01b5afcdbd416d8da7f2dad90be3bab6f871304d2724a991b",
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "<span class=\"cloze\">[...]</span> empty hint",
+      "answer": "<span class=\"cloze\">a</span> empty hint<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     }
+    ]
+   },
+   "previews_no_back": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "<span class=\"cloze\">[...]</span> empty hint",
+      "answer": "<span class=\"cloze\">a</span> empty hint"
+     }
+    ]
+   }
+  },
+  {
+   "front": "Escaped <b>&amp;</b> {{c1::x < y}} and\nnewline",
+   "matches": [
+    {
+     "number": 1,
+     "body": "x < y",
+     "start": 21,
+     "end": 34
+    }
+   ],
+   "count": {
+    "ok": 1
+   },
+   "plain_front": "Escaped <b>&amp;</b> x < y and\nnewline",
+   "fingerprint": "52a89c3bbca2c3a2c079c76d57271d3c101c43d6147014d179fa490299b768cd",
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "Escaped &lt;b&gt;&amp;amp;&lt;/b&gt; <span class=\"cloze\">[...]</span> and<br>newline",
+      "answer": "Escaped &lt;b&gt;&amp;amp;&lt;/b&gt; <span class=\"cloze\">x &lt; y</span> and<br>newline<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     }
+    ]
+   },
+   "previews_no_back": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "Escaped &lt;b&gt;&amp;amp;&lt;/b&gt; <span class=\"cloze\">[...]</span> and<br>newline",
+      "answer": "Escaped &lt;b&gt;&amp;amp;&lt;/b&gt; <span class=\"cloze\">x &lt; y</span> and<br>newline"
+     }
+    ]
+   }
+  },
+  {
+   "front": "{{C1::capital}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "{{C1::capital}}",
+   "fingerprint": "504239dfecc4bf1ec0a79aa4badb72efc0121421cc7f490e56b6c26f9613fee0",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c01::leading zero}}",
+   "matches_error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported.",
+   "count": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "plain_front": "{{c01::leading zero}}",
+   "fingerprint": "4898272820a70810cee21f6f9d1b71a7d5365024e0110d160f1239928d12f593",
+   "previews": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   },
+   "previews_no_back": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "{{c1::𝑥²}} astral",
+   "matches": [
+    {
+     "number": 1,
+     "body": "𝑥²",
+     "start": 0,
+     "end": 10
+    }
+   ],
+   "count": {
+    "ok": 1
+   },
+   "plain_front": "𝑥² astral",
+   "fingerprint": "3cf4a654e81e5ee5a436ddf193b11e0f21edada00732adb33a219c1581b3052a",
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "<span class=\"cloze\">[...]</span> astral",
+      "answer": "<span class=\"cloze\">𝑥²</span> astral<hr>Extra &amp; &lt;b&gt;back&lt;/b&gt;<br>line"
+     }
+    ]
+   },
+   "previews_no_back": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "<span class=\"cloze\">[...]</span> astral",
+      "answer": "<span class=\"cloze\">𝑥²</span> astral"
+     }
+    ]
+   }
+  }
+ ],
+ "note_types": [
+  {
+   "front": "Question & <tag>?",
+   "back": "Answer\nline 2",
+   "note_type": "basic",
+   "count": {
+    "ok": 1
+   },
+   "plain_questions": [
+    "Question & <tag>?"
+   ],
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "Question &amp; &lt;tag&gt;?",
+      "answer": "Answer<br>line 2"
+     }
+    ]
+   }
+  },
+  {
+   "front": "Term",
+   "back": "Definition",
+   "note_type": "reversed",
+   "count": {
+    "ok": 2
+   },
+   "plain_questions": [
+    "Term",
+    "Definition"
+   ],
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "direction": "Front → back",
+      "question": "Term",
+      "answer": "Definition"
+     },
+     {
+      "number": 2,
+      "direction": "Back → front",
+      "question": "Definition",
+      "answer": "Term"
+     }
+    ]
+   }
+  },
+  {
+   "front": "Name the hidden part.",
+   "back": "",
+   "note_type": "occlusion",
+   "count": {
+    "ok": 1
+   },
+   "plain_questions": [],
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "Name the hidden part.",
+      "answer": ""
+     }
+    ]
+   }
+  },
+  {
+   "front": "What does the figure show?",
+   "back": "It shows x.",
+   "note_type": "visual",
+   "count": {
+    "ok": 1
+   },
+   "plain_questions": [
+    "What does the figure show?"
+   ],
+   "previews": {
+    "ok": [
+     {
+      "number": 1,
+      "question": "What does the figure show?",
+      "answer": "It shows x."
+     }
+    ]
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "note_type": "unknown",
+   "count": {
+    "error": "Choose a supported note format."
+   },
+   "plain_questions": null,
+   "previews": {
+    "error": "Choose a supported note format."
+   }
+  }
+ ],
+ "validate_content": [
+  {
+   "front": "What is spaced practice?",
+   "back": "Distributing sessions.",
+   "quote": "Spaced practice distributes study sessions over time.",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "What is spaced practice?",
+     "Distributing sessions.",
+     "Spaced practice distributes study sessions over time."
+    ]
+   }
+  },
+  {
+   "front": "  padded  ",
+   "back": "  answer  ",
+   "quote": "  Spaced   practice\ndistributes  ",
+   "note_type": "basic",
+   "require_quote": true,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "padded",
+     "answer",
+     "Spaced   practice\ndistributes"
+    ]
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "not on the page",
+   "note_type": "basic",
+   "require_quote": true,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "The source excerpt is not present on page 2. Check the page and excerpt."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": true,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Each generated card needs an exact supporting source excerpt."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "Q",
+     "A",
+     ""
+    ]
+   }
+  },
+  {
+   "front": "",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Both a question and an answer are required."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "  ",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Both a question and an answer are required."
+   }
+  },
+  {
+   "front": "{{c1::Spaced}} practice",
+   "back": "",
+   "quote": "Spaced practice",
+   "note_type": "cloze",
+   "require_quote": true,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "{{c1::Spaced}} practice",
+     "",
+     "Spaced practice"
+    ]
+   }
+  },
+  {
+   "front": "{{c1::Spaced}} practice",
+   "back": "",
+   "quote": "",
+   "note_type": "cloze",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "{{c1::Spaced}} practice",
+     "",
+     ""
+    ]
+   }
+  },
+  {
+   "front": "No cloze",
+   "back": "",
+   "quote": "",
+   "note_type": "cloze",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Use flat clozes such as {{c1::answer}} or {{c2::answer::hint}}, numbered 1–20. Nested or incomplete clozes are not supported."
+   }
+  },
+  {
+   "front": "Term",
+   "back": "term",
+   "quote": "",
+   "note_type": "reversed",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Use different text on the two sides of a reverse note."
+   }
+  },
+  {
+   "front": "Term",
+   "back": "TERM ",
+   "quote": "",
+   "note_type": "reversed",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Use different text on the two sides of a reverse note."
+   }
+  },
+  {
+   "front": "Straße",
+   "back": "STRASSE",
+   "quote": "",
+   "note_type": "reversed",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Use different text on the two sides of a reverse note."
+   }
+  },
+  {
+   "front": "Term",
+   "back": "Definition",
+   "quote": "Straße und 𝑥² sind hier.",
+   "note_type": "reversed",
+   "require_quote": true,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "Term",
+     "Definition",
+     "Straße und 𝑥² sind hier."
+    ]
+   }
+  },
+  {
+   "front": "Name it",
+   "back": "",
+   "quote": "",
+   "note_type": "occlusion",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "Name it",
+     "",
+     ""
+    ]
+   }
+  },
+  {
+   "front": "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Question is invalid or too long."
+   }
+  },
+  {
+   "front": "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ",
+     "A",
+     ""
+    ]
+   }
+  },
+  {
+   "front": "Q",
+   "back": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Answer is invalid or too long."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Source excerpt is invalid or too long."
+   }
+  },
+  {
+   "front": "Q\u0000",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Question is invalid or too long."
+   }
+  },
+  {
+   "front": "𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥",
+     "A",
+     ""
+    ]
+   }
+  },
+  {
+   "front": "𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥𝑥",
+   "back": "A",
+   "quote": "",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "Question is invalid or too long."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "ﬁ",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "The source excerpt is not present on page 2. Check the page and excerpt."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "massed PRACTICE",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "error": "The source excerpt is not present on page 2. Check the page and excerpt."
+   }
+  },
+  {
+   "front": "Q",
+   "back": "A",
+   "quote": "Massed practice groups study",
+   "note_type": "basic",
+   "require_quote": false,
+   "page_text": "02 / MEMORY & LEARNING\nSpace your practice\nSpaced practice distributes study sessions over time.\nMassed practice groups study into one continuous session.\nStraße und 𝑥² sind hier.",
+   "page_number": 2,
+   "result": {
+    "ok": [
+     "Q",
+     "A",
+     "Massed practice groups study"
+    ]
+   }
+  }
+ ],
+ "card_limits": [
+  {
+   "value": null,
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": null,
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": null,
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": null,
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": null,
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": null,
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": null,
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": null,
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": null,
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": null,
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": null,
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": null,
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": "",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": "",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": "",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": "",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 5
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "0",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Basic + reverse needs room for two cards. Set Maximum new cards to at least 2."
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Basic + reverse needs room for two cards. Set Maximum new cards to at least 2."
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Basic + reverse needs room for two cards. Set Maximum new cards to at least 2."
+   }
+  },
+  {
+   "value": "1",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 1
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "2",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 2
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "500",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 500
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "501",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 3,
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 3
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": 7,
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "abc",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": true,
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": false,
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1000",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": " 5",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "5 ",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "007",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "ok": 7
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": "1.5",
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 1,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 1,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 1,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 1,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 4,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 4,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 4,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 4,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 9,
+   "card_format": "basic",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 9,
+   "card_format": "mixed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 9,
+   "card_format": "reversed",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  },
+  {
+   "value": -1,
+   "page_count": 9,
+   "card_format": "all",
+   "result": {
+    "error": "Choose a card limit from 1 to 500."
+   }
+  }
+ ],
+ "default_card_limit": {
+  "0": 1,
+  "1": 1,
+  "2": 1,
+  "3": 2,
+  "4": 2,
+  "5": 3,
+  "6": 3,
+  "7": 4,
+  "8": 4,
+  "9": 5,
+  "10": 5,
+  "11": 6,
+  "85": 43,
+  "100": 50
+ },
+ "logistics": [
+  {
+   "front": "How long is the exam?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "When is the final exam scheduled?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "What is the exam duration?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Where does the midterm take place?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Which materials are allowed in the exam?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Are calculators permitted during the exam?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "What topics will the exam cover?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "How difficult is the exam?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "How is the course graded?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "When are the office hours?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "How do I email the lecturer?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "What does a clinical examination include?",
+   "quote": "",
+   "result": false
+  },
+  {
+   "front": "What is a physical examination?",
+   "quote": "",
+   "result": false
+  },
+  {
+   "front": "What is bond duration?",
+   "quote": "Duration measures interest-rate sensitivity.",
+   "result": false
+  },
+  {
+   "front": "How long does a neurological exam take?",
+   "quote": "",
+   "result": false
+  },
+  {
+   "front": "Wie lange dauert die Klausur?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Wann ist die Prüfung?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Welche Hilfsmittel sind in der Prüfung erlaubt?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Was ist die Prüfungsdauer?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Wann ist die Sprechstunde?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Wie wird das Modul benotet?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Was umfasst eine körperliche Untersuchung?",
+   "quote": "Prüfung des Patienten",
+   "result": false
+  },
+  {
+   "front": "What is retrieval practice?",
+   "quote": "Retrieval practice means trying to recall.",
+   "result": false
+  },
+  {
+   "front": "EXAM DATE for the course?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "Is the exam   format oral?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "When does the examination start?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "What is the expected exam difficulty?",
+   "quote": "",
+   "result": true
+  },
+  {
+   "front": "How many ECTS credits does the module give?",
+   "quote": "",
+   "result": false
+  },
+  {
+   "front": "Explain the Prüfungsordnung",
+   "quote": "",
+   "result": false
+  },
+  {
+   "front": "Stoff der Klausur?",
+   "quote": "",
+   "result": true
+  }
+ ],
+ "filter_generated_logistics": [
+  {
+   "payload": {
+    "cards": []
+   },
+   "result": {
+    "ok": [
+     {
+      "cards": []
+     },
+     0
+    ]
+   }
+  },
+  {
+   "payload": {
+    "cards": [
+     {
+      "front": "When is the exam?",
+      "back": "Monday",
+      "page": 1,
+      "source_quote": "x"
+     },
+     {
+      "front": "What is recall?",
+      "back": "Memory",
+      "page": 1,
+      "source_quote": "x"
+     },
+     {
+      "front": "Term",
+      "back": "Wann ist die Klausur?",
+      "page": 1,
+      "source_quote": "x",
+      "note_type": "reversed"
+     },
+     {
+      "front": 5,
+      "back": "x",
+      "page": 1,
+      "source_quote": "x"
+     },
+     "not a dict"
+    ]
+   },
+   "result": {
+    "ok": [
+     {
+      "cards": [
+       {
+        "front": "What is recall?",
+        "back": "Memory",
+        "page": 1,
+        "source_quote": "x"
+       },
+       {
+        "front": 5,
+        "back": "x",
+        "page": 1,
+        "source_quote": "x"
+       },
+       "not a dict"
+      ]
+     },
+     2
+    ]
+   }
+  },
+  {
+   "payload": {
+    "cards": "no"
+   },
+   "result": {
+    "error": "Expected a JSON object containing a \"cards\" array."
+   }
+  },
+  {
+   "payload": {
+    "other": []
+   },
+   "result": {
+    "error": "Expected a JSON object containing a \"cards\" array."
+   }
+  },
+  {
+   "payload": [],
+   "result": {
+    "error": "Expected a JSON object containing a \"cards\" array."
+   }
+  },
+  {
+   "payload": {
+    "cards": [],
+    "extra": 1
+   },
+   "result": {
+    "error": "Expected a JSON object containing a \"cards\" array."
+   }
+  }
+ ]
+}

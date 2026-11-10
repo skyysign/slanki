@@ -17,6 +17,7 @@
 !tests/fixtures/synthetic/*.pdf
 !tests/fixtures/synthetic/*.pptx
 !tests/fixtures/synthetic/*.apkg
+!tests/fixtures/synthetic/golden/apkg/*.apkg
 
 # Credentials and local assistant configuration
 .env

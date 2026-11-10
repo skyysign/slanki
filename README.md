@@ -47,7 +47,33 @@ node app/scripts/compare-text.ts BACKUP.zip                      # pdf.js vs sto
 node helper/test/discover-real.ts                                # model lists from installed CLIs (no prompts)
 ```
 
-The e2e scripts use installed Google Chrome; set `SLANKI_BROWSER=firefox` or `webkit` after `npx playwright install firefox webkit` to run them in those engines. `tools/golden.py` regenerates the frozen reference fixtures from the Django code; only rerun it deliberately (IDs change on each run). Deploy to Vercel by connecting the Git repository (settings come from `vercel.json`; `.vercelignore` keeps everything but the app out of uploads).
+The e2e scripts use installed Google Chrome; set `SLANKI_BROWSER=firefox` or `webkit` after `npx playwright install firefox webkit` to run them in those engines. `tools/golden.py` regenerates the frozen reference fixtures from the Django code; only rerun it deliberately (IDs change on each run).
+
+## Deploy to Vercel (Hobby)
+
+The site is a static build with no server functions, databases or environment variables.
+
+`vercel.json` sets:
+- the install command (`npm ci`) and the build command (`npm run build --workspace app`);
+- the output directory (`app/dist`);
+- the security headers.
+
+`package.json` pins Node 24, the version the app is tested with. `.vercelignore` uploads only the web app and the workspace manifests, so the `data/` folder with your lectures is never sent.
+
+**Deploy through GitHub**
+1. Push this repository to GitHub, either the `slanki` branch or merged into `main`.
+2. In Vercel, choose **Add New → Project** and import the repository. Use these settings:
+   - framework preset **Other**;
+   - root directory: the repository root;
+   - leave the build, install and output settings and the environment variables empty, because `vercel.json` supplies them.
+3. Name the project `slanki`, so the site is served at `https://slanki.vercel.app`. If you want the production branch to be `slanki`, set it under **Settings → Git**.
+4. Deploy.
+
+**Or deploy from this folder** with the Vercel CLI: run `npx vercel` for a preview, then `npx vercel --prod`.
+
+**If the name `slanki` is taken:** the helper only accepts its production site, so update `APP_ORIGIN` in `helper/src/main.ts` to the new address, then run `npm run build`. Until then you can start the helper with `SLANKI_APP_ORIGIN=https://<name>.vercel.app`. Preview URLs are refused by design.
+
+Vercel's Hobby plan is for non-commercial use; optional donations are allowed.
 
 ## Recalloom Django edition (frozen reference)
 

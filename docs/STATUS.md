@@ -31,6 +31,13 @@ The approved plan renames the app to **Slanki**: a static browser app for Vercel
   - export, backup, delete and rename dialogs;
   - phone layout.
 - Make cards with three settings and a copy/paste chat route.
+- **Sample lecture removed, Vercel deploy prepared** (requested 2026-11-10):
+  - The home page has no sample lecture any more.
+  - Browser tests now upload the synthetic test PDF.
+  - Vercel builds are pinned to Node 24.
+  - A clean-room deploy check passed. It took the committed files, removed everything `.vercelignore` excludes (only app, helper and manifests remain), then ran `npm ci` and the build. That build passed the full browser workflow with the exact `vercel.json` headers.
+  - The lockfile includes the Linux build binaries.
+  - No deployment has been made: the repository has no Git remote, and deploying needs the user's Vercel account. Steps are in README.md.
 - **Back up all lectures** on the home page (requested 2026-11-10):
   - writes one `slanki-library` ZIP holding every lecture's normal backup plus an index;
   - **Restore a backup** accepts either kind and skips lectures already present;

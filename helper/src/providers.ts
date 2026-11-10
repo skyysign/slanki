@@ -313,9 +313,23 @@ export async function generate(
   }
 }
 
+/** The CLI's own browser sign-in command (never logout). */
+export function loginCommand(provider: Provider, commands: Commands = nativeCommands): { command: string; args: string[]; env?: NodeJS.ProcessEnv } {
+  if (provider === "codex") {
+    const [codex, ...prefix] = commands.codex();
+    return { command: codex!, args: [...prefix, "login"] };
+  }
+  if (claudeIsExternal()) {
+    throw new HelperError("auth_required", "Claude Code is configured for an API or another service. Use its normal Claude sign-in.");
+  }
+  const [claude, ...prefix] = commands.claude();
+  return { command: claude!, args: [...prefix, "auth", "login"], env: claudeEnvironment() };
+}
+
 // --- Status and models ---------------------------------------------------
 
 export interface ProviderStatus {
+  loggingIn?: boolean;
   installed: boolean;
   signedIn: "yes" | "no" | "unknown";
   message: string;

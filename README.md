@@ -12,13 +12,13 @@ Turn lecture PDFs into Anki cards in your browser. Your slides, cards and backup
 
 ## Connect your AI
 
-Sign in to your CLI first (`codex login` or `claude auth login`), then run:
+Install Codex or Claude Code, then run once:
 
 ```
 npx slanki@1
 ```
 
-It opens Slanki with a one-time connection link. In Chrome or Edge, choose **Allow** when asked about access to apps on your device. Keep the window open while cards are made. `--local` opens the helper's own copy at `http://127.0.0.1:47213` (use this for Safari); `--reset` disconnects paired browsers.
+It opens Slanki with a one-time connection link. In Chrome or Edge, choose **Allow** when asked about access to apps on your device. If you are not signed in yet, click **Sign in with ChatGPT** or **Sign in with Claude** in Slanki; the official OpenAI or Anthropic login opens in your browser. Keep the helper window open while cards are made. `--local` opens the helper's own copy at `http://127.0.0.1:47213` (use this for Safari); `--reset` disconnects paired browsers.
 
 Not published to npm yet. Until then: `npm install`, `npm run build`, `node helper/dist/slanki.mjs --local`.
 

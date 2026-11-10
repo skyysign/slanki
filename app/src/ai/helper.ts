@@ -16,6 +16,7 @@ export const PROVIDER_LABELS: Record<Provider, string> = {
 };
 
 export interface ProviderStatus {
+  loggingIn?: boolean;
   installed: boolean;
   signedIn: "yes" | "no" | "unknown";
   message: string;
@@ -114,6 +115,15 @@ export async function pair(code: string): Promise<void> {
   const { token } = await json<{ token: string }>(response);
   if (typeof token !== "string" || token.length < 32) throw new HelperUnavailable("Pairing failed. Run `npx slanki` again.");
   storage()?.setItem(TOKEN_KEY, token);
+}
+
+/** Start (or cancel) the CLI's own browser sign-in with OpenAI / Anthropic. */
+export async function startLogin(provider: Provider): Promise<void> {
+  await json(await call(`/v1/providers/${provider}/login`, { method: "POST" }));
+}
+
+export async function cancelLogin(provider: Provider): Promise<void> {
+  await json(await call(`/v1/providers/${provider}/login`, { method: "DELETE" }));
 }
 
 export async function helperStatus(): Promise<HelperStatus> {

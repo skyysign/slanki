@@ -25,6 +25,8 @@ export interface HelperOptions {
   status: () => Promise<Partial<Record<Provider, ProviderStatus>>>;
   models: (provider: Provider, refresh: boolean) => Promise<ModelRow[]>;
   checkSettings: (provider: Provider, model: string, effort: string) => Promise<void>;
+  /** Start or cancel the CLI's own browser sign-in. */
+  login?: { start: (provider: Provider) => void; cancel: (provider: Provider) => void };
   log?: (line: string) => void;
   now?: () => number;
 }
@@ -192,6 +194,15 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
       const provider = models[1] as Provider;
       if (!PROVIDERS.includes(provider)) throw new HelperError("not_found", "Unknown AI.");
       send(res, 200, { models: await options.models(provider, url.searchParams.get("refresh") === "1") });
+      return;
+    }
+    const login = /^\/v1\/providers\/([a-z]+)\/login$/.exec(pathname);
+    if (login && (req.method === "POST" || req.method === "DELETE")) {
+      const provider = login[1] as Provider;
+      if (!PROVIDERS.includes(provider) || !options.login) throw new HelperError("not_found", "Unknown AI.");
+      if (req.method === "POST") options.login.start(provider);
+      else options.login.cancel(provider);
+      send(res, 200, { ok: true });
       return;
     }
     if (pathname === "/v1/jobs" && req.method === "POST") {

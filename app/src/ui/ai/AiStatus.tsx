@@ -3,11 +3,13 @@ import { useEffect, useState } from "preact/hooks";
 import {
   API_VERSION,
   PROVIDER_LABELS,
+  cancelLogin,
   forgetHelper,
   helperStatus,
   helperToken,
   listModels,
   pair,
+  startLogin,
   type HelperStatus,
   type ModelChoice,
   type Provider,
@@ -32,7 +34,8 @@ export async function checkHelper(): Promise<void> {
     helper.value = { phase: "unpaired", status: null, message: "" };
     return;
   }
-  helper.value = { ...helper.value, phase: "checking" };
+  // Keep showing the current settings while refreshing (sign-in polling).
+  if (helper.value.phase !== "ready") helper.value = { ...helper.value, phase: "checking" };
   try {
     const status = await helperStatus();
     helper.value = {
@@ -151,6 +154,12 @@ function ProviderSettings() {
       }
     });
   useEffect(() => {
+    if (!status?.loggingIn) return;
+    const timer = setInterval(() => void checkHelper(), 2000);
+    return () => clearInterval(timer);
+  }, [status?.loggingIn]);
+  const account = prefs.provider === "codex" ? "ChatGPT" : "Claude";
+  useEffect(() => {
     setModels(null);
     if (status?.installed) void load(false);
   }, [prefs.provider, status?.installed]);
@@ -175,11 +184,26 @@ function ProviderSettings() {
       {status && (
         <p class={`banner ${status.installed && status.signedIn !== "no" ? "ok" : "warn"} small`} style={{ margin: 0 }}>
           {status.message}
-          {status.signedIn === "no" && status.login && (
+          {status.loggingIn ? (
             <>
-              {" "}
-              Run <code>{status.login}</code> in a terminal, then check again.
+              {" "}Finish signing in in the browser window that opened.{" "}
+              <button class="btn small" onClick={() => void cancelLogin(prefs.provider).then(checkHelper, (e) => notify(errorMessage(e), true))}>
+                Cancel
+              </button>
             </>
+          ) : (
+            status.installed &&
+            status.signedIn !== "yes" && (
+              <>
+                {" "}
+                <button
+                  class="btn small primary"
+                  onClick={() => void startLogin(prefs.provider).then(checkHelper, (e) => notify(errorMessage(e), true))}
+                >
+                  Sign in with {account}
+                </button>
+              </>
+            )
           )}
         </p>
       )}

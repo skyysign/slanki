@@ -10,7 +10,8 @@ import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
 import { removeDir } from "./processes.ts";
 import { API_VERSION, VERSION, createHelper } from "./server.ts";
-import { Catalogs, PROVIDERS, claudeStatus, codexStatus, generate, type Provider } from "./providers.ts";
+import { Logins } from "./logins.ts";
+import { Catalogs, PROVIDERS, claudeStatus, codexStatus, generate, loginCommand, type Provider } from "./providers.ts";
 
 const PORT = 47213;
 const APP_ORIGIN = process.env.SLANKI_APP_ORIGIN ?? "https://slanki.vercel.app";
@@ -89,6 +90,7 @@ async function main() {
   const token = loadToken(home, args.includes("--reset"));
   const catalogs = new Catalogs(home);
   const local = `http://127.0.0.1:${PORT}`;
+  const logins = new Logins((provider) => loginCommand(provider), work);
   const { server, pairing } = createHelper({
     port: PORT,
     origins: [APP_ORIGIN, local, ...extra],
@@ -97,10 +99,11 @@ async function main() {
     generate: (request, signal) => generate(request, work, signal),
     status: async () => {
       const [codex, claude] = await Promise.all([codexStatus(work), claudeStatus(work)]);
-      return { codex, claude };
+      return { codex: { ...codex, loggingIn: logins.isActive("codex") }, claude: { ...claude, loggingIn: logins.isActive("claude") } };
     },
     models: async (provider: Provider, refresh) => (!refresh && catalogs.read(provider)) || catalogs.refresh(provider, work),
     checkSettings: (provider, model, effort) => catalogs.checked(provider, model, effort, work),
+    login: { start: (provider) => logins.start(provider), cancel: (provider) => logins.cancel(provider) },
     log: (line) => console.log(`  ${new Date().toLocaleTimeString()}  ${line}`),
   });
   server.on("error", (error: NodeJS.ErrnoException) => {
@@ -125,7 +128,7 @@ async function main() {
     PROVIDERS.forEach((provider, i) => {
       const status = statuses[i]!;
       const label = provider === "codex" ? "Codex" : "Claude Code";
-      console.log(`  ${label}: ${status.installed ? status.message : "not found"}${status.signedIn === "no" && status.login ? `  (run: ${status.login})` : ""}`);
+      console.log(`  ${label}: ${status.installed ? status.message : "not found"}${status.signedIn === "no" ? "  (sign in from Slanki)" : ""}`);
     });
     console.log("\nPress Ctrl+C to stop.\n");
     const target = args.includes("--local") && staticRoot() ? local : APP_ORIGIN;
@@ -133,6 +136,7 @@ async function main() {
     createInterface({ input: process.stdin }).on("line", () => announce(pairing.issue()));
   });
   const stop = () => {
+    logins.stopAll();
     server.close();
     process.exit(0);
   };

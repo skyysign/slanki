@@ -31,6 +31,13 @@ The approved plan renames the app to **Slanki**: a static browser app for Vercel
   - export, backup, delete and rename dialogs;
   - phone layout.
 - Make cards with three settings and a copy/paste chat route.
+- **Back up all lectures** on the home page (requested 2026-11-10):
+  - writes one `slanki-library` ZIP holding every lecture's normal backup plus an index;
+  - **Restore a backup** accepts either kind and skips lectures already present;
+  - all lectures are validated before any is added.
+- **Cleaner Anki answers** (requested 2026-11-10):
+  - below the answer, the card shows only the slide (and an attached region), without the title, page and excerpt text;
+  - the export layout revision makes Anki refresh earlier exports once; card IDs and schedules are kept.
 - **Attach part of slide** crop editor:
   - drag a region and choose whether it shows on the question or with the answer;
   - saved with a revision, keeping the note's identity;
@@ -86,6 +93,15 @@ The approved plan renames the app to **Slanki**: a static browser app for Vercel
   - Reload mid-run, then Resume reattached to the finished request with no second AI call.
   - Card limit respected; Stop.
 - Screenshots in ignored `data/screenshots/slanki/` and `data/e2e/` were inspected (desktop library and workspace, mobile workspace).
+
+**After the two 2026-11-10 requests.**
+- `npm test`: 267 tests passed. New tests cover:
+  - the library backup round trip, skipping existing lectures, and rejecting damaged files without partial restores;
+  - the slide-only answer layout and the layout revision.
+- `tools/check_anki.py --real` passed with 61 checks:
+  - tables match the Recalloom exporter apart from the intended Source/mod change;
+  - on your two real lectures, re-export updated existing cards to show only the slide, kept every review schedule, and left question/answer content unchanged.
+- Browser workflow including **Back up all lectures** → delete → restore passed in Chrome, Firefox and WebKit.
 
 **Firefox and WebKit (Playwright builds, same headers).**
 - `app/e2e/workflow.mjs` and `app/e2e/generation.mjs` also pass in both, run with `SLANKI_BROWSER=firefox|webkit`.

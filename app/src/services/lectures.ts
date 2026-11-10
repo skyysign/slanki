@@ -1,5 +1,6 @@
 // Lecture-level actions used by the interface: import, export, backup, chat import.
 import { readBackup, writeBackup } from "../backup/backup.ts";
+import { isLibraryBackup, readLibraryBackup, readLibraryZip, writeLibraryBackup } from "../backup/library.ts";
 import { validatePayload } from "../core/cards.ts";
 import { WorkflowError } from "../core/errors.ts";
 import { formatTypes, type CardFormat } from "../core/noteTypes.ts";
@@ -18,7 +19,9 @@ import {
   backupContents,
   getImage,
   getLecture,
+  hasLecture,
   insertDrafts,
+  listLectures,
   markBackedUp,
   notifyChanged,
   nowIso,
@@ -41,11 +44,65 @@ export async function importPdfFile(
   return result;
 }
 
-export async function restoreBackupFile(file: File): Promise<string> {
-  const contents = readBackup(new Uint8Array(await file.arrayBuffer()));
-  const id = await addBackup(contents);
+export interface RestoreResult {
+  /** The lecture to open when exactly one was restored. */
+  opened: string | null;
+  restored: number;
+  skipped: number;
+}
+
+/** Restore a single-lecture backup or a whole-library backup. */
+export async function restoreBackupBytes(bytes: Uint8Array): Promise<RestoreResult> {
+  let files: Map<string, Uint8Array> | null = null;
+  try {
+    files = readLibraryZip(bytes);
+  } catch {
+    files = null; // not a library backup; the single-backup reader reports the problem
+  }
+  if (files && isLibraryBackup(files)) {
+    // Validate every lecture before adding any, so a damaged file changes nothing.
+    const parsed = readLibraryBackup(files).map(({ backup }) => readBackup(backup));
+    let restored = 0;
+    let skipped = 0;
+    let last: string | null = null;
+    for (const contents of parsed) {
+      if (await hasLecture(contents.manifest.lecture.id, contents.manifest.lecture.sha256)) {
+        skipped += 1;
+        continue;
+      }
+      last = await addBackup(contents);
+      restored += 1;
+    }
+    void requestPersistentStorage();
+    return { opened: restored === 1 && !skipped ? last : null, restored, skipped };
+  }
+  const id = await addBackup(readBackup(bytes));
   void requestPersistentStorage();
-  return id;
+  return { opened: id, restored: 1, skipped: 0 };
+}
+
+export async function restoreBackupFile(file: File): Promise<RestoreResult> {
+  return restoreBackupBytes(new Uint8Array(await file.arrayBuffer()));
+}
+
+/** One ZIP with every lecture's backup; marks them all as backed up. */
+export async function buildLibraryBackup(): Promise<{ bytes: Uint8Array; count: number }> {
+  const lectures = (await listLectures()).map((summary) => summary.lecture);
+  if (!lectures.length) throw new WorkflowError("There are no lectures to back up yet.");
+  const items: { id: string; title: string; backup: Uint8Array }[] = [];
+  for (const lecture of lectures) {
+    items.push({ id: lecture.id, title: lecture.title, backup: writeBackup(await backupContents(lecture.id)) });
+  }
+  return { bytes: writeLibraryBackup(items), count: lectures.length };
+}
+
+export async function saveLibraryBackup(): Promise<number> {
+  const { bytes, count } = await buildLibraryBackup();
+  const today = new Date();
+  const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  download(bytes, `Slanki library backup ${date}.zip`, "application/zip");
+  for (const lecture of (await listLectures()).map((summary) => summary.lecture)) await markBackedUp(lecture.id);
+  return count;
 }
 
 export async function saveBackup(lectureId: string): Promise<void> {

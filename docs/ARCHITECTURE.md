@@ -64,7 +64,12 @@ Re-exporting an imported lecture updates the same Anki notes and keeps review sc
 - **Identifiers:**
   - The deck ID is the first 6 bytes of `sha256(lecture uuid)`.
   - Note GUIDs use genanki's `guid_for(uuid)`.
-  - `notes.mod` is `anki_modified`, which is `max(now, prev + 1)` on each change.
+  - `notes.mod` is `max(anki_modified, EXPORT_LAYOUT_REVISION)`. `anki_modified` becomes `max(now, prev + 1)` on each change.
+- **Answer layout (deliberate change, 2026-11-10):**
+  - Below the answer, the Source field shows only the slide, preceded by an attached slide region if the card has one.
+  - It no longer shows the lecture title, page number or excerpt text, which only repeated the slide.
+  - `EXPORT_LAYOUT_REVISION` (in `app/src/export/anki.ts`) makes Anki update earlier exports once. Card IDs and schedules stay the same.
+  - Edits made inside Anki to notes exported before that time are replaced on the next export (export is one-way).
 - **Media:**
   - `slides_{lectureHex}_{n}.png` carries the stored page bytes unchanged.
   - Derived crop, occlusion and visual images match Pillow pixel for pixel. Their file names include a content hash, so they change after the port. That is harmless: GUIDs and schedules stay the same.

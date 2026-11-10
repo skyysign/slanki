@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { timeKey } from "../core/time.ts";
 import { extractPdf, type ExtractProgress } from "../pdf/extract.ts";
-import { importChatDrafts, importPdfFile, restoreBackupFile } from "../services/lectures.ts";
+import { importChatDrafts, importPdfFile, restoreBackupFile, saveLibraryBackup } from "../services/lectures.ts";
 import { addLecture, listLectures, onLibraryChange, requestPersistentStorage, type LectureSummary } from "../store/library.ts";
 import { plural, useBusy } from "./components.tsx";
 import { notify, openLecture, reportError } from "./state.ts";
@@ -49,9 +49,14 @@ export function Library() {
     file &&
     run(async () => {
       try {
-        const id = await restoreBackupFile(file);
-        notify("Backup restored.");
-        openLecture(id);
+        const result = await restoreBackupFile(file);
+        if (result.opened) {
+          notify("Backup restored.");
+          openLecture(result.opened);
+        } else {
+          const skipped = result.skipped ? `, ${plural(result.skipped, "lecture")} already in your library` : "";
+          notify(`Restored ${plural(result.restored, "lecture")}${skipped}.`);
+        }
       } catch (error) {
         reportError(error);
       }
@@ -147,6 +152,25 @@ export function Library() {
       <div class="section-head">
         <h2>Your lectures</h2>
         <span class="spacer" />
+        {!!lectures?.length && (
+          <button
+            class="btn small"
+            disabled={busy}
+            title="One file with every lecture, its slides, cards and history"
+            onClick={() =>
+              run(async () => {
+                try {
+                  const count = await saveLibraryBackup();
+                  notify(`Backup of ${plural(count, "lecture")} downloaded.`);
+                } catch (error) {
+                  reportError(error);
+                }
+              })
+            }
+          >
+            Back up all lectures
+          </button>
+        )}
         <button class="btn small" disabled={busy} onClick={() => backupInput.current?.click()}>
           Restore a backup
         </button>
@@ -183,7 +207,7 @@ export function Library() {
         </div>
       )}
       <p class="note-box" style={{ marginTop: "28px" }}>
-        Lectures are stored only in this browser on this device. Clearing site data removes them, so save a backup from a lecture's ··· menu to keep a copy or move it to another browser.
+        Lectures are stored only in this browser on this device. Clearing site data removes them, so use Back up all lectures (or a lecture's ··· menu) to keep a copy or move them to another browser.
       </p>
     </>
   );

@@ -162,6 +162,15 @@ function deckJson(id: number, name: string): object {
   };
 }
 
+/**
+ * When the exported field layout last changed (Unix seconds). Notes exported
+ * earlier carry an older `mod`, so Anki's "update if newer" import refreshes
+ * them once with the new layout; card IDs and review schedules are unaffected.
+ * 2026-11-10: the source block on the answer shows only the slide (no title,
+ * page or excerpt text).
+ */
+export const EXPORT_LAYOUT_REVISION = 1794344946;
+
 export interface SourceCrop extends Rect {
   page: number;
   on_question: boolean;
@@ -228,8 +237,8 @@ export function buildNotes(input: ExportInput): { notes: BuiltNote[]; media: Map
     const noteHex = uuidHex(note.id);
     const filename = `slides_${lectureHex}_${note.page}.png`;
     media.set(filename, slide);
-    let source = `${textHtml(input.lecture.title)} · Page ${note.page}`;
-    if (note.sourceQuote) source += `<br>${textHtml(note.sourceQuote)}`;
+    // The answer shows the slide itself; title, page and excerpt text would only repeat it.
+    let source = "";
     let front = textHtml(note.front);
     let questionImage = "";
     if (note.sourceCrop && note.noteType !== "visual") {
@@ -239,10 +248,10 @@ export function buildNotes(input: ExportInput): { notes: BuiltNote[]; media: Map
         if (note.noteType === "reversed") questionImage = cropHtml;
         else front += cropHtml;
       } else {
-        source += cropHtml;
+        source += `<img class="source-crop" src="${name}"><br>`;
       }
     }
-    source += `<br><img src="${filename}">`;
+    source += `<img src="${filename}">`;
     let fields = [front, textHtml(note.back), source];
     if (note.noteType === "reversed") {
       fields.push(questionImage);
@@ -260,7 +269,12 @@ export function buildNotes(input: ExportInput): { notes: BuiltNote[]; media: Map
       });
       fields = [front, ...images, textHtml(note.back), source];
     }
-    return { model: MODELS[note.noteType], fields, guid: guidFor(note.id), modified: note.ankiModified };
+    return {
+      model: MODELS[note.noteType],
+      fields,
+      guid: guidFor(note.id),
+      modified: Math.max(note.ankiModified, EXPORT_LAYOUT_REVISION),
+    };
   });
   return { notes, media };
 }

@@ -190,6 +190,14 @@ export async function addLecture(
   return result;
 }
 
+/** Whether a lecture with this identity or the same PDF is already in the library. */
+export async function hasLecture(id: string, sha256: string): Promise<boolean> {
+  return transaction(["lectures"], "readonly", async (tx) => {
+    const lectures = store(tx, "lectures");
+    return !!(await request(lectures.get(id))) || !!(await request(lectures.index("sha256").get(sha256)));
+  });
+}
+
 /** Restore a validated backup as a new lecture; never replaces existing work. */
 export async function addBackup(contents: BackupContents): Promise<string> {
   const { manifest, pdf, pages } = contents;

@@ -3,7 +3,7 @@ import { unzipSync } from "fflate";
 import { beforeAll, describe, expect, it } from "vitest";
 import { readBackup } from "../src/backup/backup.ts";
 import { sha256Hex } from "../src/core/sha256.ts";
-import { buildApkg, cardOrdinals, MODELS } from "../src/export/anki.ts";
+import { EXPORT_LAYOUT_REVISION, buildApkg, cardOrdinals, MODELS } from "../src/export/anki.ts";
 import { exportInput } from "../src/export/fromRecords.ts";
 import { crop, occlusionImage, visualImage } from "../src/export/images.ts";
 import { decodePng, encodePng, type Raster } from "../src/export/png.ts";
@@ -14,11 +14,33 @@ beforeAll(async () => {
   SQL = await initSqlJs();
 });
 
+/** Index of the Source field per note type ID. */
+const SOURCE_FIELD: Record<number, number> = { 1890487183: 2, 1890487184: 2, 1890487185: 2, 1890487186: 4, 1890487187: 4 };
+
+/**
+ * The deliberate 2026-11-10 change against Recalloom: the Source field keeps only
+ * the images (no title, page or excerpt), and mod is at least the layout revision.
+ */
+function toSlankiLayout(dump: ReturnType<typeof dumpRaw>) {
+  const notes = dump.notes.map((note: any) => {
+    const fields = String(note.flds).split("\x1f");
+    const index = SOURCE_FIELD[Number(note.mid)]!;
+    fields[index] = fields[index]!.slice(fields[index]!.indexOf("<img"));
+    return { ...note, flds: fields.join("\x1f"), mod: Math.max(Number(note.mod), EXPORT_LAYOUT_REVISION) };
+  });
+  const cards = dump.cards.map((card: any) => ({ ...card, mod: Math.max(Number(card.mod), EXPORT_LAYOUT_REVISION) }));
+  return { ...dump, notes, cards };
+}
+
 const DERIVED = /\b(crop|occlusion|visual)_([0-9a-f]{32})_[0-9a-f]{16}\.png/g;
 const mask = (value: string) => value.replace(DERIVED, (_m, kind, id) => `${kind}_${id}_<hash>.png`);
 
 /** TypeScript twin of tools/genanki_ref.py dump_apkg + comparable(). */
 function dump(apkg: Uint8Array) {
+  return dumpRaw(apkg);
+}
+
+function dumpRaw(apkg: Uint8Array) {
   const files = unzipSync(apkg);
   const media = JSON.parse(new TextDecoder().decode(files.media)) as Record<string, string>;
   const db = new SQL.Database(files["collection.anki2"]);
@@ -114,7 +136,7 @@ describe("Anki package", () => {
     const backup = readBackup(goldenBytes("backup-v12.zip"));
     const ours = buildApkg(SQL, exportInput(backup.manifest.lecture, backup.manifest.cards, backup.pages));
     const theirs = goldenBytes("apkg/golden.apkg");
-    const a = dump(theirs);
+    const a = toSlankiLayout(dump(theirs));
     const b = dump(ours);
     expect(b.schema).toEqual(a.schema);
     expect(b.col).toEqual(a.col);
@@ -122,6 +144,16 @@ describe("Anki package", () => {
     expect(b.cards).toEqual(a.cards);
     expect(b.media).toEqual(a.media);
     expect(b.names).toEqual(a.names);
+  });
+
+  it("shows only the slide below the answer", () => {
+    const backup = readBackup(goldenBytes("backup-v12.zip"));
+    const ours = dump(buildApkg(SQL, exportInput(backup.manifest.lecture, backup.manifest.cards, backup.pages)));
+    for (const note of ours.notes) {
+      const source = String(note.flds).split("\x1f")[SOURCE_FIELD[Number(note.mid)]!]!;
+      expect(source).toMatch(/^(<img class="source-crop" src="[^"]+"><br>)?<img src="slides_[0-9a-f]{32}_\d+\.png">$/);
+      expect(Number(note.mod)).toBeGreaterThanOrEqual(EXPORT_LAYOUT_REVISION);
+    }
   });
 
   it("creates cards like genanki", () => {

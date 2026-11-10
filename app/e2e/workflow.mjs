@@ -139,6 +139,22 @@ await page.setInputFiles("input[accept='.zip,application/zip']", `${out}/sample-
 await page.waitForSelector(".card-pane, .empty");
 check(await settle((c) => JSON.stringify(c) === JSON.stringify(before)), "restoring the backup brings back every card and status");
 
+await page.click("a:has-text('Lectures')");
+await page.waitForSelector("button:has-text('Back up all lectures')");
+const [library] = await Promise.all([page.waitForEvent("download"), page.click("button:has-text('Back up all lectures')")]);
+await library.saveAs(`${out}/library-backup.zip`);
+check(library.suggestedFilename().startsWith("Slanki library backup"), "the home page backs up all lectures in one file");
+await page.click(".lecture-card");
+await page.waitForSelector(".card-pane, .empty");
+await page.click("button[aria-label='More actions']");
+await page.click("text=Delete lecture");
+await page.check("dialog[open] input[type=checkbox]");
+await page.click("dialog[open] button:has-text('Delete lecture')");
+await page.waitForSelector("text=No lectures yet.");
+await page.setInputFiles("input[accept='.zip,application/zip']", `${out}/library-backup.zip`);
+await page.waitForSelector(".card-pane, .empty");
+check(await settle((c) => JSON.stringify(c) === JSON.stringify(before)), "restoring the library backup brings the lecture back");
+
 await page.screenshot({ path: `${out}/workspace-desktop-${engine}.png`, fullPage: true });
 await page.setViewportSize({ width: 390, height: 844 });
 await page.click(".mobile-switch .tab:has-text('Slide')");

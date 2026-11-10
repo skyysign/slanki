@@ -15,6 +15,7 @@ import argparse
 import hashlib
 import io
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -29,6 +30,28 @@ import genanki_ref  # noqa: E402
 
 GOLDEN = ROOT / "tests" / "fixtures" / "synthetic" / "golden" / "backup-v12.zip"
 EXPORTER = ROOT / "app" / "scripts" / "export-fixture.ts"
+# Deliberate change against Recalloom (see app/src/export/anki.ts): the Source
+# field shows only the images, and mod is at least EXPORT_LAYOUT_REVISION.
+LAYOUT_REVISION = int(
+    re.search(
+        r"EXPORT_LAYOUT_REVISION = (\d+)",
+        (ROOT / "app" / "src" / "export" / "anki.ts").read_text(encoding="utf-8"),
+    )[1]
+)
+SOURCE_FIELD = {1890487183: 2, 1890487184: 2, 1890487185: 2, 1890487186: 4, 1890487187: 4}
+
+
+def slanki_layout(dump):
+    """Apply the intended Slanki layout to a Recalloom-exported table dump."""
+    for note in dump["notes"]:
+        fields = note["flds"].split("\x1f")
+        index = SOURCE_FIELD[note["mid"]]
+        fields[index] = fields[index][fields[index].index("<img") :]
+        note["flds"] = "\x1f".join(fields)
+        note["mod"] = max(note["mod"], LAYOUT_REVISION)
+    for card in dump["cards"]:
+        card["mod"] = max(card["mod"], LAYOUT_REVISION)
+    return dump
 
 
 def slanki_export(backup, folder, name):
@@ -93,7 +116,7 @@ class Gate:
                 "guid": note.guid,
                 "ord": card.ord,
                 "schedule": (card.type, card.queue, card.ivl, card.due, card.reps, card.lapses),
-                "fields": list(note.fields),
+                "fields": dict(zip(note.keys(), note.values())),
                 "notetype": note.note_type()["name"],
             }
         return {
@@ -125,7 +148,7 @@ def check(condition, message):
 
 
 def compare_tables(name, reference, ours):
-    left = genanki_ref.comparable(genanki_ref.dump_apkg(reference.read_bytes()))
+    left = genanki_ref.comparable(slanki_layout(genanki_ref.dump_apkg(reference.read_bytes())))
     right = genanki_ref.comparable(genanki_ref.dump_apkg(ours.read_bytes()))
     for key in left:
         check(left[key] == right[key], f"{name}: {key} identical to the Recalloom exporter")
@@ -157,11 +180,31 @@ def replace_scenario(name, backup, folder):
             ),
             f"{name}: every review schedule preserved",
         )
+
+        def content(fields):
+            # Derived images (crops, masks, covers) get new content-hash names; pixels match.
+            return {
+                key: genanki_ref.DERIVED_MEDIA.sub(lambda m: f"{m[1]}_{m[2]}_<hash>.png", value)
+                for key, value in fields.items()
+                if key != "Source"
+            }
+
         check(
             all(
-                after["cards"][i]["fields"] == before["cards"][i]["fields"] for i in before["cards"]
+                content(after["cards"][i]["fields"]) == content(before["cards"][i]["fields"])
+                for i in before["cards"]
             ),
-            f"{name}: unchanged notes left untouched",
+            f"{name}: question and answer fields unchanged",
+        )
+        check(
+            all(
+                re.fullmatch(
+                    r'(<img class="source-crop" src="[^"]+"><br>)?<img src="slides_\w+\.png">',
+                    card["fields"]["Source"],
+                )
+                for card in after["cards"].values()
+            ),
+            f"{name}: existing cards updated to show only the slide below the answer",
         )
         check(after["missing_media"] == [], f"{name}: no missing media")
     finally:
@@ -189,16 +232,16 @@ def synthetic_scenarios(folder):
             for card in m["cards"]:
                 if card["id"] == basic["id"]:
                     card["front"] = "Edited in Slanki?"
-                    card["anki_modified"] += 10
+                    card["anki_modified"] = max(card["anki_modified"], LAYOUT_REVISION) + 10
                 if card["id"] == occlusion["id"]:
                     card["occlusion"] = {
                         **card["occlusion"],
                         "right": card["occlusion"]["right"] - 20,
                     }
-                    card["anki_modified"] += 10
+                    card["anki_modified"] = max(card["anki_modified"], LAYOUT_REVISION) + 10
                 if card["id"] == reverse["id"]:
                     card["back"] = "Edited back side"
-                    card["anki_modified"] += 10
+                    card["anki_modified"] = max(card["anki_modified"], LAYOUT_REVISION) + 10
 
         edited = with_manifest(backup, edit)
         gate.load(slanki_export(edited, folder, "edited"))
@@ -218,7 +261,10 @@ def synthetic_scenarios(folder):
         expected = {genanki_ref.genanki.guid_for(c["id"]) for c in (basic, occlusion, reverse)}
         check(changed == expected, "edit: exactly the three edited notes changed")
         check(
-            any("Edited in Slanki?" in c["fields"][0] for c in after["cards"].values()),
+            any(
+                "Edited in Slanki?" in next(iter(c["fields"].values()))
+                for c in after["cards"].values()
+            ),
             "edit: new question text imported",
         )
         check(after["missing_media"] == [], "edit: no missing media")

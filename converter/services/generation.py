@@ -152,12 +152,12 @@ def prompt_for(
             else ""
         )
         + (
-            "For cloze notes use note_type cloze; front is a self-contained statement with {{c1::answer}} and optional {{c2::answer::hint}}. Use flat, non-nested clozes numbered 1Ã¢â‚¬â€œ20; back is optional extra explanation (an empty string is allowed). Reusing c1 hides those parts together on ONE card; each distinct number creates ANOTHER card. Prefer one number per note.\n"
+            "For cloze notes use note_type cloze; front is a self-contained statement with {{c1::answer}} and optional {{c2::answer::hint}}. Use flat, non-nested clozes numbered 1–20; back is optional extra explanation (an empty string is allowed). Reusing c1 hides those parts together on ONE card; each distinct number creates ANOTHER card. Prefer one number per note.\n"
             if "cloze" in formats
             else ""
         )
         + (
-            "For reversed notes use note_type reversed. Put a short, distinct term or label in front and its unambiguous counterpart or definition in back. BOTH sides must work as standalone prompts and be supported by the source. This creates TWO cards: front Ã¢â€ â€™ back and back Ã¢â€ â€™ front. Do not reverse ordinary why/how questions, long explanations, or ambiguous many-to-one mappings. Do not output the swapped pair as another note. If no suitable pair exists, use another allowed format or return no notes.\n"
+            "For reversed notes use note_type reversed. Put a short, distinct term or label in front and its unambiguous counterpart or definition in back. BOTH sides must work as standalone prompts and be supported by the source. This creates TWO cards: front → back and back → front. Do not reverse ordinary why/how questions, long explanations, or ambiguous many-to-one mappings. Do not output the swapped pair as another note. If no suitable pair exists, use another allowed format or return no notes.\n"
             if "reversed" in formats
             else ""
         )

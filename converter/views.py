@@ -933,7 +933,7 @@ def demo(request):
     fixture = settings.BASE_DIR / "tests" / "fixtures" / "synthetic"
     item, _ = import_pdf(
         SimpleUploadedFile("memory-and-learning.pdf", (fixture / "lecture.pdf").read_bytes()),
-        "Memory & learning Â· sample",
+        "Memory & learning · sample",
     )
     payload = json.loads((fixture / "cards.json").read_text(encoding="utf-8"))
     add_drafts(item, validate_payload(payload, {p.number: p for p in item.pages.all()}))

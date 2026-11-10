@@ -1,5 +1,5 @@
 // In-browser PDF processing with pdf.js: per-page text and a bounded PNG.
-// Nothing leaves the device. Mirrors converter/services/pdf_worker.py limits.
+// Nothing leaves the device. Same limits as the former Recalloom PDF worker.
 import { WorkflowError } from "../core/errors.ts";
 import { cpLength, pyStrip } from "../core/py.ts";
 import type { ExtractedPage } from "../store/library.ts";

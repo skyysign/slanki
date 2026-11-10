@@ -83,14 +83,13 @@ The earlier integrated paid-beta phase is superseded by the free, donation-suppo
 
 ## Next development task
 
-The product is now **Slanki**, a static browser app with an optional local helper (`npx slanki`). See docs/ARCHITECTURE.md and docs/STATUS.md. The Recalloom Django edition is the frozen reference implementation until the user confirms migrated decks in Anki.
+The product is now **Slanki**, a static browser app with an optional local helper (`npx slanki`). See docs/ARCHITECTURE.md and docs/STATUS.md. The Recalloom Django edition has been removed; it is recoverable from the tag `recalloom-django-final`.
 
 Next steps:
 1. The user migrates the three real lectures through backups.
 2. The user decides the license, connects the repository to Vercel, and publishes the helper to npm.
 3. One live Codex or Claude run, approved by the user.
 4. Firefox and Safari checks.
-5. Retire Django only after the user confirms.
 
 The release gates above still apply. Slanki's first personal-use gate needs real lectures studied in the user's Anki clients.
 

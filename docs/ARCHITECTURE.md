@@ -1,6 +1,6 @@
 # Slanki architecture
 
-Updated 2026-11-10. Slanki replaces the Recalloom Django app. It is a static web app (Vercel Hobby) plus an optional local helper. The Django code stays in the repository, tagged `recalloom-django-final`, as the frozen reference implementation until the user confirms their migrated decks in Anki.
+Updated 2026-11-10. Slanki replaces the Recalloom Django app (removed; recoverable from the tag `recalloom-django-final`). It is a static web app (Vercel Hobby) plus an optional local helper.
 
 ```
 slanki.vercel.app: static files only (no Functions, no analytics)
@@ -80,7 +80,7 @@ Re-exporting an imported lecture updates the same Anki notes and keeps review sc
   - Slanki v1 uses the Recalloom format-12 record shape and carries study guides, image suggestions and run history verbatim, although they are no longer shown.
   - All Recalloom formats 1–12 can be read.
 
-Golden references live in `tests/fixtures/synthetic/golden/`. `tools/golden.py` generated them from the Django code with every model call mocked. `tools/genanki_ref.py` reproduces the Django exporter without Django, and `tools/check_anki.py` imports decks into a throwaway Anki 26.8.1 collection.
+Golden references live in `tests/fixtures/synthetic/golden/`. They were generated from the Django code with every model call mocked (`tools/golden.py` at the tag `recalloom-django-final`). `tools/genanki_ref.py` reproduces the Django exporter without Django, and `tools/check_anki.py` imports decks into a throwaway Anki 26.8.1 collection.
 
 ## Not implemented
 

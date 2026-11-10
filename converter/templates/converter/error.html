@@ -1,1 +1,0 @@
-{% extends 'converter/base.html' %}{% block content %}<section class="error-panel panel"><p class="eyebrow">LET’S FIX THAT</p><h1>This step could not finish.</h1><p>{{ error }}</p><a class="button primary" href="{% if lecture %}{{ lecture.get_absolute_url }}{% else %}{% url 'home' %}{% endif %}">Back to your workspace</a></section>{% endblock %}

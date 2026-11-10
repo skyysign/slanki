@@ -1,18 +1,20 @@
--r requirements.txt
-# Fixture generation, Python checks, browser checks, and Anki import verification.
-reportlab==5.0.1
-ruff==0.16.6
-playwright==1.62.0
-pyee==13.0.1
-greenlet==3.5.5
+# Python is only needed for the Anki compatibility check (tools/check_anki.py).
+genanki==0.13.1
+cached-property==2.0.1
+chevron==0.14.0
+frozendict==2.4.7
+PyYAML==6.0.3
+pillow==12.3.0
 anki==26.8.1
 decorator==5.3.1
 Markdown==3.10.3
 orjson==3.12.0
 protobuf==7.36.1
 requests==2.34.2
+charset-normalizer==3.5.1
 typing_extensions==4.16.0
 idna==3.19
 urllib3==2.7.0
 certifi==2026.7.22
 PySocks==1.7.1
+ruff==0.16.6

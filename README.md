@@ -1,348 +1,44 @@
 # Slanki
 
-Turn lecture PDFs into Anki cards in your browser. Slanki (formerly Recalloom) reads your slides on your own device, lets your own AI draft compact Q/A, cloze and optional reverse cards, shows each draft beside its slide for a quick keep / set aside / edit, and exports an Anki deck with the slides bundled.
+Turn lecture PDFs into Anki cards in your browser. Your slides, cards and backups stay on your device; only the slide text you choose goes to *your* AI, through your own account.
 
-- **Nothing to sign up for, nothing uploaded.** The website is static files. Lectures, cards and backups stay in your browser (IndexedDB). Only the slide text you choose is sent to *your* AI, through your own account.
-- **Use your AI subscription.** Run `npx slanki@1` (Node.js 22.12+) once; it connects the website to your installed **Codex** or **Claude Code**. No AI installed? Use **Make cards → Use any chat** to copy a prompt into ChatGPT, Claude or Gemini and paste the answer back.
-- **Your existing work comes along.** Restore Recalloom backups (formats 1–12). Re-exported cards update the same notes in Anki and keep their review history.
-- Free, donation-supported direction; no app subscription, paid features or hosted generation service.
+## Use it
 
-Status: personal alpha on branch `slanki`; see [docs/STATUS.md](docs/STATUS.md). Architecture, privacy and the helper's security model: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+1. Open the site and drop a lecture PDF (up to 100 slides).
+2. **Make cards**: choose slides, how many cards, and optionally reverse cards. Generation uses your Codex or Claude Code (see below). Without them, use **Use any chat** to copy a prompt into ChatGPT, Claude or Gemini and paste the answer back.
+3. Review each card beside its slide: **Keep** (A), **Set aside** (S), **Undo** (Z), edit in place, **Keep all drafts**, **Write a card**, **Attach part of slide**.
+4. **Export to Anki** downloads an `.apkg`. Re-exports update the same Anki notes and keep your review history.
+5. **Back up all lectures** (home page) or **··· → Save backup** (one lecture). Restore on the home page; old Recalloom backups work too.
 
-## Use Slanki
+## Connect your AI
 
-1. Open the website (or the local copy that `npx slanki@1` serves at `http://127.0.0.1:47213`, which also works in Safari). Drop a lecture PDF (up to 100 slides).
-2. **Make cards**: choose slides (all by default), the maximum number of cards (about one per two slides) and whether to also make reverse cards. With the helper connected, confirm once that slide text may go to your AI, then **Make cards**. The whole lecture is read first, then cards arrive batch by batch; keep the tab open. **Stop** and **Resume** keep finished work.
-3. Review beside the slide: **Keep & next** (A), **Set aside** (S), **Undo** (Z), edit the fields directly (Ctrl+Enter keeps). **Keep all drafts** accepts the rest at once. **Write a card yourself** includes a fill-in-the-blank helper; **Attach part of slide** adds a figure to the question or answer.
-4. **Export to Anki** downloads an `.apkg`. Open it with Anki; earlier exports of the same cards are updated in place. The answer side shows your answer and the source slide.
-5. **Back up all lectures** on the home page downloads one file with every lecture (PDF, slides, cards, history). **··· → Save backup** does the same for one lecture. Restore either on the home page in any browser; lectures already present are skipped.
+Sign in to your CLI first (`codex login` or `claude auth login`), then run:
 
-### Connect your AI
-
-```powershell
+```
 npx slanki@1
 ```
 
-The helper prints and opens a connection link (one-time code, valid two minutes; press Enter for a new one). Chrome/Edge then ask whether the site may access apps on your device: choose **Allow**. Sign in to your CLI the normal way first (`codex login` or `claude auth login`). The helper only runs your CLI with tools disabled, one prompt at a time; keep its window open while cards are made. `npx slanki@1 --reset` disconnects every paired browser. The npm package is not published and the website is not deployed yet; until then run `npm install`, `npm run build` and `node helper/dist/slanki.mjs --local`, which opens the helper's own copy of Slanki at `http://127.0.0.1:47213`.
+It opens Slanki with a one-time connection link. In Chrome or Edge, choose **Allow** when asked about access to apps on your device. Keep the window open while cards are made. `--local` opens the helper's own copy at `http://127.0.0.1:47213` (use this for Safari); `--reset` disconnects paired browsers.
 
-## Develop Slanki
+Not published to npm yet. Until then: `npm install`, `npm run build`, `node helper/dist/slanki.mjs --local`.
 
-Requires Node.js 22.12+ (and, for the Anki gate, the Python virtual environment below with `requirements-dev.txt`).
+## Develop
 
-```powershell
+Requires Node.js 24.
+
+```
 npm install
-npm run dev                     # Vite dev server at http://localhost:5173 (helper needs --allow-origin http://localhost:5173)
-npm test                        # Vitest: golden parity with Recalloom, export, backups, store, runs, helper security
-npx tsc -p app; npx tsc -p helper
-npm run build                   # app/dist (static site) and helper/dist (npx package incl. the app)
-npm run size                    # budget: initial download <= 150 KB gzip, deployment <= 6 MB
-npm run serve                   # app/dist with the production headers from vercel.json at http://127.0.0.1:4173
-node app/e2e/workflow.mjs       # Chrome: import, review, undo, keep all, chat import, export, backup/restore, phone layout
-node app/e2e/generation.mjs     # Chrome + real helper + fake CLI: pairing, generation, reload/resume, stop
-.\.venv\Scripts\python.exe tools/check_anki.py                    # Anki 26.8.1 gate on the golden lecture
-.\.venv\Scripts\python.exe tools/check_anki.py --real DIR         # also backup-*.zip files in DIR (read-only)
-.\.venv\Scripts\python.exe tools/check_anki.py --apkg FILE.apkg   # also a deck downloaded from the app
-node app/scripts/export-fixture.ts BACKUP.zip OUT.apkg           # build a deck from a backup with the browser exporter
-node app/scripts/compare-text.ts BACKUP.zip                      # pdf.js vs stored text, aggregate numbers only
-node helper/test/discover-real.ts                                # model lists from installed CLIs (no prompts)
+npm run dev          # http://localhost:5173 (start the helper with --allow-origin http://localhost:5173)
+npm test             # unit tests
+npm run build        # app/dist (website) and helper/dist (npx package)
+npm run serve        # app/dist with production headers on :4173
+node app/e2e/workflow.mjs      # browser test (Chrome; SLANKI_BROWSER=firefox|webkit)
+node app/e2e/generation.mjs    # browser + helper + fake AI
+python tools/check_anki.py     # Anki import check (pip install -r requirements-dev.txt)
 ```
 
-The e2e scripts use installed Google Chrome; set `SLANKI_BROWSER=firefox` or `webkit` after `npx playwright install firefox webkit` to run them in those engines. `tools/golden.py` regenerates the frozen reference fixtures from the Django code; only rerun it deliberately (IDs change on each run).
+## Deploy to Vercel
 
-## Deploy to Vercel (Hobby)
+Push to GitHub, then in Vercel choose **Add New → Project**, import the repo with Framework **Other**, leave everything else empty (`vercel.json` supplies it), and name the project `slanki`. Or run `npx vercel --prod` here. If you use a different domain, update `APP_ORIGIN` in `helper/src/main.ts`.
 
-The site is a static build with no server functions, databases or environment variables.
-
-`vercel.json` sets:
-- the install command (`npm ci`) and the build command (`npm run build --workspace app`);
-- the output directory (`app/dist`);
-- the security headers.
-
-`package.json` pins Node 24, the version the app is tested with. `.vercelignore` uploads only the web app and the workspace manifests, so the `data/` folder with your lectures is never sent.
-
-**Deploy through GitHub**
-1. Push this repository to GitHub, either the `slanki` branch or merged into `main`.
-2. In Vercel, choose **Add New → Project** and import the repository. Use these settings:
-   - framework preset **Other**;
-   - root directory: the repository root;
-   - leave the build, install and output settings and the environment variables empty, because `vercel.json` supplies them.
-3. Name the project `slanki`, so the site is served at `https://slanki.vercel.app`. If you want the production branch to be `slanki`, set it under **Settings → Git**.
-4. Deploy.
-
-**Or deploy from this folder** with the Vercel CLI: run `npx vercel` for a preview, then `npx vercel --prod`.
-
-**If the name `slanki` is taken:** the helper only accepts its production site, so update `APP_ORIGIN` in `helper/src/main.ts` to the new address, then run `npm run build`. Until then you can start the helper with `SLANKI_APP_ORIGIN=https://<name>.vercel.app`. Preview URLs are refused by design.
-
-Vercel's Hobby plan is for non-commercial use; optional donations are allowed.
-
-## Recalloom Django edition (frozen reference)
-
-The sections below describe the previous Django app. It still runs and remains the reference implementation until migration is confirmed; new work happens in Slanki.
-
-## Install and run (Windows / Python 3.12)
-
-From this folder in PowerShell:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\start.cmd
-```
-
-Open **http://127.0.0.1:8000**. Once installed, double-click `start.cmd` to start the application again. The launcher applies database migrations and starts the local Django development server. Leave its terminal open; press Ctrl+C to stop it.
-
-The server only accepts loopback connections. This is a single-user desktop application, not a server to expose to a network. A responsive browser layout is included, but connecting from a separate phone is not supported.
-
-Equivalent direct commands:
-
-```powershell
-.\.venv\Scripts\python.exe manage.py migrate
-.\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000 --insecure --noreload
-```
-
-`--insecure` here enables Django's static file serving with `DEBUG=False`; it does not change the application's loopback restriction.
-
-## Make your first deck
-
-1. Open a lecture PDF, or choose **Try a sample lecture**. Re-uploading an identical PDF opens the existing lecture and preserves edits.
-2. Open **Create cards**. Select slides and a maximum number of cards. Q/A and cloze are chosen according to the material, with no forced mix. **Advanced options** retains format/focus/context overrides; reverse is off for new lectures. Expand **AI preferences** to choose provider/model/reasoning. Choices are remembered in this browser tab. Confirm the sharing scope, then **Generate drafts**. **Download prompt** provides a text-only alternative; import its JSON through the lecture actions menu **Use an external chat**.
-3. Check each draft beside its source. Open **Edit card** (E) to change the question/answer; the preview updates locally without inference. **Keep & next** (A) saves it ready for export; **Set aside** (S) saves edits and moves on. To skip individual review, choose **Keep all drafts** above the editor and confirm the draft/Anki-card counts. Save any current edits first. **Undo last change** (Z) restores the previous individual saved revision with the same note/source identity. Undo rejects stale versions. Use the on-demand card queue to jump between items. On narrow screens, the source link switches between card and slide.
-4. **Export to Anki** opens the export preview showing ready notes and the actual Anki review-card count. Its export action downloads an `.apkg` of accepted cards with bundled source images. Direct export and **Save backup** also remain in the lecture actions menu (···).
-
-Click the source slide to inspect it in a large overlay. Scroll or pinch to zoom, drag to move, or use **Fit**, **Actual size**, and the zoom buttons. The arrows browse slides; **Escape** or **Close** returns to the editor with unsaved card edits intact. The viewer stays in the same tab and makes no model requests.
-
-**Keep all drafts** marks the saved drafts shown in its confirmation as Ready, preserving text, images, source links and edit history. Cards already ready or set aside are left alone; new drafts added after the page opened remain in To review. Changed or deleted drafts invalidate the confirmation, so another tab's edits cannot be overwritten. Existing content/source validation still applies: an invalid draft rolls back the whole batch. This skips individual review without running another AI check or verifying factual accuracy. You can still edit or set aside kept cards later; there is no batch undo action.
-5. **Save backup** downloads the original PDF, page images/text, all drafts and accepted/rejected notes, edit history, and generation-run metadata. Restore from the home page into an installation that does not already contain that lecture.
-
-Anki export adds or updates notes using stable identities. Setting a card aside does not delete an earlier copy in Anki. This is one-way content export, not synchronization or an import of reviews from Anki. Local backups do not contain reviews performed in Anki.
-
-Anki backend 26.8.1 has been tested for repeated imports, question edits, bundled media, and preservation of an existing review schedule. The user also reported that the real lecture worked correctly in their Anki client; its version/platform and repeat-import behavior were not specified. Broader desktop/mobile checks remain necessary before beta use.
-
-## Reviewing cards and creation options
-
-Under **Create cards → Advanced options**, **Learning focus** offers Balanced, Core knowledge, Understanding, and Application as visible single-choice options. Balanced is the starting choice. Focus changes the requested learning task within the same card budget; Application stays within methods/examples supported by the source and does not request invented exercises. **Card formats** has independent Basic Q/A, Cloze, and Basic + reverse checkboxes: tick any combination, with at least one selected. New lectures start with Q/A + cloze (automatic choice within those two); reverse cards are opt-in. Existing lectures reuse their saved format choices. These selections apply to generation and downloaded prompts, are saved with CLI runs, and survive resume and backup. Older saved Mixed runs still mean Q/A + cloze.
-
-Cloze hides parts of a statement. For example, `Retrieval practice means trying to {{c1::recall}} information from {{c2::memory::where?}}.` produces two Anki cards. Reusing `c1` for both blanks produces one card hiding both together. The app supports flat, non-nested clozes numbered 1–20, with an optional hint after another `::`. Extra explanation is optional. Nested clozes and braces inside a blank are not supported.
-
-**Basic + reverse** creates two separately scheduled cards from one note: front → back and back → front. Use short terms, definitions, or clear paired facts for which either side is a useful prompt. Both sides are required and cannot be identical. Under **Write a card yourself**, select Basic + reverse and preview both directions before accepting. Edits update both cards. The generation prompt requests reverse notes only when both directions are supported and unambiguous; that judgment still needs human review. The layout follows Anki's [basic and reversed card behavior](https://docs.ankiweb.net/getting-started.html#note-types), with an additional source field on both answers.
-
-Choose **Write a card** beside the source, then choose Cloze, select words in the text, and use **Hide selected text**. Choose the same blank number for grouped blanks. **Preview cards** checks your unsaved text without saving or generating. Existing notes update their preview as you edit; **Preview current card** remains inside Edit card for an explicit check. Reveal each answer to check what Anki will ask. The preview shows content and blank grouping; it is not an embedded Anki client or a scheduler.
-
-One note can produce several Anki review cards. The generation limit counts one per basic note, two per reverse note, and one per distinct cloze number. It is shared across all selected formats. Oversized candidates are excluded as a whole; smaller later candidates can still fit. Reverse-only generation requires room for at least two cards, and its automatic limit starts at two for short selections. Odd limits may leave one unused slot. Batches reserve room for complete pairs; if the remaining budget cannot fit a note, unprocessed pages remain visible. Sidebar entries, export, and **Preview export** show actual review-card counts. Manual edits/imports are outside the generation ceiling.
-
-To preserve scheduling identities, existing note types and the set of cloze numbers cannot be changed through ordinary edits. You can edit their text, answers, hints, and status. Create a new note if you need a different format or number of review cards. This avoids silently replacing an already studied card with another identity.
-
-JSON drafts may include `"note_type": "basic"`, `"note_type": "cloze"`, or `"note_type": "reversed"`. Cloze statements use `front` and optional extra explanation uses `back` (include an empty string if unused). Reverse notes require nonempty `front` and `back`. Earlier four-field JSON defaults to basic. All formats need a valid page and exact source excerpt for generated/imported drafts. Generation/import selection checks both reverse prompts for exact duplicates and course logistics; swapped pairs do not add another two cards. This is exact-text filtering, not semantic consolidation.
-
-Mixed basic/cloze/reverse export was checked with Anki's 26.8.1 backend: cloze ordinals, both reverse directions, rendered questions/answers, repeated import, edits preserving each card's schedule, and bundled source media. Adding reverse notes preserves existing basic/cloze schedules. Manual desktop/mobile checks for these formats and crops remain pending. The new focus/format prompts have only offline tests; their generation quality has not been measured with live lectures.
-
-Converter backups use format **12**, preserving graph/formula notes and text covers, saved lecture rundown versions and partial progress, plus earlier notes, revisions, source assets, overviews and occlusion proposals. Formats 1–11 remain readable. Restore format-12 backups with this version or newer.
-
-## Graphs and formulas
-
-Tick **Graphs & formulas** under **Create cards → Advanced options** to request questions about interpreting a graph, equation, or explanatory figure. Codex receives each selected image plus its text, recent questions and the optional lecture overview. Q/A, cloze and reverse can be selected alongside it. Visual questions share the card ceiling: roughly one third is reserved when text is also selected, with unused space returned to text; visual-only runs use the whole limit. This format requires Generate drafts, not the text-only downloaded prompt.
-
-A visual draft keeps the useful figure visible on its question. Its crop and zero to twenty opaque text covers can remove answer-revealing titles or captions; all covers belong to **one** Anki card. Check that axes, scales, variables, and necessary context remain readable. Edit the question/answer, frame the image, move/resize covers, preview, then accept or set aside as usual. The answer reveals the original figure plus the explanation and full source slide. No card is automatically accepted. To build one without AI, choose **Graph / formula question** under **Write a card yourself**, then open its draft to crop and add covers.
-
-Anki backend checks cover rendering, bundled images, repeated imports and schedule-preserving edits for this new note type. Real-lecture usefulness, automatic crop/cover placement, and manual desktop/mobile Anki rendering still need evaluation. Exact duplicate questions are skipped; semantic duplicate detection is not implemented.
-
-## Lecture rundown
-
-Open **Study guide** above the cards and choose **Generate study guide** with any supported CLI provider, model and reasoning setting. It creates a separate reading guide with concepts, connected explanations, key points, formulas, symbols, conditions and source links. It does not create cards or reuse the short card-planning outline as its answer. Each generation saves a new version; earlier versions remain available. Download a version as Markdown with **Download study guide (.md)**.
-
-The guide reads all usable text in sections of up to four pages, saving each validated section. Stop/resume preserves completed sections, and backups contain versions and partial progress. Every processed page needs a cited concept or a visible skip reason. Image-only pages are listed as excluded. This first rundown does **not** interpret slide images, OCR broken formulas, or guarantee complete/factually correct coverage. Source excerpts are checked against the PDF text; concepts still need human review. It makes separate model requests and uses your selected account's allowance.
-
-## Anatomy and labelled diagrams
-
-Open the source pane’s **Image tools → Hide labels** to draw on the selected slide. The separate **Anatomy & diagrams** area remains under that same tools menu for saved multi-slide suggestions. Draw a rectangle over each label or detail to recall, up to 20 regions per submission. You can also press **Add region** and adjust the four pixel fields with a keyboard. Select a region from the numbered buttons to adjust, preview, or remove it before saving. Image-only slides work here. Manual drawing uses no model or OCR.
-
-For suggestions across selected slides, open **Image tools → Anatomy & diagrams**, choose your Codex model/effort and pages, then **Generate label suggestions**. This is a separate label-recall workflow. It reads the optional text overview, then each selected slide image, including image-only pages. It can take substantially longer and use more allowance than text alone. Earlier mixed text/occlusion runs remain resumable.
-
-Suggestions are saved page by page. When generation finishes, the browser opens their review queue unless the card editor has unsaved changes; **Review image suggestions** also remains available in the lecture. Choose a suggestion, move/resize its mask or edit its prompt and explanation, and use **Save edits**, **Accept & next**, or **Discard**. Preview the hidden/revealed image before accepting. Acceptance creates one accepted card ready for export. Discarded suggestions can be restored. Existing matching cards keep their IDs, edits and status. Switching tabs with stale edits cannot overwrite a newer review.
-
-**Maximum new suggestions** sets the ceiling for the anatomy workflow. Proposals are allocated across selected slides with unused room carried forward; this is not a global ranking. Each slide may return up to six candidates or none. Accepted, edited and discarded proposals still count on resume. Completed image pages are not analysed again, and saved proposals survive restart and backup. Earlier mixed runs retain their shared text/proposal budget.
-
-For one-slide help while drawing manually, expand **Suggest regions with AI** in **Create image occlusion**. Choose a Codex model and reasoning level, optionally include an existing completed lecture overview, and confirm sharing the selected slide image and text. **Suggest regions** makes one model request and returns up to six labelled suggestions with reasons. **Use suggestion** adds a region to the drawing editor without saving it. Adjust its geometry, preview it, then use **Add drafts**. Exact duplicate suggestions select the existing region. These manual previews remain temporary; the anatomy generation form uses the persistent queue described above.
-
-Image suggestions currently support **Codex only**, through its ChatGPT sign-in. They attach just the selected source PNG and send that page's extracted text plus the overview if selected. In the one-slide drawing workflow, they do not run a new lecture overview or send other slide images. Keep that page open while waiting, or use **Stop suggestions**. Requests have the existing five-minute timeout; repeated clicks reuse a running request. One-slide manual suggestions are temporary previews held by the local server for up to fifteen minutes, lost on restart, and excluded from backups. For manual previews, only regions saved as notes are backed up. Proposals from the anatomy generation form are backed up before acceptance too. Normal page navigation requests cancellation. If the browser disappears, the local server still enforces the request timeout. A forced server termination can leave its CLI child running; normal shutdown requests cancellation and waits briefly for cleanup. Automatically accepting masks and grouped label-recall exercises remain future work. Visual-question text covers are a separate format.
-
-Drag inside a region to move it; drag any of its eight corner/edge handles to resize it. Regions stay inside the slide and retain at least a two-pixel width and height. Drag empty slide space to add a region, or use **Draw new region** when it overlaps an existing one. **Undo** restores up to 30 region changes in the current page session, including drawing, moving, resizing, and removal. **Escape** cancels an active drag. With the slide focused, arrow keys move the selected region by one source pixel; Shift moves by ten. Mouse and touch input share the same controls. Preview and save after adjusting.
-
-Each region becomes one independent draft note and one Anki card. Only that card's region is hidden; other parts of the slide remain visible. **Preview selected region** shows the actual masked question and revealed answer, with a green outline identifying the answer region. **Add drafts** applies the prompt and optional explanation to all submitted regions. Check and edit each draft before accepting it. Exact regions already represented on that source page are skipped, including previously edited regions, so repeated submission preserves existing work.
-
-An existing image occlusion note has the same move/resize/pixel controls under **Edit hidden region** in the source pane. **Redraw region** replaces its rectangle; saving retains its ID and Anki review card. Its source page stays fixed. Use **Set aside** when a card should no longer be exported; an earlier copy in Anki remains there. Adding another region creates a new card. Save before changing pages.
-
-Export uses a dedicated note type with bundled PNG question/answer images and the original source slide on the answer. Masks are opaque pixels in the question image; no JavaScript is needed to hide them during study. Edit regions in Recalloom and re-export. These exports do not use Anki's native image-occlusion editor; Anki describes its own [image-occlusion workflow](https://docs.ankiweb.net/editing.html#image-occlusion). Recalloom supports rectangular hide-one/reveal-one cards, without grouped masks or hide-all mode. Source crops belong to the text formats; occlusion uses the full slide.
-
-Actual Anki 26.8.1 backend tests verify rendering/media, repeated imports, mask/text edits preserving separate review schedules, and adding regions without replacing existing cards. Backup restoration retains masks, IDs, revision history, and equivalent export media. Manual desktop/mobile client checks remain pending.
-
-## Source image crops
-
-Open **Source image crop** in the source pane for an existing card, tick **Include a source crop on this note**, and drag a rectangle over its source slide. The four pixel fields also let you adjust the rectangle with a keyboard. Tick **Show the crop on the question too** when the image is part of the question; otherwise it appears with the answer. Use **Preview current card**, then **Save changes** or **Accept & next**. To remove a crop, untick Include and save. For a new manual note, add its draft first, then open it to attach a crop.
-
-Each basic, cloze, or reverse note supports one rectangle on its original source page. For reverse notes, the crop appears on both answers, or on both questions when that option is ticked. Crops are bundled as PNG media alongside the complete source slide. Backups preserve coordinates, placement, and revision history plus the source image used to reconstruct the crop. Editing or removing a crop retains the note's identity. Anki 26.8.1 backend checks cover crop rendering and edited reimports preserving review schedules. Cropping runs locally without model usage; it does not hide image labels or interpret diagrams.
-
-## Delete a set and test the same slides again
-
-Choose **Delete set** in the library or lecture actions menu. The confirmation page offers **Save backup first**, identifies the set and its note/page counts, and requires a confirmation tick before deletion. Deletion removes its notes, history, imported PDF, and rendered source images and stops generation for that set. Downloaded decks, saved backups, and the original PDF outside the app remain available.
-
-Uploading the same PDF afterward creates a fresh set with new note identities. An earlier exported copy remains in Anki; fresh-set exports can therefore coexist with it. Restore a converter backup instead when you want to recover the original identities and edits. If Windows locks source files, the library shows **Retry file cleanup**; the slides can already be imported as a new set. Finish pending cleanup before restoring that deleted set's backup.
-
-## Connect an AI CLI
-
-Choose **AI connections** in the header, then **Codex**, **Claude Code**, **Gemini CLI**, or **Kimi Code**. Choose **Connect**, finish the official browser sign-in, and return to the page; it updates automatically. Each provider uses your own account and its available CLI allowance. Recalloom has no password or API-key field and does not read or copy authentication files. Connecting does not generate cards. See the [Codex authentication guide](https://developers.openai.com/codex/auth), [Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference), [Gemini authentication guide](https://geminicli.com/docs/get-started/authentication/), and [Kimi command reference](https://www.kimi.com/code/docs/en/kimi-code-cli/reference/kimi-command).
-
-Codex and Claude reuse their usual local sign-in. **Gemini and Kimi require one sign-in for Recalloom's separate CLI profile**, even if you already use them for coding. Their own CLIs manage those profiles under `~/.recalloom/cli/`, outside the lecture directory. This lets generation disable tools, hooks, and extensions without changing your coding configuration. Gemini's connected status records a completed Recalloom sign-in; it cannot validate expired tokens without contacting authentication services. Use **Sign in again** if generation or model refresh reports an expired connection.
-
-Each provider has a separate connection and pending login. **Stop sign-in** stops only the attempt started here; it never logs out the shared local account. Attempts time out after ten minutes and repeat clicks reuse the pending attempt. Raw authentication output is discarded. The Codex page identifies API-key authentication, which has separate billing. The Claude integration requires normal Claude subscription sign-in and rejects detected API credentials, custom API endpoints, and Bedrock/Vertex/Foundry profiles. It does not rewrite the user's CLI configuration.
-
-Install the chosen CLI separately for this development build. Missing-installation pages link to official setup. Codex discovery checks PATH and the VS Code Codex extension; Claude discovery checks the native installation and the native executable in the current npm package. Gemini/Kimi support their current official native or npm installations. Shell wrappers are not executed; known npm JavaScript entry points run directly through Node. The legacy Python Kimi CLI is not supported.
-
-With Node.js 22.19 or newer installed, you can install the checked Gemini/Kimi versions locally in this project's ignored data directory:
-
-```powershell
-npm.cmd install --prefix data/clis --save-exact --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org @google/gemini-cli@0.59.0 @moonshot-ai/kimi-code@0.42.0
-```
-
-Recalloom checks `data/clis/node_modules` when the chosen CLI is absent from PATH. This installation does not change global packages. With a custom `SLIDES_DATA_DIR`, install into that directory's `clis` folder instead. To override executable discovery, set only the relevant path before starting Recalloom:
-
-```powershell
-$env:SLIDES_CODEX_BINARY = 'C:\path\to\codex.exe'
-$env:SLIDES_CLAUDE_BINARY = 'C:\path\to\claude.exe'
-$env:SLIDES_GEMINI_BINARY = 'C:\path\to\@google\gemini-cli\bundle\gemini.js'
-$env:SLIDES_KIMI_BINARY = 'C:\path\to\@moonshot-ai\kimi-code\dist\main.mjs'
-.\start.cmd
-```
-
-For troubleshooting, `codex login status` and `claude auth status` check their respective connections. Use Recalloom's connection pages for Gemini/Kimi because their normal terminal commands use a different profile. Kimi's **Account website** choice supports `kimi.ai` (Global), `kimi.com` (Mainland China), or the CLI's default/saved region. Choose the website where you use your account before connecting. PDF import, sample cards, manual editing, JSON import, crops, and export work without any sign-in. A bundled installer remains future work.
-
-## Model and reasoning dropdowns
-
-Under **Create cards → AI preferences**, choose the provider, model, and reasoning level. **Refresh models** asks the installed CLI for model metadata without submitting a prompt or starting inference. The first visit refreshes automatically when there is no saved catalog. Refresh again after updating a CLI or changing accounts. Model names and reasoning capabilities come from the installed CLI; account entitlements and organization restrictions can still limit access. The app does not offer every model the provider markets as if it were available to this account.
-
-Reasoning options adjust to the selected model. The recognized levels are CLI default, None, Minimal, Low, Medium, High, Extra high, and Max, plus **Thinking off/on** for Kimi models that report toggles. Each dropdown shows only the controls reported for that model. The checked Gemini ACP interface does not expose a separate thinking control, so its reasoning selector is disabled at **CLI default**. Kimi model names and thinking options are discovered after sign-in; only its managed Kimi Code models are selectable. New lectures request Low when supported; existing lectures reuse their last AI run's selections. Higher levels can take longer and use more allowance. Ultra workflows are not mapped to a reasoning value.
-
-Provider, requested model, effort, focus, and formats are saved with each run and retained on resume and in backups. **CLI default** omits an explicit override; it does not record a resolved model version or effective effort. The legacy `SLIDES_CODEX_MODEL` environment variable remains a fallback when no explicit Codex model is selected; clear it to use the CLI's normal default. Selecting a model in the dropdown takes precedence. Changing providers clears the lecture-sharing confirmation because it changes who receives the text.
-
-Codex runs with user configuration and repository instructions excluded, read-only permissions, and shell/search/apps/delegation disabled. Claude runs with saved authentication, safe mode, custom setting sources/hooks/memory disabled, no ordinary tools, empty MCP configuration, and no session persistence. A temporary working directory contains bounded prompt/output files for each batch and is removed afterward. Claude's `--bare` mode is deliberately avoided because it bypasses subscription authentication. Organization-managed CLI policies may still apply. See [Codex non-interactive execution](https://developers.openai.com/codex/noninteractive) and [Claude headless mode](https://code.claude.com/docs/en/headless).
-
-Text-card generation sends extracted text, page numbers, and recent existing questions to the selected provider through its CLI. With whole-lecture context enabled, this includes text from all readable slides, even pages not selected for cards. Image-occlusion suggestions separately send one selected source PNG and its text to Codex, plus the saved overview when selected, after explicit consent. PDF extraction, rendering, editing, storage, backups, and export run locally. Model inference uses the user's own cloud access, not on-device inference or a shared Recalloom generation service. A downloaded prompt cannot configure another chat's model or reasoning; select those in the chat itself.
-
-Gemini and Kimi use bounded ACP subprocesses with disabled host file/terminal capabilities, restricted CLI profiles, no approved tools, and temporary working directories. Source text travels through stdin, and generated JSON must pass the same source checks as Codex/Claude output. These restrictions are application/CLI controls, not an OS sandbox. Their CLIs may retain session history in the separate profile. Lecture backups exclude those profiles and credentials; deleting a lecture does not erase provider-side or CLI session history.
-
-Actual model metadata discovery was checked with Codex 0.153.4 and Claude Code 2.1.175 without inference. Gemini 0.59.0 and Kimi 0.42.0 both passed real ACP initialization and fresh signed-out checks on Windows using Node 24.16.0. Their authenticated model discovery, completed browser login, and live card generation are still pending; synthetic subprocess tests cover those workflows and failure handling. Earlier live Codex checks used the CLI default and did not record effective effort. See [CLI support and researched alternatives](docs/CLI_PROVIDERS.md), including Cursor feasibility and remaining checks.
-
-Before a new generation, the app asks for consent to send the indicated slide text and up to 200 recent existing questions through that account. Changing the whole-lecture checkbox clears consent and updates its scope. The questions help avoid repeating concepts across batches. Generation consumes the account's normal allowance. PDF files and rendered images remain local in this text-only route. A source excerpt must match its cited page before a draft is saved; that check does **not** establish answer correctness. Older runs without a saved card limit do not send existing questions when resumed.
-
-**Use the whole lecture to guide card selection** is checked for new runs. Before drafting cards, the selected CLI reads all readable slide text and produces a compact overview of core and supporting concepts with source-page links. The lecture is read in sections of up to 12 readable pages or 120,000 source characters, followed by a combining request when there is more than one section. Each section is saved before the next request. Each section has at most eight topics; a combined outline has at most twenty. These requests use the chosen model, reasoning level, and learning focus, and add time and allowance use before cards appear. Progress distinguishes reading the lecture from drafting cards. Expand **Lecture overview** to inspect its summaries and sources.
-
-Each card batch then receives that overview, its own numbered source text, focus/formats, card budget, and recent questions in a fresh request/session. The overview guides priorities and repetition avoidance; it is not evidence for an answer. Cards may cite only their current selected source pages. The overview selects numbered excerpts from the supplied source: the app attaches the exact original quote and page instead of asking the model to retype them. A combined outline selects evidence from the saved sections. Invalid output is corrected automatically, with at most two retries of the current request; it never bypasses source checks. Summaries can still be incomplete or incorrect, so review both the overview and the cards. No images or previous answer conversation are passed to the model.
-
-Completed overview sections are saved with the run and included in backups. Existing saved section boundaries remain valid after upgrades, even when they are larger than the new 12-page sections. Resume reuses them, including when only the combining step failed. Starting a new run creates a new overview. Untick whole-lecture context to use selected text only; runs created before this feature keep that narrower scope when resumed. **Download prompt** includes all selected readable pages together and, when the checkbox is on, adds the remaining readable pages as context only. It makes no model call and does not create a saved overview. Full-lecture downloads above 200,000 characters fail with guidance to use automatic section processing or turn off context.
-
-New runs default to a compact ceiling of one card per two selected readable pages, rounded up: 85 pages gives a maximum of 43 new cards. **Maximum new cards** accepts a custom limit from 1 to 500; leaving it blank calculates the ceiling from the actual selection. The limit also appears in downloaded prompts. The application enforces it on live generation even if the model returns too many candidates; manual JSON imports are not capped. This limits additions in one run, not the size of an existing deck. Generating again does not compact or replace existing notes.
-
-The prompt prioritizes core concepts, rules, distinctions, and methods over repeated numerical examples. It asks for one coherent question with a short answer, rather than combining unrelated facts into a long card. Cards are requested in importance order within each batch; there is no global semantic ranking or automatic merging of an existing deck. The ceiling is distributed across batches with unused room carried forward and room reserved for later pages. A smaller deck can omit useful material; neither coverage nor improved quality has been measured with the new prompt yet.
-
-Runs normally draft cards from three pages at a time, saving each processed batch. Very small card limits increase the batch size so later pages can still be considered. Requests exceeding 200,000 characters, including instructions and context, fail visibly. Each request has a five-minute timeout. **Stop generation** preserves completed overview sections and drafts. After an interruption, **Resume remaining pages** continues the original selection, context setting, and saved limit without repeating saved work. Resuming retains the provider/model/effort and uses that CLI's current signed-in account and allowance. Exact repeated questions are skipped, including matches to edited questions. Paraphrased duplicates still need manual review. Current progress stays visible; completed-run diagnostics, planning overview, logistics cleanup and historical skipped drafts are under **Activity & generation details**.
-
-Course logistics such as exam duration, permitted materials, dates, grading, and staff office hours are excluded by the prompt and a conservative local English/German rule filter. Clear matches are counted separately and never become generated drafts. Subject-matter questions about clinical examinations and concepts such as bond duration are retained. These rules cannot recognize every paraphrase or language. For existing cards, **Set aside logistics drafts** moves matching untouched drafts to **Set aside**, preserving IDs and recording a revision. Accepted and edited cards are left alone; restoring a filtered card to draft prevents repeat automatic cleanup. This cleanup runs locally with no model call.
-
-An invalid generated draft, including “The source excerpt is not present on page…”, appears under **skipped drafts · review details**. Other valid drafts are saved and later pages continue. Inspect the flagged question, answer, and unverified excerpt with **View source page**, then write a corrected card or generate just those pages again. Skipped drafts are excluded from cards and Anki exports; their history remains visible after later runs and is included in backups. A page being processed does not mean every learning objective is covered. For overview, graph/formula, saved anatomy-suggestion and rundown requests, malformed JSON or invalid structure/source references trigger up to two automatic correction requests using the same provider, model and effort. The progress panel displays the current attempt. These requests use allowance. Successful sections/slides and existing edits are preserved. Three invalid responses stop visibly with saved progress retained. Account/allowance failures, timeouts, cancellations and other provider errors stop without repeated requests. Ordinary text-card batches keep their existing per-draft filtering; invalid text-only JSON still requires resume. Manually imported JSON files remain all-or-nothing so you can correct the file before importing.
-
-Format-10 backups retain complete or interrupted overview data and its source-document identity alongside all existing note, source, and run metadata. Versions 1–9 remain readable and restore with whole-lecture context disabled; versions 1–5 have no crops, and versions 1–4 restore as basic notes. Runs without a recorded model or effort restore with CLI default for the missing field. A backup contains no CLI credentials or account connection, and restoration requires no CLI installation. Backups preserve Recalloom content, not reviews performed in Anki.
-
-Recalloom was previously named Slides to Anki. The rename preserves the backup format marker, Anki note type name/IDs, media names, and `SLIDES_*` environment variables so existing data and re-imports continue to match. Historical research filenames remain unchanged.
-
-Technical reference: [official OpenAI documentation for non-interactive Codex](https://developers.openai.com/codex/noninteractive).
-
-## Resume development
-
-[Distribution direction](docs/DISTRIBUTION.md) describes packaging the local browser app first, a possible desktop window, and an optional hosted static UI with a local companion. PDF/storage/export processing should remain on the user's computer; inference runs at the selected AI provider. These additional distribution modes are proposals, not implemented deployments.
-
-1. Read [the current status](docs/STATUS.md).
-2. Follow [the MVP build plan](MVP_BUILD_PLAN.md).
-3. Continue from the next concrete task in the status file; do not restart the completed scaffold.
-
-[AGENTS.md](AGENTS.md) contains the working conventions for coding assistants.
-
-The implementation uses Python, Django, SQLite, local files, and a small browser interface. Scheduling and mobile study happen in Anki.
-
-## Development checks
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe manage.py check
-.\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
-.\.venv\Scripts\python.exe manage.py test tests
-.\.venv\Scripts\python.exe -m ruff check config converter tests tools manage.py
-.\.venv\Scripts\python.exe -m ruff format --check config converter tests tools manage.py
-.\.venv\Scripts\python.exe tools/check_browser.py
-```
-
-The browser check needs installed Google Chrome and uses an isolated temporary database, including for confirmed deletion and reimport of synthetic slides. It covers provider/model/effort dropdowns with synthetic metadata, sharing consent, connection pages, tickable card choices, crop dragging, previews, exports, Keep all drafts (confirmation/cancel, unsaved-edit protection and set-aside preservation), and the slide overlay (zoom/pan, touch pinch, slide navigation, image-load retry, focus return and preserved edits). Screenshots are written under `data/screenshots/`. Both CLI paths are set to nonexistent test paths, so it cannot use real authentication. The Anki backend check uses a temporary collection, never the user's Anki profile. Normal checks do not call a model. Python's temporary directories may require an unsandboxed test run in the Codex Windows environment; this is separate from running the application normally.
-
-For an explicitly live check using three synthetic pages and the existing Codex allowance:
-
-```powershell
-.\.venv\Scripts\python.exe tools/check_generation.py --live
-```
-
-The live check saves isolated results under `data/live-checks/`. Rebuild the synthetic PDF with `python tools/make_sample.py` using the virtual environment's Python.
-
-For one explicitly live **image-suggestion** check, using a generated synthetic neuron diagram and no real lecture material:
-
-```powershell
-.\.venv\Scripts\python.exe tools/check_occlusion_generation.py --live
-```
-
-This uses Codex's requested CLI-default model and Low reasoning; optional `--model` and `--reasoning` flags override them. The isolated folder contains the source PNG, model output, known label bounds, and masked question PNGs for inspection. One check on CLI 0.154.0-alpha.6.2 returned three regions fully covering the three labels. This is an integration/placement check on a simple synthetic diagram, not a real-slide accuracy benchmark.
-
-## Research commands
-
-These commands operate on the existing research artifacts. They do not start or test the proposed application.
-
-From the repository root, verify the report's structure and links and exercise the calculator:
-
-```powershell
-python verify_research_artifacts.py
-```
-
-Python and Node.js are required. The existing scripts use their standard libraries and do not require installing project dependencies.
-
-After editing the research sources, regenerate the research artifacts when needed:
-
-```powershell
-python build_research_artifacts.py
-python verify_research_artifacts.py
-```
-
-
-## Files
-
-| File | Purpose |
-| --- | --- |
-| [converter/](converter/) | Models, document/generation/export/backup services, browser interface |
-| [config/](config/) | Local-only Django settings and routing |
-| [tests/](tests/) | Offline workflow and actual Anki backend checks; synthetic fixtures |
-| [tools/](tools/) | Browser/live smoke checks and fixture generator |
-| [MVP_BUILD_PLAN.md](MVP_BUILD_PLAN.md) | Current implementation order and release checkpoints |
-| [docs/STATUS.md](docs/STATUS.md) | Short handoff and verified project state |
-| [docs/UX_REVIEW.md](docs/UX_REVIEW.md) | UX reevaluation and proposed scope simplification |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Browser/desktop boundaries, temporary storage target and Vercel scope |
-| [docs/ux-prototype.html](docs/ux-prototype.html) | Clickable design proposal with synthetic in-memory data |
-| [docs/CLI_PROVIDERS.md](docs/CLI_PROVIDERS.md) | Implemented CLI support, verification, and researched alternatives |
-| [study-srs-founder-analysis.md](study-srs-founder-analysis.md) | Original broad product research; consult selectively |
-| [study-srs-founder-analysis.html](study-srs-founder-analysis.html) | Browsable research report |
-| [study-srs-cost-calculator.html](study-srs-cost-calculator.html) | Interactive calculator using illustrative assumptions |
-| [study-srs-cost-model.csv](study-srs-cost-model.csv) | Cost scenarios |
-| [build_research_artifacts.py](build_research_artifacts.py) | Research artifact generator |
-| [verify_research_artifacts.py](verify_research_artifacts.py) | Research structure and calculator checks |
-
-## Local data
-
-Use `data/` for lecture files, working databases, generated decks, media, and backups. It is ignored by Git. Real lecture documents and Anki packages are also ignored by file extension; explicitly synthetic fixtures may live in `tests/fixtures/synthetic/`.
-
-Keep API keys and provider authentication outside version control. Local processing can still send selected source material to a cloud model when generation is invoked.
-
-An ignored directory is not a backup. Save downloaded backup ZIPs somewhere separate from the working data. A backup restores a lecture into an empty destination without replacing current work. To inspect an older backup separately, set `SLIDES_DATA_DIR` to a different folder before launching the app; the original workspace remains intact.
+More: [architecture and privacy](docs/ARCHITECTURE.md), [status](docs/STATUS.md).

@@ -1,4 +1,0 @@
-<nav class="lecture-navigation" aria-label="Lecture tools">
-  <a href="{{ lecture.get_absolute_url }}" {% if not rundown_page %}aria-current="page"{% endif %}>Cards</a>
-  <a href="{% url 'lecture_rundown' lecture.pk %}" {% if rundown_page %}aria-current="page"{% endif %}>Study guide</a>
-</nav>

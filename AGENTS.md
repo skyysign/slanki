@@ -20,7 +20,7 @@
   - `.apkg` export and lossless backups.
 - **Removed from the UI by the user's decision:** the study guide (rundown), image-occlusion drawing and suggestions, graph/formula generation, the learning-focus selector and the format checkboxes. Imported notes of every type still keep their identity and re-export.
 - **Deferred:** Gemini/Kimi in the helper, a source-crop editor, an internal SRS, native apps, accounts, billing, OCR and sync.
-- **Recalloom Django reference.** The Django app (`config/`, `converter/`, `manage.py`, tag `recalloom-django-final`) is the frozen reference implementation and the user's working tool until migration is confirmed. Do not add features to it. Remove it only after the user confirms their migrated decks in Anki.
+- **Recalloom.** The old Django app was removed at the user's request; it is recoverable from the tag `recalloom-django-final`. Its behaviour lives on as frozen golden fixtures in `tests/fixtures/synthetic/golden/`.
 
 ## Code structure
 
@@ -32,7 +32,6 @@
 - **Interface:** `app/src/ui` holds the Preact screens. Keep business rules out of components.
 - **Helper:** `helper/src` contains `server.ts` (HTTP and security), `jobs.ts`, `providers.ts` (CLI integrations) and `processes.ts` (spawning and limits). It has no runtime dependencies.
 - **Tools:**
-  - `tools/golden.py` regenerates the frozen reference fixtures from Django.
   - `tools/genanki_ref.py` is the Django-free reference exporter.
   - `tools/check_anki.py` is the Anki import gate.
 - Prefer explicit data and small functions over frameworks, registries or speculative extension points.

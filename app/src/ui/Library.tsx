@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { timeKey } from "../core/time.ts";
-import { extractPdf, type ExtractProgress } from "../pdf/extract.ts";
-import { importChatDrafts, importPdfFile, restoreBackupFile, saveLibraryBackup } from "../services/lectures.ts";
-import { addLecture, listLectures, onLibraryChange, requestPersistentStorage, type LectureSummary } from "../store/library.ts";
+import type { ExtractProgress } from "../pdf/extract.ts";
+import { importPdfFile, restoreBackupFile, saveLibraryBackup } from "../services/lectures.ts";
+import { listLectures, onLibraryChange, type LectureSummary } from "../store/library.ts";
 import { plural, useBusy } from "./components.tsx";
 import { notify, openLecture, reportError } from "./state.ts";
 
@@ -59,27 +59,6 @@ export function Library() {
         }
       } catch (error) {
         reportError(error);
-      }
-    });
-
-  const sample = () =>
-    run(async () => {
-      try {
-        setProgress({ name: "Sample lecture", page: 0, pages: 0 });
-        const [pdf, cards] = await Promise.all([
-          fetch("sample/lecture.pdf").then((r) => r.arrayBuffer()),
-          fetch("sample/cards.json").then((r) => r.json()),
-        ]);
-        const bytes = new Uint8Array(pdf);
-        const pages = await extractPdf(bytes, (value) => setProgress({ ...value, name: "Sample lecture" }));
-        const result = await addLecture(bytes, "sample-lecture.pdf", "Memory & learning · sample", pages);
-        if (result.created) await importChatDrafts(result.id, cards);
-        void requestPersistentStorage();
-        openLecture(result.id);
-      } catch (error) {
-        reportError(error);
-      } finally {
-        setProgress(null);
       }
     });
 
@@ -174,9 +153,6 @@ export function Library() {
         <button class="btn small" disabled={busy} onClick={() => backupInput.current?.click()}>
           Restore a backup
         </button>
-        <button class="btn small ghost" disabled={busy} onClick={sample}>
-          Try a sample lecture
-        </button>
       </div>
 
       {lectures === null ? (
@@ -187,7 +163,7 @@ export function Library() {
             <strong>No lectures yet.</strong>
           </p>
           <p class="muted small">
-            Add a PDF above, try the sample, or restore a backup from Recalloom or Slanki.
+            Add a PDF above, or restore a backup from Slanki or Recalloom.
           </p>
         </div>
       ) : (

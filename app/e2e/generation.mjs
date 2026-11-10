@@ -6,6 +6,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createInterface } from "node:readline";
 import { chromium, firefox, webkit } from "playwright";
+import { addSyntheticLecture } from "./fixture.mjs";
 
 const out = process.argv[2] ?? "data/e2e";
 mkdirSync(out, { recursive: true });
@@ -39,8 +40,7 @@ try {
   check(true, "pairing link connects the browser to the helper");
   check(!page.url().includes(code), "the pairing code is removed from the address bar");
 
-  await page.click("text=Try a sample lecture");
-  await page.waitForSelector(".card-pane textarea.question", { timeout: 30000 });
+  await addSyntheticLecture(page);
   await page.click("button:has-text('Make cards')");
   const shows = await page.waitForSelector("dialog[open] .pane .muted:has-text('Codex')", { timeout: 5000 }).then(() => true, () => false);
   check(shows, "Make cards shows the connected AI");

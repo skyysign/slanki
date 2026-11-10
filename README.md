@@ -11,7 +11,7 @@ Status: personal alpha on branch `slanki`; see [docs/STATUS.md](docs/STATUS.md).
 
 ## Use Slanki
 
-1. Open the website (or the local copy that `npx slanki@1` serves at `http://127.0.0.1:47213`, which also works in Safari). Drop a lecture PDF (up to 100 slides) or **Try a sample lecture**.
+1. Open the website (or the local copy that `npx slanki@1` serves at `http://127.0.0.1:47213`, which also works in Safari). Drop a lecture PDF (up to 100 slides).
 2. **Make cards**: choose slides (all by default), the maximum number of cards (about one per two slides) and whether to also make reverse cards. With the helper connected, confirm once that slide text may go to your AI, then **Make cards**. The whole lecture is read first, then cards arrive batch by batch; keep the tab open. **Stop** and **Resume** keep finished work.
 3. Review beside the slide: **Keep & next** (A), **Set aside** (S), **Undo** (Z), edit the fields directly (Ctrl+Enter keeps). **Keep all drafts** accepts the rest at once. **Write a card yourself** includes a fill-in-the-blank helper; **Attach part of slide** adds a figure to the question or answer.
 4. **Export to Anki** downloads an `.apkg`. Open it with Anki; earlier exports of the same cards are updated in place. The answer side shows your answer and the source slide.

@@ -3,6 +3,7 @@
 // Usage: node app/e2e/workflow.mjs [output-dir]
 import { mkdirSync } from "node:fs";
 import { chromium, firefox, webkit } from "playwright";
+import { addSyntheticLecture } from "./fixture.mjs";
 
 const out = process.argv[2] ?? "data/e2e";
 mkdirSync(out, { recursive: true });
@@ -44,9 +45,8 @@ const settle = async (test) => {
 
 await page.goto(base);
 check((await page.textContent(".pill"))?.includes("Connect your AI"), "AI pill invites connecting when no helper is paired");
-await page.click("text=Try a sample lecture");
-await page.waitForSelector(".card-pane textarea.question", { timeout: 30000 });
-check(await settle((c) => c.review === 5), "sample lecture imports 5 drafts validated against pdf.js text");
+await addSyntheticLecture(page);
+check(await settle((c) => c.review === 5), "a PDF and pasted chat drafts import, with excerpts validated against pdf.js text");
 
 await body();
 await page.keyboard.press("a");
@@ -120,12 +120,12 @@ const preview = await page.waitForSelector(".card-pane .crop-note .crop-preview"
 check(preview, "a dragged slide region is attached and shown in the Anki preview");
 await page.click("button:has-text('Export to Anki')");
 const [deck] = await Promise.all([page.waitForEvent("download"), page.click("dialog[open] button:has-text('Download .apkg')")]);
-await deck.saveAs(`${out}/sample.apkg`);
+await deck.saveAs(`${out}/lecture.apkg`);
 check(deck.suggestedFilename().endsWith(".apkg"), "deck downloads as .apkg");
 
 await page.click("button[aria-label='More actions']");
 const [backup] = await Promise.all([page.waitForEvent("download"), page.click("text=Save backup")]);
-await backup.saveAs(`${out}/sample-backup.zip`);
+await backup.saveAs(`${out}/lecture-backup.zip`);
 check(backup.suggestedFilename().includes("Slanki backup"), "backup downloads");
 
 const before = await counts();
@@ -135,7 +135,7 @@ await page.check("dialog[open] input[type=checkbox]");
 await page.click("dialog[open] button:has-text('Delete lecture')");
 await page.waitForSelector("text=No lectures yet.");
 check(true, "lecture deleted after confirmation");
-await page.setInputFiles("input[accept='.zip,application/zip']", `${out}/sample-backup.zip`);
+await page.setInputFiles("input[accept='.zip,application/zip']", `${out}/lecture-backup.zip`);
 await page.waitForSelector(".card-pane, .empty");
 check(await settle((c) => JSON.stringify(c) === JSON.stringify(before)), "restoring the backup brings back every card and status");
 

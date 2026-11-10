@@ -8,7 +8,7 @@
     "helper"
   ],
   "engines": {
-    "node": ">=22.12"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "npm run dev --workspace app",

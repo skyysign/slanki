@@ -1,44 +1,87 @@
-# Browser and desktop boundaries
+# Slanki architecture
 
-Updated 2026-10-26. The user wants a free website hosted on Vercel Hobby with temporary local study data, and a later installed desktop product with a persistent library alongside Anki. The current running application is the persistent local Python/Django edition. A static browser edition, hosted companion and desktop installer are not implemented by the workspace redesign.
+Updated 2026-11-10. Slanki replaces the Recalloom Django app. It is a static web app (Vercel Hobby) plus an optional local helper. The Django code stays in the repository, tagged `recalloom-django-final`, as the frozen reference implementation until the user confirms their migrated decks in Anki.
 
-## Two storage lifetimes, one study workflow
+```
+slanki.vercel.app: static files only (no Functions, no analytics)
+  Browser app (Vite + TypeScript + Preact)
+    app/src/core     prompts, schemas, validation, cloze, casefold/fingerprint, logistics,
+                     batch math, overview: ports of the Python code with its exact semantics
+    app/src/store    IndexedDB library (records keep the backup-manifest field names)
+    app/src/pdf      pdf.js text in visual reading order + PNG rendering   [loaded on import]
+    app/src/run      generation orchestrator (overview → batches → validate → save)
+    app/src/export   PNG codec, Pillow-identical derived images, .apkg writer (sql.js) [loaded on export]
+    app/src/backup   reads Recalloom "slides-to-anki" v1–12 and Slanki v1; writes Slanki v1
+        ⇅ http://127.0.0.1:47213 (only after pairing / Connect)
+Local helper: `npx slanki@1` (helper/, Node ≥ 22.12, no runtime dependencies)
+    runs the user's Codex or Claude Code CLI for one prompt at a time and returns its JSON
+    also serves the same app at http://127.0.0.1:47213 (Safari / offline fallback)
+Without the helper: Make cards → "Use any chat" (copy prompt, paste JSON).
+```
 
-| | Browser session target | Desktop target / current local edition |
-| --- | --- | --- |
-| Delivery | Static HTML/CSS/JavaScript from Vercel | Local application and optional dedicated window |
-| Lecture processing | Browser workers; optional paired local helper for native features | Local PDF renderer, local task workers |
-| Study data | Memory and explicitly temporary device storage for the active session | Local SQLite, source files, saved runs and revisions |
-| Persistence | User downloads the deck or backup; no automatic retained library | Local library and converter backups |
-| Generation | External-chat JSON workflow, a browser-compatible provider route, or an optional paired CLI helper | Existing supported CLI adapters and native authentication |
-| Export | Created locally and downloaded | Created locally and downloaded or saved |
+## Data flow and privacy
 
-The website host serves public application assets. It must not receive PDFs, page images, card content, CLI credentials, generation output or task databases. Local preprocessing is distinct from inference: material is still sent to the user's selected AI provider when generation is authorised. Ordinary webpages cannot launch native CLIs directly. Hosting the Django app on Vercel would not implement this browser-only product.
+- Vercel serves public assets only. PDFs, page images, cards, backups and model output never go to Vercel.
+- Generation sends prompts to the chosen AI, through the user's own CLI login. A prompt contains the selected slide text, the rest of the lecture's text as context for the overview, and up to 200 existing questions. The user consents once per provider.
+- The library lives in this browser's IndexedDB. It is persistent (`navigator.storage.persist()` is requested), but it is per-origin and per-device. Backups move it between browsers. The helper-served copy at `127.0.0.1:47213` is a separate origin with its own library.
+- AI preferences (provider, model, reasoning, consent) and the helper pairing token are kept in `localStorage`. Lecture content is never put there.
 
-For the installation-free route, the current Download prompt / JSON import path is a useful fallback. A ChatGPT/Claude subscription is not automatically a browser API credential. Preserve explicit sharing consent and provider/account ownership; do not introduce a shared inference proxy.
+## Helper security model
 
-## Boundaries maintained by the redesign
+- Listens only on `127.0.0.1:47213` (fixed, so the local-origin library stays stable). Requires `Host: 127.0.0.1:47213`, which blocks DNS rebinding.
+- Accepts an `Origin` only if it is exactly the production app origin (a build constant in `helper/src/main.ts`, overridable for development) or its own origin. Vercel preview URLs are refused. `--allow-origin` exists for development and prints a warning.
+- Pairing works like this:
+  - The helper prints and opens `<app>/#pair=47213.<code>`. The one-time code expires after 120 s and Enter prints a new one.
+  - The app removes the fragment immediately and exchanges the code for the 256-bit token stored in `~/.slanki/helper.json`.
+  - `--reset` rotates the token.
+- Every API call needs `Authorization: Bearer <token>`. Ten failures within a minute lock the API for a minute.
+- Requests must be JSON with exact keys: body ≤ 1 MB, prompt ≤ 200,000 code points, schema ≤ 16 KB. Model IDs and reasoning levels must be ones the CLI reported.
+- Jobs:
+  - One job runs at a time, at most 60 per hour.
+  - Results are kept in memory for 2 hours, at most 20 jobs.
+  - A repeated job key returns the same job, so a reloaded tab can resume without paying twice.
+  - Results are long-polled for up to 25 s.
+- Processes are started from argument arrays with `shell:false` in an empty temporary directory per job. The prompt goes on stdin. Limits: 5-minute timeout, 2 MB output, 5 MB diagnostics. Windows uses `taskkill /T /F`, so stopping kills child processes too. `.cmd` / `.ps1` wrappers are rejected and the native executable is resolved instead.
+- Codex and Claude Code run with Recalloom's restrictions:
+  - Codex: read-only sandbox, user config ignored, shell/apps/multi-agent/web search disabled.
+  - Claude: safe mode, no tools/MCP/hooks/memory/session persistence, sanitized environment, refusal of API-key/Bedrock/Vertex/Foundry setups.
+- Logs record method, route, status and duration only, never prompts, outputs or the token.
+- Threat model: this protects against websites and other hosts. It does not protect against malware already running as the same user.
 
-1. **Presentation:** `converter/static/converter/workspace.css`, `workspace.js`, and the existing browser scripts handle layout, editing controls, queues and dialogs. They receive URLs/data from their host. They do not read filesystem paths, import Python services, invoke a CLI, or perform SQL. The current HTML is still rendered by Django; it needs a client renderer before a complete static build is possible.
-2. **Browser I/O:** `transport.js` owns the JSON request helper and the small AI-preference store. Requests use supplied URLs; preferences contain only provider, model and effort in `sessionStorage`. No lecture text, card fields, file blobs, credentials, source IDs or job results are written to browser persistence by these modules. Storage-disabled browsers continue to work. Tab preferences are convenience state, not a task database or authentication mechanism.
-3. **HTTP adapter:** views translate form/JSON requests into service calls and supply endpoint URLs to the interface. They own CSRF/local-origin protections and redirects. Existing local-only middleware remains in force. Do not make the current server accessible to arbitrary websites as a shortcut to browser delivery.
-4. **Operations:** PDF extraction/rendering, validated generation, note editing/revisions, image operations, export and converter backups remain service operations callable outside views. The current implementation uses Django/SQLite and native Python packages. These are not secretly browser-compatible; a browser worker/storage/export implementation is later work.
-5. **Generator adapters:** keep native authentication with Codex/Claude/Gemini/Kimi. No adapter receives authority to turn lecture content into executable host instructions. A future companion exposes bounded task operations, not a shell endpoint.
+## Static site headers (vercel.json)
 
-Use existing stable document/page/note identities, validated source evidence, cloze ordinals and versioned converter backups as interchange anchors. Reuse synthetic fixtures and contract checks across future implementations. Avoid a general plugin registry or an unused storage framework until the second concrete implementation exists.
+The CSP is `default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self' http://127.0.0.1:47213; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'`.
 
-## Later browser implementation
+Other headers: `no-referrer` and `nosniff`; immutable caching for `/assets/*`, `no-cache` for the page.
 
-- Render and extract PDFs in browser workers with bounded resources. Choose and pin actual browser libraries when implementing this feature. Keep parsed text, rendered images and task state in the session; design large-file spill storage explicitly rather than silently retaining a permanent library.
-- Implement the supported Anki note types/media locally, checked against the same export/re-import cases and actual clients. A browser ZIP builder alone does not establish Anki compatibility.
-- Provide an explicit **End session** operation: cancel owned tasks, terminate workers, drop document/card state, revoke object URLs, and delete owned temporary database/cache entries. Cache only public app assets across sessions. Do not claim secure erasure of browser/OS caches. User-requested downloads and provider-owned history are outside app cleanup.
-- A desktop shell can keep the present local services and library while loading the same UI assets. A temporary browser session and a persistent desktop library should share domain rules and import/export contracts, not an assumption that every UI needs a database-backed lecture library.
-- If native subscription-backed generation is offered from the hosted UI, implement pairing, approved origins, a scoped short-lived connection and explicit data flow. Browser local-network permissions/CORS and lifecycle need real verification at that stage. Do not disable CSRF/CSP or accept any origin on port 8000.
+pdf.js fonts, CMaps and wasm decoders are served from the app's own origin. `.vercelignore` keeps everything except the app and workspace manifests out of uploads.
 
-## Vercel target
+## Compatibility contract with Recalloom
 
-Use Vercel for static assets, not file processing, model requests, task state, or SQLite. The user plans Hobby rather than a paid service. The official [Hobby plan](https://vercel.com/docs/plans/hobby) describes non-commercial personal use and resource limits; [fair-use guidance](https://vercel.com/docs/limits/fair-use-guidelines) explicitly excludes asking for donations from commercial use. Checked 2026-10-26. This is a suitable architecture target for the stated free/donation direction, not a traffic forecast or an unconditional entitlement to the plan. Advertising or paid access needs another review. No deployment, account connection or plan purchase is part of this redesign.
+Re-exporting an imported lecture updates the same Anki notes and keeps review schedules. These are frozen and golden-tested:
 
-## Current scope
+- **Note types:** IDs 1890487183–187, with names, fields, templates, CSS and `req` exactly as genanki wrote them. The legacy names are never rebranded.
+- **Identifiers:**
+  - The deck ID is the first 6 bytes of `sha256(lecture uuid)`.
+  - Note GUIDs use genanki's `guid_for(uuid)`.
+  - `notes.mod` is `anki_modified`, which is `max(now, prev + 1)` on each change.
+- **Media:**
+  - `slides_{lectureHex}_{n}.png` carries the stored page bytes unchanged.
+  - Derived crop, occlusion and visual images match Pillow pixel for pixel. Their file names include a content hash, so they change after the port. That is harmless: GUIDs and schedules stay the same.
+- **Text rules:**
+  - Python code-point lengths and slicing, `str.split`/`strip` whitespace, `casefold`, and Unicode `\w`/`\b` are generated from Python 3.12 tables.
+  - Prompts, schemas, batch budgets and the overview are byte-identical to the reference. The one intentional change is the fixed mojibake.
+- **Backups:**
+  - Slanki v1 uses the Recalloom format-12 record shape and carries study guides, image suggestions and run history verbatim, although they are no longer shown.
+  - All Recalloom formats 1–12 can be read.
 
-This change ships the workspace redesign, tab-scoped AI preferences, live local previews and version-checked undo in the existing local edition. It does not ship browser PDF processing/export, an ephemeral task store, a pairing service, a desktop wrapper or a Vercel deployment. Those are separate executable milestones; documenting them does not mark them implemented.
+Golden references live in `tests/fixtures/synthetic/golden/`. `tools/golden.py` generated them from the Django code with every model call mocked. `tools/genanki_ref.py` reproduces the Django exporter without Django, and `tools/check_anki.py` imports decks into a throwaway Anki 26.8.1 collection.
+
+## Not implemented
+
+The following are not implemented:
+
+- Gemini CLI and Kimi Code in the helper (the Django app had adapters for them).
+- The source-crop editor (existing crops still export).
+- Image-occlusion drawing and suggestions, graph/formula generation and the study guide (removed by decision).
+- Firefox/WebKit automated runs and a live AI run with the new helper.

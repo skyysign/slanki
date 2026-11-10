@@ -83,7 +83,16 @@ The earlier integrated paid-beta phase is superseded by the free, donation-suppo
 
 ## Next development task
 
-Continue from docs/STATUS.md. The first production UX redesign is implemented: library-first navigation, Cards/Study guide, compact generation/preferences, two-pane correction, live previews, keyboard keep/set-aside, and version-checked undo. Q/A+cloze defaults apply to new lectures; reverse remains an advanced opt-in and old formats/runs remain valid. The user confirmed a later Vercel Hobby static browser edition with temporary device storage and a persistent desktop edition. Follow docs/ARCHITECTURE.md for boundaries; no browser worker, temporary task store, browser export, companion pairing or deployment is implemented yet. Next gather feedback on the redesigned correction flow, then implement a narrow browser-processing/export slice using synthetic fixtures, without sending lectures to Vercel. Concept mappings, deck consolidation, broader quality/Anki-client checks and installation/upgrade validation remain separate work; do not expand all milestones at once.
+The product is now **Slanki**, a static browser app with an optional local helper (`npx slanki`). See docs/ARCHITECTURE.md and docs/STATUS.md. The Recalloom Django edition is the frozen reference implementation until the user confirms migrated decks in Anki.
+
+Next steps:
+1. The user migrates the three real lectures through backups.
+2. The user decides the license, connects the repository to Vercel, and publishes the helper to npm.
+3. One live Codex or Claude run, approved by the user.
+4. Firefox and Safari checks.
+5. Retire Django only after the user confirms.
+
+The release gates above still apply. Slanki's first personal-use gate needs real lectures studied in the user's Anki clients.
 
 ## Technical references
 

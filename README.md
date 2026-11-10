@@ -1,29 +1,57 @@
-# Recalloom
+# Slanki
 
-A local tool for turning lecture PDFs into editable Anki cards with source-slide evidence.
+Turn lecture PDFs into Anki cards in your browser. Slanki (formerly Recalloom) reads your slides on your own device, lets your own AI draft compact Q/A, cloze and optional reverse cards, shows each draft beside its slide for a quick keep / set aside / edit, and exports an Anki deck with the slides bundled.
 
-**Delivery target:** a static Vercel browser edition with temporary device storage, followed by a desktop edition with a persistent library. This working Django edition currently stores its library locally; browser-only PDF processing/export and temporary-session cleanup are later work. See [browser/desktop boundaries](docs/ARCHITECTURE.md).
+- **Nothing to sign up for, nothing uploaded.** The website is static files. Lectures, cards and backups stay in your browser (IndexedDB). Only the slide text you choose is sent to *your* AI, through your own account.
+- **Use your AI subscription.** Run `npx slanki@1` (Node.js 22.12+) once; it connects the website to your installed **Codex** or **Claude Code**. No AI installed? Use **Make cards → Use any chat** to copy a prompt into ChatGPT, Claude or Gemini and paste the answer back.
+- **Your existing work comes along.** Restore Recalloom backups (formats 1–12). Re-exported cards update the same notes in Anki and keep their review history.
+- Free, donation-supported direction; no app subscription, paid features or hosted generation service.
 
-**Project direction:** free software supported by optional donations. There are no plans for app subscriptions, paid features, sold generation credits, or a hosted generation service. Users supply their own supported AI access; further expansion will follow demonstrated demand.
+Status: personal alpha on branch `slanki`; see [docs/STATUS.md](docs/STATUS.md). Architecture, privacy and the helper's security model: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-**Current state:** a working personal-use local alpha with a library-first home and Cards / Study guide workspace. Create compact drafts, review the question and answer beside the source, edit with live previews, Keep & next or Set aside, undo the last saved change, and export ready cards to Anki. Q/A and cloze are the default formats for a new lecture; reverse and visual formats are optional under Advanced. Existing saved format choices are retained.
+## Use Slanki
 
-This first version supports PDFs up to 25 MB and 100 pages. Automatic Q/A, cloze, reverse cards, and lecture rundowns use selectable text; unreadable pages are flagged. **Graphs & formulas** uses Codex slide images to draft interpretation questions with editable crops and optional answer-text covers. Label-recall occlusion lives separately under **Anatomy & diagrams**. PPTX, an internal reviewer, and mobile sync are not implemented.
+1. Open the website (or the local copy that `npx slanki@1` serves at `http://127.0.0.1:47213`, which also works in Safari). Drop a lecture PDF (up to 100 slides) or **Try a sample lecture**.
+2. **Make cards**: choose slides (all by default), the maximum number of cards (about one per two slides) and whether to also make reverse cards. With the helper connected, confirm once that slide text may go to your AI, then **Make cards**. The whole lecture is read first, then cards arrive batch by batch; keep the tab open. **Stop** and **Resume** keep finished work.
+3. Review beside the slide: **Keep & next** (A), **Set aside** (S), **Undo** (Z), edit the fields directly (Ctrl+Enter keeps). **Keep all drafts** accepts the rest at once. **Write a card yourself** includes a fill-in-the-blank helper.
+4. **Export to Anki** downloads an `.apkg`. Open it with Anki; earlier exports of the same cards are updated in place.
+5. **··· → Save backup** downloads everything (PDF, slides, cards, history). Restore it on the home page in any browser.
 
-## Slanki (browser rewrite, in development on branch `slanki`)
+### Connect your AI
 
-Recalloom is being rebuilt as **Slanki**, a static web app that keeps lectures in the browser plus an optional local helper for your AI CLI. See [docs/STATUS.md](docs/STATUS.md). The Django app below remains the working version until migration is confirmed. Development checks (Node.js 22.12+):
+```powershell
+npx slanki@1
+```
+
+The helper prints and opens a connection link (one-time code, valid two minutes; press Enter for a new one). Chrome/Edge then ask whether the site may access apps on your device: choose **Allow**. Sign in to your CLI the normal way first (`codex login` or `claude auth login`). The helper only runs your CLI with tools disabled, one prompt at a time; keep its window open while cards are made. `npx slanki@1 --reset` disconnects every paired browser. The npm package is not published yet; until then run `npm run build` and `node helper/dist/slanki.mjs`.
+
+## Develop Slanki
+
+Requires Node.js 22.12+ (and, for the Anki gate, the Python virtual environment below with `requirements-dev.txt`).
 
 ```powershell
 npm install
-npm test                                   # Vitest: golden vectors, export, backups
-npx tsc -p app                             # type check
-.\.venv\Scripts\python.exe tools/check_anki.py              # Anki 26.8.1 import gate (temp collection)
-.\.venv\Scripts\python.exe tools/check_anki.py --real DIR   # also check backup-*.zip files in DIR read-only
-node app/scripts/export-fixture.ts BACKUP.zip OUT.apkg       # build a deck from a backup with the browser exporter
+npm run dev                     # Vite dev server at http://localhost:5173 (helper needs --allow-origin http://localhost:5173)
+npm test                        # Vitest: golden parity with Recalloom, export, backups, store, runs, helper security
+npx tsc -p app; npx tsc -p helper
+npm run build                   # app/dist (static site) and helper/dist (npx package incl. the app)
+npm run size                    # budget: initial download <= 150 KB gzip, deployment <= 6 MB
+npm run serve                   # app/dist with the production headers from vercel.json at http://127.0.0.1:4173
+node app/e2e/workflow.mjs       # Chrome: import, review, undo, keep all, chat import, export, backup/restore, phone layout
+node app/e2e/generation.mjs     # Chrome + real helper + fake CLI: pairing, generation, reload/resume, stop
+.\.venv\Scripts\python.exe tools/check_anki.py                    # Anki 26.8.1 gate on the golden lecture
+.\.venv\Scripts\python.exe tools/check_anki.py --real DIR         # also backup-*.zip files in DIR (read-only)
+.\.venv\Scripts\python.exe tools/check_anki.py --apkg FILE.apkg   # also a deck downloaded from the app
+node app/scripts/export-fixture.ts BACKUP.zip OUT.apkg           # build a deck from a backup with the browser exporter
+node app/scripts/compare-text.ts BACKUP.zip                      # pdf.js vs stored text, aggregate numbers only
+node helper/test/discover-real.ts                                # model lists from installed CLIs (no prompts)
 ```
 
-`tools/golden.py` regenerates the frozen reference fixtures from the Django code (deliberately; IDs change on each run).
+The e2e scripts use installed Google Chrome. `tools/golden.py` regenerates the frozen reference fixtures from the Django code; only rerun it deliberately (IDs change on each run). Deploy to Vercel by connecting the Git repository (settings come from `vercel.json`; `.vercelignore` keeps everything but the app out of uploads).
+
+## Recalloom Django edition (frozen reference)
+
+The sections below describe the previous Django app. It still runs and remains the reference implementation until migration is confirmed; new work happens in Slanki.
 
 ## Install and run (Windows / Python 3.12)
 

@@ -90,7 +90,7 @@ async function call(path: string, init: RequestInit = {}, timeoutMs = 15000): Pr
   } catch (error) {
     if (outer?.aborted) throw new Cancelled();
     throw new HelperUnavailable(
-      "The Slanki helper is not reachable. Start it with `npx slanki` and keep that window open.",
+      "The Slanki helper is not reachable. Start it with `npx slanki@1` and keep that window open. If your browser asked whether this site may access apps on your device, choose Allow (site settings → Local network access).",
       { cause: error },
     );
   } finally {

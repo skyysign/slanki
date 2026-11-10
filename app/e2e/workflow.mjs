@@ -106,6 +106,18 @@ await page.click("dialog[open] button:has-text('Add drafts')");
 await page.waitForFunction(() => document.querySelector(".toast")?.textContent?.includes("Added 1 draft"));
 check((await page.textContent(".toast")).includes("course logistics"), "chat import skips course logistics");
 
+await page.click(".tab:has-text('Ready')");
+await page.click("button:has-text('Attach part of slide')");
+const area = await page.locator(".slide.cropping").boundingBox();
+await page.mouse.move(area.x + area.width * 0.1, area.y + area.height * 0.2);
+await page.mouse.down();
+await page.mouse.move(area.x + area.width * 0.6, area.y + area.height * 0.7, { steps: 5 });
+await page.mouse.up();
+await page.check("text=Show it on the question");
+await page.click("button:has-text('Attach region')");
+await page.waitForFunction(() => document.querySelector(".toast")?.textContent?.includes("region attached"));
+const preview = await page.waitForSelector(".card-pane .crop-note .crop-preview", { timeout: 5000 }).then(() => true, () => false);
+check(preview, "a dragged slide region is attached and shown in the Anki preview");
 await page.click("button:has-text('Export to Anki')");
 const [deck] = await Promise.all([page.waitForEvent("download"), page.click("dialog[open] button:has-text('Download .apkg')")]);
 await deck.saveAs(`${out}/sample.apkg`);

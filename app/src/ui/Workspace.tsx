@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { NOTE_TYPE_LABELS, studyCardCount, studyPreviews } from "../core/noteTypes.ts";
+import type { Crop } from "../core/geometry.ts";
 import { pyStrip } from "../core/py.ts";
 import {
   getLecture,
@@ -10,9 +11,11 @@ import {
   type LectureBundle,
   type NoteStatus,
   type StoredNote,
+  type StoredPage,
 } from "../store/library.ts";
 import { Menu, plural, useBusy, useImageUrl } from "./components.tsx";
 import { DeleteDialog, ExportDialog, KeepAllDialog, ManualCardDialog, RenameDialog, SlideViewer } from "./dialogs.tsx";
+import { CropControls, CropPreview, hasCrop, useRegionDrag } from "./CropTool.tsx";
 import { MakeCardsDialog } from "./MakeCards.tsx";
 import { RunBanner } from "./RunBanner.tsx";
 import { notify, openLibrary, reportError } from "./state.ts";
@@ -323,6 +326,7 @@ function LectureView({ bundle, reload }: { bundle: LectureBundle; reload: () => 
                     setSlidePage(current.page);
                     setShow("slide");
                   }}
+                  page={pages.find((p) => p.number === current.page)}
                 />
               ) : (
                 <div class="stack">
@@ -362,6 +366,7 @@ function LectureView({ bundle, reload }: { bundle: LectureBundle; reload: () => 
               setPage={setSlidePage}
               onZoom={() => setDialog("viewer")}
               onWrite={() => setDialog("manual")}
+              dirty={dirty}
             />
           </div>
         </>
@@ -419,8 +424,12 @@ function CardEditor(props: {
   onSave: () => void;
   onRestore: () => void;
   onShowSlide: () => void;
+  page: StoredPage | undefined;
 }) {
   const { note, fields, setFields } = props;
+  const crop = hasCrop(note) && note.note_type !== "visual" ? (note.source_crop as Crop) : null;
+  const slideUrl = useImageUrl(crop ? props.page?.image_sha : undefined);
+  const cropView = crop && props.page ? <CropPreview url={slideUrl} page={props.page} crop={crop} /> : null;
   const image = note.note_type === "occlusion" || note.note_type === "visual";
   const [preview, setPreview] = useState(note.note_type === "cloze");
   const previews = useMemo(() => {
@@ -471,6 +480,12 @@ function CardEditor(props: {
           onKeyDown={submitOnShortcut}
         />
       </label>
+      {cropView && crop && (
+        <div class="crop-note">
+          {cropView}
+          <span class="muted small">Part of slide {note.page}, shown {crop.on_question ? "on the question" : "with the answer"}.</span>
+        </div>
+      )}
       {image && (
         <p class="note-box">Image card from Recalloom. Its hidden region stays as it is; you can still edit the text.</p>
       )}
@@ -496,8 +511,10 @@ function CardEditor(props: {
             <div class="preview-card" key={card.number}>
               {card.direction && <div class="kind">{card.direction}</div>}
               <div dangerouslySetInnerHTML={{ __html: card.question }} />
+              {crop?.on_question && cropView}
               <hr />
               <div dangerouslySetInnerHTML={{ __html: card.answer }} />
+              {crop && !crop.on_question && cropView}
             </div>
           ))}
         </details>
@@ -567,15 +584,34 @@ function SlidePane(props: {
   setPage: (page: number) => void;
   onZoom: () => void;
   onWrite: () => void;
+  dirty: boolean;
 }) {
   const { pages } = props.bundle;
   const page = pages.find((p) => p.number === props.pageNumber) ?? pages[0]!;
   const url = useImageUrl(page.image_sha);
   const sameNotePage = props.note?.page === page.number;
+  const [cropping, setCropping] = useState(false);
+  const drag = useRegionDrag(page);
+  useEffect(() => {
+    setCropping(false);
+    drag.setRect(null);
+  }, [props.note?.id, page.number]);
+  const canCrop = !!props.note && sameNotePage && ["basic", "cloze", "reversed"].includes(props.note.note_type);
   const step = (delta: number) => {
     const target = page.number + delta;
     if (target >= 1 && target <= pages.length) props.setPage(target);
   };
+  const box = (rect: { left: number; top: number; right: number; bottom: number }) => ({
+    left: `${(rect.left / page.width) * 100}%`,
+    top: `${(rect.top / page.height) * 100}%`,
+    width: `${((rect.right - rect.left) / page.width) * 100}%`,
+    height: `${((rect.bottom - rect.top) / page.height) * 100}%`,
+  });
+  const image = url ? (
+    <img src={url} alt={`Slide ${page.number}`} width={page.width} height={page.height} draggable={false} />
+  ) : (
+    <div style={{ aspectRatio: `${page.width} / ${page.height}` }} />
+  );
   return (
     <section class="pane slide-pane" aria-label="Source slide">
       <div class="pane-head">
@@ -590,14 +626,42 @@ function SlidePane(props: {
         </button>
         {page.warning && <span class="badge warn">No text</span>}
         <span class="spacer" />
+        {canCrop && !cropping && (
+          <button
+            class="btn small"
+            disabled={props.dirty}
+            title={props.dirty ? "Save your edit first" : "Show part of this slide with the card"}
+            onClick={() => setCropping(true)}
+          >
+            {hasCrop(props.note!) ? "Change slide region" : "Attach part of slide"}
+          </button>
+        )}
         <button class="btn small" onClick={props.onWrite}>
           Write a card
         </button>
       </div>
-      <button type="button" class="slide" style={{ padding: 0, width: "100%" }} onClick={props.onZoom} aria-label="Enlarge slide">
-        {url ? <img src={url} alt={`Slide ${page.number}`} width={page.width} height={page.height} /> : <div style={{ aspectRatio: `${page.width} / ${page.height}` }} />}
-        {sameNotePage && <Overlay note={props.note} width={page.width} height={page.height} />}
-      </button>
+      {cropping && props.note ? (
+        <div class="slide cropping" {...drag.handlers} aria-label="Drag to choose a region of the slide">
+          {image}
+          {drag.rect && <div class="crop" style={box(drag.rect)} />}
+        </div>
+      ) : (
+        <button type="button" class="slide" style={{ padding: 0, width: "100%" }} onClick={props.onZoom} aria-label="Enlarge slide">
+          {image}
+          {sameNotePage && <Overlay note={props.note} width={page.width} height={page.height} />}
+        </button>
+      )}
+      {cropping && props.note && (
+        <CropControls
+          note={props.note}
+          page={page}
+          rect={drag.rect}
+          onDone={() => {
+            setCropping(false);
+            drag.setRect(null);
+          }}
+        />
+      )}
       {props.note?.source_quote && sameNotePage && <p class="quote" style={{ marginTop: "12px" }}>{props.note.source_quote}</p>}
       {page.text && (
         <details class="page-text">
@@ -608,4 +672,3 @@ function SlidePane(props: {
     </section>
   );
 }
-

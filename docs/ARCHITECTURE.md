@@ -82,6 +82,6 @@ Golden references live in `tests/fixtures/synthetic/golden/`. `tools/golden.py` 
 The following are not implemented:
 
 - Gemini CLI and Kimi Code in the helper (the Django app had adapters for them).
-- The source-crop editor (existing crops still export).
-- Image-occlusion drawing and suggestions, graph/formula generation and the study guide (removed by decision).
-- Firefox/WebKit automated runs and a live AI run with the new helper.
+- Image-occlusion drawing and suggestions, graph/formula generation and the study guide (removed by decision; imported notes of these types stay exportable).
+- A live AI run with the new helper.
+- Checks in real Safari and from the deployed Vercel origin.

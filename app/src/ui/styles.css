@@ -175,6 +175,10 @@ main { max-width: 1240px; margin: 0 auto; padding: 24px 20px 64px; }
 .slide img { display: block; width: 100%; height: auto; }
 .slide .mask { position: absolute; background: var(--mask); outline: 2px solid #8a6215; }
 .slide .crop { position: absolute; outline: 3px solid var(--accent); box-shadow: 0 0 0 9999px rgb(0 0 0 / 25%); }
+.slide.cropping { cursor: crosshair; touch-action: none; user-select: none; }
+.crop-preview { width: 100%; max-width: 420px; margin-top: 8px; border-radius: 6px; border: 1px solid var(--border); background-repeat: no-repeat; background-color: #fff; }
+.crop-note { display: flex; gap: 12px; align-items: center; }
+.crop-note .crop-preview { max-width: 160px; margin: 0; flex: none; }
 .page-text { margin-top: 12px; }
 .page-text summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); }
 .page-text pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.5 var(--font); color: var(--muted); max-height: 260px; overflow: auto; }

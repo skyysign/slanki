@@ -31,6 +31,11 @@ The approved plan renames the app to **Slanki**: a static browser app for Vercel
   - export, backup, delete and rename dialogs;
   - phone layout.
 - Make cards with three settings and a copy/paste chat route.
+- **Attach part of slide** crop editor:
+  - drag a region and choose whether it shows on the question or with the answer;
+  - saved with a revision, keeping the note's identity;
+  - shown as a thumbnail and in the Anki preview;
+  - exported with the deck (checked in Chrome, Firefox and WebKit, and in the Anki gate).
 - `vercel.json` with a strict CSP, and `.vercelignore`.
 
 **P3: helper and generation.**
@@ -107,7 +112,7 @@ New lectures validate against their own pdf.js text; imported lectures keep thei
   - No live AI generation through the new helper (needs the user's OK; uses allowance).
   - No Vercel deployment and no npm publish: these need the user's accounts, and the license is still to be chosen.
   - The production origin is the build constant `https://slanki.vercel.app`.
-- **Features not ported:** Gemini CLI and Kimi Code are not in the helper. There is no source-crop editor; existing crops export unchanged. Occlusion and visual notes are read-only apart from their text.
+- **Features not ported:** Gemini CLI and Kimi Code are not in the helper. Occlusion and visual notes are read-only apart from their text.
 - **Browsers:** both workflows also pass in Playwright's Firefox and WebKit builds (see Checks run). Still unverified:
   - real Safari, which is expected to need the local copy at `http://127.0.0.1:47213`;
   - Chrome's local-network permission prompt from the real Vercel origin.
@@ -125,7 +130,7 @@ New lectures validate against their own pdf.js text; imported lectures keep thei
    - connect the repository to Vercel (or choose another project name and update `APP_ORIGIN`);
    - publish `slanki` to npm;
    - approve one live Codex or Claude run on the sample lecture.
-3. **Then:** Firefox/WebKit runs, the optional crop editor and Gemini/Kimi. After the user's confirmation, delete the Django code and update the remaining docs.
+3. **Then:** Gemini and Kimi in the helper if wanted. After the user's confirmation, delete the Django code and update the remaining docs.
 
 ## Recalloom Django edition (frozen reference)
 

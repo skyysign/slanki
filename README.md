@@ -27,7 +27,7 @@ You also need one of these AI apps, signed in with your normal account. Slanki s
 2. **Make cards.** Choose the slides and roughly how many cards you want, and optionally add reverse cards. Slanki picks question/answer or cloze cards by itself.
 3. **Review.** Each draft sits beside its slide. Use **Keep** (A), **Set aside** (S) and **Undo** (Z), edit in place, or write your own cards.
 4. **Export to Anki.** You get an `.apkg` file. Exporting again later updates the same notes in Anki, so your review history is kept.
-5. **Back up** one lecture or your whole library, and restore it on any computer.
+5. **Back up** one lecture or your whole library, and restore it on any computer. Delete lectures you are done with from the home page.
 
 No AI app? **Make cards → Use any chat** copies a ready-made prompt for ChatGPT, Claude or Gemini on the web. Paste the answer back and Slanki checks it the same way.
 

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { clozeMatches, studyCardCount, studyPreviews } from "../core/noteTypes.ts";
 import { exportDeck, saveBackup } from "../services/lectures.ts";
-import { addManualNote, deleteLecture, renameLecture, type LectureBundle } from "../store/library.ts";
+import { addManualNote, deleteLecture, renameLecture, type LectureBundle, type StoredLecture } from "../store/library.ts";
 import { Dialog, plural, useBusy, useImageUrl } from "./components.tsx";
-import { errorMessage, notify, openLibrary, reportError } from "./state.ts";
+import { errorMessage, notify, reportError } from "./state.ts";
 
 type Props = { open: boolean; bundle: LectureBundle; onClose: () => void };
 
@@ -85,17 +85,31 @@ export function KeepAllDialog(props: Props & { onConfirm: (versions: Record<stri
   );
 }
 
-export function DeleteDialog({ open, bundle, onClose }: Props) {
+export function DeleteDialog({
+  open,
+  lecture,
+  cards,
+  slides,
+  onClose,
+  onDeleted,
+}: {
+  open: boolean;
+  lecture: StoredLecture;
+  cards: number;
+  slides: number;
+  onClose: () => void;
+  onDeleted: () => void;
+}) {
   const [confirmed, setConfirmed] = useState(false);
   const [busy, run] = useBusy();
   useEffect(() => setConfirmed(false), [open]);
   return (
     <Dialog open={open} onClose={onClose} label="Delete lecture">
-      <h2>Delete “{bundle.lecture.title}”?</h2>
+      <h2>Delete “{lecture.title}”?</h2>
       <p>
-        This removes {plural(bundle.notes.length, "card")}, their history and {plural(bundle.pages.length, "slide")} from this browser. Decks already in Anki are not affected.
+        This removes {plural(cards, "card")}, their history and {plural(slides, "slide")} from this browser. Decks already in Anki are not affected.
       </p>
-      <button class="btn" disabled={busy} onClick={() => run(() => saveBackup(bundle.lecture.id).then(() => notify("Backup downloaded."), reportError))}>
+      <button class="btn" disabled={busy} onClick={() => run(() => saveBackup(lecture.id).then(() => notify("Backup downloaded."), reportError))}>
         Save a backup first
       </button>
       <label class="check">
@@ -112,9 +126,9 @@ export function DeleteDialog({ open, bundle, onClose }: Props) {
           onClick={() =>
             run(async () => {
               try {
-                await deleteLecture(bundle.lecture.id);
+                await deleteLecture(lecture.id);
                 notify("Lecture deleted.");
-                openLibrary();
+                onDeleted();
               } catch (error) {
                 reportError(error);
               }

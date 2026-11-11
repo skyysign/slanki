@@ -4,6 +4,7 @@ import type { ExtractProgress } from "../pdf/extract.ts";
 import { importPdfFile, restoreBackupFile, saveLibraryBackup } from "../services/lectures.ts";
 import { listLectures, onLibraryChange, type LectureSummary } from "../store/library.ts";
 import { plural, useBusy } from "./components.tsx";
+import { DeleteDialog } from "./dialogs.tsx";
 import { notify, openLecture, reportError } from "./state.ts";
 
 function needsBackup(summary: LectureSummary): boolean {
@@ -15,6 +16,7 @@ export function Library() {
   const [lectures, setLectures] = useState<LectureSummary[] | null>(null);
   const [progress, setProgress] = useState<(ExtractProgress & { name: string }) | null>(null);
   const [over, setOver] = useState(false);
+  const [deleting, setDeleting] = useState<LectureSummary | null>(null);
   const [busy, run] = useBusy();
   const pdfInput = useRef<HTMLInputElement>(null);
   const backupInput = useRef<HTMLInputElement>(null);
@@ -169,7 +171,8 @@ export function Library() {
       ) : (
         <div class="lecture-list">
           {lectures.map((summary) => (
-            <a class="lecture-card" href={`#/lecture/${summary.lecture.id}`} key={summary.lecture.id}>
+            <div class="lecture-item" key={summary.lecture.id}>
+            <a class="lecture-card" href={`#/lecture/${summary.lecture.id}`}>
               <h3>{summary.lecture.title}</h3>
               <div class="counts">
                 {summary.toReview > 0 && <span class="badge review">{summary.toReview} to review</span>}
@@ -179,8 +182,30 @@ export function Library() {
               </div>
               <span class="muted small">{plural(summary.lecture.page_count, "slide")}</span>
             </a>
+            <button
+              class="lecture-delete"
+              aria-label={`Delete ${summary.lecture.title}`}
+              title={summary.running ? "Stop making cards before deleting" : "Delete lecture"}
+              disabled={summary.running}
+              onClick={() => setDeleting(summary)}
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6" />
+              </svg>
+            </button>
+            </div>
           ))}
         </div>
+      )}
+      {deleting && (
+        <DeleteDialog
+          open
+          lecture={deleting.lecture}
+          cards={deleting.toReview + deleting.ready + deleting.setAside}
+          slides={deleting.lecture.page_count}
+          onClose={() => setDeleting(null)}
+          onDeleted={() => setDeleting(null)}
+        />
       )}
       <p class="note-box" style={{ marginTop: "28px" }}>
         Lectures are stored only in this browser on this device. Clearing site data removes them, so use Back up all lectures (or a lecture's ··· menu) to keep a copy or move them to another browser.

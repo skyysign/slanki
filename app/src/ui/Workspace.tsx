@@ -392,7 +392,14 @@ function LectureView({ bundle, reload }: { bundle: LectureBundle; reload: () => 
           }
         }}
       />
-      <DeleteDialog open={dialog === "delete"} bundle={bundle} onClose={() => setDialog(null)} />
+      <DeleteDialog
+        open={dialog === "delete"}
+        lecture={bundle.lecture}
+        cards={bundle.notes.length}
+        slides={bundle.pages.length}
+        onClose={() => setDialog(null)}
+        onDeleted={openLibrary}
+      />
       <RenameDialog open={dialog === "rename"} bundle={bundle} onClose={() => setDialog(null)} />
       <ManualCardDialog
         open={dialog === "manual"}

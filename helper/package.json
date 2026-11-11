@@ -1,6 +1,6 @@
 {
   "name": "slanki",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Local helper that lets the Slanki web app use your own Codex or Claude Code CLI. Your lecture files stay on your computer.",
   "type": "module",
   "license": "UNLICENSED",

@@ -9,7 +9,7 @@ import { HelperError } from "./processes.ts";
 import { PROVIDERS, type GenerationRequest, type ModelRow, type Provider, type ProviderStatus } from "./providers.ts";
 
 export const API_VERSION = 1;
-export const VERSION = "0.2.0";
+export const VERSION = "0.2.1";
 const MAX_BODY = 1024 * 1024;
 const MAX_PROMPT = 200_000;
 const MAX_SCHEMA = 16 * 1024;

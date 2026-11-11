@@ -83,3 +83,7 @@ node app/e2e/readme-shots.mjs         # refresh the screenshots above (after bui
 ```
 
 Slanki can also be hosted as a static website (see `vercel.json`), with users running the helper through `npx slanki`. More detail: [architecture and privacy](docs/ARCHITECTURE.md), [status](docs/STATUS.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).

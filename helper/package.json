@@ -3,7 +3,7 @@
   "version": "0.2.2",
   "description": "Local helper that lets the Slanki web app use your own Codex or Claude Code CLI. Your lecture files stay on your computer.",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "bin": {
     "slanki": "dist/slanki.mjs"

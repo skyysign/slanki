@@ -23,7 +23,7 @@ Updated 2026-11-11. Personal alpha. Main delivery is now the local Windows app `
 
 ## Not done
 
-- **Releases:** no Vercel deployment, no npm publish, no license chosen. The exe is unsigned (SmartScreen warning) and Windows-only as built; macOS/Linux need `npm run build:exe` on that OS.
+- **Releases:** no Vercel deployment, no npm publish, MIT license. The exe is unsigned (SmartScreen warning) and Windows-only as built; macOS/Linux need `npm run build:exe` on that OS.
 - **Untested:**
   - live AI generation through the helper;
   - real Safari;

@@ -1,6 +1,6 @@
 # Status
 
-Updated 2026-11-11. Personal alpha. Main delivery is now the local Windows app `Slanki.exe` (`npm run build:exe`), branch `slanki`. The old Django app (Recalloom) is removed; it is recoverable from the tag `recalloom-django-final`. Snapshot of the 3 real lectures (format-12 backups) in ignored `data/backups/pre-slanki-20261110/`.
+Updated 2026-11-11. Personal alpha. Main delivery is now the local Windows app `Slanki.exe` (`npm run build:exe`), branch `main`. The old Django app (Recalloom) is removed; it is recoverable from the tag `recalloom-django-final`. Snapshot of the 3 real lectures (format-12 backups) in ignored `data/backups/pre-slanki-20261110/`.
 
 ## Works
 

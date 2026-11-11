@@ -149,6 +149,7 @@ describe("helper HTTP security", () => {
   const token = "a".repeat(64);
   let release: (() => void) | null = null;
   let aborted = 0;
+  let shutdowns = 0;
   const { server, pairing } = createHelper({
     port,
     origins: [origin],
@@ -167,6 +168,7 @@ describe("helper HTTP security", () => {
     checkSettings: async (_provider, model) => {
       checkedModelId(model);
     },
+    shutdown: () => (shutdowns += 1),
   });
   beforeAll(() => new Promise<void>((resolve) => server.listen(port, "127.0.0.1", resolve)));
   afterAll(() => new Promise<void>((resolve) => server.close(() => resolve())));
@@ -234,6 +236,14 @@ describe("helper HTTP security", () => {
     expect(fresh.status).toBe(200);
     expect((await call("POST", "/v1/pair", { body: { code: fresh.body.code } })).body.token).toBe(token);
     expect((await call("POST", "/v1/pairing-code", { headers: { ...auth, Origin: "https://evil.example" } })).status).toBe(403);
+  });
+
+  it("shuts down for a newer copy only with the token", async () => {
+    expect((await call("POST", "/v1/shutdown")).status).toBe(401);
+    expect((await call("POST", "/v1/shutdown", { headers: { ...auth, Origin: "https://evil.example" } })).status).toBe(403);
+    expect((await call("POST", "/v1/shutdown", { headers: auth })).status).toBe(200);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    expect(shutdowns).toBe(1);
   });
 
   it("rejects wrong hosts, origins and tokens", async () => {

@@ -9,7 +9,7 @@ import { HelperError } from "./processes.ts";
 import { PROVIDERS, type GenerationRequest, type ModelRow, type Provider, type ProviderStatus } from "./providers.ts";
 
 export const API_VERSION = 1;
-export const VERSION = "0.2.1";
+export const VERSION = "0.2.2";
 const MAX_BODY = 1024 * 1024;
 const MAX_PROMPT = 200_000;
 const MAX_SCHEMA = 16 * 1024;
@@ -29,6 +29,8 @@ export interface HelperOptions {
   checkSettings: (provider: Provider, model: string, effort: string) => Promise<void>;
   /** Start or cancel the CLI's own browser sign-in. */
   login?: { start: (provider: Provider) => void; cancel: (provider: Provider) => void };
+  /** Lets a newer copy of the local app replace this one. */
+  shutdown?: () => void;
   log?: (line: string) => void;
   now?: () => number;
 }
@@ -201,6 +203,11 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
       return;
     }
     // A second launch of the local app (which can read the token file) asks for a fresh pairing link.
+    if (pathname === "/v1/shutdown" && req.method === "POST" && options.shutdown) {
+      send(res, 200, { ok: true });
+      setTimeout(options.shutdown, 100);
+      return;
+    }
     if (pathname === "/v1/pairing-code" && req.method === "POST") {
       send(res, 200, { code: pairing.issue() });
       return;

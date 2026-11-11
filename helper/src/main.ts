@@ -1,7 +1,7 @@
 // `npx slanki`: the local helper that lets the Slanki web app use your own
 // Codex or Claude Code sign-in. Lecture files never leave your computer;
 // only prompts go to the AI you choose.
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { request } from "node:http";
@@ -90,27 +90,65 @@ function showError(message: string, done: () => void): void {
   execFile("powershell", ["-NoProfile", "-NonInteractive", "-Command", script], { env: { ...process.env, SLANKI_ERROR: message }, windowsHide: true }, () => done());
 }
 
-/** Opened again while already running: ask the running copy for a fresh pairing link and show it. */
-function reopenRunning(local: string, token: string): void {
-  const open = (hash: string) => {
-    openBrowser(`${local}/${hash}`);
-    setTimeout(() => process.exit(0), 1000);
-  };
-  const req = request(`${local}/v1/pairing-code`, { method: "POST", headers: { Authorization: `Bearer ${token}` }, timeout: 5000 }, (res) => {
-    let body = "";
-    res.on("data", (chunk) => (body += chunk));
-    res.on("end", () => {
-      try {
-        const { code } = JSON.parse(body) as { code?: string };
-        open(res.statusCode === 200 && code ? `#pair=${PORT}.${code}` : "");
-      } catch {
-        open("");
-      }
+/** A request to the copy of Slanki already running on this computer (null when nothing answers). */
+function localCall(local: string, method: string, path: string, token: string): Promise<{ status: number; body: any } | null> {
+  return new Promise((resolve) => {
+    const req = request(`${local}${path}`, { method, headers: token ? { Authorization: `Bearer ${token}` } : {}, timeout: 20000 }, (res) => {
+      let text = "";
+      res.on("data", (chunk) => (text += chunk));
+      res.on("end", () => {
+        let body: unknown = null;
+        try {
+          body = JSON.parse(text);
+        } catch {
+          // not JSON
+        }
+        resolve({ status: res.statusCode ?? 0, body });
+      });
     });
+    req.on("error", () => resolve(null));
+    req.on("timeout", () => req.destroy());
+    req.end();
   });
-  req.on("error", () => open(""));
-  req.on("timeout", () => req.destroy());
-  req.end();
+}
+
+/** Copies before 0.2.2 have no /v1/shutdown: end the process listening on our port. */
+function stopPortOwner(): void {
+  if (process.platform !== "win32") return;
+  try {
+    const table = execFileSync("netstat", ["-ano", "-p", "TCP"], { encoding: "utf8", windowsHide: true });
+    // Columns: protocol, local, remote, state (localized, e.g. LISTENING / ABHÖREN), PID.
+    // A listening socket is the one whose remote address is 0.0.0.0:0.
+    const row = table
+      .split(/\r?\n/)
+      .map((line) => line.trim().split(/\s+/))
+      .find((cols) => cols[1] === `127.0.0.1:${PORT}` && cols[2] === "0.0.0.0:0");
+    const pid = Number(row?.at(-1));
+    if (pid && pid !== process.pid) execFileSync("taskkill", ["/PID", String(pid), "/F"], { windowsHide: true, stdio: "ignore" });
+  } catch {
+    // Leave it; the retry below reports the busy port.
+  }
+}
+
+/**
+ * Opened while Slanki already runs. A different (older or newer) version is
+ * asked to quit and this copy takes over; the same version is simply shown
+ * again in the browser with a fresh pairing link.
+ */
+async function relaunch(local: string, token: string, takeOver: () => void): Promise<void> {
+  const running = await localCall(local, "GET", "/v1/status", token);
+  if (running?.status === 200 && running.body?.version !== VERSION) {
+    console.log(`Replacing Slanki ${running.body?.version} that is still running.`);
+    const quit = await localCall(local, "POST", "/v1/shutdown", token);
+    if (quit?.status !== 200) stopPortOwner();
+    for (let i = 0; i < 40 && (await localCall(local, "GET", "/", "")); i++) await new Promise((r) => setTimeout(r, 250));
+    takeOver();
+    return;
+  }
+  const fresh = await localCall(local, "POST", "/v1/pairing-code", token);
+  const code = fresh?.status === 200 && typeof fresh.body?.code === "string" ? fresh.body.code : "";
+  openBrowser(`${local}/${code ? `#pair=${PORT}.${code}` : ""}`);
+  setTimeout(() => process.exit(0), 1000);
 }
 
 function staticRoot(): string | null {
@@ -165,10 +203,17 @@ async function main() {
     models: async (provider: Provider, refresh) => (!refresh && catalogs.read(provider)) || catalogs.refresh(provider, work),
     checkSettings: (provider, model, effort) => catalogs.checked(provider, model, effort, work),
     login: { start: (provider) => logins.start(provider), cancel: (provider) => logins.cancel(provider) },
+    shutdown: assets ? () => stop() : undefined,
     log: (line) => console.log(`  ${new Date().toLocaleTimeString()}  ${line}`),
   });
+  let relaunched = false;
   server.on("error", (error: NodeJS.ErrnoException) => {
-    if (assets && error.code === "EADDRINUSE") return reopenRunning(local, token);
+    if (assets && error.code === "EADDRINUSE" && !relaunched) {
+      relaunched = true;
+      // The listen callback below stays registered, so retrying listen() starts this copy normally.
+      void relaunch(local, token, () => server.listen(PORT, "127.0.0.1"));
+      return;
+    }
     const message =
       error.code === "EADDRINUSE"
         ? `Port ${PORT} is already in use. Is the Slanki helper already running in another window? Close it and try again.`
@@ -207,6 +252,7 @@ async function main() {
   });
   const stop = () => {
     logins.stopAll();
+    jobs.cancelAll();
     server.close();
     process.exit(0);
   };

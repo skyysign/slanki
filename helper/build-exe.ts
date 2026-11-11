@@ -5,6 +5,7 @@
 // (pass --console to keep one for debugging).
 import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
@@ -41,8 +42,10 @@ walk(app);
 
 const blob = join(out, "sea.blob");
 const config = join(out, "sea-config.json");
-writeFileSync(config, JSON.stringify({ main, output: blob, disableExperimentalSEAWarning: true, useCodeCache: false, useSnapshot: false, assets }));
-execFileSync(process.execPath, ["--experimental-sea-config", config], { stdio: "inherit" });
+// `main` is stored in the executable as written: keep it relative so no local
+// path (such as the builder's user name) ends up in the published file.
+writeFileSync(config, JSON.stringify({ main: "slanki.cjs", output: "sea.blob", disableExperimentalSEAWarning: true, useCodeCache: false, useSnapshot: false, assets }));
+execFileSync(process.execPath, ["--experimental-sea-config", "sea-config.json"], { cwd: out, stdio: "inherit" });
 
 const mac = process.platform === "darwin";
 const exe = join(out, process.platform === "win32" ? "Slanki.exe" : "slanki");
@@ -81,4 +84,8 @@ if (windows && !process.argv.includes("--console")) {
   writeFileSync(exe, bytes);
 }
 for (const temp of [main, blob, config]) rmSync(temp);
+const built = readFileSync(exe);
+for (const leak of new Set([homedir(), homedir().split("\\").join("/")])) {
+  if (built.includes(leak) || built.includes(Buffer.from(leak, "utf16le"))) throw new Error(`The executable contains a local path (${leak}).`);
+}
 console.log(`built ${exe} (${Math.round(statSync(exe).size / 1e6)} MB, ${Object.keys(assets).length} app files embedded)`);

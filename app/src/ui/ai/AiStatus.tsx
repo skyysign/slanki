@@ -2,6 +2,7 @@ import { signal } from "@preact/signals";
 import { useEffect, useState } from "preact/hooks";
 import {
   API_VERSION,
+  HELPER_ORIGIN,
   PROVIDER_LABELS,
   cancelLogin,
   forgetHelper,
@@ -28,6 +29,13 @@ export const helper = signal<{ phase: HelperPhase; status: HelperStatus | null; 
 export const aiDialogOpen = signal(false);
 
 export const SUPPORTED_PROVIDERS: Provider[] = ["codex", "claude"];
+/** Served by the local app (Slanki.exe or --local): API keys are not offered there. */
+export const LOCAL_APP = typeof location !== "undefined" && location.origin === HELPER_ORIGIN;
+
+const CLI_INFO: Record<string, { name: string; account: string; install: string }> = {
+  codex: { name: "ChatGPT", account: "ChatGPT", install: "https://developers.openai.com/codex/cli" },
+  claude: { name: "Claude", account: "Claude", install: "https://code.claude.com/docs/en/setup" },
+};
 
 /** Ask the helper for its status. Only called after the user paired or asked to connect. */
 export async function checkHelper(): Promise<void> {
@@ -66,7 +74,7 @@ export async function pairFromLocation(): Promise<void> {
 }
 
 export function providerReady(provider: Provider): boolean {
-  if (isKeyProvider(provider)) return !!apiKeys.value[provider];
+  if (isKeyProvider(provider)) return !LOCAL_APP && !!apiKeys.value[provider];
   const status = helper.value.status?.providers[provider];
   return helper.value.phase === "ready" && !!status?.installed && status.signedIn !== "no";
 }
@@ -113,10 +121,16 @@ function ConnectSteps() {
         only sent to that AI, through your own account.
       </p>
       <ol class="stack" style={{ paddingLeft: "20px", margin: 0 }}>
-        <li>
-          Open a terminal and run <code>npx slanki@1</code>. It needs Node.js 22 or newer.
-        </li>
-        <li>It opens Slanki with a connection link. If that opened a different browser, type the code it shows here:</li>
+        {LOCAL_APP ? (
+          <li>Type the connection code shown in the Slanki window (press Enter there for a new one):</li>
+        ) : (
+          <>
+            <li>
+              Download and open Slanki, or run <code>npx slanki@1</code> in a terminal.
+            </li>
+            <li>It opens Slanki with a connection link. If that opened a different browser, type the code it shows here:</li>
+          </>
+        )}
       </ol>
       <form
         class="row"
@@ -165,7 +179,6 @@ function ProviderSettings() {
     const timer = setInterval(() => void checkHelper(), 2000);
     return () => clearInterval(timer);
   }, [status?.loggingIn]);
-  const account = prefs.provider === "codex" ? "ChatGPT" : "Claude";
   useEffect(() => {
     setModels(null);
     if (status?.installed) void load(false);
@@ -173,47 +186,15 @@ function ProviderSettings() {
   const model = models?.find((m) => m.id === prefs.model) ?? models?.[0];
   return (
     <div class="stack">
-      <label class="field">
-        <span>AI</span>
-        <select
-          class="input"
-          value={prefs.provider}
-          onChange={(event) => savePreferences({ provider: event.currentTarget.value as Provider, model: "", effort: "low" })}
-        >
-          {SUPPORTED_PROVIDERS.map((provider) => (
-            <option key={provider} value={provider}>
-              {PROVIDER_LABELS[provider]}
-              {helper.value.status?.providers[provider]?.installed === false ? " (not installed)" : ""}
-            </option>
-          ))}
-        </select>
-      </label>
-      {status && (
-        <p class={`banner ${status.installed && status.signedIn !== "no" ? "ok" : "warn"} small`} style={{ margin: 0 }}>
-          {status.message}
-          {status.loggingIn ? (
-            <>
-              {" "}Finish signing in in the browser window that opened.{" "}
-              <button class="btn small" onClick={() => void cancelLogin(prefs.provider).then(checkHelper, (e) => notify(errorMessage(e), true))}>
-                Cancel
-              </button>
-            </>
-          ) : (
-            status.installed &&
-            status.signedIn !== "yes" && (
-              <>
-                {" "}
-                <button
-                  class="btn small primary"
-                  onClick={() => void startLogin(prefs.provider).then(checkHelper, (e) => notify(errorMessage(e), true))}
-                >
-                  Sign in with {account}
-                </button>
-              </>
-            )
-          )}
-        </p>
-      )}
+      <p class="muted small" style={{ margin: 0 }}>
+        Pick the AI you already use. Slanki works through its app on this computer and your own ChatGPT or Claude sign-in. No API key
+        needed.
+      </p>
+      <div class="choices">
+        {SUPPORTED_PROVIDERS.map((provider) => (
+          <CliChoice key={provider} provider={provider} />
+        ))}
+      </div>
       {status?.installed && (
         <div class="row" style={{ alignItems: "flex-end" }}>
           <label class="field" style={{ flex: "1 1 200px" }}>
@@ -394,6 +375,67 @@ function KeySettings() {
   );
 }
 
+/** One row per CLI with the single next step: install, sign in, use. */
+function CliChoice({ provider }: { provider: Provider }) {
+  const info = CLI_INFO[provider]!;
+  const status = helper.value.status?.providers[provider];
+  const selected = aiPreferences.value.provider === provider;
+  const choose = () => {
+    if (!selected) savePreferences({ provider, model: "", effort: "low" });
+  };
+  const failed = (error: unknown) => notify(errorMessage(error), true);
+  let line = status?.message ?? "Checking…";
+  let action = null;
+  if (status && !status.installed) {
+    line = `The ${PROVIDER_LABELS[provider]} app is not on this computer yet. Install it, then click Check again.`;
+    action = (
+      <a class="btn small" href={info.install} target="_blank" rel="noreferrer noopener">
+        Install
+      </a>
+    );
+  } else if (status?.loggingIn) {
+    line = "Finish signing in in the browser window that opened.";
+    action = (
+      <button class="btn small" onClick={() => void cancelLogin(provider).then(checkHelper, failed)}>
+        Cancel
+      </button>
+    );
+  } else if (status && status.signedIn === "no") {
+    action = (
+      <button
+        class="btn small primary"
+        onClick={() => {
+          choose();
+          void startLogin(provider).then(checkHelper, failed);
+        }}
+      >
+        Sign in with {info.account}
+      </button>
+    );
+  } else if (status) {
+    action = selected ? (
+      <span class="small" style={{ color: "var(--success)", fontWeight: 600 }}>
+        ✓ In use
+      </span>
+    ) : (
+      <button class="btn small primary" onClick={choose}>
+        Use {info.name}
+      </button>
+    );
+  }
+  return (
+    <div class={`choice${selected ? " selected" : ""}`}>
+      <div style={{ minWidth: 0 }}>
+        <strong>{info.name}</strong> <span class="muted small">via {PROVIDER_LABELS[provider]}</span>
+        <span class="muted small" style={{ display: "block" }}>
+          {line}
+        </span>
+      </div>
+      {action}
+    </div>
+  );
+}
+
 export const EFFORT_LABELS: Record<string, string> = {
   "": "CLI default",
   none: "None",
@@ -412,7 +454,7 @@ export function AiDialog({ open, onClose }: { open: boolean; onClose: () => void
     if (open && helperToken()) void checkHelper();
   }, [open]);
   const { phase, message } = helper.value;
-  const keyMode = isKeyProvider(aiPreferences.value.provider);
+  const keyMode = !LOCAL_APP && isKeyProvider(aiPreferences.value.provider);
   const setMode = (key: boolean) => {
     if (key === keyMode) return;
     savePreferences({ provider: key ? "openai" : "codex", model: "", effort: "low" });
@@ -421,14 +463,16 @@ export function AiDialog({ open, onClose }: { open: boolean; onClose: () => void
   return (
     <Dialog open={open} onClose={onClose} label="AI connection">
       <h2>Your AI</h2>
+      {!LOCAL_APP && (
       <div class="tabs" role="tablist" aria-label="How to connect" style={{ marginBottom: "14px" }}>
         <button class="tab" role="tab" aria-selected={keyMode} onClick={() => setMode(true)}>
           API key
         </button>
         <button class="tab" role="tab" aria-selected={!keyMode} onClick={() => setMode(false)}>
-          Codex / Claude Code
+          ChatGPT / Claude app
         </button>
       </div>
+      )}
       {keyMode ? <KeySettings /> : phase === "ready" ? <ProviderSettings /> : <ConnectSteps />}
       {!keyMode && phase === "offline" && <p class="banner warn small">{message} Start it again with <code>npx slanki@1</code>.</p>}
       {!keyMode && phase === "outdated" && <p class="banner warn small">{message}</p>}

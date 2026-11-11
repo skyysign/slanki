@@ -487,7 +487,7 @@ function CardEditor(props: {
         </div>
       )}
       {image && (
-        <p class="note-box">Image card from Recalloom. Its hidden region stays as it is; you can still edit the text.</p>
+        <p class="note-box">Image card from an older backup. Its hidden region stays as it is; you can still edit the text.</p>
       )}
       {(fields.quote || note.source_quote) && (
         <details>

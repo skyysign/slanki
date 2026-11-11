@@ -204,7 +204,7 @@ export function upgradeManifest(raw: unknown): Manifest {
   const supported =
     (raw.format === RECALLOOM_FORMAT && isInt(version) && version >= 1 && version <= 12) ||
     (raw.format === SLANKI_FORMAT && version === SLANKI_VERSION);
-  if (!supported) throw new WorkflowError("This is not a supported Slanki or Recalloom backup.");
+  if (!supported) throw new WorkflowError("This is not a supported Slanki backup.");
   // Slanki v1 records use the Recalloom v12 structure.
   const level = raw.format === SLANKI_FORMAT ? 12 : (version as number);
   const info = raw.lecture;

@@ -28,7 +28,7 @@ export function readBackup(data: Uint8Array): BackupContents {
     "Backup exceeds the supported size or page limit.",
   );
   const manifestBytes = files.get("manifest.json");
-  if (!manifestBytes) throw new WorkflowError("This is not a supported Slanki or Recalloom backup.");
+  if (!manifestBytes) throw new WorkflowError("This is not a supported Slanki backup.");
   let raw: unknown;
   try {
     raw = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(manifestBytes));

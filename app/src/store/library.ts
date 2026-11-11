@@ -341,7 +341,7 @@ export async function insertDrafts(
   let count = 0;
   for (const draft of drafts) {
     if (draft.noteType === "occlusion" || draft.noteType === "visual") {
-      throw new WorkflowError("Image notes can only come from a Recalloom backup.");
+      throw new WorkflowError("Image notes can only come from a backup.");
     }
     const page = (await request(store(tx, "pages").get([lectureId, draft.page]))) as StoredPage | undefined;
     if (!page) throw new WorkflowError("Choose a source page from this lecture.");

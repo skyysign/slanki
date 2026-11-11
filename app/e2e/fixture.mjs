@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 
 const PDF = "tests/fixtures/synthetic/lecture.pdf";
-const CARDS = readFileSync("tests/fixtures/synthetic/cards.json", "utf8");
+export const CARDS = readFileSync("tests/fixtures/synthetic/cards.json", "utf8");
 
 export async function addSyntheticLecture(page) {
   await page.setInputFiles("input[accept='application/pdf,.pdf']", PDF);

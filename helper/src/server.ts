@@ -21,6 +21,8 @@ export interface HelperOptions {
   origins: string[];
   token: string;
   staticRoot: string | null;
+  /** Single-executable build: reads app files embedded in the binary. */
+  readAsset?: (path: string) => Buffer | null;
   generate: (request: GenerationRequest, signal: AbortSignal) => Promise<unknown>;
   status: () => Promise<Partial<Record<Provider, ProviderStatus>>>;
   models: (provider: Provider, refresh: boolean) => Promise<ModelRow[]>;
@@ -148,20 +150,28 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
   const fail = (res: ServerResponse, error: HelperError) =>
     send(res, STATUS[error.code] ?? 502, { error: { code: error.code, message: error.message } });
 
-  const serveStatic = (path: string, res: ServerResponse) => {
+  const readStatic = (path: string): Buffer | null => {
+    const relative = path === "/" ? "index.html" : decodeURIComponent(path).replace(/^\/+/, "");
+    if (options.readAsset) return relative.split("/").includes("..") ? null : options.readAsset(relative);
     const root = options.staticRoot;
-    const file = root && normalize(join(root, path === "/" ? "index.html" : decodeURIComponent(path)));
-    if (!root || !file || !file.startsWith(normalize(root)) || !existsSync(file) || statSync(file).isDirectory()) {
+    const file = root && normalize(join(root, relative));
+    if (!root || !file || !file.startsWith(normalize(root)) || !existsSync(file) || statSync(file).isDirectory()) return null;
+    return readFileSync(file);
+  };
+
+  const serveStatic = (path: string, res: ServerResponse) => {
+    const body = readStatic(path);
+    if (!body) {
       res.statusCode = 404;
       res.end("Not found");
       return;
     }
-    res.setHeader("Content-Type", TYPES[extname(file)] ?? "application/octet-stream");
+    res.setHeader("Content-Type", TYPES[extname(path === "/" ? "index.html" : path)] ?? "application/octet-stream");
     res.setHeader("Content-Security-Policy", STATIC_CSP);
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "no-referrer");
     res.setHeader("Cache-Control", path.startsWith("/assets/") ? "public, max-age=31536000, immutable" : "no-cache");
-    res.end(readFileSync(file));
+    res.end(body);
   };
 
   const authorized = (req: IncomingMessage): boolean => {

@@ -1,46 +1,85 @@
 # Slanki
 
-Turn lecture PDFs into Anki cards in your browser. Your slides, cards and backups stay on your device; only the slide text you choose goes to *your* AI, through your own account.
+**Turn lecture slides into Anki flashcards with the AI you already use.**
 
-## Use it
+Drop in a lecture PDF. Slanki has ChatGPT (through Codex) or Claude (through Claude Code) draft flashcards. You review each card next to the slide it came from, then export a deck that opens in Anki. Everything runs on your own computer.
 
-1. Open the site and drop a lecture PDF (up to 100 slides).
-2. **Make cards**: choose slides, how many cards, and optionally reverse cards. Generation uses your Codex or Claude Code (see below). Without them, use **Use any chat** to copy a prompt into ChatGPT, Claude or Gemini and paste the answer back.
-3. Review each card beside its slide: **Keep** (A), **Set aside** (S), **Undo** (Z), edit in place, **Keep all drafts**, **Write a card**, **Attach part of slide**.
-4. **Export to Anki** downloads an `.apkg`. Re-exports update the same Anki notes and keep your review history.
-5. **Back up all lectures** (home page) or **··· → Save backup** (one lecture). Restore on the home page; old Recalloom backups work too.
+![Reviewing AI-drafted cards next to their source slide](docs/screenshots/review.png)
 
-## Connect your AI
+## Download
 
-**Easiest: API key.** Click **Connect your AI → API key**, pick OpenAI or Anthropic and paste a key from platform.openai.com or platform.claude.com. Slanki calls that provider directly from your browser; usage is billed to your API account (separate from a ChatGPT/Claude subscription). The key stays in this browser.
+**Windows:** download `Slanki.exe` from the [latest release](../../releases/latest) and double-click it. Slanki opens in your browser; keep the small Slanki window open while you work.
 
-**Use your subscription (Codex / Claude Code).** Install Codex or Claude Code, then run once:
+You also need one of these AI apps, signed in with your normal account. Slanki shows an **Install** or **Sign in** button for each, so setup is a couple of clicks:
 
+| Your subscription | App Slanki uses |
+|---|---|
+| ChatGPT | [Codex](https://developers.openai.com/codex/cli) |
+| Claude | [Claude Code](https://code.claude.com/docs/en/setup) |
+
+> Windows may warn that the app is from an unknown publisher, because it isn't code-signed. Choose **More info → Run anyway**.
+
+<img src="docs/screenshots/connect-ai.png" alt="Choosing ChatGPT or Claude in Slanki" width="460">
+
+## How to use it
+
+1. **Drop a lecture PDF** (up to 100 slides).
+2. **Make cards.** Choose the slides and roughly how many cards you want, and optionally add reverse cards. Slanki picks question/answer or cloze cards by itself.
+3. **Review.** Each draft sits beside its slide. Use **Keep** (A), **Set aside** (S) and **Undo** (Z), edit in place, or write your own cards.
+4. **Export to Anki.** You get an `.apkg` file. Exporting again later updates the same notes in Anki, so your review history is kept.
+5. **Back up** one lecture or your whole library, and restore it on any computer.
+
+No AI app? **Make cards → Use any chat** copies a ready-made prompt for ChatGPT, Claude or Gemini on the web. Paste the answer back and Slanki checks it the same way.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Lecture PDF] --> B[Slide text + images<br/>pdf.js, in the browser]
+    B --> C[Lecture overview<br/>1 AI call]
+    C --> D[Card drafts in batches<br/>AI calls 2…n]
+    D --> E{Checks}
+    E -- passes --> F[Drafts to review]
+    E -- fails --> G[Rejected and listed<br/>never silently dropped]
+    F --> H[Keep / edit / set aside]
+    H --> I[Anki deck .apkg]
 ```
-npx slanki@1
-```
 
-It opens Slanki with a one-time connection link. In Chrome or Edge, choose **Allow** when asked about access to apps on your device. If you are not signed in yet, click **Sign in with ChatGPT** or **Sign in with Claude** in Slanki; the official OpenAI or Anthropic login opens in your browser. Keep the helper window open while cards are made. `--local` opens the helper's own copy at `http://127.0.0.1:47213` (use this for Safari); `--reset` disconnects paired browsers.
+The AI is treated as an **untrusted** source. Its output is useful, but it is never saved without checks:
 
-Not published to npm yet. Until then: `npm install`, `npm run build`, `node helper/dist/slanki.mjs --local`.
+- **Fixed format.** Every call must return JSON that matches a strict schema. Malformed answers are rejected.
+- **Grounded in the slides.** Each card must quote its source slide word for word, and Slanki checks that the quote really appears on that page. Cards without real support never reach you.
+- **Whole-lecture context.** A first call summarises the lecture's topics. Card batches then see the big picture, not just two slides. If that summary fails the checks, the AI gets the errors back and retries, up to 3 times.
+- **Budgeted batching.** Long lectures are split into batches that share a card budget, duplicates and course logistics (exam dates, rooms) are filtered out, and a stopped run can be resumed where it left off.
+- **Honest partial results.** Unreadable slides, rejected drafts and failed batches are shown. A half-finished run never looks finished.
+- **Safe local bridge.** A web page can't start programs, so a small local server runs the AI app for it. That server only listens on `127.0.0.1`, only answers Slanki pages that have been paired with it, and passes slide text in a way the system shell never sees. It also limits time and output size, and never touches your AI login files.
 
-## Develop
+**Private by design.** No accounts, servers or analytics. Lectures, cards and backups live in your browser's storage on your computer. Slide text goes only to the AI you picked, through your own account.
+
+## Built with
+
+TypeScript, Preact, Vite, pdf.js and sql.js (to write Anki's package format), plus Node.js for the local bridge and the Windows build. Tested with Vitest (267 unit tests) and Playwright browser tests in Chrome, Firefox and WebKit, run against a simulated AI.
+
+## Build from source
 
 Requires Node.js 24.
 
 ```
 npm install
-npm run dev          # http://localhost:5173 (start the helper with --allow-origin http://localhost:5173)
-npm test             # unit tests
-npm run build        # app/dist (website) and helper/dist (npx package)
-npm run serve        # app/dist with production headers on :4173
-node app/e2e/workflow.mjs      # browser test (Chrome; SLANKI_BROWSER=firefox|webkit)
-node app/e2e/generation.mjs    # browser + helper + fake AI
-python tools/check_anki.py     # Anki import check (pip install -r requirements-dev.txt)
+npm run build:exe                     # helper/dist/exe/Slanki.exe (Slanki for macOS/Linux when run there)
 ```
 
-## Deploy to Vercel
+Or run without building an app: `npm run build`, then `node helper/dist/slanki.mjs --local`.
 
-Push to GitHub, then in Vercel choose **Add New → Project**, import the repo with Framework **Other**, leave everything else empty (`vercel.json` supplies it), and name the project `slanki`. Or run `npx vercel --prod` here. If you use a different domain, update `APP_ORIGIN` in `helper/src/main.ts`.
+For development:
 
-More: [architecture and privacy](docs/ARCHITECTURE.md), [status](docs/STATUS.md).
+```
+npm run dev                           # app on http://localhost:5173 (start the helper with --allow-origin http://localhost:5173)
+npm test                              # unit tests
+npm run serve                         # built app with production headers on :4173
+node app/e2e/workflow.mjs             # browser test (SLANKI_BROWSER=firefox|webkit)
+node app/e2e/generation.mjs           # browser + helper + simulated AI
+node app/e2e/readme-shots.mjs         # refresh the screenshots above (after build:exe)
+```
+
+Slanki can also be hosted as a static website (see `vercel.json`), with users running the helper through `npx slanki`. More detail: [architecture and privacy](docs/ARCHITECTURE.md), [status](docs/STATUS.md).

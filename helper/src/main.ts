@@ -56,6 +56,19 @@ function loadToken(home: string, reset: boolean): string {
   return token;
 }
 
+/** In the single-executable build (Slanki.exe) the web app is embedded as assets. */
+function seaAssets(): ((path: string) => Buffer | null) | undefined {
+  const sea = process.getBuiltinModule("node:sea") as typeof import("node:sea") | undefined;
+  if (!sea?.isSea()) return undefined;
+  return (path) => {
+    try {
+      return Buffer.from(sea.getAsset(path));
+    } catch {
+      return null;
+    }
+  };
+}
+
 function staticRoot(): string | null {
   const here = dirname(fileURLToPath(import.meta.url));
   for (const candidate of [join(here, "app"), join(here, "..", "..", "app", "dist")]) {
@@ -90,12 +103,15 @@ async function main() {
   const token = loadToken(home, args.includes("--reset"));
   const catalogs = new Catalogs(home);
   const local = `http://127.0.0.1:${PORT}`;
+  const assets = seaAssets();
+  const root = assets ? null : staticRoot();
   const logins = new Logins((provider) => loginCommand(provider), work);
   const { server, pairing } = createHelper({
     port: PORT,
     origins: [APP_ORIGIN, local, ...extra],
     token,
-    staticRoot: staticRoot(),
+    staticRoot: root,
+    readAsset: assets,
     generate: (request, signal) => generate(request, work, signal),
     status: async () => {
       const [codex, claude] = await Promise.all([codexStatus(work), claudeStatus(work)]);
@@ -107,6 +123,12 @@ async function main() {
     log: (line) => console.log(`  ${new Date().toLocaleTimeString()}  ${line}`),
   });
   server.on("error", (error: NodeJS.ErrnoException) => {
+    if (assets && error.code === "EADDRINUSE") {
+      // Double-clicked while already running: just show the open copy.
+      openBrowser(local);
+      setTimeout(() => process.exit(0), 1000);
+      return;
+    }
     console.error(
       error.code === "EADDRINUSE"
         ? `Port ${PORT} is already in use. Is the Slanki helper already running in another window? Close it and try again.`
@@ -116,8 +138,8 @@ async function main() {
   });
   server.listen(PORT, "127.0.0.1", async () => {
     const announce = (code: string) => {
-      console.log(`\n  Open Slanki:          ${APP_ORIGIN}/#pair=${PORT}.${code}`);
-      if (server.listening && staticRoot()) console.log(`  Or the local copy:    ${local}/#pair=${PORT}.${code}   (for Safari)`);
+      console.log(`\n  Open Slanki:          ${assets ? local : APP_ORIGIN}/#pair=${PORT}.${code}`);
+      if (server.listening && root) console.log(`  Or the local copy:    ${local}/#pair=${PORT}.${code}   (for Safari)`);
       console.log(`  Connection code:      ${code}   (valid 2 minutes; press Enter for a new one)\n`);
     };
     console.log(`Slanki helper ${VERSION} (API ${API_VERSION}) is running. Keep this window open while you make cards.`);
@@ -131,7 +153,7 @@ async function main() {
       console.log(`  ${label}: ${status.installed ? status.message : "not found"}${status.signedIn === "no" ? "  (sign in from Slanki)" : ""}`);
     });
     console.log("\nPress Ctrl+C to stop.\n");
-    const target = args.includes("--local") && staticRoot() ? local : APP_ORIGIN;
+    const target = assets || (args.includes("--local") && root) ? local : APP_ORIGIN;
     if (!args.includes("--no-open")) openBrowser(`${target}/#pair=${PORT}.${code}`);
     createInterface({ input: process.stdin }).on("line", () => announce(pairing.issue()));
   });

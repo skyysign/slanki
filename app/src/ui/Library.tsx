@@ -163,7 +163,7 @@ export function Library() {
             <strong>No lectures yet.</strong>
           </p>
           <p class="muted small">
-            Add a PDF above, or restore a backup from Slanki or Recalloom.
+            Add a PDF above, or restore a backup.
           </p>
         </div>
       ) : (

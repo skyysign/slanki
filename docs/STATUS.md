@@ -18,6 +18,7 @@ Updated 2026-11-11. Personal alpha. Main delivery is now the local Windows app `
 - **Anki import check.** `tools/check_anki.py` on Anki 26.8.1, including the 2 real lectures with kept cards: schedules preserved and layout updated.
 - **Browser tests.** Both workflows pass in Chrome, Firefox and WebKit (Chrome re-run 2026-11-11).
 - **Executable.** `Slanki.exe` built on Windows (98 MB). It serves the embedded app, blocks path traversal, pairs, and detected the real signed-in Codex and Claude Code installs (screenshots via `app/e2e/readme-shots.mjs`).
+- **Pre-publication check (2026-11-11).** History, fixtures and the exe were searched for keys, tokens and personal data; `npm audit` found 0 vulnerabilities. A build path holding the Windows user name was removed from history (rewritten, tags force-pushed) and from the exe; `build-exe.ts` now fails if the home folder appears in the executable. Only release v0.2.2 remains.
 - **Clean deploy check.** A clean-room build of exactly what Vercel would receive passes the browser workflow.
 
 ## Not done

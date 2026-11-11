@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { PROVIDER_LABELS } from "../ai/helper.ts";
-import { isKeyProvider } from "../ai/apiKeys.ts";
 import { aiPreferences, savePreferences } from "../ai/settings.ts";
 import { pyStrip } from "../core/py.ts";
 import { defaultCardLimit } from "../core/selection.ts";
@@ -141,7 +140,7 @@ export function MakeCardsDialog({ open, bundle, onClose }: { open: boolean; bund
                   {PROVIDER_LABELS[prefs.provider]} · {prefs.model || "default model"} · {EFFORT_LABELS[prefs.effort] ?? prefs.effort}
                 </span>
               ) : (
-                <span class="muted small">{!isKeyProvider(prefs.provider) && helper.value.phase === "ready" ? "Sign in needed" : "Not connected"}</span>
+                <span class="muted small">{helper.value.phase === "ready" ? "Sign in needed" : "Not connected"}</span>
               )}
               <button class="btn small" onClick={() => (aiDialogOpen.value = true)}>
                 {ready ? "Change" : "Connect"}
@@ -161,8 +160,8 @@ export function MakeCardsDialog({ open, bundle, onClose }: { open: boolean; bund
                   }
                 />
                 <span class="small">
-                  Send the text of this lecture's slides, and up to 200 of its existing questions, to {PROVIDER_LABELS[prefs.provider]}{" "}
-                  {isKeyProvider(prefs.provider) ? "with my API key" : "through my own account"}. The PDF and slide images stay on this device.
+                  Send the text of this lecture's slides, and up to 200 of its existing questions, to {PROVIDER_LABELS[prefs.provider]} through my
+                  own account. The PDF and slide images stay on this device.
                 </span>
               </label>
             )}

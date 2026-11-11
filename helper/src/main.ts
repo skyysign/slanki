@@ -3,7 +3,8 @@
 // only prompts go to the AI you choose.
 import { execFile } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { request } from "node:http";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { createInterface } from "node:readline";
@@ -13,7 +14,8 @@ import { API_VERSION, VERSION, createHelper } from "./server.ts";
 import { Logins } from "./logins.ts";
 import { Catalogs, PROVIDERS, claudeStatus, codexStatus, generate, loginCommand, type Provider } from "./providers.ts";
 
-const PORT = 47213;
+// Fixed so the browser library (stored per origin) is always found again. SLANKI_PORT is for tests only.
+const PORT = Number(process.env.SLANKI_PORT) || 47213;
 const APP_ORIGIN = process.env.SLANKI_APP_ORIGIN ?? "https://slanki.vercel.app";
 const HELP = `Slanki helper ${VERSION}
 
@@ -69,6 +71,48 @@ function seaAssets(): ((path: string) => Buffer | null) | undefined {
   };
 }
 
+/** The windowless app has no console: keep the (metadata-only) log in a file instead. */
+function logToFile(file: string): void {
+  writeFileSync(file, "");
+  for (const method of ["log", "warn", "error"] as const) {
+    const original = console[method].bind(console);
+    console[method] = (...parts: unknown[]) => {
+      appendFileSync(file, parts.map(String).join(" ") + "\n");
+      original(...parts); // still reaches a parent process that reads stdout
+    };
+  }
+}
+
+/** Without a console, startup errors are shown in a message box. */
+function showError(message: string, done: () => void): void {
+  if (process.platform !== "win32") return done();
+  const script = "Add-Type -AssemblyName PresentationFramework; [void][System.Windows.MessageBox]::Show($env:SLANKI_ERROR, 'Slanki')";
+  execFile("powershell", ["-NoProfile", "-NonInteractive", "-Command", script], { env: { ...process.env, SLANKI_ERROR: message }, windowsHide: true }, () => done());
+}
+
+/** Opened again while already running: ask the running copy for a fresh pairing link and show it. */
+function reopenRunning(local: string, token: string): void {
+  const open = (hash: string) => {
+    openBrowser(`${local}/${hash}`);
+    setTimeout(() => process.exit(0), 1000);
+  };
+  const req = request(`${local}/v1/pairing-code`, { method: "POST", headers: { Authorization: `Bearer ${token}` }, timeout: 5000 }, (res) => {
+    let body = "";
+    res.on("data", (chunk) => (body += chunk));
+    res.on("end", () => {
+      try {
+        const { code } = JSON.parse(body) as { code?: string };
+        open(res.statusCode === 200 && code ? `#pair=${PORT}.${code}` : "");
+      } catch {
+        open("");
+      }
+    });
+  });
+  req.on("error", () => open(""));
+  req.on("timeout", () => req.destroy());
+  req.end();
+}
+
 function staticRoot(): string | null {
   const here = dirname(fileURLToPath(import.meta.url));
   for (const candidate of [join(here, "app"), join(here, "..", "..", "app", "dist")]) {
@@ -104,9 +148,10 @@ async function main() {
   const catalogs = new Catalogs(home);
   const local = `http://127.0.0.1:${PORT}`;
   const assets = seaAssets();
+  if (assets) logToFile(join(home, "slanki.log"));
   const root = assets ? null : staticRoot();
   const logins = new Logins((provider) => loginCommand(provider), work);
-  const { server, pairing } = createHelper({
+  const { server, pairing, jobs, idleMs } = createHelper({
     port: PORT,
     origins: [APP_ORIGIN, local, ...extra],
     token,
@@ -123,18 +168,14 @@ async function main() {
     log: (line) => console.log(`  ${new Date().toLocaleTimeString()}  ${line}`),
   });
   server.on("error", (error: NodeJS.ErrnoException) => {
-    if (assets && error.code === "EADDRINUSE") {
-      // Double-clicked while already running: just show the open copy.
-      openBrowser(local);
-      setTimeout(() => process.exit(0), 1000);
-      return;
-    }
-    console.error(
+    if (assets && error.code === "EADDRINUSE") return reopenRunning(local, token);
+    const message =
       error.code === "EADDRINUSE"
         ? `Port ${PORT} is already in use. Is the Slanki helper already running in another window? Close it and try again.`
-        : `The helper could not start: ${error.message}`,
-    );
-    process.exit(1);
+        : `The helper could not start: ${error.message}`;
+    console.error(message);
+    if (assets) showError(message, () => process.exit(1));
+    else process.exit(1);
   });
   server.listen(PORT, "127.0.0.1", async () => {
     const announce = (code: string) => {
@@ -152,6 +193,13 @@ async function main() {
       const label = provider === "codex" ? "Codex" : "Claude Code";
       console.log(`  ${label}: ${status.installed ? status.message : "not found"}${status.signedIn === "no" ? "  (sign in from Slanki)" : ""}`);
     });
+    if (assets) {
+      // No window to close: quit once no Slanki tab has checked in for a while and nothing is running.
+      const limit = Number(process.env.SLANKI_IDLE_MS) || 5 * 60_000;
+      setInterval(() => {
+        if (idleMs() > limit && !jobs.busy() && !PROVIDERS.some((p) => logins.isActive(p))) stop();
+      }, Math.min(limit, 30_000));
+    }
     console.log("\nPress Ctrl+C to stop.\n");
     const target = assets || (args.includes("--local") && root) ? local : APP_ORIGIN;
     if (!args.includes("--no-open")) openBrowser(`${target}/#pair=${PORT}.${code}`);

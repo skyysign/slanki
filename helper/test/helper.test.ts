@@ -226,6 +226,16 @@ describe("helper HTTP security", () => {
     expect((await call("POST", "/v1/pair", { body: { code } })).status).toBe(403);
   });
 
+  it("answers pings and issues fresh pairing codes only with the token", async () => {
+    expect((await call("GET", "/v1/ping")).status).toBe(401);
+    expect((await call("POST", "/v1/pairing-code")).status).toBe(401);
+    expect((await call("GET", "/v1/ping", { headers: auth })).status).toBe(204);
+    const fresh = await call("POST", "/v1/pairing-code", { headers: auth });
+    expect(fresh.status).toBe(200);
+    expect((await call("POST", "/v1/pair", { body: { code: fresh.body.code } })).body.token).toBe(token);
+    expect((await call("POST", "/v1/pairing-code", { headers: { ...auth, Origin: "https://evil.example" } })).status).toBe(403);
+  });
+
   it("rejects wrong hosts, origins and tokens", async () => {
     expect((await call("GET", "/v1/status", { headers: auth, host: `localhost:${port}` })).status).toBe(421);
     expect((await call("GET", "/v1/status", { headers: auth, host: `evil.example:${port}` })).status).toBe(421);

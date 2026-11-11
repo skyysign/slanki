@@ -27,7 +27,6 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1 });
   await page.goto(`http://127.0.0.1:47213/#pair=47213.${code}`);
   await page.waitForSelector("text=Drop a lecture PDF", { timeout: 20000 }).catch(() => undefined);
-  await page.screenshot({ path: `${out}/library.png` });
   const pdf = join(mkdtempSync(join(tmpdir(), "slanki-pdf-")), "Memory and learning.pdf");
   copyFileSync("tests/fixtures/synthetic/lecture.pdf", pdf);
   await page.setInputFiles("input[accept='application/pdf,.pdf']", pdf);

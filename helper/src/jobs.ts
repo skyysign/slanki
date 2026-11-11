@@ -135,6 +135,10 @@ export class Jobs {
     });
   }
 
+  busy(): boolean {
+    return [...this.jobs.values()].some((job) => job.status === "running");
+  }
+
   cancelAll(): void {
     for (const job of this.jobs.values()) if (job.status === "running") job.controller.abort();
   }

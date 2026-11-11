@@ -8,7 +8,7 @@ Drop in a lecture PDF. Slanki has ChatGPT (through Codex) or Claude (through Cla
 
 ## Download
 
-**Windows:** download `Slanki.exe` from the [latest release](../../releases/latest) and double-click it. Slanki opens in your browser; keep the small Slanki window open while you work.
+**Windows:** download `Slanki.exe` from the [latest release](../../releases/latest) and double-click it. Slanki opens in your browser. There is no window to keep open: Slanki runs quietly in the background and closes itself a few minutes after you close its tab (it finishes any card run first). Double-click it again to come back.
 
 You also need one of these AI apps, signed in with your normal account. Slanki shows an **Install** or **Sign in** button for each, so setup is a couple of clicks:
 

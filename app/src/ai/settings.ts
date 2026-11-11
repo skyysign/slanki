@@ -11,13 +11,13 @@ export interface AiPreferences {
 }
 
 const KEY = "slanki:ai";
-const DEFAULTS: AiPreferences = { provider: "openai", model: "", effort: "low", consented: [] };
+const DEFAULTS: AiPreferences = { provider: "codex", model: "", effort: "low", consented: [] };
 
 function load(): AiPreferences {
   try {
     const stored = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<AiPreferences>;
     return {
-      provider: ["codex", "claude", "gemini", "kimi", "openai", "anthropic"].includes(stored.provider as string) ? (stored.provider as Provider) : DEFAULTS.provider,
+      provider: ["codex", "claude", "gemini", "kimi"].includes(stored.provider as string) ? (stored.provider as Provider) : DEFAULTS.provider,
       model: typeof stored.model === "string" ? stored.model : DEFAULTS.model,
       effort: typeof stored.effort === "string" ? stored.effort : DEFAULTS.effort,
       consented: Array.isArray(stored.consented) ? stored.consented.filter((p) => typeof p === "string") : [],

@@ -9,7 +9,7 @@ import { HelperError } from "./processes.ts";
 import { PROVIDERS, type GenerationRequest, type ModelRow, type Provider, type ProviderStatus } from "./providers.ts";
 
 export const API_VERSION = 1;
-export const VERSION = "0.1.0";
+export const VERSION = "0.2.0";
 const MAX_BODY = 1024 * 1024;
 const MAX_PROMPT = 200_000;
 const MAX_SCHEMA = 16 * 1024;
@@ -131,7 +131,7 @@ function codePoints(text: string): number {
   return count;
 }
 
-export function createHelper(options: HelperOptions): { server: Server; pairing: Pairing; jobs: Jobs } {
+export function createHelper(options: HelperOptions): { server: Server; pairing: Pairing; jobs: Jobs; idleMs: () => number } {
   const now = options.now ?? Date.now;
   const pairing = new Pairing(now);
   const jobs = new Jobs(now);
@@ -195,6 +195,16 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
       return;
     }
     if (!authorized(req)) throw new HelperError("unauthorized", "Pair this browser with the helper first.");
+    if (pathname === "/v1/ping" && req.method === "GET") {
+      res.statusCode = 204;
+      res.end();
+      return;
+    }
+    // A second launch of the local app (which can read the token file) asks for a fresh pairing link.
+    if (pathname === "/v1/pairing-code" && req.method === "POST") {
+      send(res, 200, { code: pairing.issue() });
+      return;
+    }
     if (pathname === "/v1/status" && req.method === "GET") {
       send(res, 200, { apiVersion: API_VERSION, version: VERSION, providers: await options.status() });
       return;
@@ -267,6 +277,7 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
     throw new HelperError("not_found", "Unknown request.");
   };
 
+  let lastActivity = now();
   const server = createServer((req, res) => {
     const started = now();
     const url = new URL(req.url ?? "/", `http://${host}`);
@@ -286,6 +297,8 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
       res.end("Origin not allowed");
       return;
     }
+    lastActivity = now();
+    res.on("close", () => (lastActivity = now()));
     if (origin) {
       res.setHeader("Access-Control-Allow-Origin", origin);
       res.setHeader("Vary", "Origin");
@@ -318,5 +331,5 @@ export function createHelper(options: HelperOptions): { server: Server; pairing:
     });
   });
   server.on("close", () => jobs.cancelAll());
-  return { server, pairing, jobs };
+  return { server, pairing, jobs, idleMs: () => now() - lastActivity };
 }

@@ -1,7 +1,7 @@
 {
   "name": "@slanki/app",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "1.8.0",
     "@preact/signals": "2.11.3",
     "fflate": "0.8.3",
     "pdfjs-dist": "6.4.299",

@@ -4,7 +4,7 @@
 
 - Read `docs/STATUS.md` for implemented behavior, verification, and the next task.
 - Read `docs/ARCHITECTURE.md` for the Slanki browser app, the local helper, its security model and the Recalloom compatibility contract.
-- Use `README.md` for commands. `MVP_BUILD_PLAN.md` holds release gates; the long founder analysis is historical, so search it only when a specific decision needs its context.
+- Use `README.md` for commands.
 - User instructions take precedence. Make routine, reversible implementation decisions autonomously within the requested task.
 
 ## Product direction
@@ -73,7 +73,3 @@
 - Verify decks in the user's actual Anki clients before claiming client compatibility.
 - At a meaningful stopping point, update `docs/STATUS.md` (what exists, checks actually run, limitations, next step) and `README.md` when commands change.
 - Never describe planned features as implemented, synthetic fixtures as real-lecture validation, or unrun checks as passing.
-
-## Existing research
-
-The `study-srs-*` files and the two research scripts remain at the repository root. Preserve their links. Cost figures in the research are assumptions, not measurements.

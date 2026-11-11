@@ -10,13 +10,13 @@ import {
   helperToken,
   listModels,
   pair,
+  ping,
   startLogin,
   type HelperStatus,
   type ModelChoice,
   type Provider,
 } from "../../ai/helper.ts";
 import { aiPreferences, savePreferences } from "../../ai/settings.ts";
-import { apiKeys, DEFAULT_KEY_MODELS, isKeyProvider, KEY_PAGES, KEY_PROVIDERS, listKeyModels, saveApiKey } from "../../ai/apiKeys.ts";
 import { Dialog, useBusy } from "../components.tsx";
 import { errorMessage, notify } from "../state.ts";
 
@@ -29,7 +29,7 @@ export const helper = signal<{ phase: HelperPhase; status: HelperStatus | null; 
 export const aiDialogOpen = signal(false);
 
 export const SUPPORTED_PROVIDERS: Provider[] = ["codex", "claude"];
-/** Served by the local app (Slanki.exe or --local): API keys are not offered there. */
+/** Served by the local app (Slanki.exe or --local) rather than the website. */
 export const LOCAL_APP = typeof location !== "undefined" && location.origin === HELPER_ORIGIN;
 
 const CLI_INFO: Record<string, { name: string; account: string; install: string }> = {
@@ -64,8 +64,6 @@ export async function pairFromLocation(): Promise<void> {
   history.replaceState(null, "", location.pathname + location.search + "#/");
   try {
     await pair(match[1]!);
-    const current = aiPreferences.value.provider;
-    if (isKeyProvider(current) && !apiKeys.value[current]) savePreferences({ provider: "codex", model: "", effort: "low" });
     await checkHelper();
     notify("Connected to the Slanki helper.");
   } catch (error) {
@@ -74,7 +72,6 @@ export async function pairFromLocation(): Promise<void> {
 }
 
 export function providerReady(provider: Provider): boolean {
-  if (isKeyProvider(provider)) return !LOCAL_APP && !!apiKeys.value[provider];
   const status = helper.value.status?.providers[provider];
   return helper.value.phase === "ready" && !!status?.installed && status.signedIn !== "no";
 }
@@ -83,11 +80,8 @@ export function AiStatusPill() {
   const { phase, status } = helper.value;
   const provider = aiPreferences.value.provider;
   const ready = providerReady(provider);
-  const label = isKeyProvider(provider)
-    ? ready
-      ? `${PROVIDER_LABELS[provider]} ready`
-      : "Connect your AI"
-    : phase === "unpaired"
+  const label =
+    phase === "unpaired"
       ? "Connect your AI"
       : phase === "checking"
         ? "Checking AI…"
@@ -122,7 +116,7 @@ function ConnectSteps() {
       </p>
       <ol class="stack" style={{ paddingLeft: "20px", margin: 0 }}>
         {LOCAL_APP ? (
-          <li>Type the connection code shown in the Slanki window (press Enter there for a new one):</li>
+          <li>Open Slanki again from its icon. It reconnects this browser by itself.</li>
         ) : (
           <>
             <li>
@@ -132,6 +126,7 @@ function ConnectSteps() {
           </>
         )}
       </ol>
+      {!LOCAL_APP && (
       <form
         class="row"
         onSubmit={(event) => {
@@ -152,10 +147,13 @@ function ConnectSteps() {
           Connect
         </button>
       </form>
+      )}
+      {!LOCAL_APP && (
       <p class="muted small">
         Chrome and Edge ask once whether this site may access apps on your device. Choose <strong>Allow</strong>. In Safari, use the copy of
         Slanki that the helper opens at <code>http://127.0.0.1:47213</code>.
       </p>
+      )}
     </div>
   );
 }
@@ -241,140 +239,6 @@ function ProviderSettings() {
   );
 }
 
-function KeySettings() {
-  const prefs = aiPreferences.value;
-  const provider = isKeyProvider(prefs.provider) ? prefs.provider : "openai";
-  const saved = apiKeys.value[provider];
-  const [draft, setDraft] = useState("");
-  const [models, setModels] = useState<ModelChoice[] | null>(null);
-  const [busy, run] = useBusy();
-  const load = (key: string, isNew: boolean) =>
-    run(async () => {
-      try {
-        const found = await listKeyModels(provider, key);
-        if (!found.length) throw new Error("This key works, but no supported models were found for it.");
-        setModels(found);
-        if (!found.some((m) => m.id === aiPreferences.value.model)) {
-          const preferred = found.find((m) => m.id === DEFAULT_KEY_MODELS[provider]) ?? found[0]!;
-          savePreferences({ model: preferred.id });
-        }
-        if (isNew) {
-          saveApiKey(provider, key);
-          setDraft("");
-          notify("API key saved in this browser.");
-        }
-      } catch (error) {
-        setModels(isNew ? null : []);
-        notify(errorMessage(error), true);
-      }
-    });
-  useEffect(() => {
-    setModels(null);
-    setDraft("");
-    if (saved) void load(saved, false);
-  }, [provider]);
-  const company = provider === "openai" ? "OpenAI" : "Anthropic";
-  return (
-    <div class="stack">
-      <p>
-        Paste an API key from {company}. Slanki then talks to {company} directly from this browser, with nothing to install. Use is
-        billed to your {company} account, usually a few cents per lecture.
-      </p>
-      <label class="field">
-        <span>Provider</span>
-        <select
-          class="input"
-          value={provider}
-          onChange={(event) => savePreferences({ provider: event.currentTarget.value as Provider, model: "", effort: "low" })}
-        >
-          {KEY_PROVIDERS.map((p) => (
-            <option key={p} value={p}>
-              {p === "openai" ? "OpenAI (GPT)" : "Anthropic (Claude)"}
-            </option>
-          ))}
-        </select>
-      </label>
-      {saved ? (
-        <div class="row">
-          <span class="banner ok small" style={{ margin: 0, flex: 1 }}>
-            Key saved in this browser (…{saved.slice(-4)}).
-          </span>
-          <button
-            class="btn small ghost"
-            onClick={() => {
-              saveApiKey(provider, null);
-              setModels(null);
-            }}
-          >
-            Remove key
-          </button>
-        </div>
-      ) : (
-        <form
-          class="row"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void load(draft.trim(), true);
-          }}
-        >
-          <input
-            class="input"
-            type="password"
-            autocomplete="off"
-            spellcheck={false}
-            style={{ flex: "1 1 240px" }}
-            placeholder={provider === "openai" ? "sk-…" : "sk-ant-…"}
-            value={draft}
-            onInput={(e) => setDraft(e.currentTarget.value)}
-          />
-          <button class="btn primary" disabled={busy || draft.trim().length < 20}>
-            {busy ? "Checking…" : "Save key"}
-          </button>
-        </form>
-      )}
-      {!saved && (
-        <p class="muted small">
-          Get a key at{" "}
-          <a href={KEY_PAGES[provider]} target="_blank" rel="noreferrer noopener">
-            {KEY_PAGES[provider].replace("https://", "")}
-          </a>
-          . It is stored only in this browser and sent only to {company}. API billing is separate from a ChatGPT or Claude
-          subscription; to use a subscription, choose Codex / Claude Code.
-        </p>
-      )}
-      {saved && (
-        <div class="row" style={{ alignItems: "flex-end" }}>
-          <label class="field" style={{ flex: "1 1 200px" }}>
-            <span>Model</span>
-            <select
-              class="input"
-              value={prefs.model}
-              disabled={!models?.length}
-              onChange={(event) => savePreferences({ model: event.currentTarget.value })}
-            >
-              {(models ?? [{ id: prefs.model, label: prefs.model || "Loading…" }]).map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label class="field" style={{ flex: "1 1 140px" }}>
-            <span>Reasoning</span>
-            <select class="input" value={prefs.effort} onChange={(event) => savePreferences({ effort: event.currentTarget.value })}>
-              {["low", "medium", "high"].map((effort) => (
-                <option key={effort} value={effort}>
-                  {EFFORT_LABELS[effort]}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      )}
-    </div>
-  );
-}
-
 /** One row per CLI with the single next step: install, sign in, use. */
 function CliChoice({ provider }: { provider: Provider }) {
   const info = CLI_INFO[provider]!;
@@ -436,6 +300,14 @@ function CliChoice({ provider }: { provider: Provider }) {
   );
 }
 
+/** The local app closes itself once no Slanki tab has checked in for a few minutes. */
+export function keepLocalAppAlive(): void {
+  if (!LOCAL_APP) return;
+  setInterval(() => {
+    if (helperToken()) void ping().catch(() => undefined);
+  }, 60_000);
+}
+
 export const EFFORT_LABELS: Record<string, string> = {
   "": "CLI default",
   none: "None",
@@ -454,30 +326,18 @@ export function AiDialog({ open, onClose }: { open: boolean; onClose: () => void
     if (open && helperToken()) void checkHelper();
   }, [open]);
   const { phase, message } = helper.value;
-  const keyMode = !LOCAL_APP && isKeyProvider(aiPreferences.value.provider);
-  const setMode = (key: boolean) => {
-    if (key === keyMode) return;
-    savePreferences({ provider: key ? "openai" : "codex", model: "", effort: "low" });
-    if (!key && helperToken()) void checkHelper();
-  };
   return (
     <Dialog open={open} onClose={onClose} label="AI connection">
       <h2>Your AI</h2>
-      {!LOCAL_APP && (
-      <div class="tabs" role="tablist" aria-label="How to connect" style={{ marginBottom: "14px" }}>
-        <button class="tab" role="tab" aria-selected={keyMode} onClick={() => setMode(true)}>
-          API key
-        </button>
-        <button class="tab" role="tab" aria-selected={!keyMode} onClick={() => setMode(false)}>
-          ChatGPT / Claude app
-        </button>
-      </div>
+      {phase === "ready" ? <ProviderSettings /> : <ConnectSteps />}
+      {phase === "offline" && (
+        <p class="banner warn small">
+          {LOCAL_APP ? "Slanki is not running. Open it again from its icon." : <>{message} Start it again with <code>npx slanki@1</code>.</>}
+        </p>
       )}
-      {keyMode ? <KeySettings /> : phase === "ready" ? <ProviderSettings /> : <ConnectSteps />}
-      {!keyMode && phase === "offline" && <p class="banner warn small">{message} Start it again with <code>npx slanki@1</code>.</p>}
-      {!keyMode && phase === "outdated" && <p class="banner warn small">{message}</p>}
+      {phase === "outdated" && <p class="banner warn small">{message}</p>}
       <div class="dialog-actions">
-        {!keyMode && helperToken() && (
+        {helperToken() && (
           <button
             class="btn ghost small"
             onClick={() => {
@@ -489,7 +349,7 @@ export function AiDialog({ open, onClose }: { open: boolean; onClose: () => void
           </button>
         )}
         <span class="spacer" />
-        {!keyMode && phase !== "unpaired" && (
+        {phase !== "unpaired" && (
           <button class="btn" onClick={() => void checkHelper()}>
             Check again
           </button>

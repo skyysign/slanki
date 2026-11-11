@@ -2,7 +2,7 @@ import { render } from "preact";
 import { helperToken } from "./ai/helper.ts";
 import { recoverStaleRuns } from "./run/orchestrator.ts";
 import { App } from "./ui/App.tsx";
-import { checkHelper, pairFromLocation } from "./ui/ai/AiStatus.tsx";
+import { checkHelper, keepLocalAppAlive, pairFromLocation } from "./ui/ai/AiStatus.tsx";
 import "./ui/styles.css";
 
 async function start() {
@@ -12,6 +12,7 @@ async function start() {
   await pairing;
   if (!pairing && helperToken()) void checkHelper();
   void recoverStaleRuns().catch(() => undefined);
+  keepLocalAppAlive();
 }
 
 void start();

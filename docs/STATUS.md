@@ -16,11 +16,11 @@ Updated 2026-11-25. Personal alpha. Main delivery is now the local Windows app `
 ## Verified
 
 - **Unit tests.** `npm test`: 269 tests, including parity with the frozen Recalloom fixtures.
-- **Anki import check.** `tools/check_anki.py` on Anki 26.8.1, including the 2 real lectures with kept cards: schedules preserved and layout updated.
+- **Anki import check.** `tools/check_anki.py` on Anki 26.8.1, including the 2 real lectures with kept cards: schedules preserved and layout updated. Golden check re-run 2026-11-25 after updating the Python dev pins (Pillow 13, urllib3 2.8, certifi) for Dependabot.
 - **Browser tests.** Both workflows pass in Chrome, Firefox and WebKit, and the helper workflow passes (re-run 2026-11-25 after the redesign).
 - **Executable.** `Slanki.exe` built on Windows (98 MB). It serves the embedded app, blocks path traversal, pairs, and detected the real signed-in Codex and Claude Code installs (screenshots via `app/e2e/readme-shots.mjs`).
 - **Live generation (by the user, 2026-11-11).** A real card run in the released `Slanki.exe` 0.2.2, reported as working by the user. The metadata log shows the pairing and 13 helper jobs (14:55–15:01), each submitted and collected by the app. Job outcomes and the provider are not logged.
-- **Pre-publication check (2026-11-11).** History, fixtures and the exe were searched for keys, tokens and personal data; `npm audit` found 0 vulnerabilities. A build path holding the Windows user name was removed from history (rewritten, tags force-pushed) and from the exe; `build-exe.ts` now fails if the home folder appears in the executable. Only release v0.2.2 remains.
+- **Pre-publication check (2026-11-11).** History, fixtures and the exe were searched for keys, tokens and personal data; `npm audit` found 0 vulnerabilities. A build path holding the Windows user name was removed from history (rewritten, tags force-pushed) and from the exe; `build-exe.ts` now fails if the home folder appears in the executable. GitHub releases: v0.2.2 and v0.2.3 (latest).
 - **Clean deploy check.** A clean-room build of exactly what Vercel would receive passes the browser workflow.
 
 ## Not done

@@ -73,7 +73,6 @@ function seaAssets(): ((path: string) => Buffer | null) | undefined {
 
 /** The windowless app has no console: keep the (metadata-only) log in a file instead. */
 function logToFile(file: string): void {
-  writeFileSync(file, "");
   for (const method of ["log", "warn", "error"] as const) {
     const original = console[method].bind(console);
     console[method] = (...parts: unknown[]) => {
@@ -186,7 +185,8 @@ async function main() {
   const catalogs = new Catalogs(home);
   const local = `http://127.0.0.1:${PORT}`;
   const assets = seaAssets();
-  if (assets) logToFile(join(home, "slanki.log"));
+  const logFile = join(home, "slanki.log");
+  if (assets) logToFile(logFile);
   const root = assets ? null : staticRoot();
   const logins = new Logins((provider) => loginCommand(provider), work);
   const { server, pairing, jobs, idleMs } = createHelper({
@@ -223,6 +223,8 @@ async function main() {
     else process.exit(1);
   });
   server.listen(PORT, "127.0.0.1", async () => {
+    // Only the copy that owns the port starts a fresh log; a second launch only appends.
+    if (assets) writeFileSync(logFile, "");
     const announce = (code: string) => {
       console.log(`\n  Open Slanki:          ${assets ? local : APP_ORIGIN}/#pair=${PORT}.${code}`);
       if (server.listening && root) console.log(`  Or the local copy:    ${local}/#pair=${PORT}.${code}   (for Safari)`);

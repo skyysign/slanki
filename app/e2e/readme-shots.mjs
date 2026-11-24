@@ -36,7 +36,10 @@ try {
   await page.click("dialog[open] button:has-text('Add drafts')");
   await page.waitForSelector(".card-pane textarea.question", { timeout: 30000 });
   await page.click(".tab:has-text('To review')");
-  await page.waitForFunction(() => !document.body.textContent.includes("Added 5 drafts"), null, { timeout: 20000 });
+  // Wait until no notification (such as "Added 5 drafts" or "Connected") covers the page.
+  await page.waitForSelector(".toast", { state: "detached", timeout: 20000 });
+  await page.waitForTimeout(500);
+  await page.waitForSelector(".toast", { state: "detached", timeout: 20000 });
   await page.screenshot({ path: `${out}/review.png` });
   await page.click(".pill");
   await page.waitForSelector("dialog[open] .choice", { timeout: 20000 });

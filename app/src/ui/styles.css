@@ -15,7 +15,6 @@
   --grid: rgb(21 23 23 / 7%);
   --key: rgb(21 23 23 / 4.5%);
   --dot: rgb(21 23 23 / 34%);
-  --note: rgb(21 23 23 / 38%);
   --accent: #ff5410;
   --accent-strong: #e64600;
   --accent-ink: #b83a00;
@@ -51,7 +50,6 @@
     --grid: rgb(227 231 229 / 6%);
     --key: rgb(227 231 229 / 3.5%);
     --dot: rgb(227 231 229 / 30%);
-    --note: rgb(227 231 229 / 34%);
     --accent: #ff6a2b;
     --accent-strong: #ff834d;
     --accent-ink: #ff8f5e;
@@ -168,44 +166,13 @@ main { max-width: 1240px; margin: 0 auto; padding: 28px 20px 64px; }
   -webkit-mask-image: radial-gradient(ellipse 60% 70% at 62% 48%, #000 15%, transparent 72%);
   mask-image: radial-gradient(ellipse 60% 70% at 62% 48%, #000 15%, transparent 72%);
 }
-/* The drop zone is a piano roll: key rows, bar lines, a few notes and, on hover, a playhead. */
 .drop {
-  --row: 9px;
-  position: relative; isolation: isolate; overflow: hidden;
   display: grid; place-items: center; gap: 10px; text-align: center; padding: 52px 20px;
-  width: 100%; border: 1px solid var(--border-strong); border-radius: var(--radius); background-color: var(--surface);
-  background-image:
-    radial-gradient(ellipse 34% 62% at 50% 50%, var(--surface) 35%, transparent 80%),
-    linear-gradient(var(--note), var(--note)), linear-gradient(var(--note), var(--note)),
-    linear-gradient(var(--note), var(--note)), linear-gradient(var(--note), var(--note)),
-    linear-gradient(var(--note), var(--note)), linear-gradient(var(--note), var(--note)),
-    linear-gradient(var(--note), var(--note)), linear-gradient(var(--note), var(--note)),
-    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 128px),
-    repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 32px),
-    linear-gradient(180deg,
-      transparent 0 9px, var(--key) 9px 18px, transparent 18px 27px, var(--key) 27px 36px,
-      transparent 36px 45px, var(--key) 45px 54px, transparent 54px 72px, var(--key) 72px 81px,
-      transparent 81px 90px, var(--key) 90px 99px, transparent 99px 107px, var(--grid) 107px 108px),
-    repeating-linear-gradient(180deg, transparent 0 8px, var(--grid) 8px 9px);
-  background-size:
-    100% 100%,
-    88px 7px, 54px 7px, 120px 7px, 40px 7px, 70px 7px, 96px 7px, 36px 7px, 62px 7px,
-    100% 100%, 100% 100%, 100% 108px, 100% 9px;
-  background-position:
-    0 0,
-    4% 19px, 13% 46px, 7% 136px, 22% 172px, 74% 28px, 83% 82px, 92% 118px, 70% 163px,
-    0 0, 0 0, 0 0, 0 0;
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
-  transition: border-color .15s; cursor: pointer;
+  width: 100%; border: 1px dashed var(--border-strong); border-radius: var(--radius); background: var(--surface);
+  transition: border-color .15s, background .15s; cursor: pointer;
 }
-.drop::after {
-  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 0; width: 2px;
-  background: var(--accent); opacity: 0; pointer-events: none;
-}
-.drop:hover, .drop.over { border-color: var(--accent); --note: color-mix(in srgb, var(--accent) 75%, transparent); }
-.drop:hover::after, .drop.over::after { opacity: 1; animation: playhead 2.6s linear infinite; }
+.drop:hover, .drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
 .drop:disabled { cursor: progress; }
-@keyframes playhead { from { left: 0; } to { left: calc(100% - 2px); } }
 .drop strong { font-size: 19px; letter-spacing: -.02em; }
 .drop > .muted { font-family: var(--mono); font-size: 12px; }
 .drop .icon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: var(--radius-sm); background: var(--text); color: var(--bg); }
@@ -397,7 +364,6 @@ dialog::backdrop { background: rgb(17 19 19 / 42%); backdrop-filter: blur(2px); 
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drop:hover::after, .drop.over::after { animation: none; left: 50%; }
   .btn:active:not(:disabled) { transform: none; }
 }
 

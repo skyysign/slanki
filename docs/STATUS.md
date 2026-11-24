@@ -1,11 +1,12 @@
 # Status
 
-Updated 2026-11-11. Personal alpha. Main delivery is now the local Windows app `Slanki.exe` (`npm run build:exe`), branch `main`. The old Django app (Recalloom) is removed; it is recoverable from the tag `recalloom-django-final`. Snapshot of the 3 real lectures (format-12 backups) in ignored `data/backups/pre-slanki-20261110/`.
+Updated 2026-11-25. Personal alpha. Main delivery is now the local Windows app `Slanki.exe` (`npm run build:exe`), branch `main`. The old Django app (Recalloom) is removed; it is recoverable from the tag `recalloom-django-final`. Snapshot of the 3 real lectures (format-12 backups) in ignored `data/backups/pre-slanki-20261110/`.
 
 ## Works
 
 - **Library and lectures.** PDF import in the browser; delete a lecture from the home page (trash button, same confirmation as in the lecture); IndexedDB library; review workspace with keyboard shortcuts; manual cards; "Attach part of slide"; Keep all; Undo.
 - **Local app.** `Slanki.exe` is a Node single-executable app (Node 24 + postject) with the web app embedded as SEA assets, the Slanki icon and version info (rcedit), and the Windows GUI subsystem, so no console window appears. It opens the local copy at `http://127.0.0.1:47213` already paired. It logs metadata to `~/.slanki/slanki.log` and shows startup errors in a message box. Open tabs ping `/v1/ping` every minute; after 5 minutes without requests, with no job or sign-in running, it exits. A second launch of the same version asks the running copy for a fresh pairing code (`/v1/pairing-code`, token required) and reopens the browser. A different version replaces the running copy: `/v1/shutdown` (token required), or for copies up to 0.2.1 it ends the process listening on the port, found through netstat by remote address `0.0.0.0:0` because the state column is localized. Tested 0.2.1 → 0.2.2 on Windows (German). `npm run build:exe -- --console` keeps a console for debugging. The AI dialog there offers one-click choices: ChatGPT (Codex) or Claude (Claude Code), each with an Install / Sign in / Use button.
+- **Look (0.2.3).** Instrument-style redesign, CSS plus small decorative markup: grey paper, hairline grids and rulers, Geist and Geist Mono (bundled, self-hosted), flat pad buttons and one signal-orange accent. The drop zone is a piano roll with a playhead on hover; each lecture shows a status meter. Light and dark follow the system. Icon recoloured to match.
 - **Visible text.** The UI no longer mentions Recalloom. Internal names stay: the Anki note-type names, backup format ids and code comments.
 - **Making cards.** Through the helper (Codex, Claude Code), or copy/paste with any chat. The browser API-key route was removed on 2026-11-11. The whole lecture is read first; stop and resume are supported.
 - **Anki export.** Answers show only the slide. Note identity and schedules are compatible with Recalloom exports.
@@ -14,9 +15,9 @@ Updated 2026-11-11. Personal alpha. Main delivery is now the local Windows app `
 
 ## Verified
 
-- **Unit tests.** `npm test`: 267 tests, including parity with the frozen Recalloom fixtures.
+- **Unit tests.** `npm test`: 269 tests, including parity with the frozen Recalloom fixtures.
 - **Anki import check.** `tools/check_anki.py` on Anki 26.8.1, including the 2 real lectures with kept cards: schedules preserved and layout updated.
-- **Browser tests.** Both workflows pass in Chrome, Firefox and WebKit (Chrome re-run 2026-11-11).
+- **Browser tests.** Both workflows pass in Chrome, Firefox and WebKit, and the helper workflow passes (re-run 2026-11-25 after the redesign).
 - **Executable.** `Slanki.exe` built on Windows (98 MB). It serves the embedded app, blocks path traversal, pairs, and detected the real signed-in Codex and Claude Code installs (screenshots via `app/e2e/readme-shots.mjs`).
 - **Live generation (by the user, 2026-11-11).** A real card run in the released `Slanki.exe` 0.2.2, reported as working by the user. The metadata log shows the pairing and 13 helper jobs (14:55–15:01), each submitted and collected by the app. Job outcomes and the provider are not logged.
 - **Pre-publication check (2026-11-11).** History, fixtures and the exe were searched for keys, tokens and personal data; `npm audit` found 0 vulnerabilities. A build path holding the Windows user name was removed from history (rewritten, tags force-pushed) and from the exe; `build-exe.ts` now fails if the home folder appears in the executable. Only release v0.2.2 remains.

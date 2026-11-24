@@ -1,7 +1,7 @@
 {
   "name": "@slanki/app",
   "private": true,
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/geist-mono": "5.3.0",
     "@preact/signals": "2.11.3",
     "fflate": "0.8.3",
     "pdfjs-dist": "6.4.299",

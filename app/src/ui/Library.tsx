@@ -100,7 +100,11 @@ export function Library() {
           }}
           disabled={busy}
         >
-          <span class="icon" aria-hidden="true">📄</span>
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
+              <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+            </svg>
+          </span>
           <strong>Drop a lecture PDF here</strong>
           <span class="muted small">or click to choose a file · up to 100 slides · nothing is uploaded</span>
         </button>
@@ -174,6 +178,11 @@ export function Library() {
             <div class="lecture-item" key={summary.lecture.id}>
             <a class="lecture-card" href={`#/lecture/${summary.lecture.id}`}>
               <h3>{summary.lecture.title}</h3>
+              <div class="meter" aria-hidden="true">
+                <span class="ready" style={{ flexGrow: summary.ready }} />
+                <span class="review" style={{ flexGrow: summary.toReview }} />
+                <span class="aside" style={{ flexGrow: summary.setAside }} />
+              </div>
               <div class="counts">
                 {summary.toReview > 0 && <span class="badge review">{summary.toReview} to review</span>}
                 <span class="badge ready">{plural(summary.readyCards, "Anki card")} ready</span>

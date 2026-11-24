@@ -58,7 +58,7 @@ The AI is treated as an **untrusted** source. Its output is useful, but it is ne
 
 ## Built with
 
-TypeScript, Preact, Vite, pdf.js and sql.js (to write Anki's package format), plus Node.js for the local bridge and the Windows build. Tested with Vitest (267 unit tests) and Playwright browser tests in Chrome, Firefox and WebKit, run against a simulated AI.
+TypeScript, Preact, Vite, pdf.js and sql.js (to write Anki's package format), plus Node.js for the local bridge and the Windows build. Tested with Vitest (269 unit tests) and Playwright browser tests in Chrome, Firefox and WebKit, run against a simulated AI.
 
 ## Build from source
 

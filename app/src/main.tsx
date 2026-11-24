@@ -3,6 +3,8 @@ import { helperToken } from "./ai/helper.ts";
 import { recoverStaleRuns } from "./run/orchestrator.ts";
 import { App } from "./ui/App.tsx";
 import { checkHelper, keepLocalAppAlive, pairFromLocation } from "./ui/ai/AiStatus.tsx";
+import "@fontsource-variable/geist/wght.css";
+import "@fontsource-variable/geist-mono/wght.css";
 import "./ui/styles.css";
 
 async function start() {

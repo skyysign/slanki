@@ -24,7 +24,7 @@ const code = await new Promise((resolve, reject) => {
 
 const browser = await chromium.launch({ channel: "chrome" });
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1, colorScheme: "dark" });
   await page.goto(`http://127.0.0.1:47213/#pair=47213.${code}`);
   await page.waitForSelector("text=Drop a lecture PDF", { timeout: 20000 }).catch(() => undefined);
   const pdf = join(mkdtempSync(join(tmpdir(), "slanki-pdf-")), "Memory and learning.pdf");
